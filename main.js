@@ -1,11 +1,13 @@
 ////////////////////
 // Imports
 import { renderLevel } from "./level.js";
+import { createTiles } from "./tile.js";
 
 ////////////////////
 // Globals
 export let canvas;
 export let ctx;
+export let level = [];
 
 ////////////////////
 // Settings
@@ -32,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function ()
     if (canvas) {
         ctx = canvas.getContext("2d");
         if (ctx) {
+            level = createTiles();
             Render();
         } else {
             console.error("Could not find ctx object.");
