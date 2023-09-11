@@ -1,40 +1,17 @@
 ////////////////////
+// Imports
+import { renderLevel } from "./level.js";
+
+////////////////////
 // Globals
-let canvas;
-let ctx;
+export let canvas;
+export let ctx;
 
 ////////////////////
 // Settings
-const tileSize = 32;
-const levelWidth = 25;
-const levelHeight = 25;
-
-////////////////////
-// Level
-function renderLevel()
-{
-    for (let y = 0; y < levelHeight; y++) {
-        for (let x = 0; x < levelWidth; x++) {
-            const xCoord = x * tileSize;
-            const yCoord = y * tileSize;
-            // Non-destructible walls
-            if (x === 0 || y === 0 || x === levelWidth-1 || y === levelHeight-1) {
-                ctx.fillStyle = "#808080";
-                ctx.fillRect(xCoord, yCoord, tileSize, tileSize);
-            }
-            else if (x % 2 === 0 && y %2 === 0 ) {
-                ctx.fillStyle = "#808080";
-                ctx.fillRect(xCoord, yCoord, tileSize, tileSize);
-            }
-            // TODO: destructible walls
-            // Floor
-            else {
-                ctx.fillStyle = "#00ff00";
-                ctx.fillRect(xCoord, yCoord, tileSize, tileSize);
-            }
-        }
-    }
-}
+export const tileSize = 32;
+export const levelWidth = 25;
+export const levelHeight = 25;
 
 ////////////////////
 // Render
