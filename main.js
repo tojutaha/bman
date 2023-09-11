@@ -2,6 +2,7 @@
 // Imports
 import { renderLevel } from "./level.js";
 import { createTiles } from "./tile.js";
+import { renderPlayer } from "./player.js";
 
 ////////////////////
 // Globals
@@ -12,6 +13,7 @@ export let level = [];
 ////////////////////
 // Settings
 export const tileSize = 32;
+export const playerSize = 32;
 export const levelWidth = 25;
 export const levelHeight = 25;
 
@@ -22,6 +24,7 @@ function Render()
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     renderLevel();
+    renderPlayer();
 
     requestAnimationFrame(Render);
 }
