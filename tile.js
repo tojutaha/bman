@@ -1,4 +1,4 @@
-import { canvas, ctx, tileSize, levelHeight, levelWidth } from "./main.js";
+import { canvas, ctx, tileSize, levelHeight, levelWidth, softTilePercent } from "./main.js";
 
 const TileType = {
     FLOOR: "Floor",
@@ -24,21 +24,31 @@ export function createTiles()
             const xCoord = x * tileSize;
             const yCoord = y * tileSize;
 
-            // Non-destructible walls
+            if (x < 2 && y < 2) {
+                console.log("KULMA", x, y);
+            }
+
+            // Outer walls
             if (x === 0 || y === 0 || x === levelWidth - 1 || y === levelHeight - 1) {
                 row.push(new Tile(xCoord, yCoord, false, TileType.NON_DESTRUCTIBLE_WALL));
-            } else if (x % 2 === 0 && y % 2 === 0) {
+            } 
+            // Hard tiles
+            else if (x % 2 === 0 && y % 2 === 0) {
                 row.push(new Tile(xCoord, yCoord, false, TileType.NON_DESTRUCTIBLE_WALL));
             }
-            // TODO: destructible walls etc.
-            // Floor
+            // Soft tiles and floor
             else {
-                row.push(new Tile(xCoord, yCoord, true, TileType.FLOOR));
+                let random = Math.random();
+                // Leaves the upper left and bottom right corners free for players
+                if (random < softTilePercent && (x > 2 || y > 2) && (x < 22 || y < 22)) {
+                    row.push(new Tile(xCoord, yCoord, false, TileType.DESTRUCTIBLE_WALL));
+                }
+                else {
+                    row.push(new Tile(xCoord, yCoord, true, TileType.FLOOR));
+                }
             }
         }
         result.push(row);
     }
-
     return result;
 }
-

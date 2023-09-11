@@ -1,4 +1,4 @@
-import { canvas, ctx, tileSize, levelHeight, levelWidth } from "./main.js";
+import { canvas, ctx, tileSize, levelHeight, levelWidth, level } from "./main.js";
 
 export function renderLevel()
 {
@@ -6,22 +6,21 @@ export function renderLevel()
         for (let x = 0; x < levelWidth; x++) {
             const xCoord = x * tileSize;
             const yCoord = y * tileSize;
-            // Non-destructible walls
-            if (x === 0 || y === 0 || x === levelWidth-1 || y === levelHeight-1) {
+            // Hard tiles
+            if (level[x][y].type === "NonDestructibleWall") {
                 ctx.fillStyle = "#808080";
                 ctx.fillRect(xCoord, yCoord, tileSize, tileSize);
             }
-            else if (x % 2 === 0 && y %2 === 0 ) {
-                ctx.fillStyle = "#808080";
+            // Soft tiles
+            else if (level[x][y].type === "DestructibleWall") {
+                ctx.fillStyle = "#E0E0E0";
                 ctx.fillRect(xCoord, yCoord, tileSize, tileSize);
             }
-            // TODO: destructible walls
             // Floor
-            else {
-                ctx.fillStyle = "#2c492c";
+            else if (level[x][y].type === "Floor") {
+                ctx.fillStyle = "#2C492C";
                 ctx.fillRect(xCoord, yCoord, tileSize, tileSize);
             }
         }
     }
 }
-
