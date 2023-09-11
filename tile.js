@@ -24,10 +24,6 @@ export function createTiles()
             const xCoord = x * tileSize;
             const yCoord = y * tileSize;
 
-            if (x < 2 && y < 2) {
-                console.log("KULMA", x, y);
-            }
-
             // Outer walls
             if (x === 0 || y === 0 || x === levelWidth - 1 || y === levelHeight - 1) {
                 row.push(new Tile(xCoord, yCoord, false, TileType.NON_DESTRUCTIBLE_WALL));
