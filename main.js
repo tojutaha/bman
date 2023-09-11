@@ -16,7 +16,11 @@ export const tileSize = 32;
 export const playerSize = 32;
 export const levelWidth = 25;
 export const levelHeight = 25;
-export const softTilePercent = 0.4;
+export const softTilePercent = 0.5;
+
+////////////////////
+// Assets
+export let spriteSheet = document.getElementById("sprite-sheet");
 
 ////////////////////
 // Render
