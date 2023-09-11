@@ -18,7 +18,7 @@ export function renderLevel()
             // TODO: destructible walls
             // Floor
             else {
-                ctx.fillStyle = "#00ff00";
+                ctx.fillStyle = "#2c492c";
                 ctx.fillRect(xCoord, yCoord, tileSize, tileSize);
             }
         }
