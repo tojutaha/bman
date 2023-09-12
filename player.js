@@ -190,18 +190,22 @@ function smoothMovementHandleKeyDown(event)
     switch(event.key) {
         case "w":
             player.dy = -smoothMovementSpeed;
+            player.dx = 0;
             break;
 
         case "a":
             player.dx = -smoothMovementSpeed;
+            player.dy = 0;
             break;
 
         case "s":
             player.dy = smoothMovementSpeed;
+            player.dx = 0;
             break;
 
         case "d":
             player.dx = smoothMovementSpeed;
+            player.dy = 0;
             break;
 
         case " ":
