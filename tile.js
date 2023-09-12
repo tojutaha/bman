@@ -35,8 +35,13 @@ export function createTiles()
             // Soft tiles and floor
             else {
                 let random = Math.random();
-                // Leaves the upper left and bottom right corners free for players
-                if (random < softTilePercent && (x > 2 || y > 2) && (x < 22 || y < 22)) {
+                // Corners are left free from blocks
+                if (random < softTilePercent 
+                    && (x > 2 || y > 2) // top left
+                    && (x > 2 || y < 22) // top right
+                    && (x < 22 || y > 2) // bottom left
+                    && (x < 22 || y < 22)) // bottom right
+                    {
                     row.push(new Tile(xCoord, yCoord, false, TileType.DESTRUCTIBLE_WALL));
                 }
                 else {
