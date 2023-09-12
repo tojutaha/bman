@@ -24,12 +24,25 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 
 ////////////////////
 // Render
-function Render()
+let lastTimeStamp = 0;
+function Render(timeStamp)
 {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    const deltaTime = (timeStamp - lastTimeStamp) / 1000;
+    const fps = 1 / deltaTime;
+
     renderLevel();
-    renderPlayer();
+    renderPlayer(deltaTime);
+
+    // 
+    ctx.fillStyle = "#00ff00";
+    ctx.font = "24px arial";
+    ctx.fillText("FPS: " + fps.toFixed(1), canvas.width - 125, 25);
+    ctx.fillText("dt:  " + (deltaTime*1000).toFixed(2) + "ms", canvas.width - 125, 50);
+    //
+
+    lastTimeStamp = timeStamp
 
     requestAnimationFrame(Render);
 }
