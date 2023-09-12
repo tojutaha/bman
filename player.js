@@ -1,9 +1,19 @@
 import { canvas, ctx, level, levelHeight, levelWidth, playerSize, tileSize } from "./main.js";
 
+
+
+// TODO: Bugi: Grid movement, jos rämpyttää liikkumis-nappeja, pelaaja voi liikkua nopeammin kuin on tarkoitus.
+// TODO: Loput collision testit smooth movementtiin.
+
+
+
 // Tämän kun heittää falseksi, saa sen ensimmäisen version
 // liikkumisen takaisin.
 const useGridMovement = true;
+
 const gridMovementSpeed = 125; // interval / ms
+let initialMove = true;
+
 const smoothMovementSpeed = 2; // pixels/s
 
 const player = {
@@ -37,6 +47,7 @@ function startMovement(direction)
 
 function stopMovement()
 {
+    initialMove = true;
     clearInterval(movementTimer);
     movementTimer = null;
 }
@@ -112,8 +123,6 @@ function smoothMovementUpdatePlayer()
         player.y = (levelHeight - 2) *tileSize;
     }
 
-    // TODO: loput collision testit...
-
     player.x += player.dx;
     player.y += player.dy;
 }
@@ -133,21 +142,30 @@ function gridMovementHandleKeyDown(event)
 {
     event.preventDefault();
 
+    const move = initialMove ? movePlayer : startMovement;
     switch(event.key) {
         case "w":
-            startMovement(Direction.UP);
+            //startMovement(Direction.UP);
+            move(Direction.UP);
+            initialMove = false;
             break;
 
         case "a":
-            startMovement(Direction.LEFT);
+            //startMovement(Direction.LEFT);
+            move(Direction.LEFT);
+            initialMove = false;
             break;
 
         case "s":
-            startMovement(Direction.DOWN);
+            //startMovement(Direction.DOWN);
+            move(Direction.DOWN);
+            initialMove = false;
             break;
 
         case "d":
-            startMovement(Direction.RIGHT);
+            //startMovement(Direction.RIGHT);
+            move(Direction.RIGHT);
+            initialMove = false;
             break;
 
         case " ":
