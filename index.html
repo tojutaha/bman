@@ -9,10 +9,30 @@
 </head>
 <body>
     <div class="canvas-container">
-        <canvas id="canvas" width="1000" height="1000"></canvas>
+        <canvas id="canvas" width="800" height="800"></canvas>
+    </div>
+    <div class="debug-buttons">
+        <button id="scale50" onclick="scale50()">Scale 50%</button>
+        <button id="scale75" onclick="scale75()">Scale 75%</button>
+        <button id="scale100" onclick="scale100()">Scale 100%</button>
     </div>
     <!-- For loading the sprite sheet in DOM -->
     <img id="sprite-sheet" src="/assets/spritesheet_1.png">
+
+    <!-- Temporary debug script -->
+    <script>
+        let canvasContainer = document.getElementsByClassName("canvas-container");
+        let canvas = document.getElementById("canvas");
+        function scale50() {
+            canvasContainer[0].style.cssText = "scale: 50%;";
+        }
+        function scale75() {
+            canvasContainer[0].style.cssText = "scale: 75%;";
+        }
+        function scale100() {
+            canvasContainer[0].style.cssText = "scale: 100%;";
+        }
+    </script>
 </body>
 </html>
 
