@@ -9,7 +9,7 @@ import { canvas, ctx, level, levelHeight, levelWidth, playerSize, tileSize } fro
 
 // Tämän kun heittää falseksi, saa sen ensimmäisen version
 // liikkumisen takaisin.
-const useGridMovement = true;
+const useGridMovement = false;
 
 const gridMovementSpeed = 125; // interval / ms
 let initialMove = true;
@@ -19,8 +19,8 @@ const smoothMovementSpeed = 2; // pixels/s
 const player = {
     x: 32, // start from top left corner
     y: 32,
-    w: 32,
-    h: 32,
+    w: 24,
+    h: 24,
     dx: 0,
     dy: 0,
 };
@@ -103,28 +103,37 @@ function gridMovementUpdatePlayer()
 
 function smoothMovementUpdatePlayer()
 {
-    // Left
-    if (player.x <= tileSize) {
-        player.x = tileSize;
+    const nextX = player.x + player.dx;
+    const nextY = player.y + player.dy;
+
+    let collides = false;
+    for (let y = 0; y < levelHeight; y++) {
+        for (let x = 0; x < levelWidth; x++) {
+            const tileLeft   = level[x][y].x;
+            const tileRight  = level[x][y].x + tileSize;
+            const tileTop    = level[x][y].y;
+            const tileBottom = level[x][y].y + tileSize;
+
+            // No pixel-perfect collisions pls
+            const offset = 5;
+
+            if (!isWalkable(y, x) && // TODO: Miksi tämän pitää olla käänteinen..? :D
+                nextX + (player.w - offset) >= tileLeft &&
+                (nextX + offset) < tileRight &&
+                nextY + (player.h - offset) >= tileTop &&
+                (nextY + offset) < tileBottom
+            ) {
+
+                collides = true;
+            }
+        }
     }
 
-    // Right
-    if (player.x >= (levelWidth - 2) * tileSize) {
-        player.x = (levelWidth - 2) * tileSize;
+    //console.log(collides);
+    if (!collides) {
+        player.x += player.dx;
+        player.y += player.dy;
     }
-
-    // Top
-    if (player.y <= tileSize) {
-        player.y = tileSize;
-    }
-
-    // Bottom
-    if (player.y >= (levelHeight - 2) * tileSize) {
-        player.y = (levelHeight - 2) *tileSize;
-    }
-
-    player.x += player.dx;
-    player.y += player.dy;
 }
 
 const updatePlayer = useGridMovement ? gridMovementUpdatePlayer : smoothMovementUpdatePlayer;
@@ -133,7 +142,7 @@ export function renderPlayer()
     updatePlayer();
 
     ctx.fillStyle = "#ff0000";
-    ctx.fillRect(player.x, player.y, playerSize, playerSize);
+    ctx.fillRect(player.x, player.y, player.w, player.h);
 }
 
 ////////////////////
