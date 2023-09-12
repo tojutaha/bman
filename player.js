@@ -1,4 +1,5 @@
 import { canvas, ctx, level, levelHeight, levelWidth, playerSize, tileSize } from "./main.js";
+import { dropBomb } from "./bomb.js";
 
 
 
@@ -178,7 +179,7 @@ function gridMovementHandleKeyDown(event)
             break;
 
         case " ":
-            console.log("laitappa pommi");
+            dropBomb();
             break;
     }
 }
@@ -209,7 +210,7 @@ function smoothMovementHandleKeyDown(event)
             break;
 
         case " ":
-            console.log("laitappa pommi");
+            dropBomb();
             break;
     }
 }
