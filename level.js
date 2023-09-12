@@ -16,7 +16,7 @@ export function renderLevel()
             }
             // Floor
             else if (level[x][y].type === "Floor") {
-                ctx.fillStyle = "#2C492C";
+                ctx.fillStyle = "#4192c3";
                 ctx.fillRect(xCoord, yCoord, tileSize, tileSize);
             }
         }

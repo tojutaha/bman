@@ -4,6 +4,7 @@ import { renderLevel } from "./level.js";
 import { createTiles } from "./tile.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies } from "./enemy.js";
+import { renderBombs } from "./bomb.js";
 
 ////////////////////
 // Globals
@@ -35,11 +36,16 @@ function Render(timeStamp)
     renderLevel();
     renderPlayer(deltaTime);
     renderEnemies(deltaTime);
+    renderBombs();
 
     // 
-    ctx.fillStyle = "#00ff00";
-    ctx.font = "24px arial";
+    ctx.fillStyle = "#a2f3a2";
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 2;
+    ctx.font = "24px Arial";
+    ctx.strokeText("FPS: " + fps.toFixed(1), canvas.width - 125, 25);
     ctx.fillText("FPS: " + fps.toFixed(1), canvas.width - 125, 25);
+    ctx.strokeText("dt:  " + (deltaTime*1000).toFixed(2) + "ms", canvas.width - 125, 50);
     ctx.fillText("dt:  " + (deltaTime*1000).toFixed(2) + "ms", canvas.width - 125, 50);
     //
 

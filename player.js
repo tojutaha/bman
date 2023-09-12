@@ -1,4 +1,4 @@
-import { canvas, ctx, level, levelHeight, levelWidth, tileSize } from "./main.js";
+import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet } from "./main.js";
 import { dropBomb } from "./bomb.js";
 
 
@@ -141,9 +141,12 @@ const updatePlayer = useGridMovement ? gridMovementUpdatePlayer : smoothMovement
 export function renderPlayer()
 {
     updatePlayer();
+    
+    // Alkuperäinen palikka
+    // ctx.fillStyle = "#ff0000";
+    // ctx.fillRect(player.x, player.y, player.w, player.h);
 
-    ctx.fillStyle = "#ff0000";
-    ctx.fillRect(player.x, player.y, player.w, player.h);
+    ctx.drawImage(spriteSheet, 0, 64, 32, 32, player.x, player.y, player.w, player.h);
 }
 
 ////////////////////

@@ -12,6 +12,8 @@ export function dropBomb() {
 
 ////////////////////
 // Render
-export function renderBomb() {
-    
+export function renderBombs() {
+    let bX = 32*2;
+    let bY = 32*1;
+    ctx.drawImage(spriteSheet, 0, 32, 32, 32, bX, bY, tileSize, tileSize);
 }
