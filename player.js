@@ -1,4 +1,4 @@
-import { canvas, ctx, level, levelHeight, levelWidth, playerSize, tileSize } from "./main.js";
+import { canvas, ctx, level, levelHeight, levelWidth, tileSize } from "./main.js";
 import { dropBomb } from "./bomb.js";
 
 
