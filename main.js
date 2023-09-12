@@ -3,6 +3,7 @@
 import { renderLevel } from "./level.js";
 import { createTiles } from "./tile.js";
 import { renderPlayer } from "./player.js";
+import { renderEnemies } from "./enemy.js";
 
 ////////////////////
 // Globals
@@ -34,6 +35,7 @@ function Render(timeStamp)
 
     renderLevel();
     renderPlayer(deltaTime);
+    renderEnemies(deltaTime);
 
     // 
     ctx.fillStyle = "#00ff00";

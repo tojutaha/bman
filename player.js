@@ -14,13 +14,13 @@ const useGridMovement = false;
 const gridMovementSpeed = 125; // interval / ms
 let initialMove = true;
 
-const smoothMovementSpeed = 2; // pixels/s
+const smoothMovementSpeed = 1; // pixels/s
 
-const player = {
+export const player = {
     x: 32, // start from top left corner
     y: 32,
-    w: 24,
-    h: 24,
+    w: 30,
+    h: 30,
     dx: 0,
     dy: 0,
 };
