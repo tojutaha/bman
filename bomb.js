@@ -39,7 +39,7 @@ function explode(x, y) {
     let tY = (y - tileSize) / tileSize;
     let bY = (y + tileSize) / tileSize;
     
-    let rightTile = level[rY][col];
+    let rightTile = level[rY][col]; // TODO: Täälläkin on x, y väärinpäin
     let leftTile = level[lY][col];
     let topTile = level[row][tY];
     let bottomTile = level[row][bY];

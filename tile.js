@@ -6,10 +6,11 @@ const TileType = {
     DESTRUCTIBLE_WALL: "DestructibleWall",
 };
 
-function Tile(x, y, isWalkable, type) {
+function Tile(x, y, isWalkable, isDeadly, type) {
     this.x = x || 0,
     this.y = y || 0,
     this.isWalkable = isWalkable || false,
+    this.isDeadly = isDeadly || false,
     this.type = type || TileType.FLOOR
     // tekstuurit jne vois laitella myös tänne.
 };
@@ -26,11 +27,11 @@ export function createTiles()
 
             // Outer walls
             if (x === 0 || y === 0 || x === levelWidth - 1 || y === levelHeight - 1) {
-                row.push(new Tile(xCoord, yCoord, false, TileType.NON_DESTRUCTIBLE_WALL));
+                row.push(new Tile(xCoord, yCoord, false, false, TileType.NON_DESTRUCTIBLE_WALL));
             } 
             // Hard tiles
             else if (x % 2 === 0 && y % 2 === 0) {
-                row.push(new Tile(xCoord, yCoord, false, TileType.NON_DESTRUCTIBLE_WALL));
+                row.push(new Tile(xCoord, yCoord, false, false, TileType.NON_DESTRUCTIBLE_WALL));
             }
             // Soft tiles and floor
             else {
@@ -42,10 +43,10 @@ export function createTiles()
                     && (x < 22 || y > 2) // bottom left
                     && (x < 22 || y < 22)) // bottom right
                     {
-                    row.push(new Tile(xCoord, yCoord, false, TileType.DESTRUCTIBLE_WALL));
+                    row.push(new Tile(xCoord, yCoord, false, false, TileType.DESTRUCTIBLE_WALL));
                 }
                 else {
-                    row.push(new Tile(xCoord, yCoord, true, TileType.FLOOR));
+                    row.push(new Tile(xCoord, yCoord, true, false, TileType.FLOOR));
                 }
             }
         }
