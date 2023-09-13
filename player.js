@@ -1,5 +1,6 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet } from "./main.js";
 import { dropBomb } from "./bomb.js";
+import { isWalkable } from "./utils.js";
 
 
 
@@ -74,16 +75,6 @@ function movePlayer(direction)
             break;
     }
 
-}
-
-function isWalkable(x, y)
-{
-    if (x < 0 || x >= levelWidth ||
-        y < 0 || y >= levelHeight) {
-        return false;
-    }
-
-    return level[x][y].isWalkable;
 }
 
 function gridMovementUpdatePlayer()
