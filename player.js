@@ -5,7 +5,7 @@ import { isWalkable } from "./utils.js";
 
 
 // TODO: Bugi: Grid movement, jos rämpyttää liikkumis-nappeja, pelaaja voi liikkua nopeammin kuin on tarkoitus.
-// TODO: Loput collision testit smooth movementtiin.
+// TODO: deltaTime smoothMovementtiin
 
 
 
