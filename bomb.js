@@ -17,7 +17,7 @@ function Bomb(x, y, hasExploded, bombTicks, range) {
         if (this.ticks === 0) {
             clearInterval(ticking);
             this.hasExploded = true;
-            explode(x, y);
+            explode(this);
             bombs.splice(0, 1); // TODO: ehkä?
             explosions.push(this);
             console.log("Bomb exploded:", explosions);
@@ -28,35 +28,56 @@ function Bomb(x, y, hasExploded, bombTicks, range) {
 export function dropBomb() {
     let bombX = Math.round(player.x / tileSize) * tileSize;
     let bombY = Math.round(player.y / tileSize) * tileSize;
-    bombs.push(new Bomb(bombX, bombY, false, 1)); // TICKS SET TO 1
+    bombs.push(new Bomb(bombX, bombY, false, 1, 2)); // TICKS 1, RANGE 2
 }
 
-function explode(x, y) {
+function getBombSurroundings(x, y, range) {
     let row = x / tileSize;
     let col = y / tileSize;
-    let rY = (x + tileSize) / tileSize;
-    let lY = (x - tileSize) / tileSize;
+    let rX = (x + tileSize) / tileSize;
+    let lX = (x - tileSize) / tileSize;
     let tY = (y - tileSize) / tileSize;
     let bY = (y + tileSize) / tileSize;
     
-    let rightTile = level[rY][col]; // TODO: Täälläkin on x, y väärinpäin
-    let leftTile = level[lY][col];
-    let topTile = level[row][tY];
-    let bottomTile = level[row][bY];
-    
-    let tiles = [rightTile, leftTile, topTile, bottomTile];
+    // TODO: joka suunnalle oma array jotta jos seinä tulee vastaan, voidaan tyhjentää array?
+    let tiles = [];
+    for (let i = 0; i < range; i++) {
+        let right = rX + i;
+        let top = tY - i;
+        let left = lX - i;
+        let bottom = bY + i;
+
+        if (top > 0) {
+            tiles.push(level[row][tY-i]);
+        }
+        if (left > 0) {
+            tiles.push(level[lX-i][col]);
+        }
+        if (right < 25) {
+            tiles.push(level[right][col]);
+        }
+        if (bottom < 25) {
+            tiles.push(level[row][bY+i]);
+        }
+    }
+    return tiles;
+}
+
+function explode(bomb) {
+    let tiles = getBombSurroundings(bomb.x, bomb.y, bomb.range);
 
     tiles.forEach(tile => {
         if (tile.type === "DestructibleWall") {
             destroyWall(tile);
         }
-    });  
+    });
 }
 
 function destroyWall(tile){
     tile.type = "Floor";
     tile.isWalkable = true;
-   
+    
+    // ALKUPERÄINEN
     tile.crumbleFrames = 3;
     crumblingWalls.push(tile);
     let crumbling = setInterval(() => {
