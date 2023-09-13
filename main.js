@@ -3,7 +3,7 @@
 import { renderLevel } from "./level.js";
 import { createTiles } from "./tile.js";
 import { renderPlayer } from "./player.js";
-import { renderEnemies } from "./enemy.js";
+import { renderEnemies, initPathFinder } from "./enemy.js";
 import { renderBombs } from "./bomb.js";
 
 ////////////////////
@@ -63,6 +63,12 @@ document.addEventListener("DOMContentLoaded", function ()
         ctx = canvas.getContext("2d");
         if (ctx) {
             level = createTiles();
+            if (level.length > 0) {
+                initPathFinder();
+            } else {
+                console.error("Failed to create level");
+            }
+
             Render();
         } else {
             console.error("Could not find ctx object.");
