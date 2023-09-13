@@ -4,7 +4,7 @@ import { renderLevel } from "./level.js";
 import { createTiles } from "./tile.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies, initPathFinder } from "./enemy.js";
-import { renderBombs } from "./bomb.js";
+import { renderBombs, renderExplosions } from "./bomb.js";
 
 ////////////////////
 // Globals
@@ -37,6 +37,7 @@ function Render(timeStamp)
     renderPlayer(deltaTime);
     renderEnemies(deltaTime);
     renderBombs();
+    renderExplosions();
 
     // 
     ctx.fillStyle = "#a2f3a2";
