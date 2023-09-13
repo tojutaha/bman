@@ -1,6 +1,6 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet } from "./main.js";
 import { dropBomb } from "./bomb.js";
-import { isWalkable } from "./utils.js";
+import { isDeadly, isWalkable } from "./utils.js";
 
 
 
@@ -9,7 +9,7 @@ import { isWalkable } from "./utils.js";
 
 
 
-// Tämän kun heittää falseksi, saa sen ensimmäisen version
+// Tämän kun heittää trueksi, saa sen ensimmäisen version
 // liikkumisen takaisin.
 const useGridMovement = false;
 
@@ -117,6 +117,16 @@ function smoothMovementUpdatePlayer()
             ) {
 
                 collides = true;
+            }
+
+            // Kopio ylemmästä
+            if (isDeadly(y, x) && // TODO: Myös käänteinen
+                nextX + (player.w - offset) >= tileLeft &&
+                (nextX + offset) < tileRight &&
+                nextY + (player.h - offset) >= tileTop &&
+                (nextY + offset) < tileBottom
+            ) {
+                console.log("IT BURNS!");
             }
         }
     }

@@ -12,15 +12,12 @@ function Bomb(x, y, bombTicks, range) {
     this.y = y || 0,
     this.ticks = bombTicks || 4;
     this.range = range || 1;
-    this.hasExploded = false;   // Turha?
     
     let ticking = setInterval(() => {
         this.ticks--;
         if (this.ticks === 0) {
-            this.hasExploded = true;
             explode(this);
             bombs.splice(0, 1);
-            console.log("Bomb exploded in", this.x, this.y);
             clearInterval(ticking);
         }
     }, 1000);

@@ -57,6 +57,16 @@ export function isWalkable(x, y)
     return level[x][y].isWalkable;
 }
 
+export function isDeadly(x, y)
+{
+    if (x < 0 || x >= levelWidth ||
+        y < 0 || y >= levelHeight) {
+        return false;
+    }
+
+    return level[x][y].isDeadly;
+}
+
 export function getDistanceTo(from, to)
 {
     return Math.abs(from.x - to.x) + Math.abs(from.y - to.y);
