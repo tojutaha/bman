@@ -1,54 +1,6 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize } from "./main.js";
 import { player } from "./player.js";
-import { isWalkable } from "./utils.js";
-
-////////////////////
-// Utils
-export const v2 = {
-    x: 0,
-    y: 0,
-
-    addV2: function(other) {
-        this.x += other.x;
-        this.y += other.y;
-    },
-
-    addS: function(scalar) {
-        this.x += scalar;
-        this.y += scalar;
-    },
-
-    subtractV2: function(other) {
-        this.x -= other.x;
-        this.y -= other.y;
-    },
-
-    subtractS: function(scalar) {
-        this.x -= scalar;
-        this.y -= scalar;
-    },
-
-    multiplyV2: function(other) {
-        this.x *= other.x;
-        this.y *= other.y;
-    },
-
-    multiplyS: function(scalar) {
-        this.x *= scalar;
-        this.y *= scalar;
-    },
-
-    isEqual: function(other) {
-        return this.x === other.x &&
-               this.y === other.y;
-    },
-
-    dist: function(other) {
-        let dx = other.x - this.x;
-        let dy = other.y - this.y;
-        return Math.sqrt(dx * dx + dy * dy);
-    }
-}
+import { v2, isWalkable } from "./utils.js";
 
 ////////////////////
 // Enemy
@@ -62,36 +14,49 @@ class Enemy
         this.h  = h;
         this.dx = 0;
         this.dy = 0;
+        this.currentPath = [];
+        this.currentPath.push(this.getLocation());
+    }
+
+    getLocation() {
+        return {x: this.x, y: this.y};
     }
 };
 
-const startX = Math.floor(25*30/2+8);
-const startY = Math.floor(25*30/2+8);
-//const enemy = new Enemy(25*30-16,
-//                        25*30-16, 
-//                        32, 32);
+export const enemies = [];
+function spawnEnemies()
+{
+    const amount = 1;
+    const maxRadius = 25*tileSize;
+    const minRadius = 10*tileSize;
 
-const enemy = new Enemy(startX,
-                        startY, 
-                        32, 32);
+    for (let i = 0; i < amount; i++) {
+        const random = getRandomWalkablePointInRadius({x: player.x,
+                                                       y: player.y},
+                                                       minRadius, maxRadius);
+        const enemy = new Enemy(random.x, random.y, 32, 32);
+        requestPath(enemy);
+        enemies.push(enemy);
+    }
+}
 
 export function renderEnemies(dt)
 {
-    return;
     ctx.fillStyle = "#ff00ff";
-    ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+    enemies.forEach(enemy => {
+        ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+    });
 
     //
     drawPath();
-    //console.log(getDistanceTo(path[0], path[2]));
     //
 }
 
 ////////////////////
 // Pathfinder
+// TODO: Muuta tämä suoraan spawnEnemies funktioksi..
 export function initPathFinder()
 {
-    return;
     /*
     let len = 0;
     for (let i = 0; i < level.length; i++) {
@@ -99,10 +64,12 @@ export function initPathFinder()
     }
     console.log("Init", len);
     */
-    const maxRadius = 12*tileSize;
-    const minRadius = 3*tileSize;
-    const random = getRandomPointInRadius({x: enemy.x, y: enemy.y}, minRadius, maxRadius);
-    //path.push(random);
+    spawnEnemies();
+}
+
+function requestPath(requester)
+{
+    console.log(requester);
 }
 
 function getDistanceTo(from, to)
@@ -110,7 +77,7 @@ function getDistanceTo(from, to)
     return Math.abs(from.x - to.x) + Math.abs(from.y - to.y);
 }
 
-function getRandomPointInRadius(center, minRadius, maxRadius)
+function getRandomWalkablePointInRadius(center, minRadius, maxRadius)
 {
     const walkableTiles = [];
     for (let y = 0; y < levelHeight; y++) {
@@ -119,30 +86,26 @@ function getRandomPointInRadius(center, minRadius, maxRadius)
             const walkable = isWalkable(y, x);// TODO: Miksi tämän pitää olla käänteinen..?
             const dist = getDistanceTo(center, {x: tile.x, y: tile.y});
             if (walkable && dist >= minRadius && dist <= maxRadius) {
-                //path.push(tile);
-                //return tile;
                 walkableTiles.push(tile);
             }
         }
     }
 
-    walkableTiles.forEach(tile => {
-        if (!tile.isWalkable) console.log(tile);
-        path.push(tile);
-    });
-    //console.log(walkableTiles);
+    const randomIndex = Math.floor(Math.random() * walkableTiles.length);
+    return walkableTiles[randomIndex];
 }
 
-const path = [];
-path.push({x: enemy.x, y: enemy.y});
-
+////////////////////
+// TODO: Debug
 function drawPath()
 {
-    path.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 10, 0, 2*Math.PI);
-        ctx.strokeStyle = "yellow";
-        ctx.stroke();
+    enemies.forEach(enemy => {
+        enemy.currentPath.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 10, 0, 2*Math.PI);
+            ctx.strokeStyle = "yellow";
+            ctx.stroke();
+        });
     });
 }
 
