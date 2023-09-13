@@ -57,3 +57,26 @@ export function isWalkable(x, y)
     return level[x][y].isWalkable;
 }
 
+export function getDistanceTo(from, to)
+{
+    return Math.abs(from.x - to.x) + Math.abs(from.y - to.y);
+}
+
+export function getRandomWalkablePointInRadius(center, minRadius, maxRadius)
+{
+    const walkableTiles = [];
+    for (let y = 0; y < levelHeight; y++) {
+        for (let x = 0; x < levelWidth; x++) {
+            const tile = level[x][y];
+            const walkable = isWalkable(y, x);// TODO: Miksi tämän pitää olla käänteinen..?
+            const dist = getDistanceTo(center, {x: tile.x, y: tile.y});
+            if (walkable && dist >= minRadius && dist <= maxRadius) {
+                walkableTiles.push(tile);
+            }
+        }
+    }
+
+    const randomIndex = Math.floor(Math.random() * walkableTiles.length);
+    return walkableTiles[randomIndex];
+}
+

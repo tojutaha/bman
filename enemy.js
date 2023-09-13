@@ -1,9 +1,7 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize } from "./main.js";
 import { player } from "./player.js";
-import { v2, isWalkable } from "./utils.js";
-
-////////////////////
-// Enemy
+import { v2, getDistanceTo, getRandomWalkablePointInRadius, isWalkable } from "./utils.js";
+import { requestPath, drawPath } from "./pathfinder.js";
 
 class Enemy
 {
@@ -15,11 +13,15 @@ class Enemy
         this.dx = 0;
         this.dy = 0;
         this.currentPath = [];
-        this.currentPath.push(this.getLocation());
+        this.targetLocation = {x: 0, y: 0};
     }
 
     getLocation() {
         return {x: this.x, y: this.y};
+    }
+
+    move() {
+        // TODO
     }
 };
 
@@ -44,6 +46,7 @@ export function renderEnemies(dt)
 {
     ctx.fillStyle = "#ff00ff";
     enemies.forEach(enemy => {
+        //enemy.move();
         ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
     });
 
@@ -52,60 +55,9 @@ export function renderEnemies(dt)
     //
 }
 
-////////////////////
-// Pathfinder
 // TODO: Muuta tämä suoraan spawnEnemies funktioksi..
 export function initPathFinder()
 {
-    /*
-    let len = 0;
-    for (let i = 0; i < level.length; i++) {
-        len += level[i].length;
-    }
-    console.log("Init", len);
-    */
     spawnEnemies();
-}
-
-function requestPath(requester)
-{
-    console.log(requester);
-}
-
-function getDistanceTo(from, to)
-{
-    return Math.abs(from.x - to.x) + Math.abs(from.y - to.y);
-}
-
-function getRandomWalkablePointInRadius(center, minRadius, maxRadius)
-{
-    const walkableTiles = [];
-    for (let y = 0; y < levelHeight; y++) {
-        for (let x = 0; x < levelWidth; x++) {
-            const tile = level[x][y];
-            const walkable = isWalkable(y, x);// TODO: Miksi tämän pitää olla käänteinen..?
-            const dist = getDistanceTo(center, {x: tile.x, y: tile.y});
-            if (walkable && dist >= minRadius && dist <= maxRadius) {
-                walkableTiles.push(tile);
-            }
-        }
-    }
-
-    const randomIndex = Math.floor(Math.random() * walkableTiles.length);
-    return walkableTiles[randomIndex];
-}
-
-////////////////////
-// TODO: Debug
-function drawPath()
-{
-    enemies.forEach(enemy => {
-        enemy.currentPath.forEach(p => {
-            ctx.beginPath();
-            ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 10, 0, 2*Math.PI);
-            ctx.strokeStyle = "yellow";
-            ctx.stroke();
-        });
-    });
 }
 
