@@ -42,9 +42,8 @@ function getNeigbouringTiles(loc)
             const coordX = center.x + x;
             const coordY = center.y + y;
 
-            // TODO: Nää on myös käänteisessä järjestyksessä....
-            result.push({x: level[coordY][coordX].x, 
-                         y: level[coordY][coordX].y});
+            result.push({x: level[coordX][coordY].x, 
+                         y: level[coordX][coordY].y});
         }
     }
 
@@ -53,6 +52,7 @@ function getNeigbouringTiles(loc)
 
 export function astar(start, target)
 {
+    return getNeigbouringTiles(start);
     const openList = [ [0, start] ];
     const costSoFar = new Map();
     costSoFar.set(start, 0);
