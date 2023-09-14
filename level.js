@@ -2,8 +2,8 @@ import { canvas, ctx, tileSize, levelHeight, levelWidth, level, spriteSheet } fr
 
 export function renderLevel()
 {
-    for (let x = 0; x < levelWidth; x++) {
-        for (let y = 0; y < levelHeight; y++) {
+    for (let y = 0; y < levelHeight; y++) {
+        for (let x = 0; x < levelWidth; x++) {
             const xCoord = x * tileSize;
             const yCoord = y * tileSize;
             // Hard tiles

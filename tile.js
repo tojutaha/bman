@@ -19,19 +19,19 @@ export function createTiles()
 {
     const result = [];
 
-    for (let x = 0; x < levelWidth; x++) {
-        const col = [];
-        for (let y = 0; y < levelHeight; y++) {
+    for (let y = 0; y < levelHeight; y++) {
+        const row = [];
+        for (let x = 0; x < levelWidth; x++) {
             const xCoord = x * tileSize;
             const yCoord = y * tileSize;
 
             // Outer walls
             if (x === 0 || y === 0 || x === levelWidth - 1 || y === levelHeight - 1) {
-                col.push(new Tile(xCoord, yCoord, false, false, TileType.NON_DESTRUCTIBLE_WALL));
+                row.push(new Tile(xCoord, yCoord, false, false, TileType.NON_DESTRUCTIBLE_WALL));
             } 
             // Hard tiles
             else if (x % 2 === 0 && y % 2 === 0) {
-                col.push(new Tile(xCoord, yCoord, false, false, TileType.NON_DESTRUCTIBLE_WALL));
+                row.push(new Tile(xCoord, yCoord, false, false, TileType.NON_DESTRUCTIBLE_WALL));
             }
             // Soft tiles and floor
             else {
@@ -43,14 +43,14 @@ export function createTiles()
                     && (x < 22 || y > 2) // bottom left
                     && (x < 22 || y < 22)) // bottom right
                     {
-                    col.push(new Tile(xCoord, yCoord, false, false, TileType.DESTRUCTIBLE_WALL));
+                    row.push(new Tile(xCoord, yCoord, false, false, TileType.DESTRUCTIBLE_WALL));
                 }
                 else {
-                    col.push(new Tile(xCoord, yCoord, true, false, TileType.FLOOR));
+                    row.push(new Tile(xCoord, yCoord, true, false, TileType.FLOOR));
                 }
             }
         }
-        result.push(col);
+        result.push(row);
     }
     return result;
 }

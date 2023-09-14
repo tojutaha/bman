@@ -97,7 +97,6 @@ function destroyWalls(tiles) {
                 
                 animateExplosion(currentTile);
                 if (currentTile.type === "DestructibleWall") {
-                    console.log("BURNING TILE IN", currentTile);
                     crumblingWalls.push(currentTile);
                     currentTile.type = "Floor";
                     break;

@@ -99,27 +99,28 @@ function smoothMovementUpdatePlayer()
     const nextY = player.y + player.dy;
 
     let collides = false;
-    for (let x = 0; x < levelWidth; x++) {
-        for (let y = 0; y < levelHeight; y++) {
-            const tileLeft   = level[x][y].y;
-            const tileRight  = level[x][y].y + tileSize;
-            const tileTop    = level[x][y].x;
-            const tileBottom = level[x][y].x + tileSize;
+    for (let y = 0; y < levelHeight; y++) {
+        for (let x = 0; x < levelWidth; x++) {
+            const tileLeft   = level[x][y].x;
+            const tileRight  = level[x][y].x + tileSize;
+            const tileTop    = level[x][y].y;
+            const tileBottom = level[x][y].y + tileSize;
 
             // No pixel-perfect collisions pls
             const offset = 5;
 
-            if (!isWalkable(x, y) &&
+            if (!isWalkable(y, x) && // TODO: Miksi tämän pitää olla käänteinen..? :D
                 nextX + (player.w - offset) >= tileLeft &&
                 (nextX + offset) < tileRight &&
                 nextY + (player.h - offset) >= tileTop &&
                 (nextY + offset) < tileBottom
             ) {
+
                 collides = true;
             }
 
             // Kopio ylemmästä
-            if (isDeadly(x, y) &&
+            if (isDeadly(y, x) && // TODO: Myös käänteinen
                 nextX + (player.w - offset) >= tileLeft &&
                 (nextX + offset) < tileRight &&
                 nextY + (player.h - offset) >= tileTop &&
@@ -255,3 +256,4 @@ const handleKeyDown = useGridMovement ? gridMovementHandleKeyDown : smoothMoveme
 const handleKeyUp = useGridMovement ? gridMovementHandleKeyUp : smoothMovementHandleKeyUp;
 document.addEventListener("keydown", handleKeyDown);
 document.addEventListener("keyup", handleKeyUp);
+
