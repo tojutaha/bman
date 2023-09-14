@@ -21,8 +21,39 @@ export function requestPath(requester)
     }
 }
 
+// TODO: Nää kaks vois laittaa utilsiin?
+function getTileFromWorldLocation(loc)
+{
+    const x = Math.floor(loc.x / tileSize);
+    const y = Math.floor(loc.y / tileSize);
+    return level[x][y];
+}
+
+function getNeigbouringTiles(loc)
+{
+    const center = {x: loc.x / tileSize, y: loc.y / tileSize};
+    const result = [];
+
+    for (let y = -1; y <= 1; y++) {
+        for (let x = -1; x <= 1; x++) {
+
+            if (x == 0 && y == 0) continue;
+
+            const coordX = center.x + x;
+            const coordY = center.y + y;
+
+            // TODO: Nää on myös käänteisessä järjestyksessä....
+            result.push({x: level[coordY][coordX].x, 
+                         y: level[coordY][coordX].y});
+        }
+    }
+
+    return result;
+}
+
 export function astar(start, target)
 {
+    return getNeigbouringTiles(start);
     // up, down, left, right
     const directions = [ [-1, 0], [1, 0], [0, -1], [0, 1] ];
 
