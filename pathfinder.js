@@ -2,6 +2,8 @@ import { canvas, ctx, level, levelHeight, levelWidth, tileSize } from "./main.js
 import { enemies, debugPaths } from "./enemy.js";
 import { getDistanceTo, getRandomWalkablePointInRadius, v2 } from "./utils.js";
 
+const useDiagonalMovement = false;
+
 export function requestPath(requester)
 {
     // TODO: queue systeemi..?
@@ -21,7 +23,7 @@ export function requestPath(requester)
     }
 }
 
-// TODO: Nää kaks vois laittaa utilsiin?
+// TODO: Nää vois laittaa utilsiin?
 function getTileFromWorldLocation(loc)
 {
     const x = Math.floor(loc.x / tileSize);
@@ -29,7 +31,22 @@ function getTileFromWorldLocation(loc)
     return level[x][y];
 }
 
-function getNeigbouringTiles(loc)
+
+function getNeigbouringTiles_linear(loc)
+{
+    const center = {x: loc.x / tileSize, y: loc.y / tileSize};
+    const result = [];
+
+    // TODO: Ja käänteinen järjestys
+    result.push({x: level[center.y + 1][center.x].x, y: level[center.y + 1][center.x].y});
+    result.push({x: level[center.y - 1][center.x].x, y: level[center.y - 1][center.x].y});
+    result.push({x: level[center.y][center.x + 1].x, y: level[center.y][center.x + 1].y});
+    result.push({x: level[center.y][center.x - 1].x, y: level[center.y][center.x - 1].y});
+
+    return result;
+}
+
+function getNeigbouringTiles_diagonal(loc)
 {
     const center = {x: loc.x / tileSize, y: loc.y / tileSize};
     const result = [];
@@ -50,6 +67,8 @@ function getNeigbouringTiles(loc)
 
     return result;
 }
+
+const getNeigbouringTiles = useDiagonalMovement ? getNeigbouringTiles_diagonal : getNeigbouringTiles_linear;
 
 export function astar(start, target)
 {
@@ -125,8 +144,8 @@ export function drawPath()
             });
         }
     });
-
     */
+
     const p = {x: enemies[0].targetLocation.x, y: enemies[0].targetLocation.y};
     ctx.beginPath();
     ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 10, 0, 2*Math.PI);
