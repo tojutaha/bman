@@ -99,8 +99,8 @@ function smoothMovementUpdatePlayer()
     const nextY = player.y + player.dy;
 
     let collides = false;
-    for (let x = 0; x < levelHeight; x++) {
-        for (let y = 0; y < levelWidth; y++) {
+    for (let x = 0; x < levelWidth; x++) {
+        for (let y = 0; y < levelHeight; y++) {
             const tileLeft   = level[x][y].y;
             const tileRight  = level[x][y].y + tileSize;
             const tileTop    = level[x][y].x;
