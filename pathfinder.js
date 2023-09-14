@@ -53,10 +53,6 @@ function getNeigbouringTiles(loc)
 
 export function astar(start, target)
 {
-    return getNeigbouringTiles(start);
-    // up, down, left, right
-    const directions = [ [-1, 0], [1, 0], [0, -1], [0, 1] ];
-
     const openList = [ [0, start] ];
     const costSoFar = new Map();
     costSoFar.set(start, 0);
@@ -65,7 +61,7 @@ export function astar(start, target)
         openList.sort((a, b) => a[0] - b[0]);
         const [currentCost, current] = openList.shift();
 
-        console.log(current);
+        console.log("current:", current);
 
         // reached target
         if (v2.isEqual(current, target)) {
@@ -82,8 +78,8 @@ export function astar(start, target)
             return path;
         }
 
-        // TODO: Tää ei oo oikein... 
-        for (const [dx, dy] of directions) {
+        for (const neighbour of getNeigbouringTiles(current)) {
+            /*
             const neighbour = [current[0] + dx, current[1] + dy];
 
             if (neighbour[0] >= 0 && neighbour[0] < levelHeight &&
@@ -99,6 +95,9 @@ export function astar(start, target)
                     openList.push([priority, neighbour]);
                 }
             }
+            */
+            //const tile = getTileFromWorldLocation(neighbour);
+            //console.log(tile);
         }
     }
 
