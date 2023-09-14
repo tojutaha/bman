@@ -7,11 +7,12 @@ let bombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
 
-function Bomb(x, y, bombTicks, range) {
+function Bomb(x, y, ticks, range) {
     this.x = x || 0;
     this.y = y || 0,
-    this.ticks = bombTicks || 4;
+    this.ticks = ticks || 4;
     this.range = range || 1;
+    this.hasExploded = false;
     
     let ticking = setInterval(() => {
         this.ticks--;
@@ -24,9 +25,18 @@ function Bomb(x, y, bombTicks, range) {
 }
 
 export function dropBomb() {
-    let bombX = Math.round(player.x / tileSize) * tileSize;
-    let bombY = Math.round(player.y / tileSize) * tileSize;
-    bombs.push(new Bomb(bombX, bombY, 3, 2));   // TICKS 3, RANGE 2
+    let xCoord = Math.round(player.x / tileSize);
+    let yCoord = Math.round(player.y / tileSize);
+
+    level[yCoord][xCoord].hasBomb = true;
+
+    
+    let xTile = xCoord * tileSize;
+    let yTile = yCoord * tileSize;
+    level[yCoord][xCoord].bomb = new Bomb(xTile, yTile, 2, 2);
+    
+    console.log("DROPPED IN", level[yCoord][xCoord]);
+    // bombs.push(new Bomb(xTile, yTile, 2, 2));   // TICKS 2, RANGE 2
 }
 
 function getBombSurroundings(x, y, range) {
@@ -66,25 +76,42 @@ function getBombSurroundings(x, y, range) {
 }
 
 function explode(bomb) {
+    bomb.hasExploded = true;
     let tiles = getBombSurroundings(bomb.x, bomb.y, bomb.range);
+    let thisTile = tiles[0][0];
+    console.log("EXPLODED IN", thisTile);
+    thisTile.hasBomb = false;
     destroyWalls(tiles);
 }
 
 function destroyWalls(tiles) {
     for (let i = 0; i < tiles.length; i++) {
         for (let j = 0; j < tiles[i].length; j++) {
-                if (tiles[i][j].type === "NonDestructibleWall") {
+                let currentTile = tiles[i][j];
+                if (currentTile.type === "NonDestructibleWall") {
                     break;
                 };
                 
-                animateExplosion(tiles[i][j]);
-                if (tiles[i][j].type === "DestructibleWall") {
-                    crumblingWalls.push(tiles[i][j]);
-                    tiles[i][j].type = "Floor";
+                animateExplosion(currentTile);
+                if (currentTile.type === "DestructibleWall") {
+                    crumblingWalls.push(currentTile);
+                    currentTile.type = "Floor";
                     break;
                 }
-                else if (tiles[i][j].type === "Floor") {
-                    tiles[i][j].isDeadly = true;
+                else if (currentTile.type === "Floor") {
+                    if (currentTile.hasBomb && (i > 0 || j > 0)) {
+                        console.log("bomb in", currentTile);
+                        explode(currentTile);
+                        break;
+                    }
+                    // TODO: Version with bomb as a property of tile
+                    // if ("bomb" in currentTile && (i > 0 || j > 0)) {
+                    //     console.log(currentTile.bomb);
+                    //     currentTile.bomb.ticks = 0;
+                    //     console.log(currentTile.bomb);
+                    //     break;
+                    // }
+                    currentTile.isDeadly = true;
                     fieryFloors.push(tiles[i][j]);
                 };
         }
