@@ -2,6 +2,7 @@ import { ctx, level, tileSize, spriteSheet } from "./main.js";
 import { player } from "./player.js";
 
 // TODO: Pommit !walkable
+//     : Suorakulmion nurkassa olevat pommit triggers chains
  
 let tilesWithBombs = [];
 let crumblingWalls = [];
@@ -12,10 +13,14 @@ function Bomb(x, y, ticks, range) {
     this.y = y || 0,
     this.ticks = ticks || 4;
     this.range = range || 1;
+    this.hasExploded = false;
     
     let ticking = setInterval(() => {
         this.ticks--;
-        if (this.ticks === 0) {
+        if (this.hasExploded) {
+            clearInterval(ticking);
+        }
+        else if (this.ticks === 0) {
             explode(this);
             clearInterval(ticking);
         }
@@ -29,9 +34,8 @@ export function dropBomb() {
     let yTile = yCoord * tileSize;
     let xTile = xCoord * tileSize;
 
-    level[yCoord][xCoord].bomb = new Bomb(xTile, yTile, 2, 2); // TICKS 2, RANGE 2
+    level[yCoord][xCoord].bomb = new Bomb(xTile, yTile, 4, 2); // TICKS 4, RANGE 2
     
-    console.log("DROPPED IN", level[yCoord][xCoord]);
     tilesWithBombs.push(level[yCoord][xCoord]);
 }
 
@@ -75,7 +79,7 @@ function explode(bomb) {
     tilesWithBombs.splice(0, 1);
     let tiles = getBombSurroundings(bomb.x, bomb.y, bomb.range);
     let thisTile = tiles[0][0];
-    console.log(thisTile);
+    bomb.hasExploded = true;
     delete thisTile.bomb;
     destroyWalls(tiles);
 }
@@ -95,18 +99,11 @@ function destroyWalls(tiles) {
                     break;
                 }
                 else if (currentTile.type === "Floor") {
-                    if (currentTile.hasBomb && (i > 0 || j > 0)) {
-                        console.log("bomb in", currentTile);
-                        explode(currentTile);
+                    if ("bomb" in currentTile && (i > 0 || j > 0) && currentTile.bomb.hasExploded === false) {
+                        console.log("CHAIN", currentTile.bomb);
+                        explode(currentTile.bomb);              // TODO: Hajottaa renderit välillä (pommiarray ehtii tyhjetä?)
                         break;
                     }
-                    // TODO: Version with bomb as a property of tile
-                    // if ("bomb" in currentTile && (i > 0 || j > 0)) {
-                    //     console.log(currentTile.bomb);
-                    //     currentTile.bomb.ticks = 0;
-                    //     console.log(currentTile.bomb);
-                    //     break;
-                    // }
                     currentTile.isDeadly = true;
                     fieryFloors.push(tiles[i][j]);
                 };
@@ -134,7 +131,7 @@ function animateExplosion(tile){
 
 ////////////////////
 // Render
-export function renderBombs() {
+export function renderBombs() {         // TODO: Hajoaa välillä (pommi ehtii räjähtää chainissa ennen?)
     if (tilesWithBombs.length > 0) {
         for (let i = 0; i < tilesWithBombs.length; i++) {
             let bomb = tilesWithBombs[i].bomb;
