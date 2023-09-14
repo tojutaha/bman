@@ -8,16 +8,16 @@ export function renderLevel()
             const yCoord = y * tileSize;
             // Hard tiles
             if (level[x][y].type === "NonDestructibleWall") {
-                ctx.drawImage(spriteSheet, 0, 0, 32, 32, yCoord, xCoord, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, 0, 0, 32, 32, xCoord, yCoord, tileSize, tileSize);
             }
             // Soft tiles
             else if (level[x][y].type === "DestructibleWall") {
-                ctx.drawImage(spriteSheet, 32, 0, 32, 32, yCoord, xCoord, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, 32, 0, 32, 32, xCoord, yCoord, tileSize, tileSize);
             }
             // Floor
             else if (level[x][y].type === "Floor") {
                 ctx.fillStyle = "#4192c3";
-                ctx.fillRect(yCoord, xCoord, tileSize, tileSize);
+                ctx.fillRect(xCoord, yCoord, tileSize, tileSize);
             }
         }
     }

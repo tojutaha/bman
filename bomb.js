@@ -68,6 +68,10 @@ function getBombSurroundings(x, y, range) {
             bottomTiles.push(level[row][bY+i]);
         }
     }
+    console.log("left", leftTiles);
+    console.log("right", rightTiles);
+    console.log("top", topTiles);
+    console.log("bot", bottomTiles);
     return [centerTile, topTiles, leftTiles, rightTiles, bottomTiles];
 }
 
@@ -79,7 +83,6 @@ function explode(bomb) {
 
     delete centerTile.bomb;
 
-    console.log(tiles);
     destroyWalls(tiles);
 }
 
