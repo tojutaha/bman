@@ -17,22 +17,22 @@ function Bomb(x, y, ticks, range) {
         this.ticks--;
         if (this.ticks === 0) {
             explode(this);
-            // tilesWithBombs.splice(0, 1);  // SIIRRETTY EXPLODEEN
             clearInterval(ticking);
         }
     }, 1000);
 }
 
 export function dropBomb() {
-    let xCoord = Math.round(player.x / tileSize);
     let yCoord = Math.round(player.y / tileSize);
-
-    let xTile = xCoord * tileSize;
-    let yTile = yCoord * tileSize;
-
-    level[xCoord][yCoord].bomb = new Bomb(xTile, yTile, 2, 2); // TICKS 2, RANGE 2
+    let xCoord = Math.round(player.x / tileSize);
     
-    tilesWithBombs.push(level[xCoord][yCoord]); 
+    let yTile = yCoord * tileSize;
+    let xTile = xCoord * tileSize;
+
+    level[yCoord][xCoord].bomb = new Bomb(xTile, yTile, 2, 2); // TICKS 2, RANGE 2
+    
+    console.log("DROPPED IN", level[yCoord][xCoord]);
+    tilesWithBombs.push(level[yCoord][xCoord]);
 }
 
 function getBombSurroundings(x, y, range) {
@@ -68,25 +68,18 @@ function getBombSurroundings(x, y, range) {
             bottomTiles.push(level[row][bY+i]);
         }
     }
-    console.log("left", leftTiles);
-    console.log("right", rightTiles);
-    console.log("top", topTiles);
-    console.log("bot", bottomTiles);
     return [centerTile, topTiles, leftTiles, rightTiles, bottomTiles];
 }
 
 function explode(bomb) {
     tilesWithBombs.splice(0, 1);
-
     let tiles = getBombSurroundings(bomb.x, bomb.y, bomb.range);
-    let centerTile = tiles[0][0];     // TODO: vähän hölmö että yhden objektin array
-
-    delete centerTile.bomb;
-
+    let thisTile = tiles[0][0];
+    console.log(thisTile);
+    delete thisTile.bomb;
     destroyWalls(tiles);
 }
 
-// TODO: Paljon
 function destroyWalls(tiles) {
     for (let i = 0; i < tiles.length; i++) {
         for (let j = 0; j < tiles[i].length; j++) {
@@ -102,7 +95,12 @@ function destroyWalls(tiles) {
                     break;
                 }
                 else if (currentTile.type === "Floor") {
-                    // TODO: A bomb as a property of tile
+                    if (currentTile.hasBomb && (i > 0 || j > 0)) {
+                        console.log("bomb in", currentTile);
+                        explode(currentTile);
+                        break;
+                    }
+                    // TODO: Version with bomb as a property of tile
                     // if ("bomb" in currentTile && (i > 0 || j > 0)) {
                     //     console.log(currentTile.bomb);
                     //     currentTile.bomb.ticks = 0;
@@ -153,7 +151,6 @@ export function renderBombs() {
             else if (bomb.ticks === 1) {
                 ctx.drawImage(spriteSheet, 96, 32, 32, 32, bomb.x, bomb.y, tileSize, tileSize);
             }
-
         }
     }
 }
@@ -162,13 +159,13 @@ export function renderExplosions() {
     if (crumblingWalls.length > 0) {
         crumblingWalls.forEach(wall => {
             if (wall.animationTimer === 3) {
-                ctx.drawImage(spriteSheet, 64, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, 64, 0, 32, 32, wall.y, wall.x, tileSize, tileSize);
             }
             else if (wall.animationTimer === 2) {
-                ctx.drawImage(spriteSheet, 96, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, 96, 0, 32, 32, wall.y, wall.x, tileSize, tileSize);
             }
             else if (wall.animationTimer === 1) {
-                ctx.drawImage(spriteSheet, 128, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, 128, 0, 32, 32, wall.y, wall.x, tileSize, tileSize);
             }
         })
     }
@@ -176,7 +173,7 @@ export function renderExplosions() {
     if (fieryFloors.length > 0) {       // TODO: Animoi lieskat
         fieryFloors.forEach(floor => {
             if (floor.animationTimer > 0) {
-                ctx.drawImage(spriteSheet, 128, 32, 32, 32, floor.x, floor.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, 128, 32, 32, 32, floor.y, floor.x, tileSize, tileSize);
             }
         })
     }
