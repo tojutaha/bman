@@ -45,7 +45,7 @@ export const v2 = {
         let dy = other.y - this.y;
         return Math.sqrt(dx * dx + dy * dy);
     }
-}
+};
 
 export function isWalkable(x, y)
 {
@@ -77,7 +77,7 @@ export function getRandomWalkablePointInRadius(center, minRadius, maxRadius)
     const walkableTiles = [];
     for (let y = 0; y < levelHeight; y++) {
         for (let x = 0; x < levelWidth; x++) {
-            const tile = level[x][y];
+            const tile = level[y][x]; // TODO: Käänteinen
             const walkable = isWalkable(x, y);
             const dist = getDistanceTo(center, {x: tile.x, y: tile.y});
             if (walkable && dist >= minRadius && dist <= maxRadius) {

@@ -3,6 +3,8 @@ import { player } from "./player.js";
 import { v2, getDistanceTo, getRandomWalkablePointInRadius, isWalkable } from "./utils.js";
 import { requestPath, drawPath } from "./pathfinder.js";
 
+export const debugPaths = [];
+
 class Enemy
 {
     constructor(x, y, w, h) {
@@ -22,6 +24,21 @@ class Enemy
 
     move() {
         // TODO
+        let index = 0;
+        let timer = setInterval(() => {
+            debugPaths.push(this.currentPath[index]);
+            index++;
+
+            console.log(this.currentPath.length);
+
+            if (index >= this.currentPath.length) {
+                this.currentPath.length = 0;
+                debugPaths.length = 0;
+                requestPath(this);
+                clearInterval(timer);
+            }
+
+        }, 500);
     }
 };
 
