@@ -26,7 +26,7 @@ class Enemy
 };
 
 export const enemies = [];
-function spawnEnemies()
+export function spawnEnemies()
 {
     const amount = 1;
     const maxRadius = 25*tileSize;
@@ -53,11 +53,5 @@ export function renderEnemies(dt)
     //
     drawPath();
     //
-}
-
-// TODO: Muuta tämä suoraan spawnEnemies funktioksi..
-export function initPathFinder()
-{
-    spawnEnemies();
 }
 

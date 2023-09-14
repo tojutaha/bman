@@ -3,7 +3,7 @@
 import { renderLevel } from "./level.js";
 import { createTiles } from "./tile.js";
 import { renderPlayer } from "./player.js";
-import { renderEnemies, initPathFinder } from "./enemy.js";
+import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 
 ////////////////////
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function ()
         if (ctx) {
             level = createTiles();
             if (level.length > 0) {
-                initPathFinder();
+                spawnEnemies();
             } else {
                 console.error("Failed to create level");
             }
