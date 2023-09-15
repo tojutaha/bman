@@ -1,6 +1,6 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize } from "./main.js";
 import { player } from "./player.js";
-import { getDistanceTo, getRandomWalkablePointInRadius, isWalkable } from "./utils.js";
+import { getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
 import { requestPath, drawPath } from "./pathfinder.js";
 
 const movementMode = {
@@ -56,8 +56,23 @@ class Enemy
     }
 
     init() {
-        this.getRandomPath();
-        requestPath(this, this.getLocation(), this.targetLocation);
+        switch(this.movementMode) {
+            case movementMode.IDLE:
+                // Nothing to do
+                break;
+            case movementMode.ROAM:
+                // Randomly roam around map
+                this.roam();
+                break;
+            case movementMode.PATROL:
+                // Patrol between two points
+                this.patrol();
+                break;
+            case movementMode.FOLLOW:
+                // Follow player
+                this.followPlayer();
+                break;
+        }
     }
 
     getRandomPath() {
@@ -69,15 +84,23 @@ class Enemy
         this.targetLocation = {x: targetLocation.x, y: targetLocation.y};
     }
 
+    getPlayerLocation() {
+        // TODO: Käänteinen..
+        const tile = getTileFromWorldLocation({x: player.y, y: player.x});
+        this.targetLocation = {x: tile.x, y: tile.y};
+    }
+
     startMove() {
-
-        if (!this.currentPath) {
-            console.log("Handle failed path request here");
-            return;
-        }
-
-        if (this.currentPath.length == 0) {
-            console.log("Another possible failure case");
+        if (!this.currentPath || this.currentPath.length == 0) {
+            console.log("Trying again..");
+            // HACK:
+            let timer = setInterval(() => {
+                if (this.currentPath) {
+                    clearInterval(timer);
+                    return;
+                }
+                this.init();
+            }, 1000);
             return;
         }
 
@@ -89,36 +112,55 @@ class Enemy
             this.x = loc.x;
             this.y = loc.y;
 
+            if (this.movementMode == movementMode.FOLLOW) {
+                console.log("tick")
+            }
+
             index++;
 
             if (index >= this.currentPath.length) {
-                this.currentPath.length = 0;
 
                 switch(this.movementMode) {
                     case movementMode.IDLE:
                         // Nothing to do
+                        this.currentPath.length = 0;
                         clearInterval(timer);
                         break;
                     case movementMode.ROAM:
                         // Randomly roam around map
-                        this.getRandomPath();
-                        requestPath(this, this.getLocation(), this.targetLocation);
+                        this.currentPath.length = 0;
+                        this.roam();
                         clearInterval(timer);
                         break;
                     case movementMode.PATROL:
-                        // TODO:
                         // Patrol between two points
+                        this.patrol();
                         clearInterval(timer);
                         break;
                     case movementMode.FOLLOW:
-                        // TODO:
                         // Follow player
+                        this.currentPath.length = 0;
+                        this.followPlayer();
                         clearInterval(timer);
                         break;
                 }
             }
 
         }, 500);
+    }
+
+    roam() {
+        this.getRandomPath();
+        requestPath(this, this.getLocation(), this.targetLocation);
+    }
+
+    patrol() {
+        // TODO:
+    }
+
+    followPlayer() {
+        this.getPlayerLocation();
+        requestPath(this, this.getLocation(), this.targetLocation);
     }
 };
 
