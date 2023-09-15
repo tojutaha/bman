@@ -87,7 +87,7 @@ function explode(bomb) {
     bomb.ticks = 0;
     let tiles = getBombSurroundings(bomb.x, bomb.y, bomb.range);
     chainExplosions(tiles);
-    destroyWalls(tiles);
+    setTilesOnFire(tiles);
 }
 
 function chainExplosions(tiles) {
@@ -103,7 +103,7 @@ function chainExplosions(tiles) {
     }          
 }
 
-function destroyWalls(tiles) {
+function setTilesOnFire(tiles) {
     for (let i = 0; i < tiles.length; i++) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
@@ -165,7 +165,7 @@ export function renderBombs() {
             else if (currentTile.bomb.ticks === 1) {
                 ctx.drawImage(spriteSheet, 96, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
             }
-            // DEBUG
+            // DEBUG MUSTA PISTE
             else {
                 ctx.fillStyle = "#000";
                 ctx.fillRect(currentTile.bomb.x + 14, currentTile.bomb.y + 14, 4, 4);
