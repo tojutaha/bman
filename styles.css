@@ -10,14 +10,19 @@ body {
 
 .canvas-container {
     display: flex;
-    margin-top: 2em;
     justify-content: center;
     align-items: center;
 }
 
-.debug-buttons {
+.debug-buttons-top {
     display: flex;
-    margin-top: 2em;
+    margin: 0.5em;
+    justify-content: space-evenly;
+}
+
+.debug-buttons-bottom {
+    display: flex;
+    margin: 0.5em;
     justify-content: space-evenly;
 }
 

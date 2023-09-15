@@ -1,4 +1,5 @@
 import { canvas, ctx, tileSize, levelHeight, levelWidth, level, spriteSheet } from "./main.js";
+import { drawCoordinates, coordsToggle } from "./page.js";
 
 export function renderLevel()
 {
@@ -21,4 +22,6 @@ export function renderLevel()
             }
         }
     }
+
+    drawCoordinates(coordsToggle);
 }

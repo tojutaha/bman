@@ -35,6 +35,7 @@ export function dropBomb() {
     let xTile = xCoord * tileSize;
 
     level[yCoord][xCoord].bomb = new Bomb(xTile, yTile, 4, 2); // TICKS 4, RANGE 2
+    console.log("Dropped", xCoord*tileSize, yCoord*tileSize);
     
     tilesWithBombs.push(level[yCoord][xCoord]);
 }
@@ -76,11 +77,13 @@ function getBombSurroundings(x, y, range) {
 }
 
 function explode(bomb) {
-    tilesWithBombs.splice(0, 1);
-    let tiles = getBombSurroundings(bomb.x, bomb.y, bomb.range);
-    let thisTile = tiles[0][0];
+    bomb.ticks = 0;
     bomb.hasExploded = true;
-    delete thisTile.bomb;
+    // tilesWithBombs.splice(0, 1);
+    // console.log("Exploded, tilesWithBombs:", tilesWithBombs);
+    // let thisTile = tiles[0][0];
+    
+    let tiles = getBombSurroundings(bomb.x, bomb.y, bomb.range);
     destroyWalls(tiles);
 }
 
@@ -88,6 +91,13 @@ function destroyWalls(tiles) {
     for (let i = 0; i < tiles.length; i++) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
+
+                if ("bomb" in currentTile && (i > 0 || j > 0) && currentTile.bomb.hasExploded === false) {
+                    console.log("Chained", currentTile.x, currentTile.y);
+                    explode(currentTile.bomb);
+                    break;
+                };
+                
                 if (currentTile.type === "NonDestructibleWall") {
                     break;
                 };
@@ -99,11 +109,6 @@ function destroyWalls(tiles) {
                     break;
                 }
                 else if (currentTile.type === "Floor") {
-                    if ("bomb" in currentTile && (i > 0 || j > 0) && currentTile.bomb.hasExploded === false) {
-                        console.log("CHAIN", currentTile.bomb);
-                        explode(currentTile.bomb);              // TODO: Hajottaa renderit välillä (pommiarray ehtii tyhjetä?)
-                        break;
-                    }
                     currentTile.isDeadly = true;
                     fieryFloors.push(tiles[i][j]);
                 };
@@ -131,22 +136,26 @@ function animateExplosion(tile){
 
 ////////////////////
 // Render
-export function renderBombs() {         // TODO: Hajoaa välillä (pommi ehtii räjähtää chainissa ennen?)
+export function renderBombs() {
     if (tilesWithBombs.length > 0) {
         for (let i = 0; i < tilesWithBombs.length; i++) {
-            let bomb = tilesWithBombs[i].bomb;
+            let currentTile = tilesWithBombs[i];
 
-            if (bomb.ticks === 4) {
-                ctx.drawImage(spriteSheet, 0, 32, 32, 32, bomb.x, bomb.y, tileSize, tileSize);
+            if (currentTile.bomb.ticks === 4) {
+                ctx.drawImage(spriteSheet, 0, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
             }
-            else if (bomb.ticks === 3) {
-                ctx.drawImage(spriteSheet, 32, 32, 32, 32, bomb.x, bomb.y, tileSize, tileSize);
+            else if (currentTile.bomb.ticks === 3) {
+                ctx.drawImage(spriteSheet, 32, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
             }
-            else if (bomb.ticks === 2) {
-                ctx.drawImage(spriteSheet, 64, 32, 32, 32, bomb.x, bomb.y, tileSize, tileSize);
+            else if (currentTile.bomb.ticks === 2) {
+                ctx.drawImage(spriteSheet, 64, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
             }
-            else if (bomb.ticks === 1) {
-                ctx.drawImage(spriteSheet, 96, 32, 32, 32, bomb.x, bomb.y, tileSize, tileSize);
+            else if (currentTile.bomb.ticks === 1) {
+                ctx.drawImage(spriteSheet, 96, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
+            }
+            else if (currentTile.bomb.ticks === 0) {
+                tilesWithBombs.splice(i, 1);
+                delete currentTile.bomb;
             }
         }
     }
