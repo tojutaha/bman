@@ -66,16 +66,16 @@ function getBombSurroundings(x, y, range) {
         let bottom = bY + i;
 
         if (top > 0) {
-            topTiles.push(level[row][tY-i]);
+            topTiles.push(level[row][top]);
         }
         if (left > 0) {
-            leftTiles.push(level[lX-i][col]);
+            leftTiles.push(level[left][col]);
         }
         if (right < 25) {
             rightTiles.push(level[right][col]);
         }
         if (bottom < 25) {
-            bottomTiles.push(level[row][bY+i]);
+            bottomTiles.push(level[row][bottom]);
         }
     }
     // console.log("left", leftTiles, "right", rightTiles);
