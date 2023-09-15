@@ -31,13 +31,18 @@ export function dropBomb() {
     let yCoord = Math.round(player.y / tileSize);
     let xCoord = Math.round(player.x / tileSize);
     
+    let currentTile = level[yCoord][xCoord];
     let yTile = yCoord * tileSize;
     let xTile = xCoord * tileSize;
 
-    level[yCoord][xCoord].bomb = new Bomb(xTile, yTile, 4, 2); // TICKS 4, RANGE 2
-    console.log("Dropped", xCoord*tileSize, yCoord*tileSize);
-    
-    tilesWithBombs.push(level[yCoord][xCoord]);
+    if (!currentTile.bomb || currentTile.bomb.hasExploded === true) {
+        currentTile.bomb = new Bomb(xTile, yTile, 4, 3);
+        console.log("Dropped", xCoord*tileSize, yCoord*tileSize);
+
+        if (tilesWithBombs.indexOf(currentTile) === -1) {
+            tilesWithBombs.push(currentTile);
+        }
+    }
 }
 
 function getBombSurroundings(x, y, range) {
@@ -77,12 +82,8 @@ function getBombSurroundings(x, y, range) {
 }
 
 function explode(bomb) {
-    bomb.ticks = 0;
     bomb.hasExploded = true;
-    // tilesWithBombs.splice(0, 1);
-    // console.log("Exploded, tilesWithBombs:", tilesWithBombs);
-    // let thisTile = tiles[0][0];
-    
+    bomb.ticks = 0;
     let tiles = getBombSurroundings(bomb.x, bomb.y, bomb.range);
     destroyWalls(tiles);
 }
@@ -91,26 +92,29 @@ function destroyWalls(tiles) {
     for (let i = 0; i < tiles.length; i++) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
-
-                if ("bomb" in currentTile && (i > 0 || j > 0) && currentTile.bomb.hasExploded === false) {
-                    console.log("Chained", currentTile.x, currentTile.y);
-                    explode(currentTile.bomb);
-                    break;
-                };
                 
                 if (currentTile.type === "NonDestructibleWall") {
+                    break;
+                }
+                else if ("bomb" in currentTile && (i > 0 || j > 0) && currentTile.bomb.hasExploded === false) {
+                    console.info("Chained", currentTile.x, currentTile.y);
+                    explode(currentTile.bomb);
                     break;
                 };
                 
                 animateExplosion(currentTile);
                 if (currentTile.type === "DestructibleWall") {
-                    crumblingWalls.push(currentTile);
+                    if (crumblingWalls.indexOf(currentTile) === -1) {
+                        crumblingWalls.push(currentTile);
+                    };
                     currentTile.type = "Floor";
                     break;
                 }
                 else if (currentTile.type === "Floor") {
+                    if (fieryFloors.indexOf(currentTile) === -1) {
+                        fieryFloors.push(currentTile);
+                    };
                     currentTile.isDeadly = true;
-                    fieryFloors.push(tiles[i][j]);
                 };
         }
     }
@@ -123,11 +127,9 @@ function animateExplosion(tile){
         if (tile.animationTimer === 0) {
             if (tile.isWalkable) {
                 tile.isDeadly = false;
-                fieryFloors.splice(0, 1);
             }
             else {
                 tile.isWalkable = true;
-                crumblingWalls.splice(0, 1);
             }
             clearInterval(interval);
         }
@@ -152,10 +154,6 @@ export function renderBombs() {
             }
             else if (currentTile.bomb.ticks === 1) {
                 ctx.drawImage(spriteSheet, 96, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
-            }
-            else if (currentTile.bomb.ticks === 0) {
-                tilesWithBombs.splice(i, 1);
-                delete currentTile.bomb;
             }
         }
     }
