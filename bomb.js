@@ -36,7 +36,7 @@ export function dropBomb() {
     let xTile = xCoord * tileSize;
 
     if (!currentTile.bomb || currentTile.bomb.hasExploded === true) {
-        currentTile.bomb = new Bomb(xTile, yTile, 4, 3);
+        currentTile.bomb = new Bomb(xTile, yTile, 4, 2);
         console.log("Dropped", xCoord*tileSize, yCoord*tileSize);
 
         if (tilesWithBombs.indexOf(currentTile) === -1) {
@@ -78,6 +78,7 @@ function getBombSurroundings(x, y, range) {
             bottomTiles.push(level[row][bY+i]);
         }
     }
+    // console.log("left", leftTiles, "right", rightTiles);
     return [centerTile, topTiles, leftTiles, rightTiles, bottomTiles];
 }
 
@@ -85,7 +86,21 @@ function explode(bomb) {
     bomb.hasExploded = true;
     bomb.ticks = 0;
     let tiles = getBombSurroundings(bomb.x, bomb.y, bomb.range);
+    chainExplosions(tiles);
     destroyWalls(tiles);
+}
+
+function chainExplosions(tiles) {
+    // Tiles[0] is the center, thus i = 1
+    for (let i = 1; i < tiles.length; i++) {
+        for (let j = 0; j < tiles[i].length; j++) {
+                let currentTile = tiles[i][j];
+                if ("bomb" in currentTile && currentTile.bomb.hasExploded === false) {
+                    console.info(tiles[0][0].x, tiles[0][0].y, "chained",  currentTile.x, currentTile.y);
+                    explode(currentTile.bomb);
+                };
+        }
+    }          
 }
 
 function destroyWalls(tiles) {
@@ -94,11 +109,6 @@ function destroyWalls(tiles) {
                 let currentTile = tiles[i][j];
                 
                 if (currentTile.type === "NonDestructibleWall") {
-                    break;
-                }
-                else if ("bomb" in currentTile && (i > 0 || j > 0) && currentTile.bomb.hasExploded === false) {
-                    console.info("Chained", currentTile.x, currentTile.y);
-                    explode(currentTile.bomb);
                     break;
                 };
                 
@@ -154,6 +164,11 @@ export function renderBombs() {
             }
             else if (currentTile.bomb.ticks === 1) {
                 ctx.drawImage(spriteSheet, 96, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
+            }
+            // DEBUG
+            else {
+                ctx.fillStyle = "#000";
+                ctx.fillRect(currentTile.bomb.x + 14, currentTile.bomb.y + 14, 4, 4);
             }
         }
     }
