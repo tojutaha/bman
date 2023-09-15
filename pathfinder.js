@@ -1,68 +1,15 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize } from "./main.js";
-import { enemies, debugPaths } from "./enemy.js";
-import { getDistanceTo, getRandomWalkablePointInRadius, v2 } from "./utils.js";
+import { enemies } from "./enemy.js";
+import { getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, getNeigbouringTiles_linear, getNeigbouringTiles_diagonal } from "./utils.js";
 
-export function requestPath(requester)
+export function requestPath(requester, startLoc, targetLoc)
 {
     // TODO: queue systeemi..?
-    //console.log(requester);
-    const maxRadius = 12*tileSize;
-    const minRadius = 4*tileSize;
-    const targetLocation = 
-        getRandomWalkablePointInRadius({x: requester.x, y: requester.y},
-                                        minRadius, maxRadius);
-    requester.targetLocation = {x: targetLocation.x, y: targetLocation.y};
 
     requester.currentPath = astar(requester.useDiagonalMovement,
-                                  requester.getLocation(),
-                                  {x: targetLocation.x, y: targetLocation.y});
-
+                                  startLoc,
+                                  {x: targetLoc.x, y: targetLoc.y});
     requester.startMove();
-}
-
-// TODO: Nää vois laittaa utilsiin?
-function getTileFromWorldLocation(loc)
-{
-    const x = Math.floor(loc.x / tileSize);
-    const y = Math.floor(loc.y / tileSize);
-    return level[x][y];
-}
-
-
-function getNeigbouringTiles_linear(loc)
-{
-    const center = {x: loc.x / tileSize, y: loc.y / tileSize};
-    const result = [];
-
-    // TODO: Ja käänteinen järjestys
-    result.push({x: level[center.y + 1][center.x].x, y: level[center.y + 1][center.x].y});
-    result.push({x: level[center.y - 1][center.x].x, y: level[center.y - 1][center.x].y});
-    result.push({x: level[center.y][center.x + 1].x, y: level[center.y][center.x + 1].y});
-    result.push({x: level[center.y][center.x - 1].x, y: level[center.y][center.x - 1].y});
-
-    return result;
-}
-
-function getNeigbouringTiles_diagonal(loc)
-{
-    const center = {x: loc.x / tileSize, y: loc.y / tileSize};
-    const result = [];
-
-    for (let y = -1; y <= 1; y++) {
-        for (let x = -1; x <= 1; x++) {
-
-            if (x == 0 && y == 0) continue;
-
-            const coordX = center.x + x;
-            const coordY = center.y + y;
-
-            // TODO: Tää on taas käänteinen..
-            result.push({x: level[coordY][coordX].x, 
-                         y: level[coordY][coordX].y});
-        }
-    }
-
-    return result;
 }
 
 export function astar(useDiagonalMovement, start, target)
@@ -122,31 +69,15 @@ export function astar(useDiagonalMovement, start, target)
 // TODO: Debug
 export function drawPath()
 {
-    debugPaths.forEach(p => {
-        if (p) {
-            ctx.beginPath();
-            ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 5, 0, 2*Math.PI);
-            ctx.strokeStyle = "yellow";
-            ctx.stroke();
-        }
-    });
-    /*
     enemies.forEach(enemy => {
         if (enemy.currentPath) {
             enemy.currentPath.forEach(p => {
                 ctx.beginPath();
-                ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 10, 0, 2*Math.PI);
-                ctx.strokeStyle = "yellow";
+                ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 3, 0, 2*Math.PI);
+                ctx.strokeStyle = enemy.pathColor;
                 ctx.stroke();
             });
         }
     });
-    */
-
-    const p = {x: enemies[0].targetLocation.x, y: enemies[0].targetLocation.y};
-    ctx.beginPath();
-    ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 5, 0, 2*Math.PI);
-    ctx.strokeStyle = "red";
-    ctx.stroke();
 }
 

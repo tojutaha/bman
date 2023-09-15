@@ -1,9 +1,7 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize } from "./main.js";
 import { player } from "./player.js";
-import { v2, getDistanceTo, getRandomWalkablePointInRadius, isWalkable } from "./utils.js";
+import { getDistanceTo, getRandomWalkablePointInRadius, isWalkable } from "./utils.js";
 import { requestPath, drawPath } from "./pathfinder.js";
-
-export const debugPaths = [];
 
 const movementMode = {
     IDLE: "Idle",
@@ -27,19 +25,24 @@ class Enemy
         this.useDiagonalMovement = false;
         this.movementMode = newMovementMode || movementMode.ROAM;
 
-        // Debug color:
+        // Debug colors:
+        this.color = "#ff00ff";
+        this.pathColor = "yellow";
+    }
+
+    setDebugColors() {
         switch(this.movementMode) {
             case movementMode.IDLE:
-                this.color = "#ff00ff";
+                this.color = "#00ff00";
                 break;
             case movementMode.ROAM:
                 this.color = "#ff00ff";
                 break;
             case movementMode.PATROL:
-                this.color = "#ff00ff";
+                this.color = "#00ffff";
                 break;
             case movementMode.FOLLOW:
-                this.color = "#ff00ff";
+                this.color = "#ff0000";
                 break;
         }
     }
@@ -52,6 +55,20 @@ class Enemy
         this.movementMode = newMovementMode;
     }
 
+    init() {
+        this.getRandomPath();
+        requestPath(this, this.getLocation(), this.targetLocation);
+    }
+
+    getRandomPath() {
+        const maxRadius = 12*tileSize;
+        const minRadius = 4*tileSize;
+        const targetLocation = 
+        getRandomWalkablePointInRadius({x: this.x, y: this.y},
+                                        minRadius, maxRadius);
+        this.targetLocation = {x: targetLocation.x, y: targetLocation.y};
+    }
+
     startMove() {
 
         if (!this.currentPath) {
@@ -59,11 +76,15 @@ class Enemy
             return;
         }
 
+        if (this.currentPath.length == 0) {
+            console.log("Another possible failure case");
+            return;
+        }
+
         let index = 0;
         let timer = setInterval(() => {
 
             const loc = this.currentPath[index];
-            debugPaths.push(loc);
 
             this.x = loc.x;
             this.y = loc.y;
@@ -72,37 +93,48 @@ class Enemy
 
             if (index >= this.currentPath.length) {
                 this.currentPath.length = 0;
-                debugPaths.length = 0;
 
                 switch(this.movementMode) {
                     case movementMode.IDLE:
                         // Nothing to do
+                        clearInterval(timer);
                         break;
                     case movementMode.ROAM:
                         // Randomly roam around map
-                        requestPath(this);
+                        this.getRandomPath();
+                        requestPath(this, this.getLocation(), this.targetLocation);
+                        clearInterval(timer);
                         break;
                     case movementMode.PATROL:
                         // TODO:
                         // Patrol between two points
+                        clearInterval(timer);
                         break;
                     case movementMode.FOLLOW:
                         // TODO:
                         // Follow player
+                        clearInterval(timer);
                         break;
                 }
-
-                clearInterval(timer);
             }
 
         }, 500);
     }
 };
 
+function getRandomColor() {
+
+    const red = Math.floor(Math.random() * 256);
+    const green = Math.floor(Math.random() * 256);
+    const blue = Math.floor(Math.random() * 256);
+    return `rgb(${red}, ${green}, ${blue})`;
+}
+
 export const enemies = [];
 export function spawnEnemies()
 {
-    const amount = 1;
+    const movementValues = Object.values(movementMode);
+    const amount = movementValues.length;
     const maxRadius = 25*tileSize;
     const minRadius = 10*tileSize;
 
@@ -111,7 +143,10 @@ export function spawnEnemies()
                                                        y: player.y},
                                                        minRadius, maxRadius);
         const enemy = new Enemy(random.x, random.y, 32, 32);
-        requestPath(enemy);
+        enemy.setMovementMode(movementValues[i]);
+        enemy.setDebugColors();
+        enemy.pathColor = getRandomColor();
+        enemy.init();
         enemies.push(enemy);
     }
 }

@@ -1,52 +1,5 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet } from "./main.js";
 
-// 2d vektori
-export const v2 = {
-    x: 0,
-    y: 0,
-
-    addV2: function(other) {
-        this.x += other.x;
-        this.y += other.y;
-    },
-
-    addS: function(scalar) {
-        this.x += scalar;
-        this.y += scalar;
-    },
-
-    subtractV2: function(other) {
-        this.x -= other.x;
-        this.y -= other.y;
-    },
-
-    subtractS: function(scalar) {
-        this.x -= scalar;
-        this.y -= scalar;
-    },
-
-    multiplyV2: function(other) {
-        this.x *= other.x;
-        this.y *= other.y;
-    },
-
-    multiplyS: function(scalar) {
-        this.x *= scalar;
-        this.y *= scalar;
-    },
-
-    isEqual: function(other) {
-        return this.x === other.x &&
-               this.y === other.y;
-    },
-
-    dist: function(other) {
-        let dx = other.x - this.x;
-        let dy = other.y - this.y;
-        return Math.sqrt(dx * dx + dy * dy);
-    }
-};
-
 export function isWalkable(x, y)
 {
     if (x < 0 || x >= levelWidth ||
@@ -67,11 +20,13 @@ export function isDeadly(x, y)
     return level[x][y].isDeadly;
 }
 
+// Palauttaa etäisyyden kahden laatan välillä (manhattan distance)
 export function getDistanceTo(from, to)
 {
     return Math.abs(from.x - to.x) + Math.abs(from.y - to.y);
 }
 
+// Palauttaa satunnaisen laatan jossa voi kävellä
 export function getRandomWalkablePointInRadius(center, minRadius, maxRadius)
 {
     const walkableTiles = [];
@@ -88,5 +43,51 @@ export function getRandomWalkablePointInRadius(center, minRadius, maxRadius)
 
     const randomIndex = Math.floor(Math.random() * walkableTiles.length);
     return walkableTiles[randomIndex];
+}
+
+// Palauttaa laatan parametrin koordinaateista
+export function getTileFromWorldLocation(loc)
+{
+    const x = Math.floor(loc.x / tileSize);
+    const y = Math.floor(loc.y / tileSize);
+    return level[x][y];
+}
+
+// Palauttaa 4 (ylös, alas, vasen, oikea) naapuri laattaa parametrin ympärillä
+export function getNeigbouringTiles_linear(loc)
+{
+    const center = {x: loc.x / tileSize, y: loc.y / tileSize};
+    const result = [];
+
+    // TODO: Ja käänteinen järjestys
+    result.push({x: level[center.y + 1][center.x].x, y: level[center.y + 1][center.x].y});
+    result.push({x: level[center.y - 1][center.x].x, y: level[center.y - 1][center.x].y});
+    result.push({x: level[center.y][center.x + 1].x, y: level[center.y][center.x + 1].y});
+    result.push({x: level[center.y][center.x - 1].x, y: level[center.y][center.x - 1].y});
+
+    return result;
+}
+
+// Palauttaa kaikki 8 naapuri laattaa parametrin ympärillä
+export function getNeigbouringTiles_diagonal(loc)
+{
+    const center = {x: loc.x / tileSize, y: loc.y / tileSize};
+    const result = [];
+
+    for (let y = -1; y <= 1; y++) {
+        for (let x = -1; x <= 1; x++) {
+
+            if (x == 0 && y == 0) continue;
+
+            const coordX = center.x + x;
+            const coordY = center.y + y;
+
+            // TODO: Tää on taas käänteinen..
+            result.push({x: level[coordY][coordX].x, 
+                         y: level[coordY][coordX].y});
+        }
+    }
+
+    return result;
 }
 
