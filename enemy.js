@@ -92,7 +92,8 @@ class Enemy
 
     startMove() {
         if (!this.currentPath || this.currentPath.length == 0) {
-            console.log("Trying again..");
+            console.log("Trying again.. later..");
+            /*
             // HACK:
             let timer = setInterval(() => {
                 if (this.currentPath) {
@@ -101,6 +102,7 @@ class Enemy
                 }
                 this.init();
             }, 1000);
+            */
             return;
         }
 
@@ -114,6 +116,10 @@ class Enemy
 
             if (this.movementMode == movementMode.FOLLOW) {
                 console.log("tick")
+
+                if (this.x == player.x && this.y == player.y) {
+                    console.log("reached player");
+                }
             }
 
             index++;
