@@ -2,8 +2,6 @@ import { canvas, ctx, level, levelHeight, levelWidth, tileSize } from "./main.js
 import { enemies, debugPaths } from "./enemy.js";
 import { getDistanceTo, getRandomWalkablePointInRadius, v2 } from "./utils.js";
 
-const useDiagonalMovement = false;
-
 export function requestPath(requester)
 {
     // TODO: queue systeemi..?
@@ -15,12 +13,11 @@ export function requestPath(requester)
                                         minRadius, maxRadius);
     requester.targetLocation = {x: targetLocation.x, y: targetLocation.y};
 
-    requester.currentPath = astar(requester.getLocation(),
+    requester.currentPath = astar(requester.useDiagonalMovement,
+                                  requester.getLocation(),
                                   {x: targetLocation.x, y: targetLocation.y});
 
-    if (requester.currentPath) {
-        requester.move();
-    }
+    requester.startMove();
 }
 
 // TODO: Nää vois laittaa utilsiin?
@@ -68,10 +65,10 @@ function getNeigbouringTiles_diagonal(loc)
     return result;
 }
 
-const getNeigbouringTiles = useDiagonalMovement ? getNeigbouringTiles_diagonal : getNeigbouringTiles_linear;
-
-export function astar(start, target)
+export function astar(useDiagonalMovement, start, target)
 {
+    const getNeigbouringTiles = useDiagonalMovement ? getNeigbouringTiles_diagonal : getNeigbouringTiles_linear;
+
     const openList = [ [0, start] ];
     const costSoFar = new Map();
     const cameFrom = new Map();
@@ -128,7 +125,7 @@ export function drawPath()
     debugPaths.forEach(p => {
         if (p) {
             ctx.beginPath();
-            ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 10, 0, 2*Math.PI);
+            ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 5, 0, 2*Math.PI);
             ctx.strokeStyle = "yellow";
             ctx.stroke();
         }
@@ -148,7 +145,7 @@ export function drawPath()
 
     const p = {x: enemies[0].targetLocation.x, y: enemies[0].targetLocation.y};
     ctx.beginPath();
-    ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 10, 0, 2*Math.PI);
+    ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 5, 0, 2*Math.PI);
     ctx.strokeStyle = "red";
     ctx.stroke();
 }
