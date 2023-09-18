@@ -48,8 +48,10 @@ export function getRandomWalkablePointInRadius(center, minRadius, maxRadius)
 // Palauttaa laatan parametrin koordinaateista
 export function getTileFromWorldLocation(loc)
 {
-    const x = Math.floor(loc.x / tileSize);
-    const y = Math.floor(loc.y / tileSize);
+    //const x = Math.floor(loc.x / tileSize);
+    //const y = Math.floor(loc.y / tileSize);
+    const x = Math.round(loc.x / tileSize);
+    const y = Math.round(loc.y / tileSize);
     return level[x][y];
 }
 

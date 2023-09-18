@@ -90,14 +90,6 @@ class Enemy
         this.targetLocation = {x: tile.x, y: tile.y};
     }
 
-    tryMoveAgain() {
-        console.log("tryMoveAgain");
-        if (this.currentPath) {
-            this.currentPath.length = 0;
-        }
-        //this.roam();
-    }
-
     startMove() {
         let timer = null;
 
