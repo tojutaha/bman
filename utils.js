@@ -32,7 +32,7 @@ export function getRandomWalkablePointInRadius(center, minRadius, maxRadius)
     const walkableTiles = [];
     for (let y = 0; y < levelHeight; y++) {
         for (let x = 0; x < levelWidth; x++) {
-            const tile = level[y][x]; // TODO: Käänteinen
+            const tile = level[x][y];
             const walkable = isWalkable(x, y);
             const dist = getDistanceTo(center, {x: tile.x, y: tile.y});
             if (walkable && dist >= minRadius && dist <= maxRadius) {
@@ -48,24 +48,26 @@ export function getRandomWalkablePointInRadius(center, minRadius, maxRadius)
 // Palauttaa laatan parametrin koordinaateista
 export function getTileFromWorldLocation(loc)
 {
-    //const x = Math.floor(loc.x / tileSize);
-    //const y = Math.floor(loc.y / tileSize);
     const x = Math.round(loc.x / tileSize);
     const y = Math.round(loc.y / tileSize);
     return level[x][y];
 }
 
 // Palauttaa 4 (ylös, alas, vasen, oikea) naapuri laattaa parametrin ympärillä
-export function getNeigbouringTiles_linear(loc)
+export function getNeigbouringTiles_linear(loc, range = 2)
 {
+    //range += 1;
     const center = {x: loc.x / tileSize, y: loc.y / tileSize};
     const result = [];
 
-    // TODO: Ja käänteinen järjestys
-    result.push({x: level[center.y + 1][center.x].x, y: level[center.y + 1][center.x].y});
-    result.push({x: level[center.y - 1][center.x].x, y: level[center.y - 1][center.x].y});
-    result.push({x: level[center.y][center.x + 1].x, y: level[center.y][center.x + 1].y});
-    result.push({x: level[center.y][center.x - 1].x, y: level[center.y][center.x - 1].y});
+    for (let x = 1; x < range; x++) {
+        for (let y = 1; y < range; y++) {
+            result.push({x: level[center.x + x][center.y].x, y: level[center.x + x][center.y].y});
+            result.push({x: level[center.x - x][center.y].x, y: level[center.x - x][center.y].y});
+            result.push({x: level[center.x][center.y + y].x, y: level[center.x][center.y + y].y});
+            result.push({x: level[center.x][center.y - y].x, y: level[center.x][center.y - y].y});
+        }
+    }
 
     return result;
 }
@@ -84,9 +86,8 @@ export function getNeigbouringTiles_diagonal(loc)
             const coordX = center.x + x;
             const coordY = center.y + y;
 
-            // TODO: Tää on taas käänteinen..
-            result.push({x: level[coordY][coordX].x, 
-                         y: level[coordY][coordX].y});
+            result.push({x: level[coordX][coordY].x, 
+                         y: level[coordX][coordY].y});
         }
     }
 
