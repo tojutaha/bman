@@ -85,8 +85,7 @@ class Enemy
     }
 
     getPlayerLocation() {
-        // TODO: Käänteinen..
-        const tile = getTileFromWorldLocation({x: player.y, y: player.x});
+        const tile = getTileFromWorldLocation({x: player.x, y: player.y});
         this.targetLocation = {x: tile.x, y: tile.y};
     }
 

@@ -1,5 +1,6 @@
 import { ctx, level, tileSize, spriteSheet } from "./main.js";
 import { player } from "./player.js";
+import { getNeigbouringTiles_linear, getTileFromWorldLocation } from "./utils.js";
 
 // TODO: Pommit !walkable
 //     : Suorakulmion nurkassa olevat pommit triggers chains
@@ -28,16 +29,13 @@ function Bomb(x, y, ticks, range) {
 }
 
 export function dropBomb() {
-    let yIndex = Math.round(player.x / tileSize);
-    let xIndex = Math.round(player.y / tileSize);
-    
-    let currentTile = level[yIndex][xIndex];
-    let yTile = yIndex * tileSize;
-    let xTile = xIndex * tileSize;
+    let currentTile = getTileFromWorldLocation({x: player.x, y: player.y});
+    let xTile = currentTile.x;
+    let yTile = currentTile.y;
 
     if (!currentTile.bomb || currentTile.bomb.hasExploded === true) {
-        currentTile.bomb = new Bomb(yTile, xTile, 4, 2);
-        console.log("Dropped", yTile, xTile);
+        currentTile.bomb = new Bomb(xTile, yTile, 4, 2);
+        console.log("Dropped", xTile, yTile);
 
         if (tilesWithBombs.indexOf(currentTile) === -1) {
             tilesWithBombs.push(currentTile);
@@ -45,7 +43,8 @@ export function dropBomb() {
     }
 }
 
-function getBombSurroundings(x, y, range) {
+// NOTE: Tän vaan flippasin toistaiseksi...
+function getBombSurroundings(y, x, range) {
     let row = x / tileSize;
     let col = y / tileSize;
     let rX = (x + tileSize) / tileSize;
@@ -85,6 +84,7 @@ function explode(bomb) {
     bomb.hasExploded = true;
     bomb.ticks = 0;
     let tiles = getBombSurroundings(bomb.x, bomb.y, bomb.range);
+    //let tiles = getNeigbouringTiles_linear({x: bomb.x, y: bomb.y}, bomb.range);
     chainExplosions(tiles);
     setTilesOnFire(tiles);
 }
@@ -99,7 +99,7 @@ function chainExplosions(tiles) {
                     explode(currentTile.bomb);
                 };
         }
-    }          
+    }
 }
 
 function setTilesOnFire(tiles) {
