@@ -127,25 +127,25 @@ class Enemy
                 switch(this.movementMode) {
                     case movementMode.IDLE:
                         // Nothing to do
-                        this.currentPath.length = 0;
                         clearInterval(timer);
+                        this.currentPath.length = 0;
                         break;
                     case movementMode.ROAM:
                         // Randomly roam around map
+                        clearInterval(timer);
                         this.currentPath.length = 0;
                         this.roam();
-                        clearInterval(timer);
                         break;
                     case movementMode.PATROL:
                         // Patrol between two points
-                        this.patrol();
                         clearInterval(timer);
+                        this.patrol();
                         break;
                     case movementMode.FOLLOW:
                         // Follow player
+                        clearInterval(timer);
                         this.currentPath.length = 0;
                         this.followPlayer();
-                        clearInterval(timer);
                         break;
                 }
             }
@@ -159,9 +159,19 @@ class Enemy
     }
 
     patrol() {
-        // TODO: Temporarily roam for now..
-        this.getRandomPath();
-        requestPath(this, this.getLocation(), this.targetLocation);
+        if (this.currentPath.length == 0) {
+            this.getRandomPath();
+            requestPath(this, this.getLocation(), this.targetLocation);
+        } else {
+            if (this.getLocation().x == this.targetLocation.x &&
+                this.getLocation().y == this.targetLocation.y) {
+                const temp = this.startLocation;
+                this.startLocation = this.targetLocation;
+                this.targetLocation = temp;
+                this.currentPath.reverse();
+                this.startMove();
+            }
+        }
     }
 
     followPlayer() {
