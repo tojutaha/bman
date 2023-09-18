@@ -1,4 +1,4 @@
-import { ctx, level, tileSize, spriteSheet, levelWidth } from "./main.js";
+import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight } from "./main.js";
 import { player } from "./player.js";
 import { bombCountPowerUp } from "./powerup.js";
 import { getNeigbouringTiles_linear, getTileFromWorldLocation } from "./utils.js";
@@ -43,47 +43,8 @@ export function dropBomb() {
     }
 }
 
-// ORIG
-// function getBombSurroundings(bomb) {     // TODO: coord
-//     let xIndex = bomb.x / tileSize;
-//     let yIndex = bomb.y / tileSize;
-
-//     let rX = (bomb.x + tileSize) / tileSize;
-//     let lX = (bomb.x - tileSize) / tileSize;
-//     let tY = (bomb.y - tileSize) / tileSize;
-//     let bY = (bomb.y + tileSize) / tileSize;
-
-//     let centerTile = [level[xIndex][yIndex]],
-//         topTiles = [],
-//         leftTiles = [],
-//         rightTiles = [],
-//         bottomTiles = [];
-
-//     for (let i = 0; i <= bomb.range; i++) {
-//         let right = rX - i;
-//         let top = tY + i;
-//         let left = lX + i;
-//         let bottom = bY - i;
-//         // DROPPED 256, 32
-//         // if (top > 0) {
-//         //     topTiles.push(level[xIndex][top]);  // 256,32 | (tyhjä)
-//         // }
-//         // if (left > 0) {
-//         //     leftTiles.push(level[left][yIndex]); // 224,32 | 256,32 | (192,32 | 224,32)
-//         // }
-//         if (right < 25) {
-//             rightTiles.push(level[right][yIndex]); // 256,32 | 288,32 | (288,32 | 320,32)
-//             console.log(level[right][yIndex]);
-//         }
-//         // if (bottom < 25) {
-//         //     bottomTiles.push(level[xIndex][bottom]); // 256,32 | 256,64 | (256,64 | 256,96)
-//         // }
-//     }
-//     // console.log(topTiles)
-//     // console.log("T:", topTiles, "L:", leftTiles, "R:", rightTiles, "B:", bottomTiles);
-//     return [centerTile, topTiles, leftTiles, rightTiles, bottomTiles];
-// }
-
+// Returns a 2D array of all the surrounding tiles within the bomb's range.
+// All directions are in their own arrays for further processing.
 function getBombSurroundings(bomb) {
     let xIndex = bomb.x / tileSize;
     let yIndex = bomb.y / tileSize;
@@ -95,13 +56,28 @@ function getBombSurroundings(bomb) {
         bottomTiles = [];
     
     for (let i = 0; i < bomb.range; i++) {
-        let rightHandSide = xIndex + i + 1;     // TODO: tähän jäätiin, tänne IF
-        rightTiles.push(level[xIndex + i + 1][yIndex])
-        console.log("R:", level[xIndex + i + 1][yIndex]);
+        let onLeft = xIndex - i - 1;
+        if (onLeft >= 0) {
+            leftTiles.push(level[onLeft][yIndex]);
+        }
+
+        let onTop = yIndex - i - 1;
+        if (onTop >= 0) {
+            topTiles.push(level[xIndex][onTop]);
+        }
+
+        let onRight = xIndex + i + 1;
+        if (onRight < levelWidth) {
+            rightTiles.push(level[onRight][yIndex]);
+        }
+
+        let onBottom = yIndex + i + 1;
+        if (onBottom < levelHeight) {
+            bottomTiles.push(level[xIndex][onBottom]);
+        }
     }
 
-    // console.log("T:", topTiles, "L:", leftTiles, "R:", rightTiles, "B:", bottomTiles);
-    return [centerTile, topTiles, leftTiles, rightTiles, bottomTiles];
+    return [centerTile, leftTiles, topTiles, rightTiles, bottomTiles];
 }
 
 function explode(bomb) {
