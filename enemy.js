@@ -90,24 +90,32 @@ class Enemy
         this.targetLocation = {x: tile.x, y: tile.y};
     }
 
+    tryMoveAgain() {
+        console.log("tryMoveAgain");
+        if (this.currentPath) {
+            this.currentPath.length = 0;
+        }
+        //this.roam();
+    }
+
     startMove() {
-        if (!this.currentPath || this.currentPath.length == 0) {
-            console.log("Trying again.. later..");
-            /*
-            // HACK:
-            let timer = setInterval(() => {
-                if (this.currentPath) {
-                    clearInterval(timer);
-                    return;
-                }
+        let timer = null;
+
+        if (!this.currentPath) {
+            console.log("Trying again..");
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+
+            setTimeout(() => {
                 this.init();
-            }, 1000);
-            */
+            }, 3000);
             return;
         }
 
         let index = 0;
-        let timer = setInterval(() => {
+        timer = setInterval(() => {
 
             const loc = this.currentPath[index];
 
@@ -115,10 +123,9 @@ class Enemy
             this.y = loc.y;
 
             if (this.movementMode == movementMode.FOLLOW) {
-                console.log("tick")
-
                 if (this.x == player.x && this.y == player.y) {
                     console.log("reached player");
+                    clearInterval(timer);
                 }
             }
 
@@ -161,7 +168,9 @@ class Enemy
     }
 
     patrol() {
-        // TODO:
+        // TODO: Temporarily roam for now..
+        this.getRandomPath();
+        requestPath(this, this.getLocation(), this.targetLocation);
     }
 
     followPlayer() {
