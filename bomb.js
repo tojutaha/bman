@@ -1,16 +1,20 @@
 import { ctx, level, tileSize, spriteSheet } from "./main.js";
 import { player } from "./player.js";
+import { bombCountPowerUp } from "./powerup.js";
+import { getTileFromWorldLocation } from "./utils.js";
 
 // TODO: Pommit !walkable
-//     : Suorakulmion nurkassa olevat pommit triggers chains
  
+let maxBombs = 1;
+let maxRange = 1;
+
 let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
 
-function Bomb(x, y, ticks, range) {
-    this.x = x || 0;
+function Bomb(y, x, ticks, range) {     // TODO: coord
     this.y = y || 0,
+    this.x = x || 0;
     this.ticks = ticks || 4;
     this.range = range || 1;
     this.hasExploded = false;
@@ -28,32 +32,27 @@ function Bomb(x, y, ticks, range) {
 }
 
 export function dropBomb() {
-    let yIndex = Math.round(player.x / tileSize);
-    let xIndex = Math.round(player.y / tileSize);
-    
-    let currentTile = level[yIndex][xIndex];
-    let yTile = yIndex * tileSize;
-    let xTile = xIndex * tileSize;
+    let currentTile = getTileFromWorldLocation(player);
 
-    if (!currentTile.bomb || currentTile.bomb.hasExploded === true) {
-        currentTile.bomb = new Bomb(yTile, xTile, 4, 2);
-        console.log("Dropped", yTile, xTile);
-
-        if (tilesWithBombs.indexOf(currentTile) === -1) {
+    if (tilesWithBombs.indexOf(currentTile) === -1 && tilesWithBombs.length < maxBombs) {
+        if (!currentTile.bomb || currentTile.bomb.hasExploded === true) {
+            currentTile.bomb = new Bomb(currentTile.x, currentTile.y, 4, maxRange);    // TODO: coord
             tilesWithBombs.push(currentTile);
         }
     }
 }
 
-function getBombSurroundings(x, y, range) {
-    let row = x / tileSize;
-    let col = y / tileSize;
-    let rX = (x + tileSize) / tileSize;
-    let lX = (x - tileSize) / tileSize;
-    let tY = (y - tileSize) / tileSize;
-    let bY = (y + tileSize) / tileSize;
+
+// TODO: tän voisi ehkä muokkailla sopivaksi utilsiin
+function getBombSurroundings(bomb, range) {     // TODO: coord
+    let yIndex = bomb.y / tileSize;
+    let xIndex = bomb.x / tileSize;
+    let rX = (bomb.x + tileSize) / tileSize;
+    let lX = (bomb.x - tileSize) / tileSize;
+    let tY = (bomb.y - tileSize) / tileSize;
+    let bY = (bomb.y + tileSize) / tileSize;
     
-    let centerTile = [level[row][col]],
+    let centerTile = [level[xIndex][yIndex]],
         topTiles = [],
         leftTiles = [],
         rightTiles = [],
@@ -66,16 +65,16 @@ function getBombSurroundings(x, y, range) {
         let bottom = bY + i;
 
         if (top > 0) {
-            topTiles.push(level[row][top]);
+            topTiles.push(level[xIndex][top]);
         }
         if (left > 0) {
-            leftTiles.push(level[left][col]);
+            leftTiles.push(level[left][yIndex]);
         }
         if (right < 25) {
-            rightTiles.push(level[right][col]);
+            rightTiles.push(level[right][yIndex]);
         }
         if (bottom < 25) {
-            bottomTiles.push(level[row][bottom]);
+            bottomTiles.push(level[xIndex][bottom]);
         }
     }
     return [centerTile, topTiles, leftTiles, rightTiles, bottomTiles];
@@ -84,9 +83,10 @@ function getBombSurroundings(x, y, range) {
 function explode(bomb) {
     bomb.hasExploded = true;
     bomb.ticks = 0;
-    let tiles = getBombSurroundings(bomb.x, bomb.y, bomb.range);
+    let tiles = getBombSurroundings(bomb, bomb.range);
     chainExplosions(tiles);
     setTilesOnFire(tiles);
+    tilesWithBombs.splice(0, 1);
 }
 
 function chainExplosions(tiles) {
@@ -148,27 +148,25 @@ function animateExplosion(tile){
 ////////////////////
 // Render
 export function renderBombs() {
-    if (tilesWithBombs.length > 0) {
-        for (let i = 0; i < tilesWithBombs.length; i++) {
-            let currentTile = tilesWithBombs[i];
+    for (let i = 0; i < tilesWithBombs.length; i++) {
+        let currentTile = tilesWithBombs[i];
 
-            if (currentTile.bomb.ticks === 4) {
-                ctx.drawImage(spriteSheet, 0, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
-            }
-            else if (currentTile.bomb.ticks === 3) {
-                ctx.drawImage(spriteSheet, 32, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
-            }
-            else if (currentTile.bomb.ticks === 2) {
-                ctx.drawImage(spriteSheet, 64, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
-            }
-            else if (currentTile.bomb.ticks === 1) {
-                ctx.drawImage(spriteSheet, 96, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
-            }
-            // DEBUG MUSTA PISTE
-            else {
-                ctx.fillStyle = "#000";
-                ctx.fillRect(currentTile.bomb.x + 14, currentTile.bomb.y + 14, 4, 4);
-            }
+        if (currentTile.bomb.ticks === 4) {
+            ctx.drawImage(spriteSheet, 0, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
+        }
+        else if (currentTile.bomb.ticks === 3) {
+            ctx.drawImage(spriteSheet, 32, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
+        }
+        else if (currentTile.bomb.ticks === 2) {
+            ctx.drawImage(spriteSheet, 64, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
+        }
+        else if (currentTile.bomb.ticks === 1) {
+            ctx.drawImage(spriteSheet, 96, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
+        }
+        // DEBUG MUSTA PISTE
+        else {
+            ctx.fillStyle = "#000";
+            ctx.fillRect(currentTile.bomb.x + 14, currentTile.bomb.y + 14, 4, 4);
         }
     }
 }
