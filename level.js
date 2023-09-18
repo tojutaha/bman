@@ -3,8 +3,8 @@ import { drawCoordinates, coordsToggle } from "./page.js";
 
 export function renderLevel()
 {
-    for (let y = 0; y < levelHeight; y++) {
-        for (let x = 0; x < levelWidth; x++) {
+    for (let x = 0; x < levelWidth; x++) {
+        for (let y = 0; y < levelHeight; y++) {
             const xCoord = x * tileSize;
             const yCoord = y * tileSize;
             // Hard tiles
