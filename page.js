@@ -17,13 +17,13 @@ export function drawCoordinates(coordsToggle) {
     let pad = 3;
     
     if (coordsToggle) {
-        for (let y = 1; y < levelHeight -1; y++) {
-            for (let x = 1; x < levelWidth -1; x++) {
-                const xCoord = x * tileSize;
+        for (let x = 1; x < levelHeight -1; x++) {
+            for (let y = 1; y < levelWidth -1; y++) {
                 const yCoord = y * tileSize;
+                const xCoord = x * tileSize;
                 
-                ctx.fillText(`${xCoord},`, xCoord + pad, yCoord + pad);
-                ctx.fillText(`${yCoord}`, xCoord + pad, yCoord + pad + 12);
+                ctx.fillText(`${xCoord}`, yCoord + pad, xCoord + pad + 12);
+                ctx.fillText(`${yCoord},`, yCoord + pad, xCoord + pad);
             }
         }
     }

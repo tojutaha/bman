@@ -1,20 +1,20 @@
-import { ctx, level, tileSize, spriteSheet } from "./main.js";
+import { ctx, level, tileSize, spriteSheet, levelWidth } from "./main.js";
 import { player } from "./player.js";
 import { bombCountPowerUp } from "./powerup.js";
 import { getNeigbouringTiles_linear, getTileFromWorldLocation } from "./utils.js";
 
 // TODO: Pommit !walkable
  
-let maxBombs = 1;
-let maxRange = 1;
+let maxBombs = 3;
+let maxRange = 2;
 
 let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
 
-function Bomb(y, x, ticks, range) {     // TODO: coord
-    this.y = y || 0,
+function Bomb(x, y, ticks, range) {
     this.x = x || 0;
+    this.y = y || 0,
     this.ticks = ticks || 4;
     this.range = range || 1;
     this.hasExploded = false;
@@ -36,53 +36,78 @@ export function dropBomb() {
 
     if (tilesWithBombs.indexOf(currentTile) === -1 && tilesWithBombs.length < maxBombs) {
         if (!currentTile.bomb || currentTile.bomb.hasExploded === true) {
-            currentTile.bomb = new Bomb(currentTile.x, currentTile.y, 4, maxRange);    // TODO: coord
+            currentTile.bomb = new Bomb(currentTile.x, currentTile.y, 1, maxRange); // TICKS
             tilesWithBombs.push(currentTile);
+            console.log("Dropped", currentTile);
         }
     }
 }
 
-// TODO: tän voisi ehkä muokkailla sopivaksi utilsiin
-function getBombSurroundings(bomb, range) {     // TODO: coord
-    let yIndex = bomb.y / tileSize;
+// ORIG
+// function getBombSurroundings(bomb) {     // TODO: coord
+//     let xIndex = bomb.x / tileSize;
+//     let yIndex = bomb.y / tileSize;
+
+//     let rX = (bomb.x + tileSize) / tileSize;
+//     let lX = (bomb.x - tileSize) / tileSize;
+//     let tY = (bomb.y - tileSize) / tileSize;
+//     let bY = (bomb.y + tileSize) / tileSize;
+
+//     let centerTile = [level[xIndex][yIndex]],
+//         topTiles = [],
+//         leftTiles = [],
+//         rightTiles = [],
+//         bottomTiles = [];
+
+//     for (let i = 0; i <= bomb.range; i++) {
+//         let right = rX - i;
+//         let top = tY + i;
+//         let left = lX + i;
+//         let bottom = bY - i;
+//         // DROPPED 256, 32
+//         // if (top > 0) {
+//         //     topTiles.push(level[xIndex][top]);  // 256,32 | (tyhjä)
+//         // }
+//         // if (left > 0) {
+//         //     leftTiles.push(level[left][yIndex]); // 224,32 | 256,32 | (192,32 | 224,32)
+//         // }
+//         if (right < 25) {
+//             rightTiles.push(level[right][yIndex]); // 256,32 | 288,32 | (288,32 | 320,32)
+//             console.log(level[right][yIndex]);
+//         }
+//         // if (bottom < 25) {
+//         //     bottomTiles.push(level[xIndex][bottom]); // 256,32 | 256,64 | (256,64 | 256,96)
+//         // }
+//     }
+//     // console.log(topTiles)
+//     // console.log("T:", topTiles, "L:", leftTiles, "R:", rightTiles, "B:", bottomTiles);
+//     return [centerTile, topTiles, leftTiles, rightTiles, bottomTiles];
+// }
+
+function getBombSurroundings(bomb) {
     let xIndex = bomb.x / tileSize;
-    let rX = (bomb.x + tileSize) / tileSize;
-    let lX = (bomb.x - tileSize) / tileSize;
-    let tY = (bomb.y - tileSize) / tileSize;
-    let bY = (bomb.y + tileSize) / tileSize;
-    
+    let yIndex = bomb.y / tileSize;
+
     let centerTile = [level[xIndex][yIndex]],
         topTiles = [],
         leftTiles = [],
         rightTiles = [],
         bottomTiles = [];
-
-    for (let i = 0; i < range; i++) {
-        let right = rX + i;
-        let top = tY - i;
-        let left = lX - i;
-        let bottom = bY + i;
-
-        if (top > 0) {
-            topTiles.push(level[xIndex][top]);
-        }
-        if (left > 0) {
-            leftTiles.push(level[left][yIndex]);
-        }
-        if (right < 25) {
-            rightTiles.push(level[right][yIndex]);
-        }
-        if (bottom < 25) {
-            bottomTiles.push(level[xIndex][bottom]);
-        }
+    
+    for (let i = 0; i < bomb.range; i++) {
+        let rightHandSide = xIndex + i + 1;     // TODO: tähän jäätiin, tänne IF
+        rightTiles.push(level[xIndex + i + 1][yIndex])
+        console.log("R:", level[xIndex + i + 1][yIndex]);
     }
+
+    // console.log("T:", topTiles, "L:", leftTiles, "R:", rightTiles, "B:", bottomTiles);
     return [centerTile, topTiles, leftTiles, rightTiles, bottomTiles];
 }
 
 function explode(bomb) {
     bomb.hasExploded = true;
     bomb.ticks = 0;
-    let tiles = getBombSurroundings(bomb, bomb.range);
+    let tiles = getBombSurroundings(bomb);
     chainExplosions(tiles);
     setTilesOnFire(tiles);
     tilesWithBombs.splice(0, 1);
