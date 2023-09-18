@@ -109,7 +109,7 @@ function smoothMovementUpdatePlayer()
             // No pixel-perfect collisions pls
             const offset = 5;
 
-            if (!isWalkable(y, x) && // TODO: Miksi tämän pitää olla käänteinen..? :D
+            if (!isWalkable(x, y) &&
                 nextX + (player.w - offset) >= tileLeft &&
                 (nextX + offset) < tileRight &&
                 nextY + (player.h - offset) >= tileTop &&
@@ -120,7 +120,7 @@ function smoothMovementUpdatePlayer()
             }
 
             // Kopio ylemmästä
-            if (isDeadly(y, x) && // TODO: Myös käänteinen
+            if (isDeadly(x, y) &&
                 nextX + (player.w - offset) >= tileLeft &&
                 (nextX + offset) < tileRight &&
                 nextY + (player.h - offset) >= tileTop &&

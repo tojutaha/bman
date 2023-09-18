@@ -1,7 +1,7 @@
 import { ctx, level, tileSize, spriteSheet } from "./main.js";
 import { player } from "./player.js";
 import { bombCountPowerUp } from "./powerup.js";
-import { getTileFromWorldLocation } from "./utils.js";
+import { getNeigbouringTiles_linear, getTileFromWorldLocation } from "./utils.js";
 
 // TODO: Pommit !walkable
  
@@ -41,7 +41,6 @@ export function dropBomb() {
         }
     }
 }
-
 
 // TODO: tän voisi ehkä muokkailla sopivaksi utilsiin
 function getBombSurroundings(bomb, range) {     // TODO: coord
@@ -99,7 +98,7 @@ function chainExplosions(tiles) {
                     explode(currentTile.bomb);
                 };
         }
-    }          
+    }
 }
 
 function setTilesOnFire(tiles) {
