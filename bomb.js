@@ -28,16 +28,16 @@ function Bomb(x, y, ticks, range) {
 }
 
 export function dropBomb() {
-    let yCoord = Math.round(player.y / tileSize);
-    let xCoord = Math.round(player.x / tileSize);
+    let yIndex = Math.round(player.x / tileSize);
+    let xIndex = Math.round(player.y / tileSize);
     
-    let currentTile = level[yCoord][xCoord];
-    let yTile = yCoord * tileSize;
-    let xTile = xCoord * tileSize;
+    let currentTile = level[yIndex][xIndex];
+    let yTile = yIndex * tileSize;
+    let xTile = xIndex * tileSize;
 
     if (!currentTile.bomb || currentTile.bomb.hasExploded === true) {
-        currentTile.bomb = new Bomb(xTile, yTile, 4, 2);
-        console.log("Dropped", xCoord*tileSize, yCoord*tileSize);
+        currentTile.bomb = new Bomb(yTile, xTile, 4, 2);
+        console.log("Dropped", yTile, xTile);
 
         if (tilesWithBombs.indexOf(currentTile) === -1) {
             tilesWithBombs.push(currentTile);
@@ -78,7 +78,6 @@ function getBombSurroundings(x, y, range) {
             bottomTiles.push(level[row][bottom]);
         }
     }
-    // console.log("left", leftTiles, "right", rightTiles);
     return [centerTile, topTiles, leftTiles, rightTiles, bottomTiles];
 }
 
