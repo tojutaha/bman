@@ -1,12 +1,15 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight } from "./main.js";
 import { player } from "./player.js";
 import { bombCountPowerUp } from "./powerup.js";
-import { getNeigbouringTiles_linear, getTileFromWorldLocation } from "./utils.js";
+import { getTileFromWorldLocation } from "./utils.js";
 
-// TODO: Pommit !walkable
+// TODO : Pommit !walkable
+//      : Lieskojen animointi
  
-let maxBombs = 3;
-let maxRange = 2;
+// Powerup variables
+let maxBombs = 4;
+let maxRange = 3;
+let currentTicks = 4;
 
 let tilesWithBombs = [];
 let crumblingWalls = [];
@@ -36,9 +39,9 @@ export function dropBomb() {
 
     if (tilesWithBombs.indexOf(currentTile) === -1 && tilesWithBombs.length < maxBombs) {
         if (!currentTile.bomb || currentTile.bomb.hasExploded === true) {
-            currentTile.bomb = new Bomb(currentTile.x, currentTile.y, 1, maxRange); // TICKS
+            currentTile.bomb = new Bomb(currentTile.x, currentTile.y, currentTicks, maxRange);
+            // currentTile.isWalkable = false;         // TODO: walkable
             tilesWithBombs.push(currentTile);
-            console.log("Dropped", currentTile);
         }
     }
 }
@@ -83,21 +86,22 @@ function getBombSurroundings(bomb) {
 function explode(bomb) {
     bomb.hasExploded = true;
     bomb.ticks = 0;
+    tilesWithBombs.splice(0, 1);
+
     let tiles = getBombSurroundings(bomb);
     chainExplosions(tiles);
     setTilesOnFire(tiles);
-    tilesWithBombs.splice(0, 1);
 }
 
 function chainExplosions(tiles) {
-    // Tiles[0] is the center, thus i = 1
+    // Tiles[0] is the center, not necessary to iterate over it
     for (let i = 1; i < tiles.length; i++) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
                 if ("bomb" in currentTile && currentTile.bomb.hasExploded === false) {
                     console.info(tiles[0][0].x, tiles[0][0].y, "chained",  currentTile.x, currentTile.y);
                     explode(currentTile.bomb);
-                };
+                }
         }
     }
 }
@@ -109,7 +113,7 @@ function setTilesOnFire(tiles) {
                 
                 if (currentTile.type === "NonDestructibleWall") {
                     break;
-                };
+                }
                 
                 animateExplosion(currentTile);
                 if (currentTile.type === "DestructibleWall") {
@@ -124,7 +128,7 @@ function setTilesOnFire(tiles) {
                         fieryFloors.push(currentTile);
                     };
                     currentTile.isDeadly = true;
-                };
+                }
         }
     }
 }
@@ -163,11 +167,6 @@ export function renderBombs() {
         else if (currentTile.bomb.ticks === 1) {
             ctx.drawImage(spriteSheet, 96, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
         }
-        // DEBUG MUSTA PISTE
-        else {
-            ctx.fillStyle = "#000";
-            ctx.fillRect(currentTile.bomb.x + 14, currentTile.bomb.y + 14, 4, 4);
-        }
     }
 }
 
@@ -175,13 +174,13 @@ export function renderExplosions() {
     if (crumblingWalls.length > 0) {
         crumblingWalls.forEach(wall => {
             if (wall.animationTimer === 3) {
-                ctx.drawImage(spriteSheet, 64, 0, 32, 32, wall.y, wall.x, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, 64, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
             }
             else if (wall.animationTimer === 2) {
-                ctx.drawImage(spriteSheet, 96, 0, 32, 32, wall.y, wall.x, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, 96, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
             }
             else if (wall.animationTimer === 1) {
-                ctx.drawImage(spriteSheet, 128, 0, 32, 32, wall.y, wall.x, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, 128, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
             }
         })
     }
@@ -189,7 +188,7 @@ export function renderExplosions() {
     if (fieryFloors.length > 0) {       // TODO: Animoi lieskat
         fieryFloors.forEach(floor => {
             if (floor.animationTimer > 0) {
-                ctx.drawImage(spriteSheet, 128, 32, 32, 32, floor.y, floor.x, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, 128, 32, 32, 32, floor.x, floor.y, tileSize, tileSize);
             }
         })
     }
