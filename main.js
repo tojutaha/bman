@@ -2,7 +2,7 @@
 // Imports
 import { createTiles } from "./tile.js";
 import { createPowerups } from "./powerup.js";
-import { renderLevel } from "./level.js";
+import { renderWalls, renderFloor } from "./level.js";
 import { renderPowerups } from "./powerup.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
@@ -38,8 +38,9 @@ function Render(timeStamp)
     deltaTime = (timeStamp - lastTimeStamp) / 1000;
     const fps = 1 / deltaTime;
 
-    renderLevel();
+    renderFloor();
     renderPowerups();
+    renderWalls();
     renderEnemies();
     renderBombs();
     renderExplosions();
@@ -70,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function ()
         ctx = canvas.getContext("2d");
         if (ctx) {
             level = createTiles();
-            powerups = createPowerups(level);
             if (level.length > 0) {
                 spawnEnemies();
             } else {

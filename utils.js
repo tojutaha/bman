@@ -20,6 +20,16 @@ export function isDeadly(x, y)
     return level[x][y].isDeadly;
 }
 
+export function hasPowerup(x, y)
+{
+    if (x < 0 || x >= levelWidth ||
+        y < 0 || y >= levelHeight) {
+        return false;
+    }
+
+    return level[x][y].hasPowerup;
+}
+
 // Palauttaa etäisyyden kahden laatan välillä (manhattan distance)
 export function getDistanceTo(from, to)
 {

@@ -1,16 +1,19 @@
 import { canvas, ctx, tileSize, levelHeight, levelWidth, softTilePercent, powerUpCount } from "./main.js";
 
+// TODO: Säätää poweruppien ja softblokkien rändömöinti
+
 const TileType = {
     FLOOR: "Floor",
     NON_DESTRUCTIBLE_WALL: "NonDestructibleWall",
     DESTRUCTIBLE_WALL: "DestructibleWall",
 };
 
-function Tile(x, y, isWalkable, isDeadly, type) {
+function Tile(x, y, isWalkable, isDeadly, hasPowerup, type) {
     this.x = x || 0,
     this.y = y || 0,
     this.isWalkable = isWalkable || false,
     this.isDeadly = isDeadly || false,
+    this.hasPowerup = hasPowerup || false;
     this.type = type || TileType.FLOOR
     // tekstuurit jne vois laitella myös tänne.
 };
@@ -18,6 +21,7 @@ function Tile(x, y, isWalkable, isDeadly, type) {
 export function createTiles()
 {
     const result = [];
+    let powerupsLeft = powerUpCount;
 
     for (let x = 0; x < levelWidth; x++) {
         const column = [];
@@ -27,11 +31,11 @@ export function createTiles()
 
             // Outer walls
             if (x === 0 || y === 0 || x === levelWidth - 1 || y === levelHeight - 1) {
-                column.push(new Tile(xCoord, yCoord, false, false, TileType.NON_DESTRUCTIBLE_WALL));
+                column.push(new Tile(xCoord, yCoord, false, false, false, TileType.NON_DESTRUCTIBLE_WALL));
             } 
             // Hard tiles
             else if (x % 2 === 0 && y % 2 === 0) {
-                column.push(new Tile(xCoord, yCoord, false, false, TileType.NON_DESTRUCTIBLE_WALL));
+                column.push(new Tile(xCoord, yCoord, false, false, false, TileType.NON_DESTRUCTIBLE_WALL));
             }
             // Soft tiles and floor
             else {
@@ -43,10 +47,17 @@ export function createTiles()
                     && (x < 22 || y > 2) // bottom left
                     && (x < 22 || y < 22)) // bottom right
                     {
-                    column.push(new Tile(xCoord, yCoord, false, false, TileType.DESTRUCTIBLE_WALL));
+                    // Populating random powerups behind some walls
+                    if (powerupsLeft > 0 && random < 0.9) { // TODO: säädä rändömöinti
+                        column.push(new Tile(xCoord, yCoord, false, false, true, TileType.DESTRUCTIBLE_WALL));
+                        console.log("Powerup in", xCoord, yCoord);
+                        powerupsLeft--;
+                    } else {
+                        column.push(new Tile(xCoord, yCoord, false, false, false, TileType.DESTRUCTIBLE_WALL));
+                    }
                 }
                 else {
-                    column.push(new Tile(xCoord, yCoord, true, false, TileType.FLOOR));
+                    column.push(new Tile(xCoord, yCoord, true, false, false, TileType.FLOOR));
                 }
             }
         }

@@ -1,7 +1,7 @@
 import { canvas, ctx, tileSize, levelHeight, levelWidth, level, powerups, spriteSheet } from "./main.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 
-export function renderLevel()
+export function renderWalls()
 {
     for (let x = 0; x < levelWidth; x++) {
         for (let y = 0; y < levelHeight; y++) {
@@ -15,20 +15,23 @@ export function renderLevel()
             else if (level[x][y].type === "DestructibleWall") {
                 ctx.drawImage(spriteSheet, 32, 0, 32, 32, xCoord, yCoord, tileSize, tileSize);
             }
-            // Floor
-            else if (level[x][y].type === "Floor") {
-                ctx.fillStyle = "#4192c3";
-                ctx.fillRect(xCoord, yCoord, tileSize, tileSize);
-            }
         }
     }
 
     drawCoordinates(coordsToggle);
 }
 
-export function renderPowerups()
+export function renderFloor()
 {
-    for (let i = 0; i < powerups.length; i++) {
-        ctx.drawImage(spriteSheet, 0, 128, 32, 32, powerups[i].x, powerups[i].y, tileSize, tileSize);
+    for (let x = 0; x < levelWidth; x++) {
+        for (let y = 0; y < levelHeight; y++) {
+            const xCoord = x * tileSize;
+            const yCoord = y * tileSize;
+
+            if (level[x][y].type === "Floor") {
+                ctx.fillStyle = "#4192c3";
+                ctx.fillRect(xCoord, yCoord, tileSize, tileSize);
+            }
+        }
     }
 }

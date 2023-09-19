@@ -1,6 +1,6 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet } from "./main.js";
 import { dropBomb } from "./bomb.js";
-import { isDeadly, isWalkable } from "./utils.js";
+import { isDeadly, isWalkable, hasPowerup } from "./utils.js";
 
 
 
@@ -119,14 +119,24 @@ function smoothMovementUpdatePlayer()
                 collides = true;
             }
 
-            // Kopio ylemmästä
             if (isDeadly(x, y) &&
                 nextX + (player.w - offset) >= tileLeft &&
                 (nextX + offset) < tileRight &&
                 nextY + (player.h - offset) >= tileTop &&
                 (nextY + offset) < tileBottom
             ) {
-                console.log("IT BURNS!");
+                console.info("DEATH BY TILE");
+            }
+
+            // No picking up from just touching the walls
+            const pickupOffset = 3;
+            if (hasPowerup(x, y) &&
+                nextX + (player.w - offset - pickupOffset) >= tileLeft &&
+                (nextX + offset + pickupOffset) < tileRight &&
+                nextY + (player.h - offset - pickupOffset) >= tileTop &&
+                (nextY + offset + pickupOffset) < tileBottom
+            ) {
+                console.info("PICK");
             }
         }
     }
