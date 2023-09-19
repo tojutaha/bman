@@ -30,19 +30,20 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 ////////////////////
 // Render
 let lastTimeStamp = 0;
+export let deltaTime = 16.6; // ~60fps alkuun..
 function Render(timeStamp)
 {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const deltaTime = (timeStamp - lastTimeStamp) / 1000;
+    deltaTime = (timeStamp - lastTimeStamp) / 1000;
     const fps = 1 / deltaTime;
 
     renderLevel();
     renderPowerups();
-    renderEnemies(deltaTime);
+    renderEnemies();
     renderBombs();
     renderExplosions();
-    renderPlayer(deltaTime);
+    renderPlayer();
 
     // 
     ctx.fillStyle = "#a2f3a2";
