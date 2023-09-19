@@ -48,13 +48,6 @@ class Queue
     }
 }
 
-const pathRequest = {
-    requester: null,
-    start: 0,
-    target: 0,
-    path: [],
-};
-
 const pathFindQueue = new Queue();
 
 function processQueue()
@@ -76,12 +69,13 @@ function processQueue()
 
 function processData(requester)
 {
-    //console.log("processing: ", JSON.stringify(requester));
     //console.log("processing: ", requester);
 
+    //console.time('astar');
     requester.enemy.currentPath = astar(requester.enemy.useDiagonalMovement,
                                   requester.start,
                                   requester.target);
+    //console.timeEnd('astar');
     requester.enemy.startMove();
 }
 

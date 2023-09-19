@@ -113,7 +113,7 @@ class Enemy
             this.x = loc.x;
             this.y = loc.y;
 
-            if (this.x == player.x && this.y == player.y) {
+            if (getDistanceTo(this, player) < tileSize) {
                 console.log("reached player");
                 //clearInterval(timer);
             }
