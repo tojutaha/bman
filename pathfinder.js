@@ -2,17 +2,105 @@ import { canvas, ctx, level, levelHeight, levelWidth, tileSize } from "./main.js
 import { enemies } from "./enemy.js";
 import { getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, getNeigbouringTiles_linear, getNeigbouringTiles_diagonal } from "./utils.js";
 
+class Queue
+{
+    constructor() {
+        this.items = [];
+    }
+
+    enqueue(item) {
+        this.items.push(item);
+    }
+
+    dequeue() {
+        if (this.isEmpty()) {
+            return null;
+        }
+
+        const item = this.items.shift(); // Get the first item
+        const { data, callback } = item;
+
+        // Execute the function associated with the item, if it exists
+        if (typeof callback === 'function') {
+            callback(data);
+        }
+
+        return item;
+    }
+
+    peek() {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.items[0].data;
+    }
+
+    isEmpty() {
+        return this.items.length === 0;
+    }
+
+    size() {
+        return this.items.length;
+    }
+
+    clear() {
+        this.items = [];
+    }
+}
+
+const pathRequest = {
+    requester: null,
+    start: 0,
+    target: 0,
+    path: [],
+};
+
+const pathFindQueue = new Queue();
+
+function processQueue()
+{
+    if (!pathFindQueue.isEmpty()) {
+        const item = pathFindQueue.dequeue();
+        const next = pathFindQueue.peek();
+        //console.log(`Processing: ${JSON.stringify(item.data)}`);
+        //console.log(`Next to process: ${next}`);
+
+        processQueue();
+    }
+    /*
+    else {
+        console.log("Queue is empty.");
+    }
+    */
+}
+
+function processData(requester)
+{
+    //console.log("processing: ", JSON.stringify(requester));
+    //console.log("processing: ", requester);
+
+    requester.enemy.currentPath = astar(requester.enemy.useDiagonalMovement,
+                                  requester.start,
+                                  requester.target);
+    requester.enemy.startMove();
+}
+
 export function requestPath(requester, startLoc, targetLoc)
 {
-    // TODO: queue systeemi..?
+    const request = {enemy: requester, start: startLoc, target: targetLoc};
+    pathFindQueue.enqueue({data: request, callback: processData});
+    //console.log("Size:", pathFindQueue.size());
+    processQueue();
 
+    /*
     requester.currentPath = astar(requester.useDiagonalMovement,
                                   startLoc,
                                   {x: targetLoc.x, y: targetLoc.y});
     requester.startMove();
+    */
 }
 
-export function astar(useDiagonalMovement, start, target)
+function astar(useDiagonalMovement, start, target)
 {
     const getNeigbouringTiles = useDiagonalMovement ? getNeigbouringTiles_diagonal : getNeigbouringTiles_linear;
 

@@ -188,6 +188,7 @@ export function spawnEnemies()
 {
     const movementValues = Object.values(movementMode);
     const amount = movementValues.length;
+    //const amount = 100;
     const maxRadius = 25*tileSize;
     const minRadius = 10*tileSize;
 
@@ -196,11 +197,17 @@ export function spawnEnemies()
                                                        y: player.y},
                                                        minRadius, maxRadius);
         const enemy = new Enemy(random.x, random.y, 32, 32);
-        enemy.setMovementMode(movementValues[i]);
+        let colIndex = i;
+        enemy.setMovementMode(movementValues[colIndex]);
         enemy.setDebugColors();
+        //enemy.color = getRandomColor();
         enemy.pathColor = getRandomColor();
         enemy.init();
         enemies.push(enemy);
+
+        if (colIndex > movementValues.length) {
+            colIndex = 0;
+        }
     }
 }
 
