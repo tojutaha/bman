@@ -1,9 +1,9 @@
 ////////////////////
 // Imports
 import { createTiles } from "./tile.js";
-import { createPowerups } from "./tile.js"; // TODO: Antaa virhettä jos saman funktion importtaa powerup.js?
+import { createPowerups } from "./powerup.js";
 import { renderLevel } from "./level.js";
-import { renderPowerups } from "./level.js"; // sama tässä
+import { renderPowerups } from "./powerup.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
