@@ -1,6 +1,6 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight } from "./main.js";
 import { player } from "./player.js";
-import { bombCountPowerUp } from "./powerup.js";
+// import { bombCountPowerUp } from "./powerup.js";
 import { getTileFromWorldLocation } from "./utils.js";
 
 // TODO : Pommit !walkable

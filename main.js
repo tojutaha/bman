@@ -1,7 +1,9 @@
 ////////////////////
 // Imports
-import { renderLevel } from "./level.js";
 import { createTiles } from "./tile.js";
+import { createPowerups } from "./tile.js"; // TODO: Antaa virhettä jos saman funktion importtaa powerup.js?
+import { renderLevel } from "./level.js";
+import { renderPowerups } from "./level.js"; // sama tässä
 import { renderPlayer } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
@@ -11,6 +13,7 @@ import { renderBombs, renderExplosions } from "./bomb.js";
 export let canvas;
 export let ctx;
 export let level = [];
+export let powerups = [];
 
 ////////////////////
 // Settings
@@ -18,6 +21,7 @@ export const tileSize = 32;
 export const levelWidth = 25;
 export const levelHeight = 25;
 export const softTilePercent = 0.1;
+export const powerUpCount = 3;
 
 ////////////////////
 // Assets
@@ -34,10 +38,11 @@ function Render(timeStamp)
     const fps = 1 / deltaTime;
 
     renderLevel();
-    renderPlayer(deltaTime);
+    renderPowerups();
     renderEnemies(deltaTime);
     renderBombs();
     renderExplosions();
+    renderPlayer(deltaTime);
 
     // 
     ctx.fillStyle = "#a2f3a2";
@@ -64,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function ()
         ctx = canvas.getContext("2d");
         if (ctx) {
             level = createTiles();
+            powerups = createPowerups(level);
             if (level.length > 0) {
                 spawnEnemies();
             } else {

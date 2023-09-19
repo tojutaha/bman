@@ -1,4 +1,4 @@
-import { canvas, ctx, tileSize, levelHeight, levelWidth, level, spriteSheet } from "./main.js";
+import { canvas, ctx, tileSize, levelHeight, levelWidth, level, powerups, spriteSheet } from "./main.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 
 export function renderLevel()
@@ -24,4 +24,11 @@ export function renderLevel()
     }
 
     drawCoordinates(coordsToggle);
+}
+
+export function renderPowerups()
+{
+    for (let i = 0; i < powerups.length; i++) {
+        ctx.drawImage(spriteSheet, 0, 128, 32, 32, powerups[i].x, powerups[i].y, tileSize, tileSize);
+    }
 }
