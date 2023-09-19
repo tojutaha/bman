@@ -113,37 +113,32 @@ class Enemy
             this.x = loc.x;
             this.y = loc.y;
 
-            if (this.movementMode == movementMode.FOLLOW) {
-                if (this.x == player.x && this.y == player.y) {
-                    console.log("reached player");
-                    clearInterval(timer);
-                }
+            if (this.x == player.x && this.y == player.y) {
+                console.log("reached player");
+                //clearInterval(timer);
             }
 
             index++;
 
             if (index >= this.currentPath.length) {
 
+                clearInterval(timer);
                 switch(this.movementMode) {
                     case movementMode.IDLE:
                         // Nothing to do
-                        clearInterval(timer);
                         this.currentPath.length = 0;
                         break;
                     case movementMode.ROAM:
                         // Randomly roam around map
-                        clearInterval(timer);
                         this.currentPath.length = 0;
                         this.roam();
                         break;
                     case movementMode.PATROL:
                         // Patrol between two points
-                        clearInterval(timer);
                         this.patrol();
                         break;
                     case movementMode.FOLLOW:
                         // Follow player
-                        clearInterval(timer);
                         this.currentPath.length = 0;
                         this.followPlayer();
                         break;
@@ -159,7 +154,7 @@ class Enemy
     }
 
     patrol() {
-        if (this.currentPath.length == 0) {
+        if (!this.currentPath || this.currentPath.length == 0) {
             this.getRandomPath();
             requestPath(this, this.getLocation(), this.targetLocation);
         } else {
