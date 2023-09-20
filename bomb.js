@@ -119,12 +119,12 @@ function setTilesOnFire(tiles) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
                 
-                if (currentTile.type === "NonDestructibleWall") {
+                if (currentTile.type === "HardWall") {
                     break;
                 }
                 
                 animateExplosion(currentTile);
-                if (currentTile.type === "DestructibleWall") {
+                if (currentTile.type === "SoftWall") {
                     if (crumblingWalls.indexOf(currentTile) === -1) {
                         crumblingWalls.push(currentTile);
                     }

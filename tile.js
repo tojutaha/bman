@@ -1,12 +1,12 @@
 import { canvas, ctx, tileSize, levelHeight, levelWidth, softTilePercent, powerUpCount } from "./main.js";
 import { randomPowerup } from "./powerup.js";
 
-// TODO: Säätää poweruppien ja softblokkien rändömöinti
+const cagePlayers = false;
 
 const TileType = {
     FLOOR: "Floor",
-    NON_DESTRUCTIBLE_WALL: "NonDestructibleWall",
-    DESTRUCTIBLE_WALL: "DestructibleWall",
+    HARD_WALL: "HardWall",
+    SOFT_WALL: "SoftWall",
 };
 
 function Tile(x, y, isWalkable, isDeadly, hasPowerup, powerup, type) {
@@ -20,10 +20,9 @@ function Tile(x, y, isWalkable, isDeadly, hasPowerup, powerup, type) {
     // tekstuurit jne vois laitella myös tänne.
 };
 
-export function createTiles()
-{
+export function createTiles() {
     const result = [];
-    let powerupsLeft = powerUpCount;
+    let hardWallTotal = 0;
 
     for (let x = 0; x < levelWidth; x++) {
         const column = [];
@@ -33,38 +32,107 @@ export function createTiles()
 
             // Outer walls
             if (x === 0 || y === 0 || x === levelWidth - 1 || y === levelHeight - 1) {
-                column.push(new Tile(xCoord, yCoord, false, false, false, "None", TileType.NON_DESTRUCTIBLE_WALL));
+                column.push(new Tile(xCoord, yCoord, false, false, false, "None", TileType.HARD_WALL));
+                hardWallTotal++;
             } 
             // Hard tiles
             else if (x % 2 === 0 && y % 2 === 0) {
-                column.push(new Tile(xCoord, yCoord, false, false, false, "None", TileType.NON_DESTRUCTIBLE_WALL));
+                column.push(new Tile(xCoord, yCoord, false, false, false, "None", TileType.HARD_WALL));
+                hardWallTotal++;
             }
-            // Soft tiles and floor
+            // Floor
             else {
-                let random = Math.random();
-                // Corners are left free from blocks
-                if (random < softTilePercent 
-                    && (x > 2 || y > 2) // top left
-                    && (x > 2 || y < 22) // top right
-                    && (x < 22 || y > 2) // bottom left
-                    && (x < 22 || y < 22)) // bottom right
-                    {
-                    // Populating random powerups behind some walls
-                    if (powerupsLeft > 0 && random < 0.05) { // TODO: säädä rändömöinti
-                        const powerup = randomPowerup();
-                        powerupsLeft--;
-                        // console.log(powerup, "in", xCoord, yCoord);
-                        column.push(new Tile(xCoord, yCoord, false, false, true, powerup, TileType.DESTRUCTIBLE_WALL));
-                    } else {
-                        column.push(new Tile(xCoord, yCoord, false, false, false, "None", TileType.DESTRUCTIBLE_WALL));
-                    }
-                }
-                else {
-                    column.push(new Tile(xCoord, yCoord, true, false, false, "None", TileType.FLOOR));
-                }
+                column.push(new Tile(xCoord, yCoord, true, false, false, "None", TileType.FLOOR));
             }
         }
         result.push(column);
     }
+
+    let softWallTotal = createSoftWalls(result, hardWallTotal);
+    createPowerups(result, softWallTotal);
+
     return result;
+}
+
+function createSoftWalls(result, hardWallTotal) {
+    let softWallTotal = 0;
+    
+    const EMPTY_CORNERS = 12;
+    let floorLeft = levelHeight * levelWidth - hardWallTotal - EMPTY_CORNERS;
+    let softWallsLeft = Math.floor(floorLeft * softTilePercent);
+    
+    if (cagePlayers) {
+        createCage(result);
+        softWallTotal += 8;
+    }
+    
+    while (softWallsLeft > 0) {
+        const x = Math.floor(Math.random() * levelWidth);
+        const y = Math.floor(Math.random() * levelHeight);
+        const tile = result[x][y];
+
+        if (tile.type === "Floor"
+            // Leave floor for the corners so the players can move
+            && (x > 2 || y > 2) // top left
+            && (x > 2 || y < levelHeight - 3) // top right
+            && (x < levelWidth - 3 || y > 2) // bottom left
+            && (x < levelWidth - 3 || y < levelHeight - 3)) // bottom right) 
+        {
+            tile.type = "SoftWall";
+            tile.isWalkable = false;
+            softWallsLeft--;
+            softWallTotal++;
+        }
+    }
+    return softWallTotal;
+}
+
+// Add power-ups to behind random soft walls
+function createPowerups(result, softWallCount) {
+    let powerupsLeft = 0;
+    // This is there for safety
+    if (powerUpCount > softWallCount) {
+        powerupsLeft = softWallCount;
+    } else {
+        powerupsLeft = powerUpCount;
+    }
+
+    while (powerupsLeft > 0) {
+        const x = Math.floor(Math.random() * levelWidth);
+        const y = Math.floor(Math.random() * levelHeight);
+        const tile = result[x][y];
+
+        if (tile.type === "SoftWall" && tile.hasPowerup === false) {
+            tile.powerup = randomPowerup();
+            tile.hasPowerup = randomPowerup();
+            powerupsLeft--;
+        }
+    }
+}
+
+// Creates two soft wall tiles to make the player spawn safe
+function createCage(result) {
+    // Top right corner
+    result[3][1].type = "SoftWall";
+    result[3][1].isWalkable = false;
+    result[1][3].type = "SoftWall";
+    result[1][3].isWalkable = false;
+
+    // Top left corner
+    result[levelWidth - 4][1].type = "SoftWall";
+    result[levelWidth - 4][1].isWalkable = false;
+    result[levelWidth - 2][3].type = "SoftWall";
+    result[levelWidth - 2][3].isWalkable = false;
+
+    // Bottom left corner
+    result[3][levelHeight - 2].type = "SoftWall";
+    result[3][levelHeight - 2].isWalkable = false;
+    result[1][levelHeight - 4].type = "SoftWall";
+    result[1][levelHeight - 4].isWalkable = false;
+    
+    // Bottom right corner
+    result[levelWidth - 4][levelHeight - 2].type = "SoftWall";
+    result[levelWidth - 4][levelHeight - 2].isWalkable = false;
+    result[levelWidth - 2][levelHeight - 4].type = "SoftWall";
+    result[levelWidth - 2][levelHeight - 4].isWalkable = false;
 }

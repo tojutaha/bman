@@ -8,11 +8,11 @@ export function renderWalls()
             const xCoord = x * tileSize;
             const yCoord = y * tileSize;
             // Hard tiles
-            if (level[x][y].type === "NonDestructibleWall") {
+            if (level[x][y].type === "HardWall") {
                 ctx.drawImage(spriteSheet, 0, 0, 32, 32, xCoord, yCoord, tileSize, tileSize);
             }
             // Soft tiles
-            else if (level[x][y].type === "DestructibleWall") {
+            else if (level[x][y].type === "SoftWall") {
                 ctx.drawImage(spriteSheet, 32, 0, 32, 32, xCoord, yCoord, tileSize, tileSize);
             }
         }
