@@ -1,15 +1,23 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight } from "./main.js";
 import { player } from "./player.js";
-// import { bombCountPowerUp } from "./powerup.js";
 import { getTileFromWorldLocation } from "./utils.js";
 
 // TODO : Pommit !walkable
 //      : Lieskojen animointi
  
 // Powerup variables
-let maxBombs = 4;
-let maxRange = 3;
+export let maxBombs = 1;
+export let maxRange = 1;
 let currentTicks = 4;
+
+export function setMaxBombs(value) {
+    maxBombs = value;
+}
+
+export function setMaxRange(value) {
+    maxRange = value;
+}
+
 
 let tilesWithBombs = [];
 let crumblingWalls = [];
@@ -119,15 +127,18 @@ function setTilesOnFire(tiles) {
                 if (currentTile.type === "DestructibleWall") {
                     if (crumblingWalls.indexOf(currentTile) === -1) {
                         crumblingWalls.push(currentTile);
-                    };
+                    }
                     currentTile.type = "Floor";
                     break;
                 }
                 else if (currentTile.type === "Floor") {
                     if (fieryFloors.indexOf(currentTile) === -1) {
                         fieryFloors.push(currentTile);
-                    };
+                    }
                     currentTile.isDeadly = true;
+                    if (currentTile.hasPowerup) {
+                        currentTile.hasPowerup = false;
+                    }
                 }
         }
     }

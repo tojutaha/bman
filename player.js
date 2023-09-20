@@ -1,5 +1,6 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet } from "./main.js";
 import { dropBomb } from "./bomb.js";
+import { pickPowerup } from "./powerup.js";
 import { isDeadly, isWalkable, hasPowerup } from "./utils.js";
 
 
@@ -16,7 +17,11 @@ const useGridMovement = false;
 const gridMovementSpeed = 125; // interval / ms
 let initialMove = true;
 
-const smoothMovementSpeed = 1; // pixels/s
+export let smoothMovementSpeed = 1.0; // pixels/s
+
+export function setMovementSpeed(value) {
+    smoothMovementSpeed = value;
+}
 
 export const player = {
     x: 32, // start from top left corner
@@ -136,7 +141,7 @@ function smoothMovementUpdatePlayer()
                 nextY + (player.h - offset - pickupOffset) >= tileTop &&
                 (nextY + offset + pickupOffset) < tileBottom
             ) {
-                console.info("PICK");
+                pickPowerup(level[x][y]);
             }
         }
     }

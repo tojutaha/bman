@@ -1,4 +1,4 @@
-import { canvas, ctx, tileSize, levelHeight, levelWidth, level, powerups, spriteSheet } from "./main.js";
+import { canvas, ctx, tileSize, levelHeight, levelWidth, level, spriteSheet } from "./main.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 
 export function renderWalls()

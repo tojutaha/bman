@@ -1,7 +1,6 @@
 ////////////////////
 // Imports
 import { createTiles } from "./tile.js";
-import { createPowerups } from "./powerup.js";
 import { renderWalls, renderFloor } from "./level.js";
 import { renderPowerups } from "./powerup.js";
 import { renderPlayer } from "./player.js";
@@ -13,7 +12,6 @@ import { renderBombs, renderExplosions } from "./bomb.js";
 export let canvas;
 export let ctx;
 export let level = [];
-export let powerups = [];
 
 ////////////////////
 // Settings
@@ -21,7 +19,7 @@ export const tileSize = 32;
 export const levelWidth = 25;
 export const levelHeight = 25;
 export const softTilePercent = 0.1;
-export const powerUpCount = 3;
+export const powerUpCount = 5;
 
 ////////////////////
 // Assets
@@ -39,8 +37,8 @@ function Render(timeStamp)
     const fps = 1 / deltaTime;
 
     renderFloor();
-    renderPowerups();
     renderWalls();
+    renderPowerups();
     renderEnemies();
     renderBombs();
     renderExplosions();
