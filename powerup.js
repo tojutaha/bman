@@ -9,7 +9,6 @@ export function randomPowerup() {
 }
 
 export function pickPowerup(tile) {
-    console.info("Picked", tile.powerup, "from", tile.x, tile.y);
     tile.hasPowerup = false;
 
     if (tile.powerup === "ExtraBomb") {

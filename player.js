@@ -5,6 +5,7 @@ import { isDeadly, isWalkable, hasPowerup } from "./utils.js";
 
 
 
+// TODO: säätää pommien collision
 // TODO: Bugi: Grid movement, jos rämpyttää liikkumis-nappeja, pelaaja voi liikkua nopeammin kuin on tarkoitus.
 // TODO: deltaTime smoothMovementtiin
 
