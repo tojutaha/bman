@@ -1,7 +1,11 @@
-import { canvas, ctx, level, levelHeight, levelWidth, tileSize } from "./main.js";
+import { canvas, ctx, deltaTime, level, levelHeight, levelWidth, tileSize } from "./main.js";
 import { player } from "./player.js";
-import { getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
+import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
 import { requestPath, drawPath } from "./pathfinder.js";
+
+// TODO: Tän vois siirtää muutujaksi enemyyn,
+//       niin voi olla vihuja jotka liikkuu eri nopeudella
+const interval = 500;
 
 const movementMode = {
     IDLE: "Idle",
@@ -24,6 +28,11 @@ class Enemy
         this.targetLocation = {x: 0, y: 0};
         this.useDiagonalMovement = false;
         this.movementMode = newMovementMode || movementMode.ROAM;
+
+        // Rendering:
+        this.renderX = this.x;
+        this.renderY = this.y;
+        this.t = 0;
 
         // Debug colors:
         this.color = "#ff00ff";
@@ -112,15 +121,28 @@ class Enemy
 
             this.x = loc.x;
             this.y = loc.y;
+            this.t = 0;
 
             if (getDistanceTo(this, player) < tileSize) {
                 console.log("reached player");
                 //clearInterval(timer);
             }
 
+            // Smoother rendering
+            let renderIndex = index + 1;
+            if (renderIndex < this.currentPath.length) {
+                const renderLoc = this.currentPath[renderIndex]
+                this.renderX = renderLoc.x;
+                this.renderY = renderLoc.y;
+            }
+
             index++;
 
+            
             if (index >= this.currentPath.length) {
+
+                this.renderX = this.x;
+                this.renderY = this.y;
 
                 clearInterval(timer);
                 switch(this.movementMode) {
@@ -145,7 +167,7 @@ class Enemy
                 }
             }
 
-        }, 500);
+        }, interval);
     }
 
     roam() {
@@ -188,7 +210,7 @@ export function spawnEnemies()
 {
     const movementValues = Object.values(movementMode);
     const amount = movementValues.length;
-    //const amount = 100;
+    //const amount = 1;
     const maxRadius = 25*tileSize;
     const minRadius = 10*tileSize;
 
@@ -211,11 +233,31 @@ export function spawnEnemies()
     }
 }
 
-export function renderEnemies(dt)
+export function renderEnemies()
 {
+    if (isNaN(deltaTime)) {
+        return;
+    }
+    
     enemies.forEach(enemy => {
         ctx.fillStyle = enemy.color;
-        ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+        //ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+
+        if (!enemy.t) {
+            enemy.t = 0;
+        }
+        
+        enemy.t += deltaTime * (1 / (interval / 1000));
+
+        const x = lerp(enemy.x, enemy.renderX, enemy.t);
+        const y = lerp(enemy.y, enemy.renderY, enemy.t);
+
+        if (enemy.t >= 1) {
+            enemy.t = 0;
+        }
+
+        //ctx.fillStyle = "#00ff00";
+        ctx.fillRect(x, y, enemy.w, enemy.h);
     });
 
     //

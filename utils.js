@@ -30,6 +30,15 @@ export function hasPowerup(x, y)
     return level[x][y].hasPowerup;
 }
 
+// lerppi aka linear interpolation
+export function lerp(start, end, t)
+{
+    // Clamp 0-1
+    t = Math.min(1, Math.max(0, t));
+
+    return start + t * (end - start);
+}
+
 // Palauttaa etäisyyden kahden laatan välillä (manhattan distance)
 export function getDistanceTo(from, to)
 {
