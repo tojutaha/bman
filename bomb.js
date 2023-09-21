@@ -18,7 +18,7 @@ export function setMaxRange(value) {
 }
 
 
-let tilesWithBombs = [];
+export let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
 
