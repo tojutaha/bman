@@ -3,10 +3,6 @@ import { player } from "./player.js";
 import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
 import { requestPath, drawPath } from "./pathfinder.js";
 
-// TODO: Tän vois siirtää muutujaksi enemyyn,
-//       niin voi olla vihuja jotka liikkuu eri nopeudella
-const interval = 500;
-
 const movementMode = {
     IDLE: "Idle",
     ROAM: "Roam",
@@ -16,7 +12,7 @@ const movementMode = {
 
 class Enemy
 {
-    constructor(x, y, w, h, newMovementMode) {
+    constructor(x, y, w, h, newMovementMode, speed) {
         this.x  = x;
         this.y  = y;
         this.w  = w;
@@ -28,6 +24,7 @@ class Enemy
         this.targetLocation = {x: 0, y: 0};
         this.useDiagonalMovement = false;
         this.movementMode = newMovementMode || movementMode.ROAM;
+        this.speed = speed || 500;
 
         // Rendering:
         this.renderX = this.x;
@@ -167,7 +164,7 @@ class Enemy
                 }
             }
 
-        }, interval);
+        }, this.speed);
     }
 
     roam() {
@@ -197,12 +194,21 @@ class Enemy
     }
 };
 
-function getRandomColor() {
+function getRandomColor()
+{
 
     const red = Math.floor(Math.random() * 256);
     const green = Math.floor(Math.random() * 256);
     const blue = Math.floor(Math.random() * 256);
     return `rgb(${red}, ${green}, ${blue})`;
+}
+
+function getRandomSpeed()
+{
+    const max = 500;
+    const min = 150;
+    const random = Math.random() * (max - min) + min;
+    return Math.floor(random);
 }
 
 export const enemies = [];
@@ -221,6 +227,7 @@ export function spawnEnemies()
         const enemy = new Enemy(random.x, random.y, 32, 32);
         let colIndex = i;
         enemy.setMovementMode(movementValues[colIndex]);
+        enemy.speed = getRandomSpeed();
         enemy.setDebugColors();
         //enemy.color = getRandomColor();
         enemy.pathColor = getRandomColor();
@@ -247,7 +254,7 @@ export function renderEnemies()
             enemy.t = 0;
         }
         
-        enemy.t += deltaTime * (1 / (interval / 1000));
+        enemy.t += deltaTime * (1 / (enemy.speed / 1000));
 
         const x = lerp(enemy.x, enemy.renderX, enemy.t);
         const y = lerp(enemy.y, enemy.renderY, enemy.t);
