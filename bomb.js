@@ -184,7 +184,7 @@ export function renderBombs() {
     for (let i = 0; i < tilesWithBombs.length; i++) {
         let currentTile = tilesWithBombs[i];
 
-        if (currentTile.bomb.ticks === 4) {
+        if (currentTile.bomb.ticks >= 4) {
             ctx.drawImage(spriteSheet, 0, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
         }
         else if (currentTile.bomb.ticks === 3) {
