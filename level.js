@@ -1,4 +1,5 @@
 import { canvas, ctx, tileSize, levelHeight, levelWidth, level, spriteSheet } from "./main.js";
+import { exitLocation } from "./tile.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 
 export function renderWalls()
@@ -34,4 +35,9 @@ export function renderFloor()
             }
         }
     }
+}
+
+export function renderExit()
+{
+    ctx.drawImage(spriteSheet, 0, 160, 32, 32, exitLocation.x, exitLocation.y, tileSize, tileSize);
 }

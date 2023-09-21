@@ -1,7 +1,11 @@
 import { canvas, ctx, tileSize, levelHeight, levelWidth, softTilePercent, powerUpCount } from "./main.js";
 import { randomPowerup } from "./powerup.js";
 
+// TODO: Siivoilla tätä, ehkä yhdistellä createPowerup ja createExit
+
 const cagePlayers = false;
+let exitCreated = false;
+export let exitLocation = undefined;
 
 const TileType = {
     FLOOR: "Floor",
@@ -50,6 +54,7 @@ export function createTiles() {
 
     let softWallTotal = createSoftWalls(result, hardWallTotal);
     createPowerups(result, softWallTotal);
+    createExit(result);
 
     return result;
 }
@@ -106,6 +111,23 @@ function createPowerups(result, softWallCount) {
             tile.powerup = randomPowerup();
             tile.hasPowerup = randomPowerup();
             powerupsLeft--;
+        }
+    }
+}
+
+// TODO: Tän vois yhistellä ylemmän kanssa
+function createExit(result) {
+    while (exitCreated === false) {
+        const x = Math.floor(Math.random() * levelWidth);
+        const y = Math.floor(Math.random() * levelHeight);
+        const tile = result[x][y];
+
+        if (tile.type === "SoftWall" && tile.hasPowerup === false) {
+            tile.isExit = true;
+            exitCreated = true;
+            exitLocation = tile;
+            console.info("The door is in", tile.x, tile.y);
+            break;
         }
     }
 }

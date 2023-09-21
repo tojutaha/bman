@@ -1,7 +1,7 @@
 ////////////////////
 // Imports
 import { createTiles } from "./tile.js";
-import { renderWalls, renderFloor } from "./level.js";
+import { renderWalls, renderFloor, renderExit } from "./level.js";
 import { renderPowerups } from "./powerup.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
@@ -37,6 +37,7 @@ function Render(timeStamp)
     const fps = 1 / deltaTime;
 
     renderFloor();
+    renderExit();
     renderWalls();
     renderPowerups();
     renderEnemies();

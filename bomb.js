@@ -2,10 +2,12 @@ import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight } from "./ma
 import { player, playerOffset } from "./player.js";
 import { getTileFromWorldLocation, getDistanceTo } from "./utils.js";
 
-// TODO: Lieskojen animointi
+// TODO : Välillä jumahtaa pommiin kiinni.
+//      : Pakota suunta johon lähetään kävelemään (paitsi että mitä jos painaa sivuttain?)
+//      : Lieskojen animointi
  
 // Powerup variables
-export let maxBombs = 5;
+export let maxBombs = 5;    // HUOM
 export let maxRange = 1;
 let currentTicks = 4;
 
@@ -60,7 +62,7 @@ function playerOnBomb(bombTile) {
     let posCheck = setInterval(() => {
         playerTile = getTileFromWorldLocation(player);
 
-        if (getDistanceTo(bombTile, player) > tileSize - playerOffset) {
+        if (getDistanceTo(bombTile, player) > tileSize - playerOffset) {  // TODO: En tiedä offsetistä
             console.log("Not on bomb, your coordinates:", player.x, player.y);
             bombTile.isWalkable = false;
             clearInterval(posCheck);
