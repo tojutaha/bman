@@ -40,6 +40,9 @@ export const Direction = {
     RIGHT: "Right",
 }
 
+// No pixel-perfect collisions pls
+export const playerOffset = 5;
+
 ////////////////////
 // Render/Update
 let movementTimer = null;
@@ -112,24 +115,22 @@ function smoothMovementUpdatePlayer()
             const tileTop    = level[x][y].y;
             const tileBottom = level[x][y].y + tileSize;
 
-            // No pixel-perfect collisions pls
-            const offset = 5;
 
             if (!isWalkable(x, y) &&
-                nextX + (player.w - offset) >= tileLeft &&
-                (nextX + offset) < tileRight &&
-                nextY + (player.h - offset) >= tileTop &&
-                (nextY + offset) < tileBottom
+                nextX + (player.w - playerOffset) >= tileLeft &&
+                (nextX + playerOffset) < tileRight &&
+                nextY + (player.h - playerOffset) >= tileTop &&
+                (nextY + playerOffset) < tileBottom
             ) {
 
                 collides = true;
             }
 
             if (isDeadly(x, y) &&
-                nextX + (player.w - offset) >= tileLeft &&
-                (nextX + offset) < tileRight &&
-                nextY + (player.h - offset) >= tileTop &&
-                (nextY + offset) < tileBottom
+                nextX + (player.w - playerOffset) >= tileLeft &&
+                (nextX + playerOffset) < tileRight &&
+                nextY + (player.h - playerOffset) >= tileTop &&
+                (nextY + playerOffset) < tileBottom
             ) {
                 console.info("DEATH BY TILE");
             }
@@ -137,10 +138,10 @@ function smoothMovementUpdatePlayer()
             // No picking up from just touching the walls
             const pickupOffset = 3;
             if (hasPowerup(x, y) &&
-                nextX + (player.w - offset - pickupOffset) >= tileLeft &&
-                (nextX + offset + pickupOffset) < tileRight &&
-                nextY + (player.h - offset - pickupOffset) >= tileTop &&
-                (nextY + offset + pickupOffset) < tileBottom
+                nextX + (player.w - playerOffset - pickupOffset) >= tileLeft &&
+                (nextX + playerOffset + pickupOffset) < tileRight &&
+                nextY + (player.h - playerOffset - pickupOffset) >= tileTop &&
+                (nextY + playerOffset + pickupOffset) < tileBottom
             ) {
                 pickPowerup(level[x][y]);
             }

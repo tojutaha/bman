@@ -1,12 +1,11 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight } from "./main.js";
-import { player } from "./player.js";
-import { getTileFromWorldLocation, getNeigbouringTiles_linear } from "./utils.js";
+import { player, playerOffset } from "./player.js";
+import { getTileFromWorldLocation, getDistanceTo } from "./utils.js";
 
-// TODO : Pommit !walkable
-//      : Lieskojen animointi
+// TODO: Lieskojen animointi
  
 // Powerup variables
-export let maxBombs = 1;
+export let maxBombs = 5;
 export let maxRange = 1;
 let currentTicks = 4;
 
@@ -61,18 +60,14 @@ function playerOnBomb(bombTile) {
     let posCheck = setInterval(() => {
         playerTile = getTileFromWorldLocation(player);
 
-        if (bombTile === playerTile) {
-            console.log("Move boy");
+        if (getDistanceTo(bombTile, player) > tileSize - playerOffset) {
+            console.log("Not on bomb, your coordinates:", player.x, player.y);
+            bombTile.isWalkable = false;
+            clearInterval(posCheck);
         }
         else if (bombTile.bomb.hasExploded === true) {
             bombTile.isWalkable = true;
             clearInterval(posCheck);
-        }
-        else {
-            if (bombTile.isWalkable) {
-                console.log("Not on bomb, your coordinates:", player.x, player.y);
-                bombTile.isWalkable = false;
-            }
         }
     }, 500);
 }
