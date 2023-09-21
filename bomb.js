@@ -1,6 +1,6 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight } from "./main.js";
 import { player } from "./player.js";
-import { getTileFromWorldLocation } from "./utils.js";
+import { getTileFromWorldLocation, getNeigbouringTiles_linear } from "./utils.js";
 
 // TODO : Pommit !walkable
 //      : Lieskojen animointi
@@ -43,15 +43,38 @@ function Bomb(x, y, ticks, range) {
 }
 
 export function dropBomb() {
-    let currentTile = getTileFromWorldLocation(player);
+    let bombTile = getTileFromWorldLocation(player);
 
-    if (tilesWithBombs.indexOf(currentTile) === -1 && tilesWithBombs.length < maxBombs) {
-        if (!currentTile.bomb || currentTile.bomb.hasExploded === true) {
-            currentTile.bomb = new Bomb(currentTile.x, currentTile.y, currentTicks, maxRange);
-            // currentTile.isWalkable = false;         // TODO: walkable
-            tilesWithBombs.push(currentTile);
+    if (tilesWithBombs.indexOf(bombTile) === -1 && tilesWithBombs.length < maxBombs) {
+        if (!bombTile.bomb || bombTile.bomb.hasExploded) {
+            bombTile.bomb = new Bomb(bombTile.x, bombTile.y, currentTicks, maxRange);
+            tilesWithBombs.push(bombTile);
+            playerOnBomb(bombTile);
         }
     }
+}
+
+// Checks whether player is still standing on the bomb after it was dropped.
+function playerOnBomb(bombTile) {
+    let playerTile = getTileFromWorldLocation(player);
+    
+    let posCheck = setInterval(() => {
+        playerTile = getTileFromWorldLocation(player);
+
+        if (bombTile === playerTile) {
+            console.log("Move boy");
+        }
+        else if (bombTile.bomb.hasExploded === true) {
+            bombTile.isWalkable = true;
+            clearInterval(posCheck);
+        }
+        else {
+            if (bombTile.isWalkable) {
+                console.log("Not on bomb, your coordinates:", player.x, player.y);
+                bombTile.isWalkable = false;
+            }
+        }
+    }, 500);
 }
 
 // Returns a 2D array of all the surrounding tiles within the bomb's range.
