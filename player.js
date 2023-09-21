@@ -33,7 +33,7 @@ export const player = {
     dy: 0,
 };
 
-const Direction = {
+export const Direction = {
     UP: "Up",
     DOWN: "Down",
     LEFT: "Left",
