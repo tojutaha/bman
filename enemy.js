@@ -1,5 +1,5 @@
 import { canvas, ctx, deltaTime, level, levelHeight, levelWidth, tileSize } from "./main.js";
-import { player } from "./player.js";
+import { player, Direction } from "./player.js";
 import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
 import { requestPath, drawPath } from "./pathfinder.js";
 
@@ -25,6 +25,7 @@ class Enemy
         this.useDiagonalMovement = false;
         this.movementMode = newMovementMode || movementMode.ROAM;
         this.speed = speed || 500;
+        this.direction = Direction.UP;
 
         // Rendering:
         this.renderX = this.x;
@@ -116,6 +117,22 @@ class Enemy
 
             const loc = this.currentPath[index];
 
+            // Store movement direction
+            if (loc.x < this.x) {
+                this.direction = Direction.LEFT;
+            } else if (loc.x > this.x) {
+                this.direction = Direction.RIGHT;
+            }
+
+            if (loc.y < this.y) {
+                this.direction = Direction.UP;
+            } else if (loc.y > this.y) {
+                this.direction = Direction.DOWN;
+            }
+
+            //console.log(this.direction);
+
+            // Move enemy
             this.x = loc.x;
             this.y = loc.y;
             this.t = 0;
@@ -125,7 +142,7 @@ class Enemy
                 //clearInterval(timer);
             }
 
-            // Smoother rendering
+            // Smoother movement for rendering
             let renderIndex = index + 1;
             if (renderIndex < this.currentPath.length) {
                 const renderLoc = this.currentPath[renderIndex]
