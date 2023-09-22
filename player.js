@@ -40,6 +40,7 @@ export const Direction = {
     RIGHT: "Right",
 }
 
+// TODO: Tätä ei välttämättä tarvii enää exporttina (deklaraatio takaisin smoothMovementUpdatePlayeriin)
 // No pixel-perfect collisions pls
 export const playerOffset = 5;
 

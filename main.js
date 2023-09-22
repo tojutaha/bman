@@ -38,8 +38,8 @@ function Render(timeStamp)
 
     renderFloor();
     renderExit();
-    renderWalls();
     renderPowerups();
+    renderWalls();
     renderEnemies();
     renderBombs();
     renderExplosions();

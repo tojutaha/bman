@@ -2,9 +2,8 @@ import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight } from "./ma
 import { player, playerOffset } from "./player.js";
 import { getTileFromWorldLocation, getDistanceTo } from "./utils.js";
 
-// TODO : Välillä jumahtaa pommiin kiinni.
-//      : Pakota suunta johon lähetään kävelemään (paitsi että mitä jos painaa sivuttain?)
-//      : Lieskojen animointi
+// TODO : Lieskojen animointi
+// EHKÄ : Pakota suunta johon lähetään kävelemään (paitsi että mitä jos painaa sivuttain?)
  
 // Powerup variables
 export let maxBombs = 5;    // HUOM
@@ -62,16 +61,12 @@ function playerOnBomb(bombTile) {
     let posCheck = setInterval(() => {
         playerTile = getTileFromWorldLocation(player);
 
-        if (getDistanceTo(bombTile, player) > tileSize - playerOffset) {  // TODO: En tiedä offsetistä
-            console.log("Not on bomb, your coordinates:", player.x, player.y);
+        if (getDistanceTo(bombTile, player) > tileSize) {
+            // console.log("Not on bomb, your coordinates:", player.x, player.y);
             bombTile.isWalkable = false;
             clearInterval(posCheck);
         }
-        else if (bombTile.bomb.hasExploded === true) {
-            bombTile.isWalkable = true;
-            clearInterval(posCheck);
-        }
-    }, 500);
+    }, 20);
 }
 
 // Returns a 2D array of all the surrounding tiles within the bomb's range.
@@ -112,11 +107,17 @@ function getBombSurroundings(bomb) {
 }
 
 function explode(bomb) {
+    let tiles = getBombSurroundings(bomb);
+    let centerTile = tiles[0][0];
+    
+    if (!centerTile.isWalkable) {
+        centerTile.isWalkable = true;
+    }
+
     bomb.hasExploded = true;
     bomb.ticks = 0;
     tilesWithBombs.splice(0, 1);
 
-    let tiles = getBombSurroundings(bomb);
     chainExplosions(tiles);
     setTilesOnFire(tiles);
 }
