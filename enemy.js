@@ -160,12 +160,8 @@ class Enemy
             }
 
             index++;
-            
-            if (index >= this.currentPath.length) {
 
-                //this.renderX = this.x;
-                //this.renderY = this.y;
-                //this.t = 0;
+            if (index >= this.currentPath.length) {
 
                 clearInterval(timer);
                 switch(this.movementMode) {
@@ -281,18 +277,10 @@ export function renderEnemies()
         }
         
         enemy.t += deltaTime * (1 / (enemy.speed / 1000));
+        enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ON TOO!
 
         const x = lerp(enemy.x, enemy.renderX, enemy.t);
         const y = lerp(enemy.y, enemy.renderY, enemy.t);
-
-        //console.log("t: ", enemy.t);
-        //console.log("actual location: ", enemy.x, enemy.y);
-        //console.log("render location: ", x, y);
-        //console.log("-------------------");
-
-        if (enemy.t > 1) {
-            enemy.t = 0;
-        }
 
         //ctx.fillStyle = "#00ff00";
         ctx.fillRect(x, y, enemy.w, enemy.h);
