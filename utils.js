@@ -33,9 +33,6 @@ export function hasPowerup(x, y)
 // lerppi aka linear interpolation
 export function lerp(start, end, t)
 {
-    // Clamp 0-1
-    t = Math.min(1, Math.max(0, t));
-
     return start + t * (end - start);
 }
 
