@@ -1,7 +1,9 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight } from "./main.js";
 import { player, playerOffset } from "./player.js";
+import { playerTwo } from "./player_two.js";
 import { getTileFromWorldLocation, getDistanceTo } from "./utils.js";
 
+// TODO : Jos toinen pelaaja jättää pommin, toinen jumahtaa siihen kiinni
 // TODO : Lieskojen animointi
 // EHKÄ : Pakota suunta johon lähetään kävelemään (paitsi että mitä jos painaa sivuttain?)
  
@@ -224,4 +226,34 @@ export function renderExplosions() {
             }
         })
     }
+}
+
+
+////////////////////
+// Multiplayer
+export function dropBomb_p2() {
+    let bombTile = getTileFromWorldLocation(playerTwo);
+
+    if (tilesWithBombs.indexOf(bombTile) === -1 && tilesWithBombs.length < maxBombs) {
+        if (!bombTile.bomb || bombTile.bomb.hasExploded) {
+            bombTile.bomb = new Bomb(bombTile.x, bombTile.y, currentTicks, maxRange);
+            tilesWithBombs.push(bombTile);
+            playerTwoOnBomb(bombTile);
+        }
+    }
+}
+
+// TODO: Tästä yhteinen funktio
+function playerTwoOnBomb(bombTile) {
+    let playerTile = getTileFromWorldLocation(playerTwo);
+    
+    let posCheck = setInterval(() => {
+        playerTile = getTileFromWorldLocation(playerTwo);
+
+        if (getDistanceTo(bombTile, playerTwo) > tileSize) {
+            // console.log("Not on bomb, your coordinates:", player.x, player.y);
+            bombTile.isWalkable = false;
+            clearInterval(posCheck);
+        }
+    }, 20);
 }
