@@ -277,7 +277,7 @@ export function renderEnemies()
         }
         
         enemy.t += deltaTime * (1 / (enemy.speed / 1000));
-        enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ON TOO!
+        enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
 
         const x = lerp(enemy.x, enemy.renderX, enemy.t);
         const y = lerp(enemy.y, enemy.renderY, enemy.t);
