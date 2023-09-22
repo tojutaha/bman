@@ -2,6 +2,9 @@ import { canvas, ctx, deltaTime, level, levelHeight, levelWidth, tileSize } from
 import { player, Direction } from "./player.js";
 import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
 import { requestPath, drawPath } from "./pathfinder.js";
+import { tilesWithBombs } from "./bomb.js";
+
+// TODO: Random nykimistä smooth renderissä
 
 const movementMode = {
     IDLE: "Idle",
@@ -115,26 +118,32 @@ class Enemy
         let index = 0;
         timer = setInterval(() => {
 
-            const loc = this.currentPath[index];
+            const next = this.currentPath[index];
+
+            // Check if there is a bomb on the path
+            const bombCoords = tilesWithBombs.find(bomb => bomb.x === next.x && bomb.y === next.y);
+            if (bombCoords) {
+                console.log("Bomb in path: ", bombCoords.x, bombCoords.y)
+            }
 
             // Store movement direction
-            if (loc.x < this.x) {
+            if (next.x < this.x) {
                 this.direction = Direction.LEFT;
-            } else if (loc.x > this.x) {
+            } else if (next.x > this.x) {
                 this.direction = Direction.RIGHT;
             }
 
-            if (loc.y < this.y) {
+            if (next.y < this.y) {
                 this.direction = Direction.UP;
-            } else if (loc.y > this.y) {
+            } else if (next.y > this.y) {
                 this.direction = Direction.DOWN;
             }
 
             //console.log(this.direction);
 
             // Move enemy
-            this.x = loc.x;
-            this.y = loc.y;
+            this.x = next.x;
+            this.y = next.y;
             this.t = 0;
 
             if (getDistanceTo(this, player) < tileSize) {
@@ -155,8 +164,10 @@ class Enemy
             
             if (index >= this.currentPath.length) {
 
-                this.renderX = this.x;
-                this.renderY = this.y;
+                // NOTE: Ehkä tämä aiheutti ton glitchin?
+                //this.renderX = this.x;
+                //this.renderY = this.y;
+                //this.t = 0;
 
                 clearInterval(timer);
                 switch(this.movementMode) {
