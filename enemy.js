@@ -160,11 +160,9 @@ class Enemy
             }
 
             index++;
-
             
             if (index >= this.currentPath.length) {
 
-                // NOTE: Ehkä tämä aiheutti ton glitchin?
                 //this.renderX = this.x;
                 //this.renderY = this.y;
                 //this.t = 0;
@@ -243,8 +241,8 @@ export const enemies = [];
 export function spawnEnemies()
 {
     const movementValues = Object.values(movementMode);
-    const amount = movementValues.length;
-    //const amount = 1;
+    //const amount = movementValues.length;
+    const amount = 1;
     const maxRadius = 25*tileSize;
     const minRadius = 10*tileSize;
 
@@ -254,7 +252,7 @@ export function spawnEnemies()
                                                        minRadius, maxRadius);
         const enemy = new Enemy(random.x, random.y, 32, 32);
         let colIndex = i;
-        enemy.setMovementMode(movementValues[colIndex]);
+        //enemy.setMovementMode(movementValues[colIndex]);
         enemy.speed = getRandomSpeed();
         enemy.setDebugColors();
         //enemy.color = getRandomColor();
@@ -284,10 +282,14 @@ export function renderEnemies()
         
         enemy.t += deltaTime * (1 / (enemy.speed / 1000));
 
+        console.log("t: ", enemy.t);
+        console.log("actual location: ", enemy.x, enemy.y);
+        console.log("render location: ", enemy.renderX, enemy.renderY);
+
         const x = lerp(enemy.x, enemy.renderX, enemy.t);
         const y = lerp(enemy.y, enemy.renderY, enemy.t);
 
-        if (enemy.t >= 1) {
+        if (enemy.t > 1) {
             enemy.t = 0;
         }
 
