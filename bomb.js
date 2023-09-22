@@ -130,7 +130,7 @@ function chainExplosions(tiles) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
                 if ("bomb" in currentTile && currentTile.bomb.hasExploded === false) {
-                    console.info(tiles[0][0].x, tiles[0][0].y, "chained",  currentTile.x, currentTile.y);
+                    // console.info(tiles[0][0].x, tiles[0][0].y, "chained",  currentTile.x, currentTile.y);
                     explode(currentTile.bomb);
                 }
         }
