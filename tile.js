@@ -1,9 +1,8 @@
-import { canvas, ctx, tileSize, levelHeight, levelWidth, softTilePercent, powerUpCount } from "./main.js";
+import { canvas, ctx, tileSize, levelHeight, levelWidth, softTilePercent, powerUpCount, cagePlayers } from "./main.js";
 import { randomPowerup } from "./powerup.js";
 
 // TODO: Siivoilla tätä, ehkä yhdistellä createPowerup ja createExit
 
-const cagePlayers = false;
 let exitCreated = false;
 export let exitLocation = undefined;
 
