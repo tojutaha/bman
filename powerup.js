@@ -1,4 +1,4 @@
-import { ctx, spriteSheet, level, levelHeight, levelWidth, tileSize, powerUpCount } from "./main.js";
+import { ctx, spriteSheet, level, levelHeight, levelWidth, tileSize } from "./main.js";
 
 export class Powerup
 {

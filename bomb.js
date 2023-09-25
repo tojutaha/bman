@@ -126,19 +126,19 @@ function setTilesOnFire(tiles) {
 }
 
 function animateExplosion(tile){
-    tile.animationTimer = 3;
+    tile.animationTimer = 7;
     let interval = setInterval(() => {
         tile.animationTimer--;
         if (tile.animationTimer === 0) {
             if (tile.isWalkable) {
-                tile.isDeadly = false;
+                tile.isDeadly = false; // This happens now in render when there's just smoke left
             }
             else {
                 tile.isWalkable = true;
             }
             clearInterval(interval);
         }
-    }, 500);
+    }, 150);
 }
 
 ////////////////////
@@ -165,13 +165,13 @@ export function renderBombs() {
 export function renderExplosions() {
     if (crumblingWalls.length > 0) {
         crumblingWalls.forEach(wall => {
-            if (wall.animationTimer === 3) {
+            if (wall.animationTimer >= 7) {
                 ctx.drawImage(spriteSheet, 64, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
             }
-            else if (wall.animationTimer === 2) {
+            else if (wall.animationTimer >= 5) {
                 ctx.drawImage(spriteSheet, 96, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
             }
-            else if (wall.animationTimer === 1) {
+            else if (wall.animationTimer >= 3) {
                 ctx.drawImage(spriteSheet, 128, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
             }
         })
@@ -179,8 +179,27 @@ export function renderExplosions() {
 
     if (fieryFloors.length > 0) {       // TODO: Animoi lieskat
         fieryFloors.forEach(floor => {
-            if (floor.animationTimer > 0) {
-                ctx.drawImage(spriteSheet, 128, 32, 32, 32, floor.x, floor.y, tileSize, tileSize);
+            if (floor.animationTimer === 7) {
+                ctx.drawImage(spriteSheet, 0, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+            }
+            else if (floor.animationTimer === 6) {
+                ctx.drawImage(spriteSheet, 32, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+            }
+            else if (floor.animationTimer === 5) {
+                ctx.drawImage(spriteSheet, 64, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+            }
+            else if (floor.animationTimer === 4) {
+                ctx.drawImage(spriteSheet, 96, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+            }
+            else if (floor.animationTimer === 3) {
+                ctx.drawImage(spriteSheet, 128, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+                floor.isDeadly = false;
+            }
+            else if (floor.animationTimer === 2) {
+                ctx.drawImage(spriteSheet, 160, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+            }
+            else if (floor.animationTimer === 1) {
+                ctx.drawImage(spriteSheet, 192, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
             }
         })
     }
