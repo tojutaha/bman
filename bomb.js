@@ -1,26 +1,11 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight } from "./main.js";
-import { player, playerOffset } from "./player.js";
-import { playerTwo } from "./player_two.js";
-import { getTileFromWorldLocation, getDistanceTo } from "./utils.js";
 
+// TODO : Näkymättömät pommit
+// -> tulee jos seisoo pommin päällä loppuun asti
 // TODO : Jos toinen pelaaja jättää pommin, toinen jumahtaa siihen kiinni
 // TODO : Lieskojen animointi
 // EHKÄ : Pakota suunta johon lähetään kävelemään (paitsi että mitä jos painaa sivuttain?)
  
-// Powerup variables
-export let maxBombs = 5;    // HUOM
-export let maxRange = 1;
-export let currentTicks = 4;
-
-export function setMaxBombs(value) {
-    maxBombs = value;
-}
-
-export function setMaxRange(value) {
-    maxRange = value;
-}
-
-
 export let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
@@ -42,33 +27,6 @@ export function Bomb(x, y, ticks, range) {
             clearInterval(ticking);
         }
     }, 1000);
-}
-
-export function dropBomb() {
-    let bombTile = getTileFromWorldLocation(player);
-
-    if (tilesWithBombs.indexOf(bombTile) === -1 && tilesWithBombs.length < maxBombs) {
-        if (!bombTile.bomb || bombTile.bomb.hasExploded) {
-            bombTile.bomb = new Bomb(bombTile.x, bombTile.y, currentTicks, maxRange);
-            tilesWithBombs.push(bombTile);
-            playerOnBomb(bombTile);
-        }
-    }
-}
-
-// Checks whether player is still standing on the bomb after it was dropped.
-function playerOnBomb(bombTile) {
-    let playerTile = getTileFromWorldLocation(player);
-    
-    let posCheck = setInterval(() => {
-        playerTile = getTileFromWorldLocation(player);
-
-        if (getDistanceTo(bombTile, player) > tileSize) {
-            // console.log("Not on bomb, your coordinates:", player.x, player.y);
-            bombTile.isWalkable = false;
-            clearInterval(posCheck);
-        }
-    }, 20);
 }
 
 // Returns a 2D array of all the surrounding tiles within the bomb's range.
@@ -226,34 +184,4 @@ export function renderExplosions() {
             }
         })
     }
-}
-
-
-////////////////////
-// Multiplayer
-export function dropBomb_p2() {
-    let bombTile = getTileFromWorldLocation(playerTwo);
-
-    if (tilesWithBombs.indexOf(bombTile) === -1 && tilesWithBombs.length < maxBombs) {
-        if (!bombTile.bomb || bombTile.bomb.hasExploded) {
-            bombTile.bomb = new Bomb(bombTile.x, bombTile.y, currentTicks, maxRange);
-            tilesWithBombs.push(bombTile);
-            playerTwoOnBomb(bombTile);
-        }
-    }
-}
-
-// TODO: Tästä yhteinen funktio
-function playerTwoOnBomb(bombTile) {
-    let playerTile = getTileFromWorldLocation(playerTwo);
-    
-    let posCheck = setInterval(() => {
-        playerTile = getTileFromWorldLocation(playerTwo);
-
-        if (getDistanceTo(bombTile, playerTwo) > tileSize) {
-            // console.log("Not on bomb, your coordinates:", player.x, player.y);
-            bombTile.isWalkable = false;
-            clearInterval(posCheck);
-        }
-    }, 20);
 }
