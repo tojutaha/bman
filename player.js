@@ -325,20 +325,20 @@ class Player
                 const tileBottom = level[x][y].y + tileSize;
 
                 if (!isWalkable(x, y) &&
-                    nextX + (this.w - this.CollisionOffset) >= tileLeft &&
-                    (nextX + this.CollisionOffset) < tileRight &&
-                    nextY + (this.h - this.CollisionOffset) >= tileTop &&
-                    (nextY + this.CollisionOffset) < tileBottom
+                    nextX + (this.w - this.collisionOffset) >= tileLeft &&
+                    (nextX + this.collisionOffset) < tileRight &&
+                    nextY + (this.h - this.collisionOffset) >= tileTop &&
+                    (nextY + this.collisionOffset) < tileBottom
                 ) {
 
                     collides = true;
                 }
                 /*
                 if (isDeadly(x, y) &&
-                    nextX + (this.w - this.CollisionOffset) >= tileLeft &&
-                    (nextX + this.CollisionOffset) < tileRight &&
-                    nextY + (this.h - this.CollisionOffset) >= tileTop &&
-                    (nextY + this.CollisionOffset) < tileBottom
+                    nextX + (this.w - this.collisionOffset) >= tileLeft &&
+                    (nextX + this.collisionOffset) < tileRight &&
+                    nextY + (this.h - this.collisionOffset) >= tileTop &&
+                    (nextY + this.collisionOffset) < tileBottom
                 ) {
                     console.info("DEATH BY TILE");
                 }
@@ -346,10 +346,10 @@ class Player
                 // No picking up from just touching the walls
                 const pickupOffset = 3;
                 if (hasPowerup(x, y) &&
-                    nextX + (this.w - this.CollisionOffset - pickupOffset) >= tileLeft &&
-                    (nextX + this.CollisionOffset + pickupOffset) < tileRight &&
-                    nextY + (this.h - this.CollisionOffset - pickupOffset) >= tileTop &&
-                    (nextY + this.CollisionOffset + pickupOffset) < tileBottom
+                    nextX + (this.w - this.collisionOffset - pickupOffset) >= tileLeft &&
+                    (nextX + this.collisionOffset + pickupOffset) < tileRight &&
+                    nextY + (this.h - this.collisionOffset - pickupOffset) >= tileTop &&
+                    (nextY + this.collisionOffset + pickupOffset) < tileBottom
                 ) {
                     pickPowerup(level[x][y]);
                 }
