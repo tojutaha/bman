@@ -272,9 +272,11 @@ export function renderEnemies()
         ctx.fillStyle = enemy.color;
         //ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
 
+        /*
         if (!enemy.t) {
             enemy.t = 0;
         }
+        */
         
         enemy.t += deltaTime * (1 / (enemy.speed / 1000));
         enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
