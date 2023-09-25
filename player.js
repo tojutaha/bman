@@ -1,7 +1,7 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet } from "./main.js";
-import { dropBomb } from "./bomb.js";
+import { Bomb, currentTicks, tilesWithBombs, maxBombs, maxRange, dropBomb } from "./bomb.js";
 import { pickPowerup } from "./powerup.js";
-import { isDeadly, isWalkable, hasPowerup } from "./utils.js";
+import { getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo } from "./utils.js";
 
 
 
@@ -166,6 +166,13 @@ export function renderPlayer()
     // ctx.fillRect(player.x, player.y, player.w, player.h);
 
     ctx.drawImage(spriteSheet, 0, 64, 32, 32, player.x, player.y, player.w, player.h);
+
+
+    // Uudet pelaajat
+    players.forEach(p => {
+        p.update();
+        ctx.drawImage(spriteSheet, 0, 64, 32, 32, p.x, p.y, p.w, p.h);
+    });
 }
 
 ////////////////////
@@ -274,4 +281,170 @@ const handleKeyDown = useGridMovement ? gridMovementHandleKeyDown : smoothMoveme
 const handleKeyUp = useGridMovement ? gridMovementHandleKeyUp : smoothMovementHandleKeyUp;
 document.addEventListener("keydown", handleKeyDown);
 document.addEventListener("keyup", handleKeyUp);
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// New Player Class
+export const players = [];
+
+class Player
+{
+    constructor(id, x, y) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.w = 30;
+        this.h = 30;
+        this.dx = 0;
+        this.dy = 0;
+
+        this.speed = 1.0; // pixels/s
+
+        this.collisionOffset = 5;
+
+        // Key binds
+        this.key_move_up    = "8";
+        this.key_move_down  = "2";
+        this.key_move_left  = "4";
+        this.key_move_right = "6";
+        this.key_drop_bomb  = "0";
+    }
+
+    // Handles movement and collision
+    update() {
+        const nextX = this.x + this.dx;
+        const nextY = this.y + this.dy;
+
+        let collides = false;
+        for (let y = 0; y < levelHeight; y++) {
+            for (let x = 0; x < levelWidth; x++) {
+                const tileLeft   = level[x][y].x;
+                const tileRight  = level[x][y].x + tileSize;
+                const tileTop    = level[x][y].y;
+                const tileBottom = level[x][y].y + tileSize;
+
+                if (!isWalkable(x, y) &&
+                    nextX + (this.w - this.CollisionOffset) >= tileLeft &&
+                    (nextX + this.CollisionOffset) < tileRight &&
+                    nextY + (this.h - this.CollisionOffset) >= tileTop &&
+                    (nextY + this.CollisionOffset) < tileBottom
+                ) {
+
+                    collides = true;
+                }
+                /*
+                if (isDeadly(x, y) &&
+                    nextX + (this.w - this.CollisionOffset) >= tileLeft &&
+                    (nextX + this.CollisionOffset) < tileRight &&
+                    nextY + (this.h - this.CollisionOffset) >= tileTop &&
+                    (nextY + this.CollisionOffset) < tileBottom
+                ) {
+                    console.info("DEATH BY TILE");
+                }
+
+                // No picking up from just touching the walls
+                const pickupOffset = 3;
+                if (hasPowerup(x, y) &&
+                    nextX + (this.w - this.CollisionOffset - pickupOffset) >= tileLeft &&
+                    (nextX + this.CollisionOffset + pickupOffset) < tileRight &&
+                    nextY + (this.h - this.CollisionOffset - pickupOffset) >= tileTop &&
+                    (nextY + this.CollisionOffset + pickupOffset) < tileBottom
+                ) {
+                    pickPowerup(level[x][y]);
+                }
+                */
+            }
+        }
+
+        //console.log(collides);
+        if (!collides) {
+            this.x += this.dx;
+            this.y += this.dy;
+        }
+    }
+
+    // Bomb
+    dropBomb() {
+        let bombTile = getTileFromWorldLocation(this);
+
+        if (tilesWithBombs.indexOf(bombTile) === -1 && tilesWithBombs.length < maxBombs) {
+            if (!bombTile.bomb || bombTile.bomb.hasExploded) {
+                bombTile.bomb = new Bomb(bombTile.x, bombTile.y, currentTicks, maxRange);
+                tilesWithBombs.push(bombTile);
+                this.OnBomb(bombTile);
+            }
+        }
+    }
+    // checks whether player is still standing on the bomb after it was dropped.
+    OnBomb(bombtile) {
+        let playertile = getTileFromWorldLocation(this);
+
+        let poscheck = setInterval(() => {
+            playertile = getTileFromWorldLocation(this);
+
+            if (getDistanceTo(bombtile, this) > tileSize) {
+                // console.log("not on bomb, your coordinates:", this.x, this.y);
+                bombtile.iswalkable = false;
+                clearInterval(poscheck);
+            }
+        }, 20);
+    }
+
+    // Inputs
+    handleKeyDown(event) {
+        event.preventDefault();
+
+        switch(event.key) {
+            case this.key_move_up:
+                this.dy = -this.speed;
+                this.dx = 0;
+                break;
+
+            case this.key_move_left:
+                this.dx = -this.speed;
+                this.dy = 0;
+                break;
+
+            case this.key_move_down:
+                this.dy = this.speed;
+                this.dx = 0;
+                break;
+
+            case this.key_move_right:
+                this.dx = this.speed;
+                this.dy = 0;
+                break;
+
+            case this.key_drop_bomb:
+                this.dropBomb();
+                break;
+        }
+    }
+
+    handleKeyUp(event) {
+        event.preventDefault();
+
+        switch(event.key) {
+            case this.key_move_up:
+            case this.key_move_down:
+                this.dy = 0;
+                break;
+
+            case this.key_move_left:
+            case this.key_move_right:
+                this.dx = 0;
+                break;
+        }
+    }
+};
+
+players.push(new Player(0, 32, 32));
+
+document.addEventListener("keyup", function(event) {
+  players[0].handleKeyUp(event);
+});
+document.addEventListener("keydown", function(event) {
+  players[0].handleKeyDown(event);
+});
 

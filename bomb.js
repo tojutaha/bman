@@ -10,7 +10,7 @@ import { getTileFromWorldLocation, getDistanceTo } from "./utils.js";
 // Powerup variables
 export let maxBombs = 5;    // HUOM
 export let maxRange = 1;
-let currentTicks = 4;
+export let currentTicks = 4;
 
 export function setMaxBombs(value) {
     maxBombs = value;
@@ -25,7 +25,7 @@ export let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
 
-function Bomb(x, y, ticks, range) {
+export function Bomb(x, y, ticks, range) {
     this.x = x || 0;
     this.y = y || 0,
     this.ticks = ticks || 4;
