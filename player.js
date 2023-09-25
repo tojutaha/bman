@@ -14,9 +14,11 @@ export const Direction = {
 
 export function renderPlayer()
 {
-    players.forEach(p => {
+    players.forEach((p, index) => {
         p.update();
-        ctx.drawImage(spriteSheet, 0, 64, 32, 32, p.x, p.y, p.w, p.h);
+        // TODO: Hack..
+        const select = index == 1 ? 96 : 64;
+        ctx.drawImage(spriteSheet, 0, select, 32, 32, p.x, p.y, p.w, p.h);
     });
 }
 
@@ -26,7 +28,7 @@ export const players = [];
 
 class Player
 {
-    constructor(id, x, y) {
+    constructor(id, x, y, keybinds, sprite) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -40,11 +42,7 @@ class Player
         this.collisionOffset = 5;
 
         // Key binds
-        this.key_move_up    = "w";
-        this.key_move_down  = "s";
-        this.key_move_left  = "a";
-        this.key_move_right = "d";
-        this.key_drop_bomb  = " ";
+        this.keybinds = keybinds;
 
         // Powerups
         this.powerup = new Powerup();
@@ -130,27 +128,27 @@ class Player
         event.preventDefault();
 
         switch(event.key) {
-            case this.key_move_up:
+            case this.keybinds.move_up:
                 this.dy = -this.speed;
                 this.dx = 0;
                 break;
 
-            case this.key_move_left:
+            case this.keybinds.move_left:
                 this.dx = -this.speed;
                 this.dy = 0;
                 break;
 
-            case this.key_move_down:
+            case this.keybinds.move_down:
                 this.dy = this.speed;
                 this.dx = 0;
                 break;
 
-            case this.key_move_right:
+            case this.keybinds.move_right:
                 this.dx = this.speed;
                 this.dy = 0;
                 break;
 
-            case this.key_drop_bomb:
+            case this.keybinds.drop_bomb:
                 this.dropBomb();
                 break;
         }
@@ -160,25 +158,46 @@ class Player
         event.preventDefault();
 
         switch(event.key) {
-            case this.key_move_up:
-            case this.key_move_down:
+            case this.keybinds.move_up:
+            case this.keybinds.move_down:
                 this.dy = 0;
                 break;
 
-            case this.key_move_left:
-            case this.key_move_right:
+            case this.keybinds.move_left:
+            case this.keybinds.move_right:
                 this.dx = 0;
                 break;
         }
     }
 };
 
-players.push(new Player(0, 32, 32));
+export const keybinds1 = {
+    move_up: "w",
+    move_down: "s",
+    move_left: "a",
+    move_right: "d",
+    drop_bomb: " ",
+};
 
-document.addEventListener("keyup", function(event) {
-  players[0].handleKeyUp(event);
-});
-document.addEventListener("keydown", function(event) {
-  players[0].handleKeyDown(event);
+export const keybinds2 = {
+    move_up: "ArrowUp",
+    move_down: "ArrowDown",
+    move_left: "ArrowLeft",
+    move_right: "ArrowRight",
+    drop_bomb: "Enter",
+};
+
+document.addEventListener("DOMContentLoaded", function ()
+{
+    players.push(new Player(0, 32, 32, keybinds1));
+    players.push(new Player(1, (levelWidth-2)*tileSize, (levelHeight-2)*tileSize, keybinds2));
+    for (let i = 0; i < players.length; i++) {
+        document.addEventListener("keyup", function(event) {
+            players[i].handleKeyUp(event);
+        });
+        document.addEventListener("keydown", function(event) {
+            players[i].handleKeyDown(event);
+        });
+    }
 });
 
