@@ -1,5 +1,30 @@
 import { ctx, spriteSheet, level, levelHeight, levelWidth, tileSize, powerUpCount } from "./main.js";
 
+export class Powerup
+{
+    constructor() {
+        this.maxBombs = 5; // HUOM
+        this.maxRange = 1;
+        this.currentTicks = 4;
+    }
+
+    pickup(tile, player) {
+        tile.hasPowerup = false;
+
+        if (tile.powerup === "ExtraBomb") {
+            this.maxBombs += 1;
+        }
+        else if (tile.powerup === "ExtraRange") {
+            this.maxRange += 1;
+        }
+
+        else if (tile.powerup === "ExtraSpeed") {
+            player.speed += 0.5;
+        }
+
+    }
+}
+
 export const powerups = ["ExtraBomb", "ExtraRange", "ExtraSpeed"];
 
 export function randomPowerup() {

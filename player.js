@@ -1,6 +1,6 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet } from "./main.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
-import { powerups } from "./powerup.js";
+import { Powerup, powerups } from "./powerup.js";
 import { getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo } from "./utils.js";
 
 // TODO: deltaTime Movementtiin
@@ -47,9 +47,7 @@ class Player
         this.key_drop_bomb  = " ";
 
         // Powerups
-        this.maxBombs = 5; // HUOM
-        this.maxRange = 1;
-        this.currentTicks = 4;
+        this.powerup = new Powerup();
     }
 
     // Handles movement and collision
@@ -92,7 +90,7 @@ class Player
                     nextY + (this.h - this.collisionOffset - pickupOffset) >= tileTop &&
                     (nextY + this.collisionOffset + pickupOffset) < tileBottom
                 ) {
-                    this.pickPowerup(level[x][y]);
+                    this.powerup.pickup(level[x][y], this);
                 }
             }
         }
@@ -104,30 +102,13 @@ class Player
         }
     }
 
-    // Powerups
-    pickPowerup(tile) {
-        tile.hasPowerup = false;
-
-        if (tile.powerup === "ExtraBomb") {
-            this.maxBombs += 1;
-        }
-        else if (tile.powerup === "ExtraRange") {
-            this.maxRange += 1;
-        }
-
-    else if (tile.powerup === "ExtraSpeed") {
-        this.speed += 0.5;
-    }
-
-    }
-
     // Bomb
     dropBomb() {
         let bombTile = getTileFromWorldLocation(this);
 
-        if (tilesWithBombs.indexOf(bombTile) === -1 && tilesWithBombs.length < this.maxBombs) {
+        if (tilesWithBombs.indexOf(bombTile) === -1 && tilesWithBombs.length < this.powerup.maxBombs) {
             if (!bombTile.bomb || bombTile.bomb.hasExploded) {
-                bombTile.bomb = new Bomb(bombTile.x, bombTile.y, this.currentTicks, this.maxRange);
+                bombTile.bomb = new Bomb(bombTile.x, bombTile.y, this.currentTicks, this.powerup.maxRange);
                 tilesWithBombs.push(bombTile);
                 
                 // Checks whether player is still standing on the bomb after it was dropped.
