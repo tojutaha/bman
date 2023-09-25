@@ -371,21 +371,21 @@ class Player
             if (!bombTile.bomb || bombTile.bomb.hasExploded) {
                 bombTile.bomb = new Bomb(bombTile.x, bombTile.y, currentTicks, maxRange);
                 tilesWithBombs.push(bombTile);
-                this.OnBomb(bombTile);
+                this.onBomb(bombTile);
             }
         }
     }
     // checks whether player is still standing on the bomb after it was dropped.
-    OnBomb(bombtile) {
-        let playertile = getTileFromWorldLocation(this);
+    onBomb(bombTile) {
+        let playerTile = getTileFromWorldLocation({x: this.x, y: this.y});
 
-        let poscheck = setInterval(() => {
-            playertile = getTileFromWorldLocation(this);
+        let posCheck = setInterval(() => {
+            playerTile = getTileFromWorldLocation({x: this.x, y: this.y});
 
-            if (getDistanceTo(bombtile, this) > tileSize) {
+            if (getDistanceTo(bombTile, playerTile) > tileSize) {
                 // console.log("not on bomb, your coordinates:", this.x, this.y);
-                bombtile.iswalkable = false;
-                clearInterval(poscheck);
+                bombTile.isWalkable = false;
+                clearInterval(posCheck);
             }
         }, 20);
     }
