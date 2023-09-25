@@ -333,7 +333,7 @@ class Player
 
                     collides = true;
                 }
-                /*
+
                 if (isDeadly(x, y) &&
                     nextX + (this.w - this.collisionOffset) >= tileLeft &&
                     (nextX + this.collisionOffset) < tileRight &&
@@ -353,7 +353,6 @@ class Player
                 ) {
                     pickPowerup(level[x][y]);
                 }
-                */
             }
         }
 
