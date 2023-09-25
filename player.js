@@ -40,11 +40,11 @@ class Player
         this.collisionOffset = 5;
 
         // Key binds
-        this.key_move_up    = "8";
-        this.key_move_down  = "2";
-        this.key_move_left  = "4";
-        this.key_move_right = "6";
-        this.key_drop_bomb  = "0";
+        this.key_move_up    = "w";
+        this.key_move_down  = "s";
+        this.key_move_left  = "a";
+        this.key_move_right = "d";
+        this.key_drop_bomb  = " ";
 
         // Powerups
         this.maxBombs = 5; // HUOM
