@@ -1,5 +1,5 @@
 import { canvas, ctx, deltaTime, level, levelHeight, levelWidth, tileSize } from "./main.js";
-import { player, Direction } from "./player.js";
+import { Direction, players } from "./player.js";
 import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
 import { requestPath, drawPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
@@ -95,6 +95,8 @@ class Enemy
     }
 
     getPlayerLocation() {
+        // TODO: Muut pelaajat?
+        const player = players[0];
         const tile = getTileFromWorldLocation({x: player.x, y: player.y});
         this.targetLocation = {x: tile.x, y: tile.y};
     }
@@ -146,6 +148,8 @@ class Enemy
             this.y = next.y;
             this.t = 0;
 
+            // TODO: Muut pelaajat
+            const player = players[0];
             if (getDistanceTo(this, player) < tileSize) {
                 console.log("reached player");
                 //clearInterval(timer);
@@ -242,6 +246,8 @@ export function spawnEnemies()
     const maxRadius = 25*tileSize;
     const minRadius = 10*tileSize;
 
+    // TODO: Muut pelaajat
+    const player = players[0];
     for (let i = 0; i < amount; i++) {
         const random = getRandomWalkablePointInRadius({x: player.x,
                                                        y: player.y},

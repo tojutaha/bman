@@ -1,29 +1,9 @@
-import { maxBombs, setMaxBombs, maxRange, setMaxRange } from "./bomb.js";
-import { smoothMovementSpeed, setMovementSpeed } from "./player.js";
 import { ctx, spriteSheet, level, levelHeight, levelWidth, tileSize, powerUpCount } from "./main.js";
 
-const powerups = ["ExtraBomb", "ExtraRange", "ExtraSpeed"];
+export const powerups = ["ExtraBomb", "ExtraRange", "ExtraSpeed"];
 
 export function randomPowerup() {
     return powerups[Math.floor(Math.random() * powerups.length)];
-}
-
-export function pickPowerup(tile) {
-    tile.hasPowerup = false;
-
-    if (tile.powerup === "ExtraBomb") {
-        const newMaxBombs = maxBombs + 1;
-        setMaxBombs(newMaxBombs);
-    }
-    else if (tile.powerup === "ExtraRange") {
-        const newMaxRange = maxRange + 1;
-        setMaxRange(newMaxRange);
-    }
-
-    else if (tile.powerup === "ExtraSpeed") {
-        const newSpeed = smoothMovementSpeed + 0.5;
-        setMovementSpeed(newSpeed);
-    }
 }
 
 ////////////////////

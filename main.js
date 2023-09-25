@@ -4,7 +4,6 @@ import { createTiles } from "./tile.js";
 import { renderWalls, renderFloor, renderExit } from "./level.js";
 import { renderPowerups } from "./powerup.js";
 import { renderPlayer } from "./player.js";
-import { renderPlayerTwo } from "./player_two.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 
@@ -46,7 +45,6 @@ function Render(timeStamp)
     renderBombs();
     renderExplosions();
     renderPlayer();
-    renderPlayerTwo();
 
     // 
     ctx.fillStyle = "#a2f3a2";
