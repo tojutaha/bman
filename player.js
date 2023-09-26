@@ -1,4 +1,5 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet } from "./main.js";
+import { PlayAudio } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";
 import { getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo } from "./utils.js";
@@ -77,7 +78,12 @@ class Player
                     nextY + (this.h - this.collisionOffset) >= tileTop &&
                     (nextY + this.collisionOffset) < tileBottom
                 ) {
-                    console.info("DEATH BY TILE");
+                    // Testi
+                    if (!this.isDead) {
+                        PlayAudio("audio/death01.wav");
+                        this.isDead = true;
+                        console.info("DEATH BY TILE");
+                    }
                 }
 
                 // No picking up from just touching the walls

@@ -1,4 +1,5 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, deltaTime } from "./main.js";
+import { PlayAudio } from "./audio.js";
 import { spawnEnemiesAtLocation } from "./enemy.js";
 
 // Jos ilmenee taas vanha bugi jossa koko peli jäätyy, saattaa johtua renderin splice metodeista.
@@ -10,6 +11,9 @@ import { spawnEnemiesAtLocation } from "./enemy.js";
 export let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
+
+// Audio
+let booms = ["audio/boom01.wav", "audio/boom03.wav", "audio/boom04.wav"];
 
 export function Bomb(x, y, ticks, range) {
     this.x = x || 0;
@@ -27,6 +31,8 @@ export function Bomb(x, y, ticks, range) {
             clearInterval(ticking);
         }
         else if (this.ticks === 0) {
+            const randomBoom = booms[Math.floor(Math.random() * booms.length)];
+            PlayAudio(randomBoom, 1);
             explode(this);
             clearInterval(ticking);
         }
@@ -145,9 +151,9 @@ function animateExplosion(tile){
     tile.isBeingAnimated = true;
     tile.animationTimer = 7;
 
-    let intervalTime = 15000 * deltaTime;
+    let intervalTime = 25000 * deltaTime;
     let interval = setInterval(() => {
-        intervalTime = 15000 * deltaTime;
+        intervalTime = 25000 * deltaTime;
         // console.log("dT:", deltaTime, "animation interval:", intervalTime);
         tile.animationTimer--;
         if (tile.animationTimer <= 0) {
