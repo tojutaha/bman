@@ -1,5 +1,8 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight } from "./main.js";
 
+// Jos ilmenee taas vanha bugi jossa koko peli jäätyy, saattaa johtua renderin splice metodeista.
+
+
 // TODO : Näkymättömät pommit
 // -> tulee jos seisoo pommin päällä loppuun asti
 // TODO : Jos toinen pelaaja jättää pommin, toinen jumahtaa siihen kiinni
@@ -159,6 +162,13 @@ export function renderBombs() {
         else if (currentTile.bomb.ticks === 1) {
             ctx.drawImage(spriteSheet, 96, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
         }
+        else if (currentTile.bomb.ticks <= 0) {
+            if (currentTile.isWalkable === false)
+            {
+                currentTile.isWalkable = true;
+                tilesWithBombs.splice(0, 1);
+            }
+        }
     }
 }
 
@@ -174,10 +184,14 @@ export function renderExplosions() {
             else if (wall.animationTimer >= 3) {
                 ctx.drawImage(spriteSheet, 128, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
             }
+            else if (wall.animationTimer >= 0) {
+                crumblingWalls.splice(0, 1);
+            }
+
         })
     }
 
-    if (fieryFloors.length > 0) {       // TODO: Animoi lieskat
+    if (fieryFloors.length > 0) {
         fieryFloors.forEach(floor => {
             if (floor.animationTimer === 7) {
                 ctx.drawImage(spriteSheet, 0, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
@@ -200,6 +214,9 @@ export function renderExplosions() {
             }
             else if (floor.animationTimer === 1) {
                 ctx.drawImage(spriteSheet, 192, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+            }
+            else if (floor.animationTimer <= 0) {
+                fieryFloors.splice(0, 1);
             }
         })
     }
