@@ -3,7 +3,6 @@ import { PlayAudio } from "./audio.js";
 import { spawnEnemiesAtLocation } from "./enemy.js";
 
 // Jos ilmenee taas vanha bugi jossa koko peli jäätyy, saattaa johtua renderin splice metodeista.
-// TODO : deltaTime
 // TODO : Näkymättömät pommit
 // -> tulee jos seisoo pommin päällä loppuun asti
 // EHKÄ : Pakota suunta johon lähetään kävelemään (paitsi että mitä jos painaa sivuttain?)
@@ -22,10 +21,10 @@ export function Bomb(x, y, ticks, range) {
     this.range = range || 1;
     this.hasExploded = false;
     
-    let intervalTime = 180000 * deltaTime;
+    let intervalTime = 60000 * deltaTime;
     let ticking = setInterval(() => {
-        // console.log("dT:", deltaTime, "animation interval:", intervalTime);
-        intervalTime = 180000 * deltaTime;
+        console.log("BOMB dT:", deltaTime, "animation interval:", intervalTime);
+        intervalTime = 60000 * deltaTime;
         this.ticks--;
         if (this.hasExploded) {
             clearInterval(ticking);
@@ -98,7 +97,7 @@ function chainExplosions(tiles) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
                 if ("bomb" in currentTile && currentTile.bomb.hasExploded === false) {
-                    // console.info(tiles[0][0].x, tiles[0][0].y, "chained",  currentTile.x, currentTile.y);
+                    console.info(tiles[0][0].x, tiles[0][0].y, "chained",  currentTile.x, currentTile.y);
                     explode(currentTile.bomb);
                 }
         }
@@ -151,10 +150,10 @@ function animateExplosion(tile){
     tile.isBeingAnimated = true;
     tile.animationTimer = 7;
 
-    let intervalTime = 25000 * deltaTime;
+    let intervalTime = 9000 * deltaTime;
     let interval = setInterval(() => {
-        intervalTime = 25000 * deltaTime;
-        // console.log("dT:", deltaTime, "animation interval:", intervalTime);
+        intervalTime = 9000 * deltaTime;
+        console.log("dT:", deltaTime, "animation interval:", intervalTime);
         tile.animationTimer--;
         if (tile.animationTimer <= 0) {
             if (tile.isWalkable) {
