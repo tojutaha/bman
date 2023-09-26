@@ -1,4 +1,5 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, deltaTime } from "./main.js";
+import { spawnEnemiesAtLocation } from "./enemy.js";
 
 // Jos ilmenee taas vanha bugi jossa koko peli jäätyy, saattaa johtua renderin splice metodeista.
 // TODO : deltaTime
@@ -122,9 +123,16 @@ function setTilesOnFire(tiles) {
                         fieryFloors.push(currentTile);
                     }
                     currentTile.isDeadly = true;
+
                     if (currentTile.hasPowerup) {
                         currentTile.hasPowerup = false;
                     }
+                    else if (currentTile.isExit && !currentTile.isOpen && !currentTile.hasSpawnedEnemies)
+                    {
+                        currentTile.hasSpawnedEnemies = true;
+                        spawnEnemiesAtLocation(currentTile, 8);     // TODO: joku muuttuja vaikeustason mukaan
+                    }
+                
                 }
         }
     }
