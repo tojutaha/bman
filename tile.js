@@ -123,6 +123,7 @@ function createExit(result) {
 
         if (tile.type === "SoftWall" && tile.hasPowerup === false) {
             tile.isExit = true;
+            tile.isOpen = false;
             exitCreated = true;
             exitLocation = tile;
             console.info("The door is in", tile.x, tile.y);
