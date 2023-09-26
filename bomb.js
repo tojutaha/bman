@@ -1,12 +1,9 @@
-import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight } from "./main.js";
+import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, deltaTime } from "./main.js";
 
 // Jos ilmenee taas vanha bugi jossa koko peli jäätyy, saattaa johtua renderin splice metodeista.
 
-
 // TODO : Näkymättömät pommit
 // -> tulee jos seisoo pommin päällä loppuun asti
-// TODO : Jos toinen pelaaja jättää pommin, toinen jumahtaa siihen kiinni
-// TODO : Lieskojen animointi
 // EHKÄ : Pakota suunta johon lähetään kävelemään (paitsi että mitä jos painaa sivuttain?)
  
 export let tilesWithBombs = [];
@@ -103,15 +100,20 @@ function setTilesOnFire(tiles) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
                 
+                // Hardwall stops the explosion and there's no need to animate it
                 if (currentTile.type === "HardWall") {
                     break;
                 }
                 
-                animateExplosion(currentTile);
+                if (!currentTile.isBeingAnimated) {
+                    animateExplosion(currentTile);
+                }
+
                 if (currentTile.type === "SoftWall") {
                     if (crumblingWalls.indexOf(currentTile) === -1) {
                         crumblingWalls.push(currentTile);
                     }
+                    // The tile turns already into a floor at this point so that it will render under the crumbling wall
                     currentTile.type = "Floor";
                     break;
                 }
@@ -129,16 +131,12 @@ function setTilesOnFire(tiles) {
 }
 
 function animateExplosion(tile){
+    tile.isBeingAnimated = true;
     tile.animationTimer = 7;
     let interval = setInterval(() => {
         tile.animationTimer--;
-        if (tile.animationTimer === 0) {
-            if (tile.isWalkable) {
-                tile.isDeadly = false; // This happens now in render when there's just smoke left
-            }
-            else {
-                tile.isWalkable = true;
-            }
+        if (tile.animationTimer <= 0) {
+            tile.isBeingAnimated = false;
             clearInterval(interval);
         }
     }, 150);
@@ -162,29 +160,23 @@ export function renderBombs() {
         else if (currentTile.bomb.ticks === 1) {
             ctx.drawImage(spriteSheet, 96, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
         }
-        else if (currentTile.bomb.ticks <= 0) {
-            if (currentTile.isWalkable === false)
-            {
-                currentTile.isWalkable = true;
-                tilesWithBombs.splice(0, 1);
-            }
-        }
     }
 }
 
 export function renderExplosions() {
     if (crumblingWalls.length > 0) {
-        crumblingWalls.forEach(wall => {
-            if (wall.animationTimer >= 7) {
-                ctx.drawImage(spriteSheet, 64, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
+        crumblingWalls.forEach(tile => {
+            if (tile.animationTimer >= 7) {
+                ctx.drawImage(spriteSheet, 64, 0, 32, 32, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (wall.animationTimer >= 5) {
-                ctx.drawImage(spriteSheet, 96, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
+            else if (tile.animationTimer >= 5) {
+                ctx.drawImage(spriteSheet, 96, 0, 32, 32, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (wall.animationTimer >= 3) {
-                ctx.drawImage(spriteSheet, 128, 0, 32, 32, wall.x, wall.y, tileSize, tileSize);
+            else if (tile.animationTimer >= 3) {
+                ctx.drawImage(spriteSheet, 128, 0, 32, 32, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (wall.animationTimer >= 0) {
+            else if (tile.animationTimer >= 0) {
+                tile.isWalkable = true;
                 crumblingWalls.splice(0, 1);
             }
 
@@ -192,30 +184,30 @@ export function renderExplosions() {
     }
 
     if (fieryFloors.length > 0) {
-        fieryFloors.forEach(floor => {
-            if (floor.animationTimer === 7) {
-                ctx.drawImage(spriteSheet, 0, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+        fieryFloors.forEach(tile => {
+            if (tile.animationTimer === 7) {
+                ctx.drawImage(spriteSheet, 0, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (floor.animationTimer === 6) {
-                ctx.drawImage(spriteSheet, 32, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+            else if (tile.animationTimer === 6) {
+                ctx.drawImage(spriteSheet, 32, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (floor.animationTimer === 5) {
-                ctx.drawImage(spriteSheet, 64, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+            else if (tile.animationTimer === 5) {
+                ctx.drawImage(spriteSheet, 64, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (floor.animationTimer === 4) {
-                ctx.drawImage(spriteSheet, 96, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+            else if (tile.animationTimer === 4) {
+                ctx.drawImage(spriteSheet, 96, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (floor.animationTimer === 3) {
-                ctx.drawImage(spriteSheet, 128, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
-                floor.isDeadly = false;
+            else if (tile.animationTimer === 3) {
+                ctx.drawImage(spriteSheet, 128, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
+                tile.isDeadly = false;
             }
-            else if (floor.animationTimer === 2) {
-                ctx.drawImage(spriteSheet, 160, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+            else if (tile.animationTimer === 2) {
+                ctx.drawImage(spriteSheet, 160, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (floor.animationTimer === 1) {
-                ctx.drawImage(spriteSheet, 192, 192 , 32, 32, floor.x, floor.y, tileSize, tileSize);
+            else if (tile.animationTimer === 1) {
+                ctx.drawImage(spriteSheet, 192, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (floor.animationTimer <= 0) {
+            else if (tile.animationTimer <= 0) {
                 fieryFloors.splice(0, 1);
             }
         })

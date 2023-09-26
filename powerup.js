@@ -3,8 +3,9 @@ import { ctx, spriteSheet, level, levelHeight, levelWidth, tileSize } from "./ma
 export class Powerup
 {
     constructor() {
-        this.maxBombs = 5; // HUOM
-        this.maxRange = 1;
+        // TODO: Näiden säätö tietenkin
+        this.maxBombs = 50;
+        this.maxRange = levelHeight; 
         this.currentTicks = 4;
     }
 
@@ -19,7 +20,7 @@ export class Powerup
         }
 
         else if (tile.powerup === "ExtraSpeed") {
-            player.speed += 0.5;
+            player.speed += 0.1;
         }
 
     }
