@@ -37,8 +37,6 @@ class Enemy
         this.playerTarget = null;
 
         // Rendering
-        this.prevX = this.x;
-        this.prevY = this.y;
         this.renderX = this.x;
         this.renderY = this.y;
         this.t = 0;
@@ -167,8 +165,6 @@ class Enemy
             }
 
             // Move enemy
-            this.prevX = this.x;
-            this.prevY = this.y;
             this.x = next.x;
             this.y = next.y;
             this.t = 0;
