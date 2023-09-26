@@ -35,9 +35,10 @@ class Enemy
         this.startLocation = {x: this.x, y: this.y};
         this.targetLocation = {x: 0, y: 0};
         this.playerTarget = null;
-        this.hasObstacle = false;
 
         // Rendering
+        this.prevX = this.x;
+        this.prevY = this.y;
         this.renderX = this.x;
         this.renderY = this.y;
         this.t = 0;
@@ -134,61 +135,67 @@ class Enemy
         }
 
         let index = 0;
+        let renderIndex = index + 1;
         timer = setInterval(() => {
 
             const next = this.currentPath[index];
 
             // Check if there is a bomb on the path
-            const bombCoords = tilesWithBombs.find(bomb => bomb.x === next.x && bomb.y === next.y);
-            if (bombCoords) {
-                console.log("Bomb in path: ", bombCoords.x, bombCoords.y)
-                this.currentPath.length = 0;
-                this.hasObstacle = true;
-            } else {
-                this.hasObstacle = false;
+            const nextInRender = this.currentPath[renderIndex]
+            if (nextInRender !== undefined) {
+                const bombCoords = tilesWithBombs.find(bomb => bomb.x === nextInRender.x && bomb.y === nextInRender.y);
+                if (bombCoords) {
+                    console.log("Bomb in path: ", bombCoords.x, bombCoords.y)
+                    this.x = next.x;
+                    this.y = next.y;
+                    clearInterval(timer);
+                    this.currentPath.length = 0;
+                }
+            }
+            
+            // Store movement direction
+            if (next.x < this.x) {
+                this.direction = Direction.LEFT;
+            } else if (next.x > this.x) {
+                this.direction = Direction.RIGHT;
             }
 
-            if (!this.hasObstacle) {
-
-                // Store movement direction
-                if (next.x < this.x) {
-                    this.direction = Direction.LEFT;
-                } else if (next.x > this.x) {
-                    this.direction = Direction.RIGHT;
-                }
-
-                if (next.y < this.y) {
-                    this.direction = Direction.UP;
-                } else if (next.y > this.y) {
-                    this.direction = Direction.DOWN;
-                }
-
-                // Smoother movement for rendering
-                let renderIndex = index + 1;
-                if (renderIndex < this.currentPath.length) {
-                    const renderLoc = this.currentPath[renderIndex]
-                    this.renderX = renderLoc.x;
-                    this.renderY = renderLoc.y;
-                }
-
-                // Move enemy
-                this.x = next.x;
-                this.y = next.y;
-                this.t = 0;
-
-                // Check if enemy has reached one of the players
-                players.forEach(player => {
-                    if (getDistanceTo(this, player) < tileSize) {
-                        player.onDeath();
-                        this.playerTarget = null;
-                        // TODO: Varmaan stopataan myöhemmin, kun 
-                        // ei ole pelaajia jäljellä?
-                        //clearInterval(timer);
-                    }
-                });
-
-                index++;
+            if (next.y < this.y) {
+                this.direction = Direction.UP;
+            } else if (next.y > this.y) {
+                this.direction = Direction.DOWN;
             }
+
+            // Move enemy
+            this.prevX = this.x;
+            this.prevY = this.y;
+            this.x = next.x;
+            this.y = next.y;
+            this.t = 0;
+
+            // Check if enemy has reached one of the players
+            players.forEach(player => {
+                if (getDistanceTo(this, player) < tileSize) {
+                    player.onDeath();
+                    this.playerTarget = null;
+                    // TODO: Varmaan stopataan myöhemmin, kun 
+                    // ei ole pelaajia jäljellä?
+                    //clearInterval(timer);
+                }
+            });
+
+            // Smoother movement for rendering
+            if (renderIndex < this.currentPath.length) {
+                const renderLoc = this.currentPath[renderIndex]
+                this.renderX = renderLoc.x;
+                this.renderY = renderLoc.y;
+                renderIndex++;
+            }
+            index++;
+
+
+            //console.log("real location :", this.x, this.y);
+            //console.log("render location :", this.renderX, this.renderY);
 
             if (index >= this.currentPath.length) {
 
@@ -286,6 +293,8 @@ export function spawnEnemies()
         const enemy = new Enemy(random.x, random.y, 32, 32);
         let colIndex = i;
         enemy.setMovementMode(movementValues[colIndex]);
+        //enemy.setMovementMode(movementMode.FOLLOW);
+        // TODO: Patrol menee rikki, jos on esteitä..
         //enemy.setMovementMode(movementMode.PATROL);
         enemy.speed = getRandomSpeed();
         enemy.setDebugColors();
@@ -321,16 +330,16 @@ export function renderEnemies()
     }
 
     enemies.forEach(enemy => {
-        ctx.fillStyle = "#00ff00";
-        ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+        //ctx.fillStyle = "#00ff00";
+        //ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+        ctx.fillStyle = enemy.color;
 
         enemy.t += deltaTime * (1 / (enemy.speed / 1000));
         enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
 
-        const x = lerp(enemy.x, enemy.renderX, enemy.t);
-        const y = lerp(enemy.y, enemy.renderY, enemy.t);
+        let x = lerp(enemy.x, enemy.renderX, enemy.t);
+        let y = lerp(enemy.y, enemy.renderY, enemy.t);
 
-        ctx.fillStyle = enemy.color;
         ctx.fillRect(x, y, enemy.w, enemy.h);
     });
 
@@ -342,5 +351,5 @@ export function renderEnemies()
 /*
 setTimeout(() => {
     spawnEnemiesAtLocation({x: 32, y: 32}, 5);
-}, 1000);
+}, 3000);
 */
