@@ -3,6 +3,7 @@ import { Direction, players } from "./player.js";
 import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
 import { requestPath, drawPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
+import { PlayAudio } from "./audio.js";
 
 const movementMode = {
     IDLE: "Idle",
@@ -50,15 +51,19 @@ class Enemy
         switch(this.movementMode) {
             case movementMode.IDLE:
                 this.color = "#00ff00";
+                this.pathColor = "#00ff00";
                 break;
             case movementMode.ROAM:
                 this.color = "#ff00ff";
+                this.pathColor = "#ff00ff";
                 break;
             case movementMode.PATROL:
                 this.color = "#00ffff";
+                this.pathColor = "#00ffff";
                 break;
             case movementMode.FOLLOW:
                 this.color = "#ff0000";
+                this.pathColor = "#ff0000";
                 break;
         }
     }
@@ -295,7 +300,7 @@ export function spawnEnemies()
         enemy.speed = getRandomSpeed();
         enemy.setDebugColors();
         //enemy.color = getRandomColor();
-        enemy.pathColor = getRandomColor();
+        //enemy.pathColor = getRandomColor();
         enemy.init();
         enemies.push(enemy);
 
@@ -313,7 +318,7 @@ export function spawnEnemiesAtLocation(location, amount = 1)
         enemy.setMovementMode(movementMode.ROAM);
         enemy.speed = getRandomSpeed();
         enemy.color = getRandomColor();
-        enemy.pathColor = getRandomColor();
+        enemy.pathColor = enemy.color;
         enemy.init();
         enemies.push(enemy);
     }
@@ -333,8 +338,8 @@ export function renderEnemies()
         enemy.t += deltaTime * (1 / (enemy.speed / 1000));
         enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
 
-        let x = lerp(enemy.x, enemy.renderX, enemy.t);
-        let y = lerp(enemy.y, enemy.renderY, enemy.t);
+        const x = lerp(enemy.x, enemy.renderX, enemy.t);
+        const y = lerp(enemy.y, enemy.renderY, enemy.t);
 
         ctx.fillRect(x, y, enemy.w, enemy.h);
     });
@@ -346,6 +351,8 @@ export function renderEnemies()
 
 /*
 setTimeout(() => {
+    PlayAudio("audio/click.mp3", 1);
     spawnEnemiesAtLocation({x: 32, y: 32}, 5);
 }, 3000);
 */
+
