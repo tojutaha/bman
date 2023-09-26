@@ -21,10 +21,7 @@ export function Bomb(x, y, ticks, range) {
     this.range = range || 1;
     this.hasExploded = false;
     
-    let intervalTime = 60000 * deltaTime;
     let ticking = setInterval(() => {
-        console.log("BOMB dT:", deltaTime, "animation interval:", intervalTime);
-        intervalTime = 60000 * deltaTime;
         this.ticks--;
         if (this.hasExploded) {
             clearInterval(ticking);
@@ -35,7 +32,7 @@ export function Bomb(x, y, ticks, range) {
             explode(this);
             clearInterval(ticking);
         }
-    }, intervalTime);
+    }, 1000);
 }
 
 // Returns a 2D array of all the surrounding tiles within the bomb's range.
@@ -150,10 +147,7 @@ function animateExplosion(tile){
     tile.isBeingAnimated = true;
     tile.animationTimer = 7;
 
-    let intervalTime = 9000 * deltaTime;
     let interval = setInterval(() => {
-        intervalTime = 9000 * deltaTime;
-        console.log("dT:", deltaTime, "animation interval:", intervalTime);
         tile.animationTimer--;
         if (tile.animationTimer <= 0) {
             if (tile.isWalkable) {
@@ -165,7 +159,7 @@ function animateExplosion(tile){
             tile.isBeingAnimated = false;
             clearInterval(interval);
         }
-    }, intervalTime);
+    }, 150);
 }
 
 ////////////////////
