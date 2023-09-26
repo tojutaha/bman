@@ -169,6 +169,10 @@ class Player
                 break;
         }
     }
+
+    onDeath() {
+        console.log("onDeath");
+    }
 };
 
 export const keybinds1 = {

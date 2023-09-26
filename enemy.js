@@ -4,8 +4,6 @@ import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLo
 import { requestPath, drawPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
 
-// TODO: Random nykimistä smooth renderissä
-
 const movementMode = {
     IDLE: "Idle",
     ROAM: "Roam",
@@ -16,26 +14,34 @@ const movementMode = {
 class Enemy
 {
     constructor(x, y, w, h, newMovementMode, speed) {
+        // Coordinates
         this.x  = x;
         this.y  = y;
+
+        // Size
         this.w  = w;
         this.h  = h;
+
+        // Movement
         this.dx = 0;
         this.dy = 0;
-        this.currentPath = [];
-        this.startLocation = {x: this.x, y: this.y};
-        this.targetLocation = {x: 0, y: 0};
         this.useDiagonalMovement = false;
         this.movementMode = newMovementMode || movementMode.ROAM;
         this.speed = speed || 500;
         this.direction = Direction.UP;
 
-        // Rendering:
+        // Behaviour
+        this.currentPath = [];
+        this.startLocation = {x: this.x, y: this.y};
+        this.targetLocation = {x: 0, y: 0};
+        this.playerTarget = null;
+
+        // Rendering
         this.renderX = this.x;
         this.renderY = this.y;
         this.t = 0;
 
-        // Debug colors:
+        // Debug
         this.color = "#ff00ff";
         this.pathColor = "yellow";
     }
@@ -94,11 +100,18 @@ class Enemy
         this.targetLocation = {x: targetLocation.x, y: targetLocation.y};
     }
 
+    getRandomPlayer() {
+        const index = Math.floor(Math.random() * players.length);
+        return players[index];
+    }
+
     getPlayerLocation() {
-        // TODO: Muut pelaajat?
-        const player = players[0];
-        const tile = getTileFromWorldLocation({x: player.x, y: player.y});
-        this.targetLocation = {x: tile.x, y: tile.y};
+        if (!this.playerTarget) {
+            this.playerTarget = this.getRandomPlayer();
+        } else {
+            const tile = getTileFromWorldLocation(this.playerTarget);
+            this.targetLocation = {x: tile.x, y: tile.y};
+        }
     }
 
     startMove() {
@@ -148,12 +161,16 @@ class Enemy
             this.y = next.y;
             this.t = 0;
 
-            // TODO: Muut pelaajat
-            const player = players[0];
-            if (getDistanceTo(this, player) < tileSize) {
-                console.log("reached player");
-                //clearInterval(timer);
-            }
+            // Check if enemy has reached one of the players
+            players.forEach(player => {
+                if (getDistanceTo(this, player) < tileSize) {
+                    player.onDeath();
+                    this.playerTarget = null;
+                    // TODO: Varmaan stopataan myöhemmin, kun 
+                    // ei ole pelaajia jäljellä?
+                    //clearInterval(timer);
+                }
+            });
 
             // Smoother movement for rendering
             let renderIndex = index + 1;
@@ -246,7 +263,7 @@ export function spawnEnemies()
     const maxRadius = 25*tileSize;
     const minRadius = 10*tileSize;
 
-    // TODO: Muut pelaajat
+    // TODO: Muut pelaajat?
     const player = players[0];
     for (let i = 0; i < amount; i++) {
         const random = getRandomWalkablePointInRadius({x: player.x,
