@@ -35,6 +35,7 @@ class Enemy
         this.startLocation = {x: this.x, y: this.y};
         this.targetLocation = {x: 0, y: 0};
         this.playerTarget = null;
+        this.hasObstacle = false;
 
         // Rendering
         this.renderX = this.x;
@@ -141,48 +142,53 @@ class Enemy
             const bombCoords = tilesWithBombs.find(bomb => bomb.x === next.x && bomb.y === next.y);
             if (bombCoords) {
                 console.log("Bomb in path: ", bombCoords.x, bombCoords.y)
+                this.currentPath.length = 0;
+                this.hasObstacle = true;
+            } else {
+                this.hasObstacle = false;
             }
 
-            // Store movement direction
-            if (next.x < this.x) {
-                this.direction = Direction.LEFT;
-            } else if (next.x > this.x) {
-                this.direction = Direction.RIGHT;
-            }
+            if (!this.hasObstacle) {
 
-            if (next.y < this.y) {
-                this.direction = Direction.UP;
-            } else if (next.y > this.y) {
-                this.direction = Direction.DOWN;
-            }
-
-            //console.log(this.direction);
-
-            // Move enemy
-            this.x = next.x;
-            this.y = next.y;
-            this.t = 0;
-
-            // Check if enemy has reached one of the players
-            players.forEach(player => {
-                if (getDistanceTo(this, player) < tileSize) {
-                    player.onDeath();
-                    this.playerTarget = null;
-                    // TODO: Varmaan stopataan myöhemmin, kun 
-                    // ei ole pelaajia jäljellä?
-                    //clearInterval(timer);
+                // Store movement direction
+                if (next.x < this.x) {
+                    this.direction = Direction.LEFT;
+                } else if (next.x > this.x) {
+                    this.direction = Direction.RIGHT;
                 }
-            });
 
-            // Smoother movement for rendering
-            let renderIndex = index + 1;
-            if (renderIndex < this.currentPath.length) {
-                const renderLoc = this.currentPath[renderIndex]
-                this.renderX = renderLoc.x;
-                this.renderY = renderLoc.y;
+                if (next.y < this.y) {
+                    this.direction = Direction.UP;
+                } else if (next.y > this.y) {
+                    this.direction = Direction.DOWN;
+                }
+
+                // Smoother movement for rendering
+                let renderIndex = index + 1;
+                if (renderIndex < this.currentPath.length) {
+                    const renderLoc = this.currentPath[renderIndex]
+                    this.renderX = renderLoc.x;
+                    this.renderY = renderLoc.y;
+                }
+
+                // Move enemy
+                this.x = next.x;
+                this.y = next.y;
+                this.t = 0;
+
+                // Check if enemy has reached one of the players
+                players.forEach(player => {
+                    if (getDistanceTo(this, player) < tileSize) {
+                        player.onDeath();
+                        this.playerTarget = null;
+                        // TODO: Varmaan stopataan myöhemmin, kun 
+                        // ei ole pelaajia jäljellä?
+                        //clearInterval(timer);
+                    }
+                });
+
+                index++;
             }
-
-            index++;
 
             if (index >= this.currentPath.length) {
 
@@ -218,16 +224,21 @@ class Enemy
     }
 
     patrol() {
+        //console.log("PATROL");
         if (!this.currentPath || this.currentPath.length == 0) {
             this.getRandomPath();
+            //console.log("requested new path");
             requestPath(this, this.getLocation(), this.targetLocation);
         } else {
+            //console.log("keep on rollin");
             if (this.getLocation().x == this.targetLocation.x &&
                 this.getLocation().y == this.targetLocation.y) {
                 const temp = this.startLocation;
                 this.startLocation = this.targetLocation;
                 this.targetLocation = temp;
                 this.currentPath.reverse();
+                //console.log(this.currentPath);
+                //console.log(temp);
                 this.startMove();
             }
         }
@@ -257,6 +268,7 @@ function getRandomSpeed()
 }
 
 export const enemies = [];
+// Initial spawn
 export function spawnEnemies()
 {
     const movementValues = Object.values(movementMode);
@@ -274,6 +286,7 @@ export function spawnEnemies()
         const enemy = new Enemy(random.x, random.y, 32, 32);
         let colIndex = i;
         enemy.setMovementMode(movementValues[colIndex]);
+        //enemy.setMovementMode(movementMode.PATROL);
         enemy.speed = getRandomSpeed();
         enemy.setDebugColors();
         //enemy.color = getRandomColor();
@@ -287,29 +300,37 @@ export function spawnEnemies()
     }
 }
 
+// Spawn enemies at location
+export function spawnEnemiesAtLocation(location, amount = 1)
+{
+    for (let i = 0; i < amount; i++) {
+        const enemy = new Enemy(location.x, location.y, 32, 32);
+        enemy.setMovementMode(movementMode.ROAM);
+        enemy.speed = getRandomSpeed();
+        enemy.color = getRandomColor();
+        enemy.pathColor = getRandomColor();
+        enemy.init();
+        enemies.push(enemy);
+    }
+}
+
 export function renderEnemies()
 {
     if (isNaN(deltaTime)) {
         return;
     }
-    
-    enemies.forEach(enemy => {
-        ctx.fillStyle = enemy.color;
-        //ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
 
-        /*
-        if (!enemy.t) {
-            enemy.t = 0;
-        }
-        */
-        
+    enemies.forEach(enemy => {
+        ctx.fillStyle = "#00ff00";
+        ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
+
         enemy.t += deltaTime * (1 / (enemy.speed / 1000));
         enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
 
         const x = lerp(enemy.x, enemy.renderX, enemy.t);
         const y = lerp(enemy.y, enemy.renderY, enemy.t);
 
-        //ctx.fillStyle = "#00ff00";
+        ctx.fillStyle = enemy.color;
         ctx.fillRect(x, y, enemy.w, enemy.h);
     });
 
@@ -318,3 +339,8 @@ export function renderEnemies()
     //
 }
 
+/*
+setTimeout(() => {
+    spawnEnemiesAtLocation({x: 32, y: 32}, 5);
+}, 1000);
+*/
