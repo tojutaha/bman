@@ -1,7 +1,7 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, deltaTime } from "./main.js";
 
 // Jos ilmenee taas vanha bugi jossa koko peli jäätyy, saattaa johtua renderin splice metodeista.
-
+// TODO : deltaTime
 // TODO : Näkymättömät pommit
 // -> tulee jos seisoo pommin päällä loppuun asti
 // EHKÄ : Pakota suunta johon lähetään kävelemään (paitsi että mitä jos painaa sivuttain?)
@@ -136,6 +136,12 @@ function animateExplosion(tile){
     let interval = setInterval(() => {
         tile.animationTimer--;
         if (tile.animationTimer <= 0) {
+            if (tile.isWalkable) {
+                tile.isDeadly = false;
+            }
+            else {
+                tile.isWalkable = true;
+            }
             tile.isBeingAnimated = false;
             clearInterval(interval);
         }
@@ -164,6 +170,7 @@ export function renderBombs() {
 }
 
 export function renderExplosions() {
+    // Walls
     if (crumblingWalls.length > 0) {
         crumblingWalls.forEach(tile => {
             if (tile.animationTimer >= 7) {
@@ -176,13 +183,13 @@ export function renderExplosions() {
                 ctx.drawImage(spriteSheet, 128, 0, 32, 32, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer >= 0) {
-                tile.isWalkable = true;
                 crumblingWalls.splice(0, 1);
             }
 
         })
     }
 
+    // Floor
     if (fieryFloors.length > 0) {
         fieryFloors.forEach(tile => {
             if (tile.animationTimer === 7) {
