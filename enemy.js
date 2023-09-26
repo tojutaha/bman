@@ -108,6 +108,8 @@ class Enemy
     getPlayerLocation() {
         if (!this.playerTarget) {
             this.playerTarget = this.getRandomPlayer();
+            const tile = getTileFromWorldLocation(this.playerTarget);
+            this.targetLocation = {x: tile.x, y: tile.y};
         } else {
             const tile = getTileFromWorldLocation(this.playerTarget);
             this.targetLocation = {x: tile.x, y: tile.y};
