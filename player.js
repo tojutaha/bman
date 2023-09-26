@@ -109,12 +109,16 @@ class Player
                 bombTile.bomb = new Bomb(bombTile.x, bombTile.y, this.currentTicks, this.powerup.maxRange);
                 tilesWithBombs.push(bombTile);
                 
-                // Checks whether player is still standing on the bomb after it was dropped.
+                // Checks whether any player is still standing on the bomb after it was dropped.
                 let posCheck = setInterval(() => {
-                    let playerTile = getTileFromWorldLocation(this);
-
-                    if (getDistanceTo(bombTile, this) > tileSize) {
-                        //console.log("not on bomb, your coordinates:", this.x, this.y);
+                    let isPlayerOnBomb = false;
+                    for (let i = 0; i < players.length; i++) {
+                        if (getDistanceTo(bombTile, players[i]) <= tileSize) {
+                            isPlayerOnBomb = true;
+                            break;
+                        }
+                    }
+                    if (!isPlayerOnBomb) {
                         bombTile.isWalkable = false;
                         clearInterval(posCheck);
                     }
