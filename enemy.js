@@ -3,6 +3,7 @@ import { Direction, players } from "./player.js";
 import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
 import { requestPath, drawPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
+import { PlayAudio } from "./audio.js";
 
 const movementMode = {
     IDLE: "Idle",
@@ -350,6 +351,8 @@ export function renderEnemies()
 
 /*
 setTimeout(() => {
+    PlayAudio("audio/click.mp3", 1);
     spawnEnemiesAtLocation({x: 32, y: 32}, 5);
 }, 3000);
 */
+
