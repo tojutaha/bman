@@ -55,44 +55,51 @@ class Player
         let collides = false;
         for (let y = 0; y < levelHeight; y++) {
             for (let x = 0; x < levelWidth; x++) {
+
                 const tileLeft   = level[x][y].x;
                 const tileRight  = level[x][y].x + tileSize;
                 const tileTop    = level[x][y].y;
                 const tileBottom = level[x][y].y + tileSize;
 
-                if (!isWalkable(x, y) &&
-                    nextX + (this.w - this.collisionOffset) >= tileLeft &&
-                    (nextX + this.collisionOffset) < tileRight &&
-                    nextY + (this.h - this.collisionOffset) >= tileTop &&
-                    (nextY + this.collisionOffset) < tileBottom
-                ) {
+                const rightCheck = nextX + (this.w - this.collisionOffset) >= tileLeft; 
+                const leftCheck = (nextX + this.collisionOffset) < tileRight;
+                const topCheck = (nextY + this.collisionOffset) < tileBottom;
+                const bottomCheck = nextY + (this.h - this.collisionOffset) >= tileTop;
 
-                    collides = true;
-                }
+                // Wall
+                if (!isWalkable(x, y)) {
+                    if (leftCheck && rightCheck && topCheck && bottomCheck) {
+                        collides = true;
 
-                if (isDeadly(x, y) &&
-                    nextX + (this.w - this.collisionOffset) >= tileLeft &&
-                    (nextX + this.collisionOffset) < tileRight &&
-                    nextY + (this.h - this.collisionOffset) >= tileTop &&
-                    (nextY + this.collisionOffset) < tileBottom
-                ) {
-                    // Testi
-                    if (!this.isDead) {
-                        PlayAudio("audio/death01.wav");
-                        this.isDead = true;
-                        console.info("DEATH BY TILE");
+                        if (this.dx > 0) {
+                            console.log("hit the left side");
+                        } else if (this.dx < 0) {
+                            console.log("hit the right side");
+                        }
+
+                        if (this.dy > 0) {
+                            console.log("hit the top side");
+                        } else if (this.dy < 0) {
+                            console.log("hit the bottom side");
+                        }
                     }
                 }
 
-                // No picking up from just touching the walls
-                const pickupOffset = 3;
-                if (hasPowerup(x, y) &&
-                    nextX + (this.w - this.collisionOffset - pickupOffset) >= tileLeft &&
-                    (nextX + this.collisionOffset + pickupOffset) < tileRight &&
-                    nextY + (this.h - this.collisionOffset - pickupOffset) >= tileTop &&
-                    (nextY + this.collisionOffset + pickupOffset) < tileBottom
-                ) {
-                    this.powerup.pickup(level[x][y], this);
+                // Deadly thing
+                if (isDeadly(x, y)) {
+                    if (leftCheck && rightCheck && topCheck && bottomCheck) {
+                        if (!this.isDead) {
+                            PlayAudio("audio/death01.wav");
+                            this.isDead = true;
+                            console.info("DEATH BY TILE");
+                        }
+                    }
+                }
+                // Pickup
+                if (hasPowerup(x, y)) {
+                    if (leftCheck && rightCheck && topCheck && bottomCheck) {
+                        this.powerup.pickup(level[x][y], this);
+                    }
                 }
             }
         }
