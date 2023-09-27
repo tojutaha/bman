@@ -1,6 +1,7 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, deltaTime } from "./main.js";
 import { PlayAudio } from "./audio.js";
-import { spawnEnemiesAtLocation } from "./enemy.js";
+import { spawnEnemiesAtLocation, findEnemyById, enemies } from "./enemy.js";
+import { getDistanceTo } from "./utils.js";
 
 // Jos ilmenee taas vanha bugi jossa koko peli jäätyy, saattaa johtua renderin splice metodeista.
 // TODO : Näkymättömät pommit
@@ -86,6 +87,7 @@ function explode(bomb) {
 
     chainExplosions(tiles);
     setTilesOnFire(tiles);
+    killEnemies(tiles);
 }
 
 function chainExplosions(tiles) {
@@ -101,7 +103,27 @@ function chainExplosions(tiles) {
     }
 }
 
+function animateExplosion(tile) {
+    tile.isBeingAnimated = true;
+    tile.animationTimer = 7;
+
+    let interval = setInterval(() => {
+        tile.animationTimer--;
+        if (tile.animationTimer <= 0) {
+            if (tile.isWalkable) {
+                tile.isDeadly = false;
+            }
+            else {
+                tile.isWalkable = true;
+            }
+            tile.isBeingAnimated = false;
+            clearInterval(interval);
+        }
+    }, 150);
+}
+
 function setTilesOnFire(tiles) {
+    let deadlyFloors = [];
     for (let i = 0; i < tiles.length; i++) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
@@ -125,9 +147,9 @@ function setTilesOnFire(tiles) {
                 }
                 else if (currentTile.type === "Floor") {
                     if (fieryFloors.indexOf(currentTile) === -1) {
+                        currentTile.isDeadly = true;
                         fieryFloors.push(currentTile);
                     }
-                    currentTile.isDeadly = true;
 
                     if (currentTile.hasPowerup) {
                         currentTile.hasPowerup = false;
@@ -143,23 +165,21 @@ function setTilesOnFire(tiles) {
     }
 }
 
-function animateExplosion(tile){
-    tile.isBeingAnimated = true;
-    tile.animationTimer = 7;
-
-    let interval = setInterval(() => {
-        tile.animationTimer--;
-        if (tile.animationTimer <= 0) {
-            if (tile.isWalkable) {
-                tile.isDeadly = false;
+function killEnemies(tiles) {
+    for (let i = 1; i < tiles.length; i++) {
+        for (let j = 0; j < tiles[i].length; j++) {
+            let currentTile = tiles[i][j];
+            if (currentTile.isDeadly) {
+                enemies.forEach(enemy => {
+                    if (getDistanceTo(currentTile, enemy) < tileSize) {
+                        let result = findEnemyById(enemy.id);
+                        console.info("Enemy", enemy.id, "died");
+                        enemies.splice(result.index, enemy.id);
+                    }
+                })    
             }
-            else {
-                tile.isWalkable = true;
-            }
-            tile.isBeingAnimated = false;
-            clearInterval(interval);
         }
-    }, 150);
+    }
 }
 
 ////////////////////
