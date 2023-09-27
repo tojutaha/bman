@@ -143,7 +143,7 @@ function astar(useDiagonalMovement, start, target)
         }
     }
 
-    console.log(`Could not find requested path from ${start.x}, ${start.y} to ${target.x} ${target.y}`);
+    //console.log(`Could not find requested path from ${start.x}, ${start.y} to ${target.x} ${target.y}`);
     return null;
 }
 
