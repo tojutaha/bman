@@ -171,10 +171,15 @@ function killEnemies(tiles) {
                 enemies.forEach(enemy => {
                     if (getDistanceTo(currentTile, enemy) < tileSize) {
                         let result = findEnemyById(enemy.id);
-                        console.info("Enemy ID", enemy.id, "died");
+                        // console.info("Enemy ID", enemy.id, "died");
                         enemies.splice(result.index, 1);
+                        game.increaseScore(500);    // TODO: Score by enemy type
                         game.decreaseEnemies();
-                        console.log("Enemies left:", game.numOfEnemies);
+                        // console.log("Enemies left:", game.numOfEnemies);
+                        if (game.numOfEnemies === 0) {
+                            game.openDoor();
+                            PlayAudio("audio/exitopen01.wav");
+                        }
                     }
                 })    
             }

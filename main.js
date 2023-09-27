@@ -40,9 +40,9 @@ function Render(timeStamp)
     const fps = 1 / deltaTime;
 
     renderFloor();
-    renderExit();
     renderPowerups();
     renderWalls();
+    renderExit();
     renderEnemies();
     renderBombs();
     renderExplosions();

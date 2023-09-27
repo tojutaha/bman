@@ -39,5 +39,11 @@ export function renderFloor()
 
 export function renderExit()
 {
-    ctx.drawImage(spriteSheet, 0, 160, 32, 32, exitLocation.x, exitLocation.y, tileSize, tileSize);
+    if (exitLocation.isOpen)
+    {
+        ctx.drawImage(spriteSheet, 32, 160, 32, 32, exitLocation.x, exitLocation.y, tileSize, tileSize);
+    }
+    else {
+        ctx.drawImage(spriteSheet, 0, 160, 32, 32, exitLocation.x, exitLocation.y, tileSize, tileSize);
+    }
 }

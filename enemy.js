@@ -1,4 +1,4 @@
-import { canvas, ctx, deltaTime, level, levelHeight, levelWidth, tileSize } from "./main.js";
+import { canvas, ctx, deltaTime, game, level, levelHeight, levelWidth, tileSize } from "./main.js";
 import { Direction, players } from "./player.js";
 import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
 import { requestPath, drawPath } from "./pathfinder.js";
@@ -129,7 +129,7 @@ class Enemy
         let timer = null;
 
         if (!this.currentPath) {
-            console.log("Trying again..");
+            // console.log("Trying again..");
             if (timer) {
                 clearInterval(timer);
                 timer = null;
@@ -294,6 +294,7 @@ export function spawnEnemies()
         enemy.setDebugColors();
         enemy.init();
         enemies.push(enemy);
+        game.increaseEnemies();
 
         if (colIndex > movementValues.length) {
             colIndex = 0;
@@ -312,6 +313,7 @@ export function spawnEnemiesAtLocation(location, amount = 1)
         enemy.pathColor = enemy.color;
         enemy.init();
         enemies.push(enemy);
+        game.increaseEnemies();
     }
 }
 

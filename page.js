@@ -1,6 +1,13 @@
 import { ctx, tileSize, levelHeight, levelWidth } from "./main.js";
 
 ////////////////////
+// Score display
+let scoreDisplay = document.getElementById("score");
+export function updateScore(score) {
+    scoreDisplay.textContent = `Score: ${score}`;
+}
+
+////////////////////
 // Show coordinates
 let coordButton = document.getElementById("show-coords");
 export let coordsToggle = false;
