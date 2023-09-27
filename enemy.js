@@ -265,7 +265,7 @@ function getRandomColor()
 function getRandomSpeed()
 {
     const max = 500;
-    const min = 150;
+    const min = 350;
     const random = Math.random() * (max - min) + min;
     return Math.floor(random);
 }
