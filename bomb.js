@@ -2,6 +2,7 @@ import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, deltaTime, 
 import { PlayAudio } from "./audio.js";
 import { spawnEnemiesAtLocation, findEnemyById, enemies } from "./enemy.js";
 import { getDistanceTo } from "./utils.js";
+import { findPlayerById, players } from "./player.js";
 
 // Jos ilmenee taas vanha bugi jossa koko peli jäätyy, saattaa johtua renderin splice metodeista.
 // TODO : Näkymättömät pommit
@@ -15,25 +16,28 @@ let fieryFloors = [];
 // Audio
 let booms = ["audio/boom01.wav", "audio/boom03.wav", "audio/boom04.wav"];
 
-export function Bomb(x, y, ticks, range) {
-    this.x = x || 0;
-    this.y = y || 0,
-    this.ticks = ticks || 4;
-    this.range = range || 1;
-    this.hasExploded = false;
-    
-    let ticking = setInterval(() => {
-        this.ticks--;
-        if (this.hasExploded) {
-            clearInterval(ticking);
-        }
-        else if (this.ticks === 0) {
-            const randomBoom = booms[Math.floor(Math.random() * booms.length)];
-            PlayAudio(randomBoom, 1);
-            explode(this);
-            clearInterval(ticking);
-        }
-    }, 1000);
+export class Bomb {
+    constructor(x, y, ticks, range, playerId) {
+        this.x = x || 0;
+        this.y = y || 0,
+        this.ticks = ticks || 4;
+        this.range = range || 1;
+        this.hasExploded = false;
+        this.playerId = playerId || 0;
+
+        let ticking = setInterval(() => {
+            this.ticks--;
+            if (this.hasExploded) {
+                clearInterval(ticking);
+            }
+            else if (this.ticks === 0) {
+                const randomBoom = booms[Math.floor(Math.random() * booms.length)];
+                PlayAudio(randomBoom, 1);
+                explode(this);
+                clearInterval(ticking);
+            }
+        }, 1000);
+    }
 }
 
 // Returns a 2D array of all the surrounding tiles within the bomb's range.
@@ -85,6 +89,9 @@ function explode(bomb) {
     bomb.ticks = 0;
     tilesWithBombs.splice(0, 1);
 
+    let player = findPlayerById(bomb.playerId);
+    player.activeBombs--;
+
     chainExplosions(tiles);
     setTilesOnFire(tiles);
     killEnemies(tiles);
@@ -96,7 +103,7 @@ function chainExplosions(tiles) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
                 if ("bomb" in currentTile && currentTile.bomb.hasExploded === false) {
-                    console.info(tiles[0][0].x, tiles[0][0].y, "chained",  currentTile.x, currentTile.y);
+                    // console.info(tiles[0][0].x, tiles[0][0].y, "chained",  currentTile.x, currentTile.y);
                     explode(currentTile.bomb);
                 }
         }

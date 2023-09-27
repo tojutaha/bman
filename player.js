@@ -2,7 +2,7 @@ import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet, del
 import { PlayAudio } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";
-import { getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo } from "./utils.js";
+import { getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit } from "./utils.js";
 
 export const Direction = {
     UP: "Up",
@@ -44,6 +44,7 @@ class Player
         this.keybinds = keybinds;
 
         // Powerups
+        this.activeBombs = 0;
         this.powerup = new Powerup();
     }
 
@@ -101,6 +102,13 @@ class Player
                         this.powerup.pickup(level[x][y], this);
                     }
                 }
+
+                // Exit
+                if (isOpenExit(x, y)) {
+                    if (leftCheck && rightCheck && topCheck && bottomCheck) {
+                        console.info("GG");
+                    }
+                }
             }
         }
 
@@ -115,9 +123,10 @@ class Player
     dropBomb() {
         let bombTile = getTileFromWorldLocation(this);
 
-        if (tilesWithBombs.indexOf(bombTile) === -1 && tilesWithBombs.length < this.powerup.maxBombs) {
+        if (this.activeBombs < this.powerup.maxBombs) {
             if (!bombTile.bomb || bombTile.bomb.hasExploded) {
-                bombTile.bomb = new Bomb(bombTile.x, bombTile.y, this.currentTicks, this.powerup.maxRange);
+                bombTile.bomb = new Bomb(bombTile.x, bombTile.y, this.currentTicks, this.powerup.maxRange, this.id);
+                this.activeBombs++;
                 tilesWithBombs.push(bombTile);
                 
                 // Checks whether any player is still standing on the bomb after it was dropped.
@@ -205,6 +214,12 @@ export const keybinds2 = {
     move_right: "ArrowRight",
     drop_bomb: "Enter",
 };
+
+// Finds a player with given id and returns it
+export function findPlayerById(id) {
+    let index = players.findIndex(player => player.id === id);
+    return players[index];
+}
 
 document.addEventListener("DOMContentLoaded", function ()
 {

@@ -20,6 +20,16 @@ export function isDeadly(x, y)
     return level[x][y].isDeadly;
 }
 
+export function isOpenExit(x, y)
+{
+    if (x < 0 || x >= levelWidth ||
+        y < 0 || y >= levelHeight) {
+        return false;
+    }
+    
+    return level[x][y].isOpen;
+}
+
 export function hasPowerup(x, y)
 {
     if (x < 0 || x >= levelWidth ||

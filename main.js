@@ -20,7 +20,7 @@ export let level = [];
 export const tileSize = 32;
 export const levelWidth = 25;
 export const levelHeight = 25;
-export const softTilePercent = 0.2;
+export const softTilePercent = 0.1;
 export const powerUpCount = 5;
 export const cagePlayers = false;
 
@@ -41,8 +41,8 @@ function Render(timeStamp)
 
     renderFloor();
     renderPowerups();
-    renderWalls();
     renderExit();
+    renderWalls();
     renderEnemies();
     renderBombs();
     renderExplosions();
