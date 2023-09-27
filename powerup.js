@@ -19,9 +19,8 @@ export class Powerup
         }
 
         else if (tile.powerup === "ExtraSpeed") {
-            player.speed += 0.5;
+            player.speed += 20;
         }
-
     }
 }
 

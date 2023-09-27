@@ -6,11 +6,13 @@ import { renderPowerups } from "./powerup.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
+import { GameState } from "./gamestate.js";
 
 ////////////////////
 // Globals
 export let canvas;
 export let ctx;
+export let game = new GameState(); 
 export let level = [];
 
 ////////////////////
@@ -20,7 +22,7 @@ export const levelWidth = 25;
 export const levelHeight = 25;
 export const softTilePercent = 0.2;
 export const powerUpCount = 5;
-export const cagePlayers = true;
+export const cagePlayers = false;
 
 ////////////////////
 // Assets
@@ -38,8 +40,8 @@ function Render(timeStamp)
     const fps = 1 / deltaTime;
 
     renderFloor();
-    renderPowerups();
     renderExit();
+    renderPowerups();
     renderWalls();
     renderEnemies();
     renderBombs();

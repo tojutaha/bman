@@ -1,4 +1,4 @@
-import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, deltaTime } from "./main.js";
+import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, deltaTime, game } from "./main.js";
 import { PlayAudio } from "./audio.js";
 import { spawnEnemiesAtLocation, findEnemyById, enemies } from "./enemy.js";
 import { getDistanceTo } from "./utils.js";
@@ -123,7 +123,6 @@ function animateExplosion(tile) {
 }
 
 function setTilesOnFire(tiles) {
-    let deadlyFloors = [];
     for (let i = 0; i < tiles.length; i++) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
@@ -159,7 +158,6 @@ function setTilesOnFire(tiles) {
                         currentTile.hasSpawnedEnemies = true;
                         spawnEnemiesAtLocation(currentTile, 8);     // TODO: joku muuttuja vaikeustason mukaan
                     }
-                
                 }
         }
     }
@@ -173,8 +171,10 @@ function killEnemies(tiles) {
                 enemies.forEach(enemy => {
                     if (getDistanceTo(currentTile, enemy) < tileSize) {
                         let result = findEnemyById(enemy.id);
-                        console.info("Enemy", enemy.id, "died");
+                        console.info("Enemy ID", enemy.id, "died");
                         enemies.splice(result.index, 1);
+                        game.decreaseEnemies();
+                        console.log("Enemies left:", game.numOfEnemies);
                     }
                 })    
             }
