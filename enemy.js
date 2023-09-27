@@ -14,7 +14,11 @@ const movementMode = {
 
 class Enemy
 {
+    static lastId = 0;
+
     constructor(x, y, w, h, newMovementMode, speed) {
+        this.id = ++Enemy.lastId;
+
         // Coordinates
         this.x  = x;
         this.y  = y;
@@ -148,7 +152,7 @@ class Enemy
             if (nextInRender !== undefined) {
                 const bombCoords = tilesWithBombs.find(bomb => bomb.x === nextInRender.x && bomb.y === nextInRender.y);
                 if (bombCoords) {
-                    console.log("Bomb in path: ", bombCoords.x, bombCoords.y)
+                    //console.log("Bomb in path: ", bombCoords.x, bombCoords.y)
                     this.x = next.x;
                     this.y = next.y;
                     clearInterval(timer);
@@ -299,8 +303,6 @@ export function spawnEnemies()
         //enemy.setMovementMode(movementMode.PATROL);
         enemy.speed = getRandomSpeed();
         enemy.setDebugColors();
-        //enemy.color = getRandomColor();
-        //enemy.pathColor = getRandomColor();
         enemy.init();
         enemies.push(enemy);
 
@@ -322,6 +324,13 @@ export function spawnEnemiesAtLocation(location, amount = 1)
         enemy.init();
         enemies.push(enemy);
     }
+}
+
+// Finds an enemy with given id, 
+// and returns it and the array index where its stored.
+export function findEnemyById(id) {
+    let index = enemies.findIndex(enemy => enemy.id === id);
+    return {enemy: enemies[index], index};
 }
 
 export function renderEnemies()
@@ -349,10 +358,10 @@ export function renderEnemies()
     //
 }
 
-/*
+// Example usages:
 setTimeout(() => {
-    PlayAudio("audio/click.mp3", 1);
-    spawnEnemiesAtLocation({x: 32, y: 32}, 5);
-}, 3000);
-*/
+    //spawnEnemiesAtLocation({x: 32, y: 32}, 5); // Spawn 5 enemies on location 32, 32
+    let result = findEnemyById(1); // Find enemy that has id 1
+    enemies.splice(result.index, 1); // Deletes the enemy
+}, 1000);
 
