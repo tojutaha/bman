@@ -174,7 +174,7 @@ function killEnemies(tiles) {
                     if (getDistanceTo(currentTile, enemy) < tileSize) {
                         let result = findEnemyById(enemy.id);
                         console.info("Enemy", enemy.id, "died");
-                        enemies.splice(result.index, enemy.id);
+                        enemies.splice(result.index, 1);
                     }
                 })    
             }
