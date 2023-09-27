@@ -1,10 +1,8 @@
-import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet } from "./main.js";
+import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet, deltaTime } from "./main.js";
 import { PlayAudio } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";
 import { getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo } from "./utils.js";
-
-// TODO: deltaTime Movementtiin
 
 export const Direction = {
     UP: "Up",
@@ -38,7 +36,7 @@ class Player
         this.dx = 0;
         this.dy = 0;
 
-        this.speed = 1.0; // pixels/s
+        this.speed = 100.0; // pixels/s
 
         this.collisionOffset = 5;
 
@@ -139,22 +137,22 @@ class Player
 
         switch(event.key) {
             case this.keybinds.move_up:
-                this.dy = -this.speed;
+                this.dy = -this.speed * deltaTime;
                 this.dx = 0;
                 break;
 
             case this.keybinds.move_left:
-                this.dx = -this.speed;
+                this.dx = -this.speed * deltaTime;
                 this.dy = 0;
                 break;
 
             case this.keybinds.move_down:
-                this.dy = this.speed;
+                this.dy = this.speed * deltaTime;
                 this.dx = 0;
                 break;
 
             case this.keybinds.move_right:
-                this.dx = this.speed;
+                this.dx = this.speed * deltaTime;
                 this.dy = 0;
                 break;
 
