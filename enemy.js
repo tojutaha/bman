@@ -152,7 +152,6 @@ class Enemy
             if (nextInRender !== undefined) {
                 const bombCoords = tilesWithBombs.find(bomb => bomb.x === nextInRender.x && bomb.y === nextInRender.y);
                 if (bombCoords) {
-                    //console.log("Bomb in path: ", bombCoords.x, bombCoords.y)
                     this.x = next.x;
                     this.y = next.y;
                     clearInterval(timer);
@@ -236,23 +235,15 @@ class Enemy
     }
 
     patrol() {
-        //console.log("PATROL");
         if (!this.currentPath || this.currentPath.length == 0) {
             this.getRandomPath();
-            //console.log("requested new path");
             requestPath(this, this.getLocation(), this.targetLocation);
         } else {
-            //console.log("keep on rollin");
-            if (this.getLocation().x == this.targetLocation.x &&
-                this.getLocation().y == this.targetLocation.y) {
-                const temp = this.startLocation;
-                this.startLocation = this.targetLocation;
-                this.targetLocation = temp;
-                this.currentPath.reverse();
-                //console.log(this.currentPath);
-                //console.log(temp);
-                this.startMove();
-            }
+            const temp = this.startLocation;
+            this.startLocation = this.targetLocation;
+            this.targetLocation = temp;
+            this.currentPath.reverse();
+            this.startMove();
         }
     }
 
@@ -299,8 +290,6 @@ export function spawnEnemies()
         let colIndex = i;
         enemy.setMovementMode(movementValues[colIndex]);
         //enemy.setMovementMode(movementMode.FOLLOW);
-        // TODO: Patrol menee rikki, jos on esteitä..
-        //enemy.setMovementMode(movementMode.PATROL);
         enemy.speed = getRandomSpeed();
         enemy.setDebugColors();
         enemy.init();
@@ -340,17 +329,19 @@ export function renderEnemies()
     }
 
     enemies.forEach(enemy => {
-        //ctx.fillStyle = "#00ff00";
-        //ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
-        ctx.fillStyle = enemy.color;
+        if (enemy) {
+            //ctx.fillStyle = "#00ff00";
+            //ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
 
-        enemy.t += deltaTime * (1 / (enemy.speed / 1000));
-        enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
+            enemy.t += deltaTime * (1 / (enemy.speed / 1000));
+            enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
 
-        const x = lerp(enemy.x, enemy.renderX, enemy.t);
-        const y = lerp(enemy.y, enemy.renderY, enemy.t);
+            const x = lerp(enemy.x, enemy.renderX, enemy.t);
+            const y = lerp(enemy.y, enemy.renderY, enemy.t);
 
-        ctx.fillRect(x, y, enemy.w, enemy.h);
+            ctx.fillStyle = enemy.color;
+            ctx.fillRect(x, y, enemy.w, enemy.h);
+        }
     });
 
     //
@@ -359,9 +350,11 @@ export function renderEnemies()
 }
 
 // Example usages:
-setTimeout(() => {
+if (0) {
+    setTimeout(() => {
     //spawnEnemiesAtLocation({x: 32, y: 32}, 5); // Spawn 5 enemies on location 32, 32
     let result = findEnemyById(1); // Find enemy that has id 1
     enemies.splice(result.index, 1); // Deletes the enemy
-}, 1000);
+    }, 1000);
+}
 
