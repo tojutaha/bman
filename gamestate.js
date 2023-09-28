@@ -29,4 +29,18 @@ export class GameState {
     openDoor() {
         exitLocation.isOpen = true;
     }
+
+    saveGame() {
+      localStorage.setItem("level", this.level);
+      localStorage.setItem("score", this.score);
+    }
+
+    loadGame() {
+      if (localStorage.length != 0) {
+        this.level = parseInt(localStorage.getItem("level"));
+        this.score = parseInt(localStorage.getItem("score"));
+        updateLevelDisplay(this.level);
+        updateScoreDisplay(this.score);
+      }
+    }
 }

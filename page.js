@@ -1,4 +1,4 @@
-import { ctx, tileSize, levelHeight, levelWidth } from "./main.js";
+import { ctx, tileSize, levelHeight, levelWidth, game } from "./main.js";
 
 ////////////////////
 // Score and level display
@@ -9,10 +9,32 @@ export function updateScoreDisplay(score) {
 
 let levelDisplay = document.getElementById("level");
 export function updateLevelDisplay(level) {
-    levelDisplay.textContent = `Level ${level}`;
+    levelDisplay.textContent = `LEVEL ${level}`;
 }
 
 ////////////////////
+// DEBUG & TESTING
+
+// Scale buttons
+let canvasContainer = document.getElementsByClassName("canvas-container");
+let scaleBtn50 = document.getElementById("scale50");
+let scaleBtn75 = document.getElementById("scale75");
+let scaleBtn100 = document.getElementById("scale100");
+
+scaleBtn50.addEventListener("click", scale50);
+scaleBtn75.addEventListener("click", scale75);
+scaleBtn100.addEventListener("click", scale100);
+
+function scale50() {
+    canvasContainer[0].style.cssText = "scale: 50%;";
+}
+function scale75() {
+    canvasContainer[0].style.cssText = "scale: 75%;";
+}
+function scale100() {
+    canvasContainer[0].style.cssText = "scale: 100%;";
+}
+
 // Show coordinates
 let coordButton = document.getElementById("show-coords");
 export let coordsToggle = false;
@@ -41,23 +63,20 @@ export function drawCoordinates(coordsToggle) {
     }
 }
 
-////////////////////
-// Scale buttons
-let canvasContainer = document.getElementsByClassName("canvas-container");
-let scaleBtn50 = document.getElementById("scale50");
-let scaleBtn75 = document.getElementById("scale75");
-let scaleBtn100 = document.getElementById("scale100");
+// Save and load
+let saveButton = document.getElementById("save");
+saveButton.addEventListener("click", function() {
+    game.saveGame();
+})
 
-scaleBtn50.addEventListener("click", scale50);
-scaleBtn75.addEventListener("click", scale75);
-scaleBtn100.addEventListener("click", scale100);
+let loadButton = document.getElementById("load");
+loadButton.addEventListener("click", function() {
+    game.loadGame();
+})
 
-function scale50() {
-    canvasContainer[0].style.cssText = "scale: 50%;";
-}
-function scale75() {
-    canvasContainer[0].style.cssText = "scale: 75%;";
-}
-function scale100() {
-    canvasContainer[0].style.cssText = "scale: 100%;";
-}
+// Delete save
+let deleteButton = document.getElementById("delete-save");
+deleteButton.addEventListener("click", function() {
+    localStorage.clear();
+    updateScoreDisplay(0);
+})
