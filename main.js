@@ -21,7 +21,7 @@ export const tileSize = 32;
 export const levelWidth = 25;
 export const levelHeight = 25;
 export const softTilePercent = 0.1;
-export const powerUpCount = 5;
+export const powerUpCount = 1;
 export const cagePlayers = false;
 
 ////////////////////
@@ -40,9 +40,9 @@ function Render(timeStamp)
     const fps = 1 / deltaTime;
 
     renderFloor();
+    renderWalls();
     renderPowerups();
     renderExit();
-    renderWalls();
     renderEnemies();
     renderBombs();
     renderExplosions();
@@ -62,6 +62,13 @@ function Render(timeStamp)
     lastTimeStamp = timeStamp
 
     requestAnimationFrame(Render);
+}
+
+////////////////////
+// Setters
+
+export function loadLevel(loadedLevel) {
+    level = loadedLevel;
 }
 
 ////////////////////

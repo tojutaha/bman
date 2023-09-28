@@ -158,3 +158,8 @@ function createCage(result) {
     result[levelWidth - 2][levelHeight - 4].type = "SoftWall";
     result[levelWidth - 2][levelHeight - 4].isWalkable = false;
 }
+
+// Exit loader
+export function loadExit(loadedExit) {
+    exitLocation = loadedExit;
+}

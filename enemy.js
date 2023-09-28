@@ -270,7 +270,7 @@ function getRandomSpeed()
     return Math.floor(random);
 }
 
-export const enemies = [];
+export let enemies = [];
 // Initial spawn
 export function spawnEnemies()
 {
@@ -360,3 +360,7 @@ if (0) {
     }, 1000);
 }
 
+// Load enemies
+export function loadEnemies(loadedEnemies) {
+    enemies = loadedEnemies;
+}
