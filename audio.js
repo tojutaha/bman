@@ -1,6 +1,6 @@
 // https://stackoverflow.com/questions/61453760/how-to-rapidly-play-multiple-copies-of-a-soundfile-in-javascript
 
-//PlayAudio("audio/click.mp3", 1);
+//PlayAudio("assets/audio/click.mp3", 1);
 export const PlayAudio = async (audioFile, volume = 0.5) =>
 {
     const audioContext = new AudioContext();

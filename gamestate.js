@@ -1,4 +1,4 @@
-import { updateScore } from "./page.js";
+import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { exitLocation } from "./tile.js";
 
 export class GameState {
@@ -10,11 +10,12 @@ export class GameState {
   
     increaseScore(points) {
       this.score += points;
-      updateScore(this.score);
+      updateScoreDisplay(this.score);
     }
   
     nextLevel() {
       this.level++;
+      updateLevelDisplay(this.level);
     }
 
     increaseEnemies() {

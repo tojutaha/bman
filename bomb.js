@@ -14,7 +14,7 @@ let crumblingWalls = [];
 let fieryFloors = [];
 
 // Audio
-let booms = ["audio/boom01.wav", "audio/boom03.wav", "audio/boom04.wav"];
+let booms = ["assets/audio/boom01.wav", "assets/audio/boom03.wav", "assets/audio/boom04.wav"];
 
 export class Bomb {
     constructor(x, y, ticks, range, playerId) {
@@ -185,7 +185,7 @@ function killEnemies(tiles) {
                         // console.log("Enemies left:", game.numOfEnemies);
                         if (game.numOfEnemies === 0) {
                             game.openDoor();
-                            PlayAudio("audio/exitopen01.wav");
+                            PlayAudio("assets/audio/exitopen01.wav");
                         }
                     }
                 })    

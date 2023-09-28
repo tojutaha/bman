@@ -1,10 +1,15 @@
 import { ctx, tileSize, levelHeight, levelWidth } from "./main.js";
 
 ////////////////////
-// Score display
+// Score and level display
 let scoreDisplay = document.getElementById("score");
-export function updateScore(score) {
-    scoreDisplay.textContent = `Score: ${score}`;
+export function updateScoreDisplay(score) {
+    scoreDisplay.textContent = score;
+}
+
+let levelDisplay = document.getElementById("level");
+export function updateLevelDisplay(level) {
+    levelDisplay.textContent = `Level ${level}`;
 }
 
 ////////////////////

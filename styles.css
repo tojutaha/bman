@@ -4,8 +4,31 @@
     box-sizing: border-box;
 }
 
+/* Muutama fontti joista testailla */
+@font-face {
+    font-family: 'Minimal';
+    /* src: url('assets/fonts/Minimal3x5.ttf') format('truetype'); */
+    /* src: url('assets/fonts/Minimal5x5Monospaced.ttf') format('truetype'); */
+    src: url('assets/fonts/Minimal5x7.ttf') format('truetype');
+    /* src: url('assets/fonts/red_alert.ttf') format('truetype'); */
+}
+
 body {
     background-color: #303030;
+}
+
+.text-display {
+    font-family: 'Minimal', 'Courier New', Courier, monospace;
+    font-size: 1.8rem;
+    line-height: 0.8;
+}
+
+.info-displays {
+    display: grid;
+    grid-template-columns: 1fr 1fr 100px;
+    margin: 0.2em auto;
+    max-width: 800px;
+    text-align: center;
 }
 
 .canvas-container {
@@ -14,15 +37,11 @@ body {
     align-items: center;
 }
 
-.debug-buttons-top {
+.debug-buttons {
     display: flex;
-    margin: 0.5em;
-    justify-content: space-evenly;
-}
-
-.debug-buttons-bottom {
-    display: flex;
-    margin: 0.5em;
+    margin: auto;
+    margin-top: 0.5em;
+    max-width: 800px;
     justify-content: space-evenly;
 }
 
