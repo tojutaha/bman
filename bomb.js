@@ -266,3 +266,7 @@ export function renderExplosions() {
         })
     }
 }
+
+export function clearBombArray() {
+    tilesWithBombs = [];
+}
