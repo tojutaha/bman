@@ -61,17 +61,10 @@ class Player
         let x = tile.x;
         let y = tile.y;
 
-        if (this.dx < 0) {
-            x = tile.x - tileSize;
-        } else if (this.dx > 0) {
-            x = tile.x + tileSize;
-        }
-
-        if (this.dy < 0) {
-            y = tile.y - tileSize;
-        } else if (this.dy > 0) {
-            y = tile.y + tileSize;
-        }
+        if (this.dx < 0) x = tile.x - tileSize;
+        if (this.dx > 0) x = tile.x + tileSize;
+        if (this.dy < 0) y = tile.y - tileSize;
+        if (this.dy > 0) y = tile.y + tileSize;
 
         const playerTile = getTileFromWorldLocation(this);
         ctx.fillStyle = "#ff0000";
@@ -94,16 +87,18 @@ class Player
 
             // Pickup
             if (nextTile.hasPowerup) {
-                if (distance < tileSize - 10) { // 10 pixel threshold
+                if (distance <= tileSize - 10) { // 10 pixel threshold
                     this.powerup.pickup(nextTile, this);
                 }
             }
 
             // Exit
             if (nextTile.isExit) {
-                console.log("Exit");
-                if (nextTile.isOpen) {
-                    console.info("GG");
+                if (distance <= tile) {
+                    console.log("Exit");
+                    if (nextTile.isOpen) {
+                        console.info("GG");
+                    }
                 }
             }
         }
