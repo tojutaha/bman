@@ -6,13 +6,13 @@ import { renderPowerups } from "./powerup.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
-import { GameState } from "./gamestate.js";
+import { Game } from "./gamestate.js";
 
 ////////////////////
 // Globals
 export let canvas;
 export let ctx;
-export let game = new GameState(); 
+export let game = new Game(); 
 export let level = [];
 
 ////////////////////
@@ -66,7 +66,6 @@ function Render(timeStamp)
 
 ////////////////////
 // Setters
-
 export function loadLevel(loadedLevel) {
     level = loadedLevel;
 }
