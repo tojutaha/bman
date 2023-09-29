@@ -94,7 +94,7 @@ class Player
 
             // Exit
             if (nextTile.isExit) {
-                if (distance <= tile) {
+                if (distance <= tileSize - 10) { // 10 pixel threshold
                     console.log("Exit");
                     if (nextTile.isOpen) {
                         console.info("GG");
