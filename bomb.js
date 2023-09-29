@@ -182,7 +182,7 @@ function killEnemies(tiles) {
                         enemies.splice(result.index, 1);
                         enemy.movementMode = movementMode.IDLE;
                         clearInterval(enemy.timer);
-                        enemy = null;
+                        enemy = null;               // TODO: Varmistetaan että nämä varmasti poistuu!
                         game.increaseScore(500);    // TODO: Score by enemy type
                         game.decreaseEnemies();
                         // console.log("Enemies left:", game.numOfEnemies);
