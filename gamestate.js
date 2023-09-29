@@ -5,10 +5,53 @@ import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { players } from "./player.js";
 import { exitLocation, loadExit } from "./tile.js";
 
-// TODO: pelaajat häviää jos ottaa tallennetun powerupin
-// juuri jätetty pommi räjähtää kun lataa pelin
+// Testiksi eri class ettei mee sekavaksi
+// Jotain tällästä rakennetta?
+// http://gamedevgeek.com/tutorials/managing-game-states-in-c/
+class GameState {
+    constructor() {
+        this.state = state;
+        this.running = Boolean;
+    }
 
-export class GameState {
+    init() {
+        //
+    }
+
+    cleanup() {
+        // 
+    }
+
+    changeState(state) {
+        // 
+    }
+
+    pushState(state) {
+        // 
+    }
+
+    popState() {
+        // 
+    }
+
+    handleEvents() {
+        // 
+    }
+
+    update() {
+        // 
+    }
+
+    draw() {
+        // 
+    }
+
+    quit() {
+       running = false; 
+    }
+}
+
+export class Game {
     constructor() {
       this.score = 0;
       this.level = 1;
@@ -36,6 +79,11 @@ export class GameState {
     openDoor() {
         exitLocation.isOpen = true;
     }
+
+    // Saving & loading
+    // TODO: pelaajat häviää jos ottaa tallennetun powerupin
+    // juuri jätetty pommi/tile räjähtää näkymättömänä kun lataa pelin
+    // vihut jumahtaa (varmaan setter ongelma)
 
     saveGame() {
         // Save the display
