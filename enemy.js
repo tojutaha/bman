@@ -5,7 +5,7 @@ import { requestPath, drawPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
 import { PlayAudio } from "./audio.js";
 
-const movementMode = {
+export const movementMode = {
     IDLE: "Idle",
     ROAM: "Roam",
     PATROL: "Patrol",
@@ -34,6 +34,7 @@ class Enemy
         this.movementMode = newMovementMode || movementMode.ROAM;
         this.speed = speed || 500;
         this.direction = Direction.UP;
+        this.timer = null;
 
         // Behaviour
         this.currentPath = [];
@@ -126,13 +127,13 @@ class Enemy
     }
 
     startMove() {
-        let timer = null;
+        this.timer = null;
 
         if (!this.currentPath) {
             // console.log("Trying again..");
-            if (timer) {
-                clearInterval(timer);
-                timer = null;
+            if (this.timer) {
+                clearInterval(this.timer);
+                this.timer = null;
             }
 
             setTimeout(() => {
@@ -143,7 +144,7 @@ class Enemy
 
         let index = 0;
         let renderIndex = index + 1;
-        timer = setInterval(() => {
+        this.timer = setInterval(() => {
 
             const next = this.currentPath[index];
 
@@ -154,7 +155,7 @@ class Enemy
                 if (bombCoords) {
                     this.x = next.x;
                     this.y = next.y;
-                    clearInterval(timer);
+                    clearInterval(this.timer);
                     this.currentPath.length = 0;
                 }
             }
@@ -184,7 +185,7 @@ class Enemy
                     this.playerTarget = null;
                     // TODO: Varmaan stopataan myöhemmin, kun 
                     // ei ole pelaajia jäljellä?
-                    //clearInterval(timer);
+                    //clearInterval(this.timer);
                 }
             });
 
@@ -203,7 +204,7 @@ class Enemy
 
             if (index >= this.currentPath.length) {
 
-                clearInterval(timer);
+                clearInterval(this.timer);
                 switch(this.movementMode) {
                     case movementMode.IDLE:
                         // Nothing to do

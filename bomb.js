@@ -1,6 +1,6 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, deltaTime, game } from "./main.js";
 import { PlayAudio } from "./audio.js";
-import { spawnEnemiesAtLocation, findEnemyById, enemies } from "./enemy.js";
+import { spawnEnemiesAtLocation, findEnemyById, enemies, movementMode } from "./enemy.js";
 import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 
@@ -180,6 +180,9 @@ function killEnemies(tiles) {
                         let result = findEnemyById(enemy.id);
                         // console.info("Enemy ID", enemy.id, "died");
                         enemies.splice(result.index, 1);
+                        enemy.movementMode = movementMode.IDLE;
+                        clearInterval(enemy.timer);
+                        enemy = null;
                         game.increaseScore(500);    // TODO: Score by enemy type
                         game.decreaseEnemies();
                         // console.log("Enemies left:", game.numOfEnemies);
