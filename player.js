@@ -70,19 +70,24 @@ class Player
         if (Math.abs(this.dx) > 0 || Math.abs(this.dy) > 0) {
 
             const distance = Math.hypot(this.x - x, this.y - y);
-            if (distance <= tileSize - 10) { // 10 pixel threshold
-                // Wall
-                if (!nextTile.isWalkable) {
+
+            // Wall
+            if (!nextTile.isWalkable) {
+                if (distance <= tileSize) {
                     collides = true;
                 }
+            }
 
-                // Pickup
-                if (nextTile.hasPowerup) {
+            // Pickup
+            if (nextTile.hasPowerup) {
+                if (distance <= tileSize - 10) { // 10 pixel threshold
                     this.powerup.pickup(nextTile, this);
                 }
+            }
 
-                // Exit
-                if (nextTile.isExit) {
+            // Exit
+            if (nextTile.isExit) {
+                if (distance <= tileSize - 10) { // 10 pixel threshold
                     console.log("Exit");
                     if (nextTile.isOpen) {
                         console.info("GG");
