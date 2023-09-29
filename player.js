@@ -50,10 +50,70 @@ class Player
 
     // Handles movement and collision
     update() {
+
         const nextX = this.x + this.dx;
         const nextY = this.y + this.dy;
 
         let collides = false;
+
+        // TODO: Oisko parempi mitä toi hirvee looppi?
+        const tile = getTileFromWorldLocation({x: nextX, y: nextY});
+        let x = tile.x;
+        let y = tile.y;
+
+        if (this.dx < 0) {
+            x = tile.x - tileSize;
+        } else if (this.dx > 0) {
+            x = tile.x + tileSize;
+        }
+
+        if (this.dy < 0) {
+            y = tile.y - tileSize;
+        } else if (this.dy > 0) {
+            y = tile.y + tileSize;
+        }
+
+        const playerTile = getTileFromWorldLocation(this);
+        ctx.fillStyle = "#ff0000";
+        ctx.fillRect(playerTile.x, playerTile.y, 32, 32);
+
+        const nextTile = level[x/tileSize][y/tileSize];
+        ctx.fillStyle = "#00ffff";
+        ctx.fillRect(x, y, 32, 32);
+
+        if (Math.abs(this.dx) > 0 || Math.abs(this.dy) > 0) {
+
+            const distance = Math.hypot(this.x - x, this.y - y);
+
+            // Wall
+            if (!nextTile.isWalkable) {
+                if (distance <= tileSize) {
+                    collides = true;
+                }
+            }
+
+            // Pickup
+            if (nextTile.hasPowerup) {
+                if (distance < tileSize - 10) { // 10 pixel threshold
+                    this.powerup.pickup(nextTile, this);
+                }
+            }
+
+            // Exit
+            if (nextTile.isExit) {
+                console.log("Exit");
+                if (nextTile.isOpen) {
+                    console.info("GG");
+                }
+            }
+        }
+
+        // Deadly thing
+        if (playerTile.isDeadly) {
+            this.onDeath();
+        }
+        
+        /* TODO: Poista jos uusi on parempi
         for (let y = 0; y < levelHeight; y++) {
             for (let x = 0; x < levelWidth; x++) {
 
@@ -62,29 +122,17 @@ class Player
                 const tileTop    = level[x][y].y;
                 const tileBottom = level[x][y].y + tileSize;
 
-                const rightCheck = nextX + (this.w - this.collisionOffset) >= tileLeft; 
-                const leftCheck = (nextX + this.collisionOffset) < tileRight;
-                const topCheck = (nextY + this.collisionOffset) < tileBottom;
-                const bottomCheck = nextY + (this.h - this.collisionOffset) >= tileTop;
+                const rightCheck  =  nextX + (this.w - this.collisionOffset) >= tileLeft; 
+                const leftCheck   = (nextX +  this.collisionOffset) < tileRight;
+                const topCheck    = (nextY +  this.collisionOffset) < tileBottom;
+                const bottomCheck =  nextY + (this.h - this.collisionOffset) >= tileTop;
 
                 // Wall
                 if (!isWalkable(x, y)) {
+
                     if (leftCheck && rightCheck && topCheck && bottomCheck) {
                         collides = true;
-
-                        if (this.dx > 0) {
-                            console.log("hit the left side");
-                        } else if (this.dx < 0) {
-                            console.log("hit the right side");
-                        }
-
-                        if (this.dy > 0) {
-                            console.log("hit the top side");
-                        } else if (this.dy < 0) {
-                            console.log("hit the bottom side");
-                        }
-                    }
-                }
+                    } 
 
                 // Deadly thing
                 if (isDeadly(x, y)) {
@@ -96,6 +144,7 @@ class Player
                         }
                     }
                 }
+
                 // Pickup
                 if (hasPowerup(x, y)) {
                     if (leftCheck && rightCheck && topCheck && bottomCheck) {
@@ -111,8 +160,8 @@ class Player
                 }
             }
         }
+        */
 
-        //console.log(collides);
         if (!collides) {
             this.x += this.dx;
             this.y += this.dy;
@@ -196,6 +245,10 @@ class Player
 
     onDeath() {
         console.log("onDeath");
+        if (!this.isDead) {
+            PlayAudio("audio/death01.wav");
+            this.isDead = true;
+        }
     }
 };
 
@@ -224,7 +277,7 @@ export function findPlayerById(id) {
 document.addEventListener("DOMContentLoaded", function ()
 {
     players.push(new Player(0, 32, 32, keybinds1));
-    players.push(new Player(1, (levelWidth-2)*tileSize, (levelHeight-2)*tileSize, keybinds2));
+    //players.push(new Player(1, (levelWidth-2)*tileSize, (levelHeight-2)*tileSize, keybinds2));
     for (let i = 0; i < players.length; i++) {
         document.addEventListener("keyup", function(event) {
             players[i].handleKeyUp(event);
