@@ -53,10 +53,8 @@ class Player
 
         const nextX = this.x + this.dx;
         const nextY = this.y + this.dy;
-
         let collides = false;
 
-        // TODO: Oisko parempi mitä toi hirvee looppi?
         const tile = getTileFromWorldLocation({x: nextX, y: nextY});
         let x = tile.x;
         let y = tile.y;
@@ -67,34 +65,24 @@ class Player
         if (this.dy > 0) y = tile.y + tileSize;
 
         const playerTile = getTileFromWorldLocation(this);
-        ctx.fillStyle = "#ff0000";
-        ctx.fillRect(playerTile.x, playerTile.y, 32, 32);
-
         const nextTile = level[x/tileSize][y/tileSize];
-        ctx.fillStyle = "#00ffff";
-        ctx.fillRect(x, y, 32, 32);
 
         if (Math.abs(this.dx) > 0 || Math.abs(this.dy) > 0) {
 
             const distance = Math.hypot(this.x - x, this.y - y);
-
-            // Wall
-            if (!nextTile.isWalkable) {
-                if (distance <= tileSize) {
+            if (distance <= tileSize - 10) { // 10 pixel threshold
+                // Wall
+                if (!nextTile.isWalkable) {
                     collides = true;
                 }
-            }
 
-            // Pickup
-            if (nextTile.hasPowerup) {
-                if (distance <= tileSize - 10) { // 10 pixel threshold
+                // Pickup
+                if (nextTile.hasPowerup) {
                     this.powerup.pickup(nextTile, this);
                 }
-            }
 
-            // Exit
-            if (nextTile.isExit) {
-                if (distance <= tileSize - 10) { // 10 pixel threshold
+                // Exit
+                if (nextTile.isExit) {
                     console.log("Exit");
                     if (nextTile.isOpen) {
                         console.info("GG");
@@ -108,55 +96,6 @@ class Player
             this.onDeath();
         }
         
-        /* TODO: Poista jos uusi on parempi
-        for (let y = 0; y < levelHeight; y++) {
-            for (let x = 0; x < levelWidth; x++) {
-
-                const tileLeft   = level[x][y].x;
-                const tileRight  = level[x][y].x + tileSize;
-                const tileTop    = level[x][y].y;
-                const tileBottom = level[x][y].y + tileSize;
-
-                const rightCheck  =  nextX + (this.w - this.collisionOffset) >= tileLeft; 
-                const leftCheck   = (nextX +  this.collisionOffset) < tileRight;
-                const topCheck    = (nextY +  this.collisionOffset) < tileBottom;
-                const bottomCheck =  nextY + (this.h - this.collisionOffset) >= tileTop;
-
-                // Wall
-                if (!isWalkable(x, y)) {
-
-                    if (leftCheck && rightCheck && topCheck && bottomCheck) {
-                        collides = true;
-                    } 
-
-                // Deadly thing
-                if (isDeadly(x, y)) {
-                    if (leftCheck && rightCheck && topCheck && bottomCheck) {
-                        if (!this.isDead) {
-                            PlayAudio("audio/death01.wav");
-                            this.isDead = true;
-                            console.info("DEATH BY TILE");
-                        }
-                    }
-                }
-
-                // Pickup
-                if (hasPowerup(x, y)) {
-                    if (leftCheck && rightCheck && topCheck && bottomCheck) {
-                        this.powerup.pickup(level[x][y], this);
-                    }
-                }
-
-                // Exit
-                if (isOpenExit(x, y)) {
-                    if (leftCheck && rightCheck && topCheck && bottomCheck) {
-                        console.info("GG");
-                    }
-                }
-            }
-        }
-        */
-
         if (!collides) {
             this.x += this.dx;
             this.y += this.dy;
