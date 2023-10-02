@@ -37,6 +37,7 @@ class Player
         this.dy = 0;
 
         this.speed = 100.0; // pixels/s
+        this.direction = Direction.RIGHT;
 
         this.collisionOffset = 5;
 
@@ -67,6 +68,12 @@ class Player
         const playerTile = getTileFromWorldLocation(this);
         const nextTile = level[x/tileSize][y/tileSize];
 
+        //ctx.fillStyle = "#ff0000";
+        //ctx.fillRect(playerTile.x, playerTile.y, 32, 32);
+
+        //ctx.fillStyle = "#00ffff";
+        //ctx.fillRect(x, y, 32, 32);
+
         if (Math.abs(this.dx) > 0 || Math.abs(this.dy) > 0) {
 
             const distance = Math.hypot(this.x - x, this.y - y);
@@ -75,6 +82,88 @@ class Player
             if (!nextTile.isWalkable) {
                 if (distance <= tileSize) {
                     collides = true;
+
+                    // Corner points of next tile
+                    const topLeftCorner     = {x: nextTile.x, y: nextTile.y};
+                    const topRightCorner    = {x: nextTile.x + tileSize - 4, y: nextTile.y};
+                    const bottomLeftCorner  = {x: nextTile.x, y: nextTile.y + tileSize - 4};
+                    const bottomRightCorner = {x: nextTile.x + tileSize - 4, y: nextTile.y + tileSize - 4};
+
+                    const playerCenter      = {x: this.x + (this.w*0.5), y: this.y + (this.h*0.5)};
+
+                    // Calculate distances to each corner
+                    const distTopLeft     = Math.hypot(topLeftCorner.x - playerCenter.x, topLeftCorner.y - playerCenter.y);
+                    const distTopRight    = Math.hypot(topRightCorner.x - playerCenter.x, topRightCorner.y - playerCenter.y);
+                    const distBottomLeft  = Math.hypot(bottomLeftCorner.x - playerCenter.x, bottomLeftCorner.y - playerCenter.y);
+                    const distBottomRight = Math.hypot(bottomRightCorner.x - playerCenter.x, bottomRightCorner.y - playerCenter.y);
+
+                    // Find the minimum distance and corresponding corner
+                    let minDist = distTopLeft;
+                    let closestCorner = topLeftCorner;
+
+                    if (distTopRight < minDist) {
+                        minDist = distTopRight;
+                        closestCorner = topRightCorner;
+                    }
+                    if (distBottomLeft < minDist) {
+                        minDist = distBottomLeft;
+                        closestCorner = bottomLeftCorner;
+                    }
+                    if (distBottomRight < minDist) {
+                        minDist = distBottomRight;
+                        closestCorner = bottomRightCorner;
+                    }
+
+                    const distToClosestCorner = Math.hypot(playerCenter.x - closestCorner.x, playerCenter.y - closestCorner.y);
+                    //console.log("dist: ", distToClosestCorner);
+
+                    if (distToClosestCorner <= 20) { // TODO: Tweak. n pikseliä kulmasta
+
+                        ctx.fillStyle = "#ff00ff"
+                        ctx.fillRect(closestCorner.x, closestCorner.y, 4, 4);
+
+                        // TODO: Tarkistettava, että onko seuraava tile käveltävissä,
+                        //       ennen kuin siirtää pelaajan!!
+
+                        const slideSpeed = this.speed * deltaTime;
+                        if (this.dx > 0 ) { // Left
+                            if (closestCorner == topLeftCorner) {
+                                this.y -= slideSpeed;
+                            }
+
+                            if (closestCorner == bottomLeftCorner) {
+                                this.y += slideSpeed;
+                            }
+
+
+                        } else if (this.dx < 0) { // Right
+                            if (closestCorner == topRightCorner) {
+                                this.y -= slideSpeed;
+                            }
+
+                            if (closestCorner == bottomRightCorner) {
+                                this.y += slideSpeed;
+                            }
+                        }
+
+                        if (this.dy > 0) { // Down
+                            if (closestCorner == topLeftCorner) {
+                                this.x -= slideSpeed;
+                            }
+
+                            if (closestCorner == topRightCorner) {
+                                this.y += slideSpeed;
+                            }
+                        } else if (this.dy < 0) { // Up
+                            if (closestCorner == bottomLeftCorner) {
+                                this.x -= slideSpeed;
+                            }
+
+                            if (closestCorner == bottomRightCorner) {
+                                this.x += slideSpeed;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -100,7 +189,7 @@ class Player
         if (playerTile.isDeadly) {
             this.onDeath();
         }
-        
+
         if (!collides) {
             this.x += this.dx;
             this.y += this.dy;
@@ -143,21 +232,25 @@ class Player
             case this.keybinds.move_up:
                 this.dy = -this.speed * deltaTime;
                 this.dx = 0;
+                this.direction = Direction.UP;
                 break;
 
             case this.keybinds.move_left:
                 this.dx = -this.speed * deltaTime;
                 this.dy = 0;
+                this.direction = Direction.LEFT;
                 break;
 
             case this.keybinds.move_down:
                 this.dy = this.speed * deltaTime;
                 this.dx = 0;
+                this.direction = Direction.DOWN;
                 break;
 
             case this.keybinds.move_right:
                 this.dx = this.speed * deltaTime;
                 this.dy = 0;
+                this.direction = Direction.RIGHT;
                 break;
 
             case this.keybinds.drop_bomb:
