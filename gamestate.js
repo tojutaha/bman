@@ -1,6 +1,6 @@
 import { clearBombArray, tilesWithBombs } from "./bomb.js";
 import { enemies, loadEnemies } from "./enemy.js";
-import { level, loadLevel } from "./main.js";
+import { level, loadLevel, newLevel } from "./main.js";
 import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { players } from "./player.js";
 import { exitLocation, loadExit } from "./tile.js";
@@ -66,6 +66,7 @@ export class Game {
     nextLevel() {
       this.level++;
       updateLevelDisplay(this.level);
+      newLevel();
     }
 
     increaseEnemies() {

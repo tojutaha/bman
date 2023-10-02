@@ -1,9 +1,9 @@
 ////////////////////
 // Imports
-import { createTiles } from "./tile.js";
+import { createTiles, exitLocation } from "./tile.js";
 import { renderWalls, renderFloor, renderExit } from "./level.js";
 import { renderPowerups } from "./powerup.js";
-import { renderPlayer } from "./player.js";
+import { players, renderPlayer } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game } from "./gamestate.js";
@@ -32,6 +32,13 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 // Render
 let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
+
+let isPaused = false;
+
+export function pause() {
+    isPaused = !isPaused;
+};
+
 function Render(timeStamp)
 {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -70,10 +77,10 @@ export function loadLevel(loadedLevel) {
     level = loadedLevel;
 }
 
-////////////////////
-// DOM
-document.addEventListener("DOMContentLoaded", function ()
-{
+
+// TODO: testailu kesken
+export function newLevel() {
+    isPaused = true;
     canvas = document.getElementById("canvas");
     if (canvas) {
         ctx = canvas.getContext("2d");
@@ -81,6 +88,11 @@ document.addEventListener("DOMContentLoaded", function ()
             level = createTiles();
             if (level.length > 0) {
                 spawnEnemies();
+                // hmm
+                players[0].resetPos();
+                // exit ei toimi
+                exitLocation.isOpen = false;
+                isPaused = false;
             } else {
                 console.error("Failed to create level");
             }
@@ -92,5 +104,31 @@ document.addEventListener("DOMContentLoaded", function ()
     } else {
         console.error("Could not find canvas object.");
     }
+}
+
+////////////////////
+// DOM
+document.addEventListener("DOMContentLoaded", function ()
+{
+    newLevel();
+    // ORIGINAL:
+    // canvas = document.getElementById("canvas");
+    // if (canvas) {
+    //     ctx = canvas.getContext("2d");
+    //     if (ctx) {
+    //         level = createTiles();
+    //         if (level.length > 0) {
+    //             spawnEnemies();
+    //         } else {
+    //             console.error("Failed to create level");
+    //         }
+
+    //         Render();
+    //     } else {
+    //         console.error("Could not find ctx object.");
+    //     }
+    // } else {
+    //     console.error("Could not find canvas object.");
+    // }
 });
 
