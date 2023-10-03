@@ -1,9 +1,10 @@
 ////////////////////
 // Imports
-import { createTiles, exitLocation } from "./tile.js";
+import { createTiles } from "./tile.js";
 import { renderWalls, renderFloor, renderExit } from "./level.js";
 import { renderPowerups } from "./powerup.js";
-import { players, renderPlayer } from "./player.js";
+import { renderPlayer } from "./player.js";
+// import { renderPlayer, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game } from "./gamestate.js";
@@ -18,8 +19,8 @@ export let level = [];
 ////////////////////
 // Settings
 export const tileSize = 32;
-export const levelWidth = 25;
-export const levelHeight = 25;
+export const levelWidth = 9;
+export const levelHeight = 9;
 export const softTilePercent = 0.1;
 export const powerUpCount = 1;
 export const cagePlayers = false;
@@ -33,6 +34,7 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
 
+// TODO: nämä kuuluu gamestateen
 let isPaused = false;
 
 export function pause() {
@@ -47,9 +49,9 @@ function Render(timeStamp)
     const fps = 1 / deltaTime;
 
     renderFloor();
-    renderWalls();
     renderPowerups();
     renderExit();
+    renderWalls();
     renderEnemies();
     renderBombs();
     renderExplosions();
@@ -73,36 +75,30 @@ function Render(timeStamp)
 
 ////////////////////
 // Setters
-export function loadLevel(loadedLevel) {
+export function loadLevel(loadedLevel) {    //  TODO: tarpeeton toistaiseksi 
     level = loadedLevel;
 }
 
-
-// TODO: testailu kesken
+////////////////////
+// New level
+// TODO: tämä gamestateen vai tänne?
 export function newLevel() {
-    isPaused = true;
     canvas = document.getElementById("canvas");
     if (canvas) {
         ctx = canvas.getContext("2d");
         if (ctx) {
             level = createTiles();
             if (level.length > 0) {
+                // resetPlayerPositions();
                 spawnEnemies();
-                // hmm
-                players[0].resetPos();
-                // exit ei toimi
-                exitLocation.isOpen = false;
-                isPaused = false;
             } else {
-                console.error("Failed to create level");
+                throw new Error("Failed to create level");
             }
-
-            Render();
         } else {
-            console.error("Could not find ctx object.");
+            throw new Error("Could not find ctx object.");
         }
     } else {
-        console.error("Could not find canvas object.");
+        throw new Error("Could not find canvas object.");
     }
 }
 
@@ -110,25 +106,8 @@ export function newLevel() {
 // DOM
 document.addEventListener("DOMContentLoaded", function ()
 {
+    // spawnPlayers();
     newLevel();
-    // ORIGINAL:
-    // canvas = document.getElementById("canvas");
-    // if (canvas) {
-    //     ctx = canvas.getContext("2d");
-    //     if (ctx) {
-    //         level = createTiles();
-    //         if (level.length > 0) {
-    //             spawnEnemies();
-    //         } else {
-    //             console.error("Failed to create level");
-    //         }
-
-    //         Render();
-    //     } else {
-    //         console.error("Could not find ctx object.");
-    //     }
-    // } else {
-    //     console.error("Could not find canvas object.");
-    // }
+    Render();
 });
 
