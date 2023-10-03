@@ -76,6 +76,7 @@ class Player
 
         if (Math.abs(this.dx) > 0 || Math.abs(this.dy) > 0) {
 
+            // TODO: Tää ei oo kaikissa tilanteissa aivan oikein..
             const distance = Math.hypot(this.x - x, this.y - y);
 
             // Wall
@@ -119,48 +120,106 @@ class Player
 
                     if (distToClosestCorner <= 20) { // TODO: Tweak. n pikseliä kulmasta
 
-                        ctx.fillStyle = "#ff00ff"
-                        ctx.fillRect(closestCorner.x, closestCorner.y, 4, 4);
+                        // TODO: Clean up
+                        // left
+                        const lx = (x - tileSize) / tileSize;
+                        const ly = y / tileSize;
+                        // right
+                        const rx = (x + tileSize) / tileSize;
+                        const ry = y / tileSize;
+                        // up
+                        const ux = x / tileSize;
+                        const uy = (y - tileSize) / tileSize;
+                        // down
+                        const dx = x / tileSize;
+                        const dy = (y + tileSize) / tileSize;
 
-                        // TODO: Tarkistettava, että onko seuraava tile käveltävissä,
-                        //       ennen kuin siirtää pelaajan!!
+                        // Bounds check
+                        if (lx < 0 || rx < 0 || ux < 0 || dx < 0 ||
+                            lx >= levelWidth || rx >= levelWidth || 
+                            ux >= levelWidth || dx >= levelWidth) {
+                            return;
+                        }
+
+                        if (ly < 0 || ry < 0 || uy < 0 || dy < 0 ||
+                            ly >= levelHeight || ry >= levelHeight ||
+                            uy >= levelHeight || dy >= levelHeight) {
+                            return;
+                        }
+
+                        //console.log("left: ", lx, ly);
+                        //console.log("right: ", rx, ry);
+                        //console.log("up: ", ux, uy);
+                        //console.log("down: ", dx, dy);
+
+                        const leftTile = level[lx][ly];
+                        const rightTile = level[rx][ry];
+                        const upTile = level[ux][uy];
+                        const downTile = level[dx][dy];
+                        // TODO: Tarkistettava vielä pelaajan ympärillä olevat laatat,
+                        //       ettei voi mennä seinän läpi...
+
+                        //ctx.fillStyle = "#ff0000"
+                        //ctx.fillRect(leftTile.x, leftTile.y, 32, 32);
+                        //ctx.fillStyle = "#00ff00"
+                        //ctx.fillRect(rightTile.x, rightTile.y, 32, 32);
+                        //ctx.fillStyle = "#0000ff"
+                        //ctx.fillRect(upTile.x, upTile.y, 32, 32);
+                        //ctx.fillStyle = "#00ffff"
+                        //ctx.fillRect(downTile.x, downTile.y, 32, 32);
 
                         const slideSpeed = this.speed * deltaTime;
                         if (this.dx > 0 ) { // Left
                             if (closestCorner == topLeftCorner) {
-                                this.y -= slideSpeed;
+                                if (upTile.isWalkable) {
+                                    this.y -= slideSpeed;
+                                }
                             }
 
                             if (closestCorner == bottomLeftCorner) {
-                                this.y += slideSpeed;
+                                if (downTile.isWalkable) {
+                                    this.y += slideSpeed;
+                                }
                             }
 
 
                         } else if (this.dx < 0) { // Right
                             if (closestCorner == topRightCorner) {
-                                this.y -= slideSpeed;
+                                if (upTile.isWalkable) {
+                                    this.y -= slideSpeed;
+                                }
                             }
 
                             if (closestCorner == bottomRightCorner) {
-                                this.y += slideSpeed;
+                                if (downTile.isWalkable) {
+                                    this.y += slideSpeed;
+                                }
                             }
                         }
 
                         if (this.dy > 0) { // Down
                             if (closestCorner == topLeftCorner) {
-                                this.x -= slideSpeed;
+                                if (leftTile.isWalkable) {
+                                    this.x -= slideSpeed;
+                                }
                             }
 
                             if (closestCorner == topRightCorner) {
-                                this.y += slideSpeed;
+                                if (rightTile.isWalkable) {
+                                    this.y += slideSpeed;
+                                }
                             }
                         } else if (this.dy < 0) { // Up
                             if (closestCorner == bottomLeftCorner) {
-                                this.x -= slideSpeed;
+                                if (leftTile.isWalkable) {
+                                    this.x -= slideSpeed;
+                                }
                             }
 
                             if (closestCorner == bottomRightCorner) {
-                                this.x += slideSpeed;
+                                if (rightTile.isWalkable) {
+                                    this.x += slideSpeed;
+                                }
                             }
                         }
                     }
