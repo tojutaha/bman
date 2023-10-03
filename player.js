@@ -282,6 +282,10 @@ class Player
             this.isDead = true;
         }
     }
+
+    resetPos() {
+        // TODO: ???
+    }
 };
 
 export const keybinds1 = {
