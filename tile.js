@@ -1,9 +1,6 @@
 import { canvas, ctx, tileSize, levelHeight, levelWidth, softTilePercent, powerUpCount, cagePlayers } from "./main.js";
 import { randomPowerup } from "./powerup.js";
 
-// TODO: Siivoilla tätä, ehkä yhdistellä createPowerup ja createExit
-
-let exitCreated = false;
 export let exitLocation = undefined;
 
 const TileType = {
@@ -20,7 +17,7 @@ function Tile(x, y, isWalkable, isDeadly, hasPowerup, powerup, type) {
     this.hasPowerup = hasPowerup || false;
     this.powerup = powerup || "None";
     this.type = type || TileType.FLOOR
-    // tekstuurit jne vois laitella myös tänne.
+    // TODO: tekstuurit jne vois laitella myös tänne.
 };
 
 export function createTiles() {
@@ -52,8 +49,7 @@ export function createTiles() {
     }
 
     let softWallTotal = createSoftWalls(result, hardWallTotal);
-    createPowerups(result, softWallTotal);
-    createExit(result);
+    populateSoftWalls(result, softWallTotal);
 
     return result;
 }
@@ -91,12 +87,15 @@ function createSoftWalls(result, hardWallTotal) {
     return softWallTotal;
 }
 
-// Add power-ups to behind random soft walls
-function createPowerups(result, softWallCount) {
+// Creates the exit and power-ups behind random soft walls
+function populateSoftWalls(result, softWallTotal) {
     let powerupsLeft = 0;
-    // This is there for safety
-    if (powerUpCount > softWallCount) {
-        powerupsLeft = softWallCount;
+    let exitCreated = false;
+
+    // If settings have more powerups than softwalls generated,
+    // the amount of powerups is the amount of softwalls -1 for exit.
+    if (powerUpCount >= softWallTotal) {
+        powerupsLeft = softWallTotal - 1;
     } else {
         powerupsLeft = powerUpCount;
     }
@@ -106,31 +105,25 @@ function createPowerups(result, softWallCount) {
         const y = Math.floor(Math.random() * levelHeight);
         const tile = result[x][y];
 
-        if (tile.type === "SoftWall" && tile.hasPowerup === false) {
-            tile.powerup = randomPowerup();
-            tile.hasPowerup = randomPowerup();
-            powerupsLeft--;
+        if (tile.type === "SoftWall") {
+            // Create the exit
+            if (!exitCreated) {
+                console.info("The door is in", tile.x, tile.y);
+                tile.isExit = true;
+                tile.isOpen = false;
+                exitCreated = true;
+                exitLocation = tile;
+            }
+            // Create powerups
+            else if (!tile.hasPowerup && !tile.isExit) {
+                tile.powerup = randomPowerup();
+                tile.hasPowerup = randomPowerup();
+                powerupsLeft--;
+            }
         }
     }
 }
 
-// TODO: Tän vois yhistellä ylemmän kanssa
-function createExit(result) {
-    while (exitCreated === false) {
-        const x = Math.floor(Math.random() * levelWidth);
-        const y = Math.floor(Math.random() * levelHeight);
-        const tile = result[x][y];
-
-        if (tile.type === "SoftWall" && tile.hasPowerup === false) {
-            tile.isExit = true;
-            tile.isOpen = false;
-            exitCreated = true;
-            exitLocation = tile;
-            console.info("The door is in", tile.x, tile.y);
-            break;
-        }
-    }
-}
 
 // Creates two soft wall tiles to make the player spawn safe
 function createCage(result) {
@@ -159,6 +152,7 @@ function createCage(result) {
     result[levelWidth - 2][levelHeight - 4].isWalkable = false;
 }
 
+// TODO: savestate
 // Exit loader
 export function loadExit(loadedExit) {
     exitLocation = loadedExit;
