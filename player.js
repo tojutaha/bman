@@ -1,4 +1,4 @@
-import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet, deltaTime } from "./main.js";
+import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet, deltaTime, game } from "./main.js";
 import { PlayAudio } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";
@@ -269,6 +269,7 @@ class Player
                     console.log("Exit");
                     if (nextTile.isOpen) {
                         console.info("GG");
+                        game.nextLevel();
                     }
                 }
             }
@@ -367,7 +368,7 @@ class Player
     onDeath() {
         console.log("onDeath");
         if (!this.isDead) {
-            PlayAudio("audio/death01.wav");
+            // PlayAudio("assets/audio/death01.wav");
             this.isDead = true;
         }
     }
