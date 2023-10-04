@@ -17,6 +17,7 @@ export function renderPlayer()
         p.update();
         // TODO: Hack..
         const select = index == 1 ? tileSize*3 : tileSize*2;
+        // TODO: lopuksi sprite piirtymään tileSizen kokoiseksi, muuten sumea
         ctx.drawImage(spriteSheet, 0, select, tileSize, tileSize, p.x, p.y, p.w, p.h);
     });
 }
