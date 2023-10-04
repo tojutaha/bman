@@ -32,7 +32,7 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 // Render
 let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
-
+const scale = 2;
 function Render(timeStamp)
 {
     ctx.save();
@@ -45,7 +45,7 @@ function Render(timeStamp)
     deltaTime = (timeStamp - lastTimeStamp) / 1000;
     const fps = 1 / deltaTime;
 
-    ctx.setTransform(1, 0, 0, 1, canvas.width/2 - players[0].x, canvas.height/2 - players[0].y);
+    ctx.setTransform(scale, 0, 0, scale, canvas.width/2 - scale * players[0].x, canvas.height/2 - scale * players[0].y);
 
     renderFloor();
     renderPowerups();
