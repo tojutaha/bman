@@ -17,7 +17,7 @@ export let level = [];
 
 ////////////////////
 // Settings
-export const tileSize = 32;
+export const tileSize = 64;
 export const levelWidth = 32;
 export const levelHeight = 32;
 export const softTilePercent = 0.1;
@@ -32,7 +32,7 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 // Render
 let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
-const scale = 2;
+const scale = 1;
 function Render(timeStamp)
 {
     ctx.save();

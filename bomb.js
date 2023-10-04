@@ -206,16 +206,16 @@ export function renderBombs() {
         let currentTile = tilesWithBombs[i];
 
         if (currentTile.bomb.ticks >= 4) {
-            ctx.drawImage(spriteSheet, 0, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
+            ctx.drawImage(spriteSheet, 0, tileSize, tileSize, tileSize, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
         }
         else if (currentTile.bomb.ticks === 3) {
-            ctx.drawImage(spriteSheet, 32, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
+            ctx.drawImage(spriteSheet, tileSize, tileSize, tileSize, tileSize, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
         }
         else if (currentTile.bomb.ticks === 2) {
-            ctx.drawImage(spriteSheet, 64, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
+            ctx.drawImage(spriteSheet, tileSize*2, tileSize, tileSize, tileSize, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
         }
         else if (currentTile.bomb.ticks === 1) {
-            ctx.drawImage(spriteSheet, 96, 32, 32, 32, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
+            ctx.drawImage(spriteSheet, tileSize*3, tileSize, tileSize, tileSize, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
         }
     }
 }
@@ -225,13 +225,13 @@ export function renderExplosions() {
     if (crumblingWalls.length > 0) {
         crumblingWalls.forEach(tile => {
             if (tile.animationTimer >= 7) {
-                ctx.drawImage(spriteSheet, 64, 0, 32, 32, tile.x, tile.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, tileSize*2, 0, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer >= 5) {
-                ctx.drawImage(spriteSheet, 96, 0, 32, 32, tile.x, tile.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, tileSize*3, 0, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer >= 3) {
-                ctx.drawImage(spriteSheet, 128, 0, 32, 32, tile.x, tile.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, tileSize*4, 0, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer >= 0) {
                 crumblingWalls.splice(0, 1);
@@ -244,26 +244,26 @@ export function renderExplosions() {
     if (fieryFloors.length > 0) {
         fieryFloors.forEach(tile => {
             if (tile.animationTimer === 7) {
-                ctx.drawImage(spriteSheet, 0, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, 0, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer === 6) {
-                ctx.drawImage(spriteSheet, 32, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, tileSize, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer === 5) {
-                ctx.drawImage(spriteSheet, 64, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, tileSize*2, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer === 4) {
-                ctx.drawImage(spriteSheet, 96, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, tileSize*3, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer === 3) {
-                ctx.drawImage(spriteSheet, 128, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, tileSize*4, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
                 tile.isDeadly = false;
             }
             else if (tile.animationTimer === 2) {
-                ctx.drawImage(spriteSheet, 160, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, tileSize*5, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer === 1) {
-                ctx.drawImage(spriteSheet, 192, 192 , 32, 32, tile.x, tile.y, tileSize, tileSize);
+                ctx.drawImage(spriteSheet, tileSize*6, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer <= 0) {
                 fieryFloors.splice(0, 1);
