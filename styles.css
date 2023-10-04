@@ -39,6 +39,7 @@ body {
 
 .debug-buttons {
     display: flex;
+    flex-wrap: wrap;
     margin: auto;
     margin-top: 0.5em;
     max-width: 800px;

@@ -19,7 +19,7 @@ export let level = [];
 // Settings
 export const tileSize = 32;
 export const levelWidth = 9;
-export const levelHeight = 9;
+export const levelHeight = 11;
 export const softTilePercent = 0.1;
 export const powerUpCount = 1;
 export const cagePlayers = false;
@@ -77,6 +77,9 @@ export function loadLevel(loadedLevel) {    //  TODO: tarpeeton toistaiseksi
 export function newLevel() {
     canvas = document.getElementById("canvas");
     if (canvas) {
+        // Dynamic canvas size
+        canvas.width = levelWidth * tileSize;
+        canvas.height = levelHeight * tileSize;
         ctx = canvas.getContext("2d");
         if (ctx) {
             level = createTiles();
