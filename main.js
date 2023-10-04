@@ -3,7 +3,7 @@
 import { createTiles } from "./tile.js";
 import { renderWalls, renderFloor, renderExit } from "./level.js";
 import { renderPowerups } from "./powerup.js";
-import { renderPlayer, resetPlayerPositions, spawnPlayers } from "./player.js";
+import { players, renderPlayer, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game } from "./gamestate.js";
@@ -39,6 +39,8 @@ function Render(timeStamp)
 
     deltaTime = (timeStamp - lastTimeStamp) / 1000;
     const fps = 1 / deltaTime;
+
+    ctx.setTransform(1, 0, 0, 1, canvas.width/2 - players[0].x, canvas.height/2 - players[0].y);
 
     renderFloor();
     renderPowerups();

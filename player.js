@@ -144,7 +144,7 @@ class Player
                     break;
                 }
                 case Direction.LEFT: {
-                    const tileLeft   = level[(playerTile.x-tileSize)/tileSize][playerTile.y/tileSize];
+                    const tileLeft = level[(playerTile.x-tileSize)/tileSize][playerTile.y/tileSize];
                     //ctx.fillRect(tileLeft.x, tileLeft.y, 32, 32);
                     //ctx.fillRect(playerTile.x, playerTile.y, 32, 32);
                     if (nextX - this.w - this.collisionOffset <= tileLeft.x)
@@ -152,7 +152,7 @@ class Player
                     break;
                 }
                 case Direction.RIGHT: {
-                    const tileRight  = level[(playerTile.x+tileSize)/tileSize][playerTile.y/tileSize];
+                    const tileRight = level[(playerTile.x+tileSize)/tileSize][playerTile.y/tileSize];
                     //ctx.fillRect(tileRight.x, tileRight.y, 32, 32);
                     //ctx.fillRect(playerTile.x, playerTile.y, 32, 32);
                     if (nextX + this.w - this.collisionOffset >= tileRight.x)
