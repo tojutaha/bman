@@ -25,7 +25,7 @@ export function renderWalls()
 export function renderFloor()
 {
     ctx.fillStyle = "#4192c3";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, levelWidth*tileSize, levelHeight*tileSize);
 
     // Yksi kerrallaan:
     // for (let x = 0; x < levelWidth; x++) {
@@ -45,9 +45,9 @@ export function renderExit()
 {
     if (exitLocation.isOpen)
     {
-        ctx.drawImage(spriteSheet, tileSize, 160, tileSize, tileSize, exitLocation.x, exitLocation.y, tileSize, tileSize);
+        ctx.drawImage(spriteSheet, tileSize, tileSize*5, tileSize, tileSize, exitLocation.x, exitLocation.y, tileSize, tileSize);
     }
     else {
-        ctx.drawImage(spriteSheet, 0, 160, tileSize, tileSize, exitLocation.x, exitLocation.y, tileSize, tileSize);
+        ctx.drawImage(spriteSheet, 0, tileSize*5, tileSize, tileSize, exitLocation.x, exitLocation.y, tileSize, tileSize);
     }
 }
