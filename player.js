@@ -16,8 +16,8 @@ export function renderPlayer()
     players.forEach((p, index) => {
         p.update();
         // TODO: Hack..
-        const select = index == 1 ? 96 : 64;
-        ctx.drawImage(spriteSheet, 0, select, 32, 32, p.x, p.y, p.w, p.h);
+        const select = index == 1 ? tileSize*3 : tileSize*2;
+        ctx.drawImage(spriteSheet, 0, select, tileSize, tileSize, p.x, p.y, p.w, p.h);
     });
 }
 
@@ -31,8 +31,8 @@ class Player
         this.id = id;
         this.x = x;
         this.y = y;
-        this.w = 30;
-        this.h = 30;
+        this.w = 62;
+        this.h = 62;
         this.dx = 0;
         this.dy = 0;
 
@@ -129,32 +129,32 @@ class Player
             switch(this.direction) {
                 case Direction.UP: {
                     const tileTop = level[playerTile.x/tileSize][(playerTile.y-tileSize)/tileSize];
-                    //ctx.fillRect(tileTop.x, tileTop.y, 32, 32);
-                    //ctx.fillRect(playerTile.x, playerTile.y, 32, 32);
+                    //ctx.fillRect(tileTop.x, tileTop.y, tileSize, tileSize);
+                    //ctx.fillRect(playerTile.x, playerTile.y, tileSize, tileSize);
                     if (nextY - this.h - this.collisionOffset <= tileTop.y)
                         collides = !tileTop.isWalkable;
                     break;
                 }
                 case Direction.DOWN: {
                     const tileBottom = level[playerTile.x/tileSize][(playerTile.y+tileSize)/tileSize];
-                    //ctx.fillRect(tileBottom.x, tileBottom.y, 32, 32);
-                    //ctx.fillRect(playerTile.x, playerTile.y, 32, 32);
+                    //ctx.fillRect(tileBottom.x, tileBottom.y, tileSize, tileSize);
+                    //ctx.fillRect(playerTile.x, playerTile.y, tileSize, tileSize);
                     if (nextY + this.h - this.collisionOffset >= tileBottom.y)
                         collides = !tileBottom.isWalkable;
                     break;
                 }
                 case Direction.LEFT: {
                     const tileLeft = level[(playerTile.x-tileSize)/tileSize][playerTile.y/tileSize];
-                    //ctx.fillRect(tileLeft.x, tileLeft.y, 32, 32);
-                    //ctx.fillRect(playerTile.x, playerTile.y, 32, 32);
+                    //ctx.fillRect(tileLeft.x, tileLeft.y, tileSize, tileSize);
+                    //ctx.fillRect(playerTile.x, playerTile.y, tileSize, tileSize);
                     if (nextX - this.w - this.collisionOffset <= tileLeft.x)
                         collides = !tileLeft.isWalkable;
                     break;
                 }
                 case Direction.RIGHT: {
                     const tileRight = level[(playerTile.x+tileSize)/tileSize][playerTile.y/tileSize];
-                    //ctx.fillRect(tileRight.x, tileRight.y, 32, 32);
-                    //ctx.fillRect(playerTile.x, playerTile.y, 32, 32);
+                    //ctx.fillRect(tileRight.x, tileRight.y, tileSize, tileSize);
+                    //ctx.fillRect(playerTile.x, playerTile.y, tileSize, tileSize);
                     if (nextX + this.w - this.collisionOffset >= tileRight.x)
                         collides = !tileRight.isWalkable;
                     break;
@@ -432,11 +432,11 @@ export function findPlayerById(id) {
 }
 
 const StartPos = {
+    // TODO: taikanumerot pois, mainin settingejä ei deklaroitu vielä tässä vaiheessa?
     // Top left
-    P0X: 32,
-    P0Y: 32,
+    P0X: 64,
+    P0Y: 64,
 
-    // TODO: levelWidth ja Height ei vielä declaroitu tässä vaiheessa?
     // Bottom right
     // P1X: (levelWidth-2)*tileSize,
     // P1Y: (levelHeight-2)*tileSize,
