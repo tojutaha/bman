@@ -35,7 +35,12 @@ export let deltaTime = 16.6; // ~60fps alkuun..
 
 function Render(timeStamp)
 {
+    ctx.save();
+
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.restore();
 
     deltaTime = (timeStamp - lastTimeStamp) / 1000;
     const fps = 1 / deltaTime;
