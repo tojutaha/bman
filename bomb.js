@@ -4,10 +4,12 @@ import { spawnEnemiesAtLocation, findEnemyById, enemies, movementMode } from "./
 import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 
-// Jos ilmenee taas vanha bugi jossa koko peli jäätyy, saattaa johtua renderin splice metodeista.
+// TODO: jos vihuja kaksi samassa ruudussa, vain toinen kuolee (saattaa olla enemyssä)
+
 // TODO : Näkymättömät pommit
 // -> tulee jos seisoo pommin päällä loppuun asti
 // EHKÄ : Pakota suunta johon lähetään kävelemään (paitsi että mitä jos painaa sivuttain?)
+// Jos ilmenee taas vanha bugi jossa koko peli jäätyy, saattaa johtua renderin splice metodeista.
  
 export let tilesWithBombs = [];
 let crumblingWalls = [];

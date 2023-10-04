@@ -435,10 +435,30 @@ export function findPlayerById(id) {
     return players[index];
 }
 
-document.addEventListener("DOMContentLoaded", function ()
+const StartPos = {
+    // Top left
+    P0X: 32,
+    P0Y: 32,
+
+    // TODO: levelWidth ja Height ei vielä declaroitu tässä vaiheessa?
+    // Bottom right
+    // P1X: (levelWidth-2)*tileSize,
+    // P1Y: (levelHeight-2)*tileSize,
+}
+
+export function resetPlayerPositions() {    // TODO: muut pelaajat
+    players.forEach((p) => {
+        if (p.id === 0) {
+            p.x = StartPos.P0X;
+            p.y = StartPos.P0Y;
+        }
+    });
+}
+
+export function spawnPlayers()
 {
-    players.push(new Player(0, 32, 32, keybinds1));
-    //players.push(new Player(1, (levelWidth-2)*tileSize, (levelHeight-2)*tileSize, keybinds2));
+    players.push(new Player(0, StartPos.P0X, StartPos.P0Y, keybinds1));
+    // players.push(new Player(1, (levelWidth-2)*tileSize, (levelHeight-2)*tileSize, keybinds2));
     for (let i = 0; i < players.length; i++) {
         document.addEventListener("keyup", function(event) {
             players[i].handleKeyUp(event);
@@ -447,5 +467,4 @@ document.addEventListener("DOMContentLoaded", function ()
             players[i].handleKeyDown(event);
         });
     }
-});
-
+};

@@ -3,8 +3,7 @@
 import { createTiles } from "./tile.js";
 import { renderWalls, renderFloor, renderExit } from "./level.js";
 import { renderPowerups } from "./powerup.js";
-import { renderPlayer } from "./player.js";
-// import { renderPlayer, resetPlayerPositions, spawnPlayers } from "./player.js";
+import { renderPlayer, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game } from "./gamestate.js";
@@ -33,13 +32,6 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 // Render
 let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
-
-// TODO: nämä kuuluu gamestateen
-let isPaused = false;
-
-export function pause() {
-    isPaused = !isPaused;
-};
 
 function Render(timeStamp)
 {
@@ -89,7 +81,7 @@ export function newLevel() {
         if (ctx) {
             level = createTiles();
             if (level.length > 0) {
-                // resetPlayerPositions();
+                resetPlayerPositions();
                 spawnEnemies();
             } else {
                 throw new Error("Failed to create level");
@@ -106,7 +98,7 @@ export function newLevel() {
 // DOM
 document.addEventListener("DOMContentLoaded", function ()
 {
-    // spawnPlayers();
+    spawnPlayers();
     newLevel();
     Render();
 });
