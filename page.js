@@ -78,5 +78,5 @@ loadButton.addEventListener("click", function() {
 let deleteButton = document.getElementById("delete-save");
 deleteButton.addEventListener("click", function() {
     localStorage.clear();
-    updateScoreDisplay(0);
+    location.reload();
 })

@@ -5,27 +5,39 @@ import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { players } from "./player.js";
 import { exitLocation, loadExit } from "./tile.js";
 
-
-export let isPaused = false;
-
+export let pause = false;
 
 export class Game {
     constructor() {
         this.score = 0;
-      this.level = 1;
-      this.numOfEnemies = 0;
+        this.level = 1;
+        this.numOfEnemies = 0;
+        this.isPaused = false;
+    }
+
+    init() {
+        // Escin kuuntelija (ehkä muualle?)
+        document.addEventListener('keyup', function(event) {
+            if (event.key === 'Escape') {
+                // this.isPaused = !this.isPaused;
+                // console.log("pause", this.isPaused);
+                pause = !pause;
+                console.log("pause", pause);
+            }
+        });
     }
     
     increaseScore(points) {
-      this.score += points;
-      updateScoreDisplay(this.score);
+        this.score += points;
+        updateScoreDisplay(this.score);
     }
     
     nextLevel() {
-      this.level++;
-      updateLevelDisplay(this.level);
-      newLevel();
-      this.saveGame();
+        this.level++;
+        updateLevelDisplay(this.level);
+        newLevel();
+        clearBombArray();
+        this.saveGame();
     }
     
     increaseEnemies() {
@@ -39,10 +51,6 @@ export class Game {
     openDoor() {
         exitLocation.isOpen = true;
     }
-
-    pause() {
-        isPaused = !isPaused;
-    };
     
     // Saving & loading
     // TODO: pelaajat häviää jos ottaa tallennetun powerupin

@@ -27,16 +27,16 @@ export class Bomb {
         this.hasExploded = false;
         this.playerId = playerId || 0;
 
-        let ticking = setInterval(() => {
+        this.ticking = setInterval(() => {
             this.ticks--;
             if (this.hasExploded) {
-                clearInterval(ticking);
+                clearInterval(this.ticking);
             }
             else if (this.ticks === 0) {
                 const randomBoom = booms[Math.floor(Math.random() * booms.length)];
                 PlayAudio(randomBoom, 1);
                 explode(this);
-                clearInterval(ticking);
+                clearInterval(this.ticking);
             }
         }, 1000);
     }
@@ -96,7 +96,7 @@ function explode(bomb) {
 
     chainExplosions(tiles);
     setTilesOnFire(tiles);
-    killEnemies(tiles);
+    // killEnemies(tiles);
 }
 
 function chainExplosions(tiles) {
@@ -164,38 +164,63 @@ function setTilesOnFire(tiles) {
                     }
                     else if (currentTile.isExit && !currentTile.isOpen && !currentTile.hasSpawnedEnemies)
                     {
-                        currentTile.hasSpawnedEnemies = true;
+                        console.log("BLASTED EXIT");
                         spawnEnemiesAtLocation(currentTile, 8);     // TODO: joku muuttuja vaikeustason mukaan
+                        currentTile.hasSpawnedEnemies = true;
                     }
                 }
         }
     }
 }
 
-function killEnemies(tiles) {
-    for (let i = 1; i < tiles.length; i++) {
-        for (let j = 0; j < tiles[i].length; j++) {
-            let currentTile = tiles[i][j];
-            if (currentTile.isDeadly) {
-                enemies.forEach(enemy => {
-                    if (getDistanceTo(currentTile, enemy) < tileSize) {
-                        let result = findEnemyById(enemy.id);
-                        // console.info("Enemy ID", enemy.id, "died");
-                        enemies.splice(result.index, 1);
-                        enemy.movementMode = movementMode.IDLE;
-                        clearInterval(enemy.timer);
-                        enemy = null;               // TODO: Varmistetaan että nämä varmasti poistuu!
-                        game.increaseScore(500);    // TODO: Score by enemy type
-                        game.decreaseEnemies();
-                        // console.log("Enemies left:", game.numOfEnemies);
-                        if (game.numOfEnemies === 0) {
-                            game.openDoor();
-                            PlayAudio("assets/audio/exitopen01.wav");
-                        }
-                    }
-                })    
+// OLD VERSION, LOOPS THROUGH ALL ONCE
+// function killEnemies(tiles) {
+//     for (let i = 1; i < tiles.length; i++) {
+//         for (let j = 0; j < tiles[i].length; j++) {
+//             let currentTile = tiles[i][j];
+//             if (currentTile.isDeadly) {
+//                 enemies.forEach(enemy => {
+//                     if (getDistanceTo(currentTile, enemy) < tileSize) {
+//                         let result = findEnemyById(enemy.id);
+//                         // console.info("Enemy ID", enemy.id, "died");
+//                         enemies.splice(result.index, 1);
+//                         enemy.movementMode = movementMode.IDLE;
+//                         clearInterval(enemy.timer);
+//                         enemy = null;               // TODO: Varmistetaan että nämä varmasti poistuu!
+//                         game.increaseScore(500);    // TODO: Score by enemy type
+//                         game.decreaseEnemies();
+//                         // console.log("Enemies left:", game.numOfEnemies);
+//                         if (game.numOfEnemies === 0) {
+//                             game.openDoor();
+//                             PlayAudio("assets/audio/exitopen01.wav");
+//                         }
+//                     }
+//                 })    
+//             }
+//         }
+//     }
+// }
+
+// NEW VERSION, CHECKS ENEMIES ON EXPLOSION RENDER WITH EVERY TICK OF ANIMATIONTIMER
+function killEnemies(tile) {
+    if (tile.isDeadly) {
+        enemies.forEach(enemy => {
+            if (getDistanceTo(tile, enemy) < tileSize) {
+                let result = findEnemyById(enemy.id);
+                // console.info("Enemy ID", enemy.id, "died");
+                enemies.splice(result.index, 1);
+                enemy.movementMode = movementMode.IDLE;
+                clearInterval(enemy.timer);
+                enemy = null;               // TODO: Varmistetaan että nämä varmasti poistuu!
+                game.increaseScore(500);    // TODO: Score by enemy type
+                game.decreaseEnemies();
+                // console.log("Enemies left:", game.numOfEnemies);
+                if (game.numOfEnemies === 0) {
+                    game.openDoor();
+                    PlayAudio("assets/audio/exitopen01.wav");
+                }
             }
-        }
+        })
     }
 }
 
@@ -236,7 +261,6 @@ export function renderExplosions() {
             else if (tile.animationTimer >= 0) {
                 crumblingWalls.splice(0, 1);
             }
-
         })
     }
 
@@ -257,7 +281,6 @@ export function renderExplosions() {
             }
             else if (tile.animationTimer === 3) {
                 ctx.drawImage(spriteSheet, tileSize*4, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-                tile.isDeadly = false;
             }
             else if (tile.animationTimer === 2) {
                 ctx.drawImage(spriteSheet, tileSize*5, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
@@ -266,12 +289,20 @@ export function renderExplosions() {
                 ctx.drawImage(spriteSheet, tileSize*6, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer <= 0) {
+                tile.isDeadly = false;
                 fieryFloors.splice(0, 1);
             }
+
+            killEnemies(tile);
         })
     }
 }
 
+// This is called only when changing level and does only what's necessary for that
+// - it doesn't do the exploding process and making the tiles walkable for example.
 export function clearBombArray() {
+    tilesWithBombs.forEach(tile => {
+        clearInterval(tile.bomb.ticking);
+    });
     tilesWithBombs = [];
 }
