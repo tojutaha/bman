@@ -2,7 +2,7 @@ import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet, del
 import { PlayAudio } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";
-import { getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear, getRandomColor } from "./utils.js";
+import { aabbCollision, getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear, getRandomColor, getTileFromWorldLocationF, getSurroundingTiles } from "./utils.js";
 
 export const Direction = {
     UP: "Up",
@@ -32,15 +32,17 @@ class Player
         this.id = id;
         this.x = x;
         this.y = y;
-        this.w = 62;
-        this.h = 62;
+        this.w = tileSize-2;
+        this.h = tileSize-2;
         this.dx = 0;
         this.dy = 0;
 
         this.speed = 150.0; // pixels/s
         this.direction = Direction.RIGHT;
 
-        this.collisionOffset = 5;
+        //this.collisionOffset = 5;
+        this.collisionW = this.w - 10;
+        this.collisionH = this.h - 10;
 
         // Key binds
         this.keybinds = keybinds;
@@ -50,67 +52,53 @@ class Player
         this.powerup = new Powerup();
     }
     // Handles movement and collision
-    update_old() {
+    update() {
         const nextX = this.x + this.dx;
         const nextY = this.y + this.dy;
-        let collides = false;
-        for (let y = 0; y < levelHeight; y++) {
-            for (let x = 0; x < levelWidth; x++) {
-                const tileLeft   = level[x][y].x;
-                const tileRight  = level[x][y].x + tileSize;
-                const tileTop    = level[x][y].y;
-                const tileBottom = level[x][y].y + tileSize;
 
-                if (!isWalkable(x, y) &
-                    nextX + (this.w - this.collisionOffset) >= tileLeft &&
-                    (nextX + this.collisionOffset) < tileRight &&
-                    nextY + (this.h - this.collisionOffset) >= tileTop &&
-                    (nextY + this.collisionOffset) < tileBottom
-                ) {
+        const playerTile = getTileFromWorldLocation(this);
+        const playerBox = {x: nextX + 5, y: nextY + 5, w: this.collisionW, h: this.collisionH};
+        ctx.fillRect(playerBox.x, playerBox. y, this.collisionW, this.collisionH);
 
-                    collides = true;
-                }
+        const tilesToCheck = getSurroundingTiles(playerBox);
 
-                if (isDeadly(x, y) &&
-                    nextX + (this.w - this.collisionOffset) >= tileLeft &&
-                    (nextX + this.collisionOffset) < tileRight &&
-                    nextY + (this.h - this.collisionOffset) >= tileTop &&
-                    (nextY + this.collisionOffset) < tileBottom
-                ) {
-                    // Testi
-                    if (!this.isDead) {
-                        PlayAudio("audio/death01.wav");
-                        this.isDead = true;
-                        console.info("DEATH BY TILE");
-                    }
-                }
+        for (let i = 0; i < tilesToCheck.length; i++) {
+            const tileBox = {x: tilesToCheck[i].x , y: tilesToCheck[i].y , w: tileSize, h: tileSize};
 
-                // No picking up from just touching the walls
-                const pickupOffset = 3;
-                if (hasPowerup(x, y) &&
-                    nextX + (this.w - this.collisionOffset - pickupOffset) >= tileLeft &&
-                    (nextX + this.collisionOffset + pickupOffset) < tileRight &&
-                    nextY + (this.h - this.collisionOffset - pickupOffset) >= tileTop &&
-                    (nextY + this.collisionOffset + pickupOffset) < tileBottom
-                ) {
-                    this.powerup.pickup(level[x][y], this);
-                }
+            if (!tilesToCheck[i].isWalkable && aabbCollision(playerBox, tileBox)) {
+                return;
             }
         }
-        //console.log(collides);
-        if (!collides) {
-            this.x += this.dx;
-            this.y += this.dy;
+
+        if (playerTile.hasPowerup) {
+            this.powerup.pickup(playerTile, this);
         }
+
+        if (playerTile.isExit) {
+            console.log("Exit");
+            if (playerTile.isOpen) {
+                console.log("GG");
+                game.nextLevel();
+            }
+        }
+
+        if (playerTile.isDeadly) {
+            this.onDeath();
+        }
+
+        this.x = nextX;
+        this.y = nextY;
     }
+
     // Handles movement and collision
-    update() {
+    // TODO: Yhdistä toi kulmien yli liukuminen edelliseen... :(
+    update2() {
 
         const nextX = this.x + this.dx;
         const nextY = this.y + this.dy;
         let collides = false;
 
-        const tile = getTileFromWorldLocation({x: nextX, y: nextY});
+        const tile = getTileFromWorldLocationF({x: nextX, y: nextY});
         let x = tile.x;
         let y = tile.y;
 
@@ -119,7 +107,7 @@ class Player
         if (this.dy < 0) y = tile.y - tileSize; // Up
         if (this.dy > 0) y = tile.y + tileSize; // Down
 
-        const playerTile = getTileFromWorldLocation(this);
+        const playerTile = getTileFromWorldLocationF(this);
         const nextTile = level[x/tileSize][y/tileSize];
 
         if (Math.abs(this.dx) > 0 || Math.abs(this.dy) > 0) {
@@ -130,32 +118,24 @@ class Player
             switch(this.direction) {
                 case Direction.UP: {
                     const tileTop = level[playerTile.x/tileSize][(playerTile.y-tileSize)/tileSize];
-                    //ctx.fillRect(tileTop.x, tileTop.y, tileSize, tileSize);
-                    //ctx.fillRect(playerTile.x, playerTile.y, tileSize, tileSize);
                     if (nextY - this.h - this.collisionOffset <= tileTop.y)
                         collides = !tileTop.isWalkable;
                     break;
                 }
                 case Direction.DOWN: {
                     const tileBottom = level[playerTile.x/tileSize][(playerTile.y+tileSize)/tileSize];
-                    //ctx.fillRect(tileBottom.x, tileBottom.y, tileSize, tileSize);
-                    //ctx.fillRect(playerTile.x, playerTile.y, tileSize, tileSize);
                     if (nextY + this.h - this.collisionOffset >= tileBottom.y)
                         collides = !tileBottom.isWalkable;
                     break;
                 }
                 case Direction.LEFT: {
                     const tileLeft = level[(playerTile.x-tileSize)/tileSize][playerTile.y/tileSize];
-                    //ctx.fillRect(tileLeft.x, tileLeft.y, tileSize, tileSize);
-                    //ctx.fillRect(playerTile.x, playerTile.y, tileSize, tileSize);
                     if (nextX - this.w - this.collisionOffset <= tileLeft.x)
                         collides = !tileLeft.isWalkable;
                     break;
                 }
                 case Direction.RIGHT: {
                     const tileRight = level[(playerTile.x+tileSize)/tileSize][playerTile.y/tileSize];
-                    //ctx.fillRect(tileRight.x, tileRight.y, tileSize, tileSize);
-                    //ctx.fillRect(playerTile.x, playerTile.y, tileSize, tileSize);
                     if (nextX + this.w - this.collisionOffset >= tileRight.x)
                         collides = !tileRight.isWalkable;
                     break;
@@ -231,14 +211,14 @@ class Player
                     if (this.dx > 0 ) { // Left
                         if (closestCorner == topLeftCorner) {
                             // Top of player
-                            const nextToPlayerTile = getTileFromWorldLocation({x: this.x, y: this.y - tileSize});
+                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x, y: this.y - tileSize});
                             if (upTile.isWalkable && nextToPlayerTile.isWalkable)
                                 this.y -= slideSpeed;
                         }
 
                         if (closestCorner == bottomLeftCorner) {
                             // Bottom of player
-                            const nextToPlayerTile = getTileFromWorldLocation({x: this.x, y: this.y + tileSize});
+                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x, y: this.y + tileSize});
                             if (downTile.isWalkable && nextToPlayerTile.isWalkable)
                                 this.y += slideSpeed;
                         }
@@ -247,14 +227,14 @@ class Player
                     } else if (this.dx < 0) { // Right
                         if (closestCorner == topRightCorner) {
                             // Top of player
-                            const nextToPlayerTile = getTileFromWorldLocation({x: this.x, y: this.y - tileSize});
+                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x, y: this.y - tileSize});
                             if (upTile.isWalkable && nextToPlayerTile.isWalkable)
                                 this.y -= slideSpeed;
                         }
 
                         if (closestCorner == bottomRightCorner) {
                             // Bottom of player
-                            const nextToPlayerTile = getTileFromWorldLocation({x: this.x, y: this.y + tileSize});
+                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x, y: this.y + tileSize});
                             if (downTile.isWalkable && nextToPlayerTile.isWalkable)
                                 this.y += slideSpeed;
                         }
@@ -263,28 +243,28 @@ class Player
                     if (this.dy > 0) { // Down
                         if (closestCorner == topLeftCorner) {
                             // Left of player
-                            const nextToPlayerTile = getTileFromWorldLocation({x: this.x - tileSize, y: this.y});
+                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x - tileSize, y: this.y});
                             if (leftTile.isWalkable && nextToPlayerTile.isWalkable)
                                 this.x -= slideSpeed;
                         }
 
                         if (closestCorner == topRightCorner) {
                             // Right of player
-                            const nextToPlayerTile = getTileFromWorldLocation({x: this.x + tileSize, y: this.y});
+                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x + tileSize, y: this.y});
                             if (rightTile.isWalkable && nextToPlayerTile.isWalkable)
                                 this.y += slideSpeed;
                         }
                     } else if (this.dy < 0) { // Up
                         if (closestCorner == bottomLeftCorner) {
                             // Left of player
-                            const nextToPlayerTile = getTileFromWorldLocation({x: this.x - tileSize, y: this.y});
+                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x - tileSize, y: this.y});
                             if (leftTile.isWalkable && nextToPlayerTile.isWalkable)
                                 this.x -= slideSpeed;
                         }
 
                         if (closestCorner == bottomRightCorner) {
                             // Right of player
-                            const nextToPlayerTile = getTileFromWorldLocation({x: this.x + tileSize, y: this.y});
+                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x + tileSize, y: this.y});
                             if (rightTile.isWalkable && nextToPlayerTile.isWalkable)
                                 this.x += slideSpeed;
                         }
