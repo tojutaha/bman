@@ -18,8 +18,8 @@ export let level = [];
 ////////////////////
 // Settings
 export const tileSize = 64;
-export const levelWidth = 32;
-export const levelHeight = 32;
+export const levelWidth = 9;
+export const levelHeight = 11;
 export const softTilePercent = 0.1;
 export const powerUpCount = 1;
 export const cagePlayers = false;

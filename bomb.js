@@ -299,10 +299,14 @@ export function renderExplosions() {
 }
 
 // This is called only when changing level and does only what's necessary for that
-// - it doesn't do the exploding process and making the tiles walkable for example.
+// - it doesn't do the whole exploding process and make the tiles walkable for example.
 export function clearBombArray() {
     tilesWithBombs.forEach(tile => {
         clearInterval(tile.bomb.ticking);
     });
     tilesWithBombs = [];
+    
+    players.forEach(p => {
+        p.activeBombs = 0;
+    });
 }
