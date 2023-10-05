@@ -89,6 +89,14 @@ export function getTileFromWorldLocation(loc)
     return level[x][y];
 }
 
+// Sama kuin edellinen mutta floor
+export function getTileFromWorldLocationF(loc)
+{
+    const x = Math.floor(loc.x / tileSize);
+    const y = Math.floor(loc.y / tileSize);
+    return level[x][y];
+}
+
 // Palauttaa 4 (ylös, alas, vasen, oikea) naapuri laattaa parametrin ympärillä
 export function getNeigbouringTiles_linear(loc, range = 2)
 {
@@ -128,5 +136,37 @@ export function getNeigbouringTiles_diagonal(loc)
     }
 
     return result;
+}
+
+
+// Sama kuin edellinen mutta palauttaa kaikki 9 tile objekteina
+// koordinaattien sijaan
+export function getSurroundingTiles(loc)
+{
+    const center = {x: Math.floor(loc.x / tileSize), y: Math.floor(loc.y / tileSize)};
+    const result = [];
+
+    for (let y = -1; y <= 1; y++) {
+        for (let x = -1; x <= 1; x++) {
+
+            const coordX = center.x + x;
+            const coordY = center.y + y;
+
+            if (coordX >= 0 && coordX < level.length && coordY >= 0 && coordY < level[coordX].length) {
+                result.push(level[coordX][coordY]);
+            }
+        }
+    }
+
+    return result;
+}
+
+// Axis-Aligned Bounding Box testi, Palauttaa true, jos
+// kaksi suorakulmiota leikkaavat.
+export function aabbCollision(rect1, rect2) {
+    return rect1.x < rect2.x + rect2.w &&
+           rect1.x + rect1.w > rect2.x &&
+           rect1.y < rect2.y + rect2.h &&
+           rect1.y + rect1.h > rect2.y;
 }
 
