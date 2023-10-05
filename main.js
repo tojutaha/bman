@@ -43,7 +43,7 @@ function Render(timeStamp)
     ctx.restore();
 
     deltaTime = (timeStamp - lastTimeStamp) / 1000;
-    const fps = 1 / deltaTime;
+    //const fps = 1 / deltaTime;
 
     ctx.setTransform(scale, 0, 0, scale, canvas.width/2 - scale * players[0].x, canvas.height/2 - scale * players[0].y);
 
@@ -56,7 +56,7 @@ function Render(timeStamp)
     renderExplosions();
     renderPlayer();
 
-    // 
+    /*
     ctx.fillStyle = "#a2f3a2";
     ctx.strokeStyle = "#000000";
     ctx.lineWidth = 2;
@@ -65,7 +65,7 @@ function Render(timeStamp)
     ctx.fillText("FPS: " + fps.toFixed(1), canvas.width - 125, 25);
     ctx.strokeText("dt:  " + (deltaTime*1000).toFixed(2) + "ms", canvas.width - 125, 50);
     ctx.fillText("dt:  " + (deltaTime*1000).toFixed(2) + "ms", canvas.width - 125, 50);
-    //
+    */
 
     lastTimeStamp = timeStamp
 
