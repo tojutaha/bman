@@ -314,7 +314,7 @@ class Player
 
         if (this.activeBombs < this.powerup.maxBombs) {
             if (!bombTile.bomb || bombTile.bomb.hasExploded) {
-                bombTile.bomb = new Bomb(bombTile.x, bombTile.y, this.currentTicks, this.powerup.maxRange, this.id);
+                bombTile.bomb = new Bomb(bombTile.x, bombTile.y, this.powerup.currentTicks, this.powerup.maxRange, this.id);
                 this.activeBombs++;
                 tilesWithBombs.push(bombTile);
                 
@@ -331,7 +331,7 @@ class Player
                         bombTile.isWalkable = false;
                         clearInterval(posCheck);
                     }
-                }, 20);
+                }, 10);
             }
         }
     }
