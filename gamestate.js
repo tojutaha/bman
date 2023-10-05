@@ -25,6 +25,7 @@ export class Game {
       this.level++;
       updateLevelDisplay(this.level);
       newLevel();
+      this.saveGame();
     }
     
     increaseEnemies() {
@@ -85,18 +86,20 @@ export class Game {
             // loadEnemies(loadedEnemies);
             
             const loadedPlayers = JSON.parse(localStorage.getItem("players"));
-            loadPlayers(loadedPlayers);
+            loadPowerups(loadedPlayers);
         }
     }
 }
 
-// TODO: poweruppien pickkaaminen rikkoo kaiken
-function loadPlayers(loadedPlayers) {
+function loadPowerups(loadedPlayers) {
     for (let i = 0; i < players.length; i++) {
+        // Coords for savestate
         // players[i].x = loadedPlayers[i].x;
         // players[i].y = loadedPlayers[i].y;
+
         players[i].speed = loadedPlayers[i].speed;
-        players[i].powerup = loadedPlayers[i].powerup;
+        players[i].powerup.maxBombs = loadedPlayers[i].powerup.maxBombs;
+        players[i].powerup.maxRange = loadedPlayers[i].powerup.maxRange;
     }
 }
 

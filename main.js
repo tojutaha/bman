@@ -110,6 +110,7 @@ document.addEventListener("DOMContentLoaded", function ()
 {
     spawnPlayers();
     newLevel();
+    game.loadGame();
     Render();
 });
 
