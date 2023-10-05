@@ -51,6 +51,7 @@ class Player
         this.activeBombs = 0;
         this.powerup = new Powerup();
     }
+
     // Handles movement and collision
     update() {
         const nextX = this.x + this.dx;
@@ -62,11 +63,13 @@ class Player
 
         const tilesToCheck = getSurroundingTiles(playerBox);
 
+        let collides = false;
         for (let i = 0; i < tilesToCheck.length; i++) {
             const tileBox = {x: tilesToCheck[i].x , y: tilesToCheck[i].y , w: tileSize, h: tileSize};
 
             if (!tilesToCheck[i].isWalkable && aabbCollision(playerBox, tileBox)) {
-                return;
+                //return;
+                collides = true;
             }
         }
 
@@ -79,6 +82,7 @@ class Player
             if (playerTile.isOpen) {
                 console.log("GG");
                 game.nextLevel();
+                collides = true;
             }
         }
 
@@ -86,8 +90,10 @@ class Player
             this.onDeath();
         }
 
-        this.x = nextX;
-        this.y = nextY;
+        if (!collides) {
+            this.x = nextX;
+            this.y = nextY;
+        }
     }
 
     // Handles movement and collision
@@ -424,6 +430,7 @@ const StartPos = {
 }
 
 export function resetPlayerPositions() {    // TODO: muut pelaajat
+
     players.forEach((p) => {
         if (p.id === 0) {
             p.x = StartPos.P0X;
