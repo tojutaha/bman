@@ -42,13 +42,13 @@ export function renderPowerups()
 
             if (currentTile.hasPowerup) {
                 if (currentTile.powerup === "ExtraBomb") {
-                    ctx.drawImage(spriteSheet, 0, 128, 32, 32, xCoord, yCoord, tileSize, tileSize);
+                    ctx.drawImage(spriteSheet, 0, tileSize*4, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
                 else if (currentTile.powerup === "ExtraRange") {
-                    ctx.drawImage(spriteSheet, 32, 128, 32, 32, xCoord, yCoord, tileSize, tileSize);
+                    ctx.drawImage(spriteSheet, tileSize, tileSize*4, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
                 else if (currentTile.powerup === "ExtraSpeed") {
-                    ctx.drawImage(spriteSheet, 64, 128, 32, 32, xCoord, yCoord, tileSize, tileSize);
+                    ctx.drawImage(spriteSheet, tileSize*2, tileSize*4, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
             }
         }
