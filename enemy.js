@@ -9,9 +9,9 @@ import { PlayAudio } from "./audio.js";
 
 export const movementMode = {
     IDLE: "Idle",
-    // ROAM: "Roam",
-    // PATROL: "Patrol",
-    // FOLLOW: "Follow",
+    ROAM: "Roam",
+    PATROL: "Patrol",
+    FOLLOW: "Follow",
 }
 
 class Enemy
@@ -278,8 +278,8 @@ export let enemies = [];
 export function spawnEnemies()
 {
     const movementValues = Object.values(movementMode);
-    const amount = movementValues.length;
-    //const amount = 1;
+    //const amount = movementValues.length;
+    const amount = 1;
     const maxRadius = 25*tileSize;
     const minRadius = 10*tileSize;
 
@@ -289,10 +289,10 @@ export function spawnEnemies()
         const random = getRandomWalkablePointInRadius({x: player.x,
                                                        y: player.y},
                                                        minRadius, maxRadius);
-        const enemy = new Enemy(random.x, random.y, 32, 32);
+        const enemy = new Enemy(random.x, random.y, tileSize, tileSize);
         let colIndex = i;
-        enemy.setMovementMode(movementValues[colIndex]);
-        //enemy.setMovementMode(movementMode.FOLLOW);
+        //enemy.setMovementMode(movementValues[colIndex]);
+        enemy.setMovementMode(movementMode.IDLE);
         enemy.speed = getRandomSpeed();
         enemy.setDebugColors();
         enemy.init();
@@ -309,7 +309,7 @@ export function spawnEnemies()
 export function spawnEnemiesAtLocation(location, amount = 1)
 {
     for (let i = 0; i < amount; i++) {
-        const enemy = new Enemy(location.x, location.y, 32, 32);
+        const enemy = new Enemy(location.x, location.y, tileSize, tileSize);
         enemy.setMovementMode(movementMode.ROAM);
         enemy.speed = getRandomSpeed();
         enemy.color = getRandomColor();

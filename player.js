@@ -37,7 +37,7 @@ class Player
         this.dx = 0;
         this.dy = 0;
 
-        this.speed = 100.0; // pixels/s
+        this.speed = 150.0; // pixels/s
         this.direction = Direction.RIGHT;
 
         this.collisionOffset = 5;
