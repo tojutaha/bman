@@ -4,10 +4,12 @@ import { spawnEnemiesAtLocation, findEnemyById, enemies, movementMode } from "./
 import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 
+// TODO: tuplapommit polttaa powerupit
 // TODO: jos vihuja kaksi samassa ruudussa, vain toinen kuolee (saattaa olla enemyssä)
 
 // TODO : Näkymättömät pommit
 // -> tulee jos seisoo pommin päällä loppuun asti
+
 // EHKÄ : Pakota suunta johon lähetään kävelemään (paitsi että mitä jos painaa sivuttain?)
 // Jos ilmenee taas vanha bugi jossa koko peli jäätyy, saattaa johtua renderin splice metodeista.
  
@@ -173,38 +175,13 @@ function setTilesOnFire(tiles) {
     }
 }
 
-// OLD VERSION, LOOPS THROUGH ALL ONCE
-// function killEnemies(tiles) {
-//     for (let i = 1; i < tiles.length; i++) {
-//         for (let j = 0; j < tiles[i].length; j++) {
-//             let currentTile = tiles[i][j];
-//             if (currentTile.isDeadly) {
-//                 enemies.forEach(enemy => {
-//                     if (getDistanceTo(currentTile, enemy) < tileSize) {
-//                         let result = findEnemyById(enemy.id);
-//                         // console.info("Enemy ID", enemy.id, "died");
-//                         enemies.splice(result.index, 1);
-//                         enemy.movementMode = movementMode.IDLE;
-//                         clearInterval(enemy.timer);
-//                         enemy = null;               // TODO: Varmistetaan että nämä varmasti poistuu!
-//                         game.increaseScore(500);    // TODO: Score by enemy type
-//                         game.decreaseEnemies();
-//                         // console.log("Enemies left:", game.numOfEnemies);
-//                         if (game.numOfEnemies === 0) {
-//                             game.openDoor();
-//                             PlayAudio("assets/audio/exitopen01.wav");
-//                         }
-//                     }
-//                 })    
-//             }
-//         }
-//     }
-// }
-
-// NEW VERSION, CHECKS ENEMIES ON EXPLOSION RENDER WITH EVERY TICK OF ANIMATIONTIMER
 function killEnemies(tile) {
     if (tile.isDeadly) {
         enemies.forEach(enemy => {
+            if (enemy.justSpawned) {
+                return;
+            }
+
             if (getDistanceTo(tile, enemy) < tileSize) {
                 let result = findEnemyById(enemy.id);
                 // console.info("Enemy ID", enemy.id, "died");
@@ -305,7 +282,7 @@ export function clearBombArray() {
         clearInterval(tile.bomb.ticking);
     });
     tilesWithBombs = [];
-    
+
     players.forEach(p => {
         p.activeBombs = 0;
     });

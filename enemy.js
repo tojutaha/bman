@@ -101,6 +101,11 @@ class Enemy
                 this.followPlayer();
                 break;
         }
+
+        this.justSpawned = true;
+        this.spawnImmortality = setTimeout(() => {
+            this.justSpawned = false;
+        }, 2000);
     }
 
     getRandomPath() {

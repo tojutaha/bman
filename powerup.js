@@ -19,7 +19,7 @@ export class Powerup
         }
 
         else if (tile.powerup === "ExtraSpeed") {
-            player.speed += 20;
+            player.speed += 40; // TODO: säätämistä ehkä
         }
     }
 }
