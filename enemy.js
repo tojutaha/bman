@@ -5,7 +5,6 @@ import { requestPath, drawPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
 import { PlayAudio } from "./audio.js";
 
-// TODO: jos vihuja kaksi samassa ruudussa, vain toinen kuolee (saattaa olla bombissa)
 
 export const movementMode = {
     IDLE: "Idle",

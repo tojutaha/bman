@@ -5,7 +5,6 @@ import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 
 // TODO: tuplapommit polttaa powerupit
-// TODO: jos vihuja kaksi samassa ruudussa, vain toinen kuolee (saattaa olla enemyssä)
 
 // TODO : Näkymättömät pommit
 // -> tulee jos seisoo pommin päällä loppuun asti
@@ -164,9 +163,8 @@ function setTilesOnFire(tiles) {
                     if (currentTile.hasPowerup) {
                         currentTile.hasPowerup = false;
                     }
-                    else if (currentTile.isExit && !currentTile.isOpen && !currentTile.hasSpawnedEnemies)
+                    else if (currentTile.isExit && !currentTile.hasSpawnedEnemies)  // TODO: päätä && !currentTile.isOpen
                     {
-                        console.log("BLASTED EXIT");
                         spawnEnemiesAtLocation(currentTile, 8);     // TODO: joku muuttuja vaikeustason mukaan
                         currentTile.hasSpawnedEnemies = true;
                     }
