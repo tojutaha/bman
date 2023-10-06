@@ -102,6 +102,7 @@ class Player
                     closestCorner = bottomRightCorner;
                 }
 
+                // TODO: Tämän pitäisi varmaan olla liikkumisssuunnasta riippuen joku tietty kulma, eikä keskeltä pelaajaa(?)
                 const distToClosestCorner = Math.hypot(playerCenter.x - closestCorner.x, playerCenter.y - closestCorner.y);
                 if (distToClosestCorner <= 46) { // TODO: Tweak. n pikseliä kulmasta
 
@@ -136,30 +137,30 @@ class Player
                     const upTile = level[ux][uy];
                     const downTile = level[dx][dy];
 
-                    // TODO: pelaajasta seuraavien laattojen tarkistus...
-
                     const slideSpeed = this.speed * deltaTime;
                     if (this.dx > 0 ) { // Left
                         if (closestCorner == topLeftCorner) {
                             // Top of player
-                            //ctx.fillStyle = "#00ff00";
-                            //ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
+                            const nextToPlayer = getTileFromWorldLocation({x: tile.x - tileSize, y: tile.y - tileSize});
+                            //ctx.fillStyle = "#0000ff";
+                            //ctx.fillRect(nextToPlayer.x, nextToPlayer.y, tileSize, tileSize);
                             //ctx.fillStyle = "#ff0000";
                             //ctx.fillRect(upTile.x, upTile.y, tileSize, tileSize);
 
-                            if (upTile.isWalkable) {
+                            if (upTile.isWalkable && nextToPlayer.isWalkable) {  
                                 //this.y -= slideSpeed;
                             }
                         }
 
                         if (closestCorner == bottomLeftCorner) {
                             // Bottom of player
-                            //ctx.fillStyle = "#00ff00";
-                            //ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
+                            const nextToPlayer = getTileFromWorldLocation({x: tile.x - tileSize, y: tile.y + tileSize});
+                            //ctx.fillStyle = "#0000ff";
+                            //ctx.fillRect(nextToPlayer.x, nextToPlayer.y, tileSize, tileSize);
                             //ctx.fillStyle = "#ff0000";
                             //ctx.fillRect(downTile.x, downTile.y, tileSize, tileSize);
 
-                            if (downTile.isWalkable) {
+                            if (downTile.isWalkable && nextToPlayer.isWalkable) {
                                 //this.y += slideSpeed;
                             }
                         }
@@ -167,24 +168,27 @@ class Player
 
                     } else if (this.dx < 0) { // Right
                         if (closestCorner == topRightCorner) {
-                            //ctx.fillStyle = "#00ff00";
-                            //ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
+                            // Top of player
+                            const nextToPlayer = getTileFromWorldLocation({x: tile.x + tileSize, y: tile.y - tileSize});
+                            //ctx.fillStyle = "#0000ff";
+                            //ctx.fillRect(nextToPlayer.x, nextToPlayer.y, tileSize, tileSize);
                             //ctx.fillStyle = "#ff0000";
                             //ctx.fillRect(upTile.x, upTile.y, tileSize, tileSize);
 
-                            if (upTile.isWalkable) {
+                            if (upTile.isWalkable && nextToPlayer.isWalkable) {
                                 //this.y -= slideSpeed;
                             }
                         }
 
                         if (closestCorner == bottomRightCorner) {
                             // Bottom of player
-                            //ctx.fillStyle = "#00ff00";
-                            //ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
+                            const nextToPlayer = getTileFromWorldLocation({x: tile.x + tileSize, y: tile.y + tileSize});
+                            //ctx.fillStyle = "#0000ff";
+                            //ctx.fillRect(nextToPlayer.x, nextToPlayer.y, tileSize, tileSize);
                             //ctx.fillStyle = "#ff0000";
                             //ctx.fillRect(downTile.x, downTile.y, tileSize, tileSize);
 
-                            if (downTile.isWalkable) {
+                            if (downTile.isWalkable && nextToPlayer.isWalkable) {
                                 //this.y += slideSpeed;
                             }
                         }
@@ -193,48 +197,52 @@ class Player
                     if (this.dy > 0) { // Down
                         if (closestCorner == topLeftCorner) {
                             // Left of player
-                            //ctx.fillStyle = "#00ff00";
-                            //ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
+                            const nextToPlayer = getTileFromWorldLocation({x: tile.x - tileSize, y: tile.y - tileSize});
+                            //ctx.fillStyle = "#0000ff";
+                            //ctx.fillRect(nextToPlayer.x, nextToPlayer.y, tileSize, tileSize);
                             //ctx.fillStyle = "#ff0000";
                             //ctx.fillRect(leftTile.x, leftTile.y, tileSize, tileSize);
 
-                            if (leftTile.isWalkable) {
+                            if (leftTile.isWalkable && nextToPlayer.isWalkable) {
                                 //this.x -= slideSpeed;
                             }
                         }
 
                         if (closestCorner == topRightCorner) {
                             // Right of player
-                            //ctx.fillStyle = "#00ff00";
-                            //ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
+                            const nextToPlayer = getTileFromWorldLocation({x: tile.x + tileSize, y: tile.y - tileSize});
+                            //ctx.fillStyle = "#0000ff";
+                            //ctx.fillRect(nextToPlayer.x, nextToPlayer.y, tileSize, tileSize);
                             //ctx.fillStyle = "#ff0000";
                             //ctx.fillRect(rightTile.x, rightTile.y, tileSize, tileSize);
 
-                            if (rightTile.isWalkable) {
+                            if (rightTile.isWalkable && nextToPlayer.isWalkable) {
                                 //this.x += slideSpeed;
                             }
                         }
                     } else if (this.dy < 0) { // Up
                         if (closestCorner == bottomLeftCorner) {
                             // Left of player
-                            //ctx.fillStyle = "#00ff00";
-                            //ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
+                            const nextToPlayer = getTileFromWorldLocation({x: tile.x - tileSize, y: tile.y + tileSize});
+                            //ctx.fillStyle = "#0000ff";
+                            //ctx.fillRect(nextToPlayer.x, nextToPlayer.y, tileSize, tileSize);
                             //ctx.fillStyle = "#ff0000";
                             //ctx.fillRect(leftTile.x, leftTile.y, tileSize, tileSize);
 
-                            if (leftTile.isWalkable) {
+                            if (leftTile.isWalkable && nextToPlayer.isWalkable) {
                                 //this.x -= slideSpeed;
                             }
                         }
 
                         if (closestCorner == bottomRightCorner) {
                             // Right of player
-                            //ctx.fillStyle = "#00ff00";
-                            //ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
+                            const nextToPlayer = getTileFromWorldLocation({x: tile.x + tileSize, y: tile.y + tileSize});
+                            //ctx.fillStyle = "#0000ff";
+                            //ctx.fillRect(nextToPlayer.x, nextToPlayer.y, tileSize, tileSize);
                             //ctx.fillStyle = "#ff0000";
                             //ctx.fillRect(rightTile.x, rightTile.y, tileSize, tileSize);
 
-                            if (rightTile.isWalkable) {
+                            if (rightTile.isWalkable && nextToPlayer.isWalkable) {
                                 //this.x += slideSpeed;
                             }
                         }
@@ -248,9 +256,7 @@ class Player
         }
 
         if (playerTile.isExit) {
-            console.log("Exit");
             if (playerTile.isOpen) {
-                console.log("GG");
                 game.nextLevel();
                 collides = true;
             }
