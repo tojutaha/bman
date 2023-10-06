@@ -152,6 +152,11 @@ function setTilesOnFire(tiles) {
                     }
                     // The tile turns already into a floor at this point so that it will render under the crumbling wall
                     currentTile.type = "Floor";
+                    // Make powerups and the door indestructible for a moment so that they wont be affected by double bombs
+                    currentTile.justCrumbled = true;
+                    currentTile.crumbleCheck = setTimeout(() => {
+                        currentTile.justCrumbled = false;
+                    }, 10);
                     break;
                 }
                 else if (currentTile.type === "Floor") {
@@ -160,18 +165,21 @@ function setTilesOnFire(tiles) {
                         fieryFloors.push(currentTile);
                     }
 
-                    if (currentTile.hasPowerup) {
-                        currentTile.hasPowerup = false;
-                    }
-                    else if (currentTile.isExit && !currentTile.hasSpawnedEnemies)  // TODO: päätä && !currentTile.isOpen
-                    {
-                        spawnEnemiesAtLocation(currentTile, 8);     // TODO: joku muuttuja vaikeustason mukaan
-                        currentTile.hasSpawnedEnemies = true;
+                    if (!currentTile.justCrumbled) {
+                        if (currentTile.hasPowerup) {
+                            currentTile.hasPowerup = false;
+                        }
+                        else if (currentTile.isExit && !currentTile.hasSpawnedEnemies)  // TODO: päätä && !currentTile.isOpen
+                        {
+                            spawnEnemiesAtLocation(currentTile, 8);     // TODO: joku muuttuja vaikeustason mukaan
+                            currentTile.hasSpawnedEnemies = true;
+                        }
                     }
                 }
         }
     }
 }
+
 
 function killEnemies(tile) {
     if (tile.isDeadly) {
@@ -267,7 +275,7 @@ export function renderExplosions() {
                 tile.isDeadly = false;
                 fieryFloors.splice(0, 1);
             }
-
+            
             killEnemies(tile);
         })
     }
