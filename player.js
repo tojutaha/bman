@@ -68,93 +68,16 @@ class Player
             const tileBox = {x: tilesToCheck[i].x , y: tilesToCheck[i].y , w: tileSize, h: tileSize};
 
             if (!tilesToCheck[i].isWalkable && aabbCollision(playerBox, tileBox)) {
-                //return;
+
+                const tile = tilesToCheck[i];
                 collides = true;
-            }
-        }
 
-        if (playerTile.hasPowerup) {
-            this.powerup.pickup(playerTile, this);
-        }
-
-        if (playerTile.isExit) {
-            console.log("Exit");
-            if (playerTile.isOpen) {
-                console.log("GG");
-                game.nextLevel();
-                collides = true;
-            }
-        }
-
-        if (playerTile.isDeadly) {
-            this.onDeath();
-        }
-
-        if (!collides) {
-            this.x = nextX;
-            this.y = nextY;
-        }
-    }
-
-    // Handles movement and collision
-    // TODO: Yhdistä toi kulmien yli liukuminen edelliseen... :(
-    update2() {
-
-        const nextX = this.x + this.dx;
-        const nextY = this.y + this.dy;
-        let collides = false;
-
-        const tile = getTileFromWorldLocationF({x: nextX, y: nextY});
-        let x = tile.x;
-        let y = tile.y;
-
-        if (this.dx < 0) x = tile.x - tileSize; // Left
-        if (this.dx > 0) x = tile.x + tileSize; // Right
-        if (this.dy < 0) y = tile.y - tileSize; // Up
-        if (this.dy > 0) y = tile.y + tileSize; // Down
-
-        const playerTile = getTileFromWorldLocationF(this);
-        const nextTile = level[x/tileSize][y/tileSize];
-
-        if (Math.abs(this.dx) > 0 || Math.abs(this.dy) > 0) {
-
-            const distance = Math.hypot(this.x - x, this.y - y);
-
-            // Wall
-            switch(this.direction) {
-                case Direction.UP: {
-                    const tileTop = level[playerTile.x/tileSize][(playerTile.y-tileSize)/tileSize];
-                    if (nextY - this.h - this.collisionOffset <= tileTop.y)
-                        collides = !tileTop.isWalkable;
-                    break;
-                }
-                case Direction.DOWN: {
-                    const tileBottom = level[playerTile.x/tileSize][(playerTile.y+tileSize)/tileSize];
-                    if (nextY + this.h - this.collisionOffset >= tileBottom.y)
-                        collides = !tileBottom.isWalkable;
-                    break;
-                }
-                case Direction.LEFT: {
-                    const tileLeft = level[(playerTile.x-tileSize)/tileSize][playerTile.y/tileSize];
-                    if (nextX - this.w - this.collisionOffset <= tileLeft.x)
-                        collides = !tileLeft.isWalkable;
-                    break;
-                }
-                case Direction.RIGHT: {
-                    const tileRight = level[(playerTile.x+tileSize)/tileSize][playerTile.y/tileSize];
-                    if (nextX + this.w - this.collisionOffset >= tileRight.x)
-                        collides = !tileRight.isWalkable;
-                    break;
-                }
-            }
-            
-            if (collides) {
-                // Corner points of next tile
-                const playerCenter      = {x: this.x + (this.w*0.5), y: this.y + (this.h*0.5)};
-                const topLeftCorner     = {x: nextTile.x, y: nextTile.y};
-                const topRightCorner    = {x: nextTile.x + tileSize - 4, y: nextTile.y};
-                const bottomLeftCorner  = {x: nextTile.x, y: nextTile.y + tileSize - 4};
-                const bottomRightCorner = {x: nextTile.x + tileSize - 4, y: nextTile.y + tileSize - 4};
+                // Corner points of tile
+                const playerCenter      = {x: this.x + (this.collisionW*0.5), y: this.y + (this.collisionH*0.5)};
+                const topLeftCorner     = {x: tile.x, y: tile.y};
+                const topRightCorner    = {x: tile.x + tileSize - 4, y: tile.y};
+                const bottomLeftCorner  = {x: tile.x, y: tile.y + tileSize - 4};
+                const bottomRightCorner = {x: tile.x + tileSize - 4, y: tile.y + tileSize - 4};
 
                 // Calculate distances to each corner
                 const distTopLeft     = Math.hypot(topLeftCorner.x - playerCenter.x, topLeftCorner.y - playerCenter.y);
@@ -180,20 +103,20 @@ class Player
                 }
 
                 const distToClosestCorner = Math.hypot(playerCenter.x - closestCorner.x, playerCenter.y - closestCorner.y);
-                if (distToClosestCorner <= 20) { // TODO: Tweak. n pikseliä kulmasta
+                if (distToClosestCorner <= 44) { // TODO: Tweak. n pikseliä kulmasta
 
                     // Left
-                    const lx = (x - tileSize) / tileSize;
-                    const ly = y / tileSize;
+                    const lx = (tile.x - tileSize) / tileSize;
+                    const ly = tile.y / tileSize;
                     // Right
-                    const rx = (x + tileSize) / tileSize;
-                    const ry = y / tileSize;
+                    const rx = (tile.x + tileSize) / tileSize;
+                    const ry = tile.y / tileSize;
                     // Up
-                    const ux = x / tileSize;
-                    const uy = (y - tileSize) / tileSize;
+                    const ux = tile.x / tileSize;
+                    const uy = (tile.y - tileSize) / tileSize;
                     // Down
-                    const dx = x / tileSize;
-                    const dy = (y + tileSize) / tileSize;
+                    const dx = tile.x / tileSize;
+                    const dy = (tile.y + tileSize) / tileSize;
 
                     // Bounds check
                     if (lx < 0 || rx < 0 || ux < 0 || dx < 0 ||
@@ -217,94 +140,96 @@ class Player
                     if (this.dx > 0 ) { // Left
                         if (closestCorner == topLeftCorner) {
                             // Top of player
-                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x, y: this.y - tileSize});
-                            if (upTile.isWalkable && nextToPlayerTile.isWalkable)
-                                this.y -= slideSpeed;
+                            const nextToPlayerTile = getTileFromWorldLocation({x: tile.x, y: tile.y - tileSize});
+                            if (upTile.isWalkable && nextToPlayerTile.isWalkable) {
+                                //this.y -= slideSpeed;
+                            }
                         }
 
                         if (closestCorner == bottomLeftCorner) {
                             // Bottom of player
-                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x, y: this.y + tileSize});
-                            if (downTile.isWalkable && nextToPlayerTile.isWalkable)
-                                this.y += slideSpeed;
+                            const nextToPlayerTile = getTileFromWorldLocation({x: tile.x, y: tile.y + tileSize});
+                            if (downTile.isWalkable && nextToPlayerTile.isWalkable) {
+                                //this.y += slideSpeed;
+                            }
                         }
 
 
                     } else if (this.dx < 0) { // Right
                         if (closestCorner == topRightCorner) {
                             // Top of player
-                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x, y: this.y - tileSize});
-                            if (upTile.isWalkable && nextToPlayerTile.isWalkable)
-                                this.y -= slideSpeed;
+                            const nextToPlayerTile = getTileFromWorldLocation({x: tile.x, y: tile.y - tileSize});
+                            if (upTile.isWalkable && nextToPlayerTile.isWalkable) {
+                                //this.y -= slideSpeed;
+                            }
                         }
 
                         if (closestCorner == bottomRightCorner) {
                             // Bottom of player
-                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x, y: this.y + tileSize});
-                            if (downTile.isWalkable && nextToPlayerTile.isWalkable)
-                                this.y += slideSpeed;
+                            const nextToPlayerTile = getTileFromWorldLocation({x: tile.x, y: tile.y + tileSize});
+                            if (downTile.isWalkable && nextToPlayerTile.isWalkable) {
+                                //this.y += slideSpeed;
+                            }
                         }
                     }
 
                     if (this.dy > 0) { // Down
                         if (closestCorner == topLeftCorner) {
                             // Left of player
-                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x - tileSize, y: this.y});
-                            if (leftTile.isWalkable && nextToPlayerTile.isWalkable)
-                                this.x -= slideSpeed;
+                            const nextToPlayerTile = getTileFromWorldLocation({x: tile.x - tileSize, y: tile.y});
+                            if (leftTile.isWalkable && nextToPlayerTile.isWalkable) {
+                                //this.x -= slideSpeed;
+                            }
                         }
 
                         if (closestCorner == topRightCorner) {
                             // Right of player
-                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x + tileSize, y: this.y});
-                            if (rightTile.isWalkable && nextToPlayerTile.isWalkable)
-                                this.y += slideSpeed;
+                            const nextToPlayerTile = getTileFromWorldLocation({x: tile.x + tileSize, y: tile.y});
+                            if (rightTile.isWalkable && nextToPlayerTile.isWalkable) {
+                                //this.x += slideSpeed;
+                            }
                         }
                     } else if (this.dy < 0) { // Up
                         if (closestCorner == bottomLeftCorner) {
                             // Left of player
-                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x - tileSize, y: this.y});
-                            if (leftTile.isWalkable && nextToPlayerTile.isWalkable)
-                                this.x -= slideSpeed;
+                            const nextToPlayerTile = getTileFromWorldLocation({x: tile.x - tileSize, y: tile.y});
+                            if (leftTile.isWalkable && nextToPlayerTile.isWalkable) {
+                                //this.x -= slideSpeed;
+                            }
                         }
 
                         if (closestCorner == bottomRightCorner) {
                             // Right of player
-                            const nextToPlayerTile = getTileFromWorldLocationF({x: this.x + tileSize, y: this.y});
-                            if (rightTile.isWalkable && nextToPlayerTile.isWalkable)
-                                this.x += slideSpeed;
+                            const nextToPlayerTile = getTileFromWorldLocation({x: tile.x + tileSize, y: tile.y});
+                            if (rightTile.isWalkable && nextToPlayerTile.isWalkable) {
+                                //this.x += slideSpeed;
+                            }
                         }
-                    }
-                }
-            }
-
-            // Pickup
-            if (nextTile.hasPowerup) {
-                if (distance <= tileSize - 10) { // 10 pixel threshold
-                    this.powerup.pickup(nextTile, this);
-                }
-            }
-
-            // Exit
-            if (nextTile.isExit) {
-                if (distance <= tileSize - 10) { // 10 pixel threshold
-                    console.log("Exit");
-                    if (nextTile.isOpen) {
-                        console.info("GG");
-                        game.nextLevel();
                     }
                 }
             }
         }
 
-        // Deadly thing
+        if (playerTile.hasPowerup) {
+            this.powerup.pickup(playerTile, this);
+        }
+
+        if (playerTile.isExit) {
+            console.log("Exit");
+            if (playerTile.isOpen) {
+                console.log("GG");
+                game.nextLevel();
+                collides = true;
+            }
+        }
+
         if (playerTile.isDeadly) {
             this.onDeath();
         }
 
         if (!collides) {
-            this.x += this.dx;
-            this.y += this.dy;
+            this.x = nextX;
+            this.y = nextY;
         }
     }
 
