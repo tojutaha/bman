@@ -4,14 +4,10 @@ import { spawnEnemiesAtLocation, findEnemyById, enemies, movementMode } from "./
 import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 
-// TODO: tuplapommit polttaa powerupit
-
-// TODO : Näkymättömät pommit
+// TODO : Näkymättömät pommit (playerissä nykyään)
 // -> tulee jos seisoo pommin päällä loppuun asti
-
 // EHKÄ : Pakota suunta johon lähetään kävelemään (paitsi että mitä jos painaa sivuttain?)
-// Jos ilmenee taas vanha bugi jossa koko peli jäätyy, saattaa johtua renderin splice metodeista.
- 
+
 export let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];

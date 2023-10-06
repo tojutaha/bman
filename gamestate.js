@@ -77,7 +77,6 @@ export class Game {
             this.score = parseInt(localStorage.getItem("score"));
             updateLevelDisplay(this.level);
             updateScoreDisplay(this.score);
-            
             // Load the game state
             // const loadedLevel = JSON.parse(localStorage.getItem("level"));
             // clearBombs(loadedLevel);
@@ -101,13 +100,15 @@ export class Game {
 
 function loadPowerups(loadedPlayers) {
     for (let i = 0; i < players.length; i++) {
-        // Coords for savestate
+        // Player coords for savestate
         // players[i].x = loadedPlayers[i].x;
         // players[i].y = loadedPlayers[i].y;
 
         players[i].speed = loadedPlayers[i].speed;
         players[i].powerup.maxBombs = loadedPlayers[i].powerup.maxBombs;
         players[i].powerup.maxRange = loadedPlayers[i].powerup.maxRange;
+
+        console.info("LOADED PLAYER", i+1, "\nSpeed:", players[i].speed, "Bombs:", players[i].powerup.maxBombs, "Range:", players[i].powerup.maxRange)
     }
 }
 
