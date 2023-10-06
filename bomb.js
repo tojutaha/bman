@@ -165,8 +165,9 @@ function setTilesOnFire(tiles) {
                         if (currentTile.hasPowerup) {
                             currentTile.hasPowerup = false;
                         }
-                        else if (currentTile.isExit && !currentTile.isOpen && !currentTile.hasSpawnedEnemies)
+                        else if (currentTile.isExit && !currentTile.hasSpawnedEnemies)
                         {
+                            currentTile.isOpen = false;
                             spawnEnemiesAtLocation(currentTile, 8);     // TODO: joku muuttuja vaikeustason mukaan
                             currentTile.hasSpawnedEnemies = true;
                         }
