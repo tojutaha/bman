@@ -1,4 +1,5 @@
 import { ctx, tileSize, levelHeight, levelWidth, game } from "./main.js";
+import { players } from "./player.js";
 
 ////////////////////
 // Score and level display
@@ -62,6 +63,32 @@ export function drawCoordinates(coordsToggle) {
         }
     }
 }
+
+// Powerup buttons
+let bombButton = document.getElementById("bombplus");
+bombButton.addEventListener("click", function() {
+    for (let i = 0; i < players.length; i++) {
+        players[i].powerup.maxBombs += 1;
+        console.log("Player", i+1, "bombs:", players[i].powerup.maxBombs);
+    }
+})
+
+let rangeButton = document.getElementById("rangeplus");
+rangeButton.addEventListener("click", function() {
+    for (let i = 0; i < players.length; i++) {
+        players[i].powerup.maxRange += 1;
+        console.log("Player", i+1, "range:", players[i].powerup.maxRange);
+    }
+})
+
+let resetPowerupsButton = document.getElementById("reset-powerups");
+resetPowerupsButton.addEventListener("click", function() {
+    for (let i = 0; i < players.length; i++) {
+        players[i].powerup.maxBombs = 1;
+        players[i].powerup.maxRange = 1;
+        console.log("Player", i+1, "range and bombs resetted");
+    }
+})
 
 // Save and load
 let saveButton = document.getElementById("save");

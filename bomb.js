@@ -1,12 +1,10 @@
-import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, deltaTime, game } from "./main.js";
+import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, game } from "./main.js";
 import { PlayAudio } from "./audio.js";
 import { spawnEnemiesAtLocation, findEnemyById, enemies, movementMode } from "./enemy.js";
 import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 
-// TODO : Näkymättömät pommit (playerissä nykyään)
-// -> tulee jos seisoo pommin päällä loppuun asti
-// EHKÄ : Pakota suunta johon lähetään kävelemään (paitsi että mitä jos painaa sivuttain?)
+// TODO: tuplapommin liekki menee seinien läpi
 
 export let tilesWithBombs = [];
 let crumblingWalls = [];
@@ -280,11 +278,13 @@ export function renderExplosions() {
 
 // This is called only when changing level and does only what's necessary for that
 // - it doesn't do the whole exploding process and make the tiles walkable for example.
-export function clearBombArray() {
+export function clearBombs() {
     tilesWithBombs.forEach(tile => {
         clearInterval(tile.bomb.ticking);
     });
     tilesWithBombs = [];
+    crumblingWalls = [];
+    fieryFloors = [];
 
     players.forEach(p => {
         p.activeBombs = 0;

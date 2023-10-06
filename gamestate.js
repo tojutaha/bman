@@ -1,9 +1,8 @@
-import { clearBombArray, tilesWithBombs } from "./bomb.js";
-import { enemies, loadEnemies } from "./enemy.js";
-import { level, loadLevel, newLevel } from "./main.js";
+import { clearBombs } from "./bomb.js";
+import { newLevel } from "./main.js";
 import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { players } from "./player.js";
-import { exitLocation, loadExit } from "./tile.js";
+import { exitLocation} from "./tile.js";
 
 export let pause = false;
 
@@ -36,7 +35,7 @@ export class Game {
         this.level++;
         updateLevelDisplay(this.level);
         newLevel();
-        clearBombArray();
+        clearBombs();
         this.saveGame();
     }
     
@@ -117,21 +116,6 @@ function loadPowerups(loadedPlayers) {
     //         console.log(loadedBombs[i]);
     //     }
     // }
-    
-    function clearBombs(loadedLevel) {
-        clearBombArray();
-        for (let i = 0; i < loadedLevel.length; i++) {
-            for (let j = 0; j < loadedLevel[i].length; j++) {
-                let currentTile = loadedLevel[i][j];
-                if (currentTile.bomb) {
-                    currentTile.bomb.hasExploded = true;
-                currentTile.bomb.ticks = 0;
-                currentTile.isWalkable = true;
-            }
-        }
-    }
-}
-
 
 // Testiksi eri class ettei mee sekavaksi
 // Jotain tällästä rakennetta?
