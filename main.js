@@ -7,7 +7,7 @@ import { players, renderPlayer, resetPlayerPositions, spawnPlayers } from "./pla
 import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game } from "./gamestate.js";
-import { getTileFromWorldLocation, lerp } from "./utils.js";
+import { updateCamera } from "./camera.js";
 
 ////////////////////
 // Globals
@@ -33,8 +33,7 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 // Render
 let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
-const scale = 1;
-let cameraX = 0;
+export const scale = 1;
 function Render(timeStamp)
 {
     deltaTime = (timeStamp - lastTimeStamp) / 1000;
@@ -45,17 +44,7 @@ function Render(timeStamp)
 
     ctx.restore();
 
-    const playerTile = getTileFromWorldLocation(players[0]);
-    const playerX = playerTile.x / tileSize;
-
-    if (playerX <= 8) {
-        ctx.setTransform(scale, 0, 0, scale, 0, 0);
-    } else {
-        ctx.setTransform(scale, 0, 0, scale, canvas.width/2 - scale * players[0].x, 0);
-    }
-
-    //ctx.setTransform(scale, 0, 0, scale, canvas.width/2 - scale * players[0].x, canvas.height/2 - scale * players[0].y);
-
+    updateCamera();
     renderFloor();
     renderPowerups();
     renderExit();
