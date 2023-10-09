@@ -148,7 +148,7 @@ class Player
                             //ctx.fillRect(upTile.x, upTile.y, tileSize, tileSize);
 
                             if (upTile.isWalkable && nextToPlayer.isWalkable) {  
-                                //this.y -= slideSpeed;
+                                this.y -= slideSpeed;
                             }
                         }
 
@@ -161,7 +161,7 @@ class Player
                             //ctx.fillRect(downTile.x, downTile.y, tileSize, tileSize);
 
                             if (downTile.isWalkable && nextToPlayer.isWalkable) {
-                                //this.y += slideSpeed;
+                                this.y += slideSpeed;
                             }
                         }
 
@@ -176,7 +176,7 @@ class Player
                             //ctx.fillRect(upTile.x, upTile.y, tileSize, tileSize);
 
                             if (upTile.isWalkable && nextToPlayer.isWalkable) {
-                                //this.y -= slideSpeed;
+                                this.y -= slideSpeed;
                             }
                         }
 
@@ -189,7 +189,7 @@ class Player
                             //ctx.fillRect(downTile.x, downTile.y, tileSize, tileSize);
 
                             if (downTile.isWalkable && nextToPlayer.isWalkable) {
-                                //this.y += slideSpeed;
+                                this.y += slideSpeed;
                             }
                         }
                     }
@@ -204,7 +204,7 @@ class Player
                             //ctx.fillRect(leftTile.x, leftTile.y, tileSize, tileSize);
 
                             if (leftTile.isWalkable && nextToPlayer.isWalkable) {
-                                //this.x -= slideSpeed;
+                                this.x -= slideSpeed;
                             }
                         }
 
@@ -217,7 +217,7 @@ class Player
                             //ctx.fillRect(rightTile.x, rightTile.y, tileSize, tileSize);
 
                             if (rightTile.isWalkable && nextToPlayer.isWalkable) {
-                                //this.x += slideSpeed;
+                                this.x += slideSpeed;
                             }
                         }
                     } else if (this.dy < 0) { // Up
@@ -230,7 +230,7 @@ class Player
                             //ctx.fillRect(leftTile.x, leftTile.y, tileSize, tileSize);
 
                             if (leftTile.isWalkable && nextToPlayer.isWalkable) {
-                                //this.x -= slideSpeed;
+                                this.x -= slideSpeed;
                             }
                         }
 
@@ -243,7 +243,7 @@ class Player
                             //ctx.fillRect(rightTile.x, rightTile.y, tileSize, tileSize);
 
                             if (rightTile.isWalkable && nextToPlayer.isWalkable) {
-                                //this.x += slideSpeed;
+                                this.x += slideSpeed;
                             }
                         }
                     }
