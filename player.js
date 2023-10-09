@@ -59,7 +59,7 @@ class Player
 
         const playerTile = getTileFromWorldLocation(this);
         const playerBox = {x: nextX + 5, y: nextY + 5, w: this.collisionW, h: this.collisionH};
-        ctx.fillRect(playerBox.x, playerBox. y, this.collisionW, this.collisionH);
+        //ctx.fillRect(playerBox.x, playerBox. y, this.collisionW, this.collisionH);
 
         const tilesToCheck = getSurroundingTiles(playerBox);
 
@@ -277,6 +277,7 @@ class Player
         // TODO: Näkymättömät pommit (tarpeellinen vain jos 2+ pelaajaa tai jos tehdään co-op)
         // -> tulee jos seisoo pommin päällä loppuun asti
         // EHKÄ: Pakota menemään vain suuntaan johon lähdetään kävelemään
+        // TODO: Selvitä miksi joskus toooodella satunnaisesti pelaaja jää pommiin kiinni.
         let bombTile = getTileFromWorldLocation(this);
 
         if (this.activeBombs < this.powerup.maxBombs) {
