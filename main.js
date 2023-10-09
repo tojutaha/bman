@@ -7,6 +7,7 @@ import { players, renderPlayer, resetPlayerPositions, spawnPlayers } from "./pla
 import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game } from "./gamestate.js";
+import { getTileFromWorldLocation, lerp } from "./utils.js";
 
 ////////////////////
 // Globals
@@ -18,8 +19,8 @@ export let level = [];
 ////////////////////
 // Settings
 export const tileSize = 64;
-export const levelWidth = 9;
-export const levelHeight = 11;
+export const levelWidth = 32;
+export const levelHeight = 13;
 export const softTilePercent = 0.1;
 export const powerUpCount = 1;
 export const cagePlayers = false;
@@ -33,8 +34,10 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
 const scale = 1;
+let cameraX = 0;
 function Render(timeStamp)
 {
+    deltaTime = (timeStamp - lastTimeStamp) / 1000;
     ctx.save();
 
     ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -42,10 +45,16 @@ function Render(timeStamp)
 
     ctx.restore();
 
-    deltaTime = (timeStamp - lastTimeStamp) / 1000;
-    //const fps = 1 / deltaTime;
+    const playerTile = getTileFromWorldLocation(players[0]);
+    const playerX = playerTile.x / tileSize;
 
-    ctx.setTransform(scale, 0, 0, scale, canvas.width/2 - scale * players[0].x, canvas.height/2 - scale * players[0].y);
+    if (playerX <= 8) {
+        ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    } else {
+        ctx.setTransform(scale, 0, 0, scale, canvas.width/2 - scale * players[0].x, 0);
+    }
+
+    //ctx.setTransform(scale, 0, 0, scale, canvas.width/2 - scale * players[0].x, canvas.height/2 - scale * players[0].y);
 
     renderFloor();
     renderPowerups();
@@ -57,6 +66,7 @@ function Render(timeStamp)
     renderPlayer();
 
     /*
+    const fps = 1 / deltaTime;
     ctx.fillStyle = "#a2f3a2";
     ctx.strokeStyle = "#000000";
     ctx.lineWidth = 2;
