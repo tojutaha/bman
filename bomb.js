@@ -37,7 +37,7 @@ export class Bomb {
     }
 }
 
-// Returns a 2D array of all the surrounding tiles within the bomb's range.
+// Returns a 2D array of the surrounding tiles within the bomb's range.
 // All directions are in their own arrays for further processing.
 function getBombSurroundings(bomb) {
     let xIndex = bomb.x / tileSize;
@@ -49,25 +49,54 @@ function getBombSurroundings(bomb) {
         rightTiles = [],
         bottomTiles = [];
     
+    let leftWallReached = false,
+        topWallReached = false,
+        rightWallReached = false,
+        bottomWallReached = false;
+
     for (let i = 0; i < bomb.range; i++) {
-        let onLeft = xIndex - i - 1;
-        if (onLeft >= 0) {
-            leftTiles.push(level[onLeft][yIndex]);
+        if (!leftWallReached) {
+            let onLeft = xIndex - i - 1;
+            if (onLeft >= 0) {
+                let currentTile = level[onLeft][yIndex];
+                leftTiles.push(currentTile);
+                if (currentTile.type === "SoftWall" || currentTile.bomb) {
+                    leftWallReached = true;
+                }
+            }
         }
 
-        let onTop = yIndex - i - 1;
-        if (onTop >= 0) {
-            topTiles.push(level[xIndex][onTop]);
+        if (!topWallReached) {
+            let onTop = yIndex - i - 1;
+            if (onTop >= 0) {
+                let currentTile = level[xIndex][onTop];
+                topTiles.push(currentTile);
+                if (currentTile.type === "SoftWall" || currentTile.bomb) {
+                    topWallReached = true;
+                }
+            }            
         }
 
-        let onRight = xIndex + i + 1;
-        if (onRight < levelWidth) {
-            rightTiles.push(level[onRight][yIndex]);
+        if (!rightWallReached) {
+            let onRight = xIndex + i + 1;
+            if (onRight < levelWidth) {
+                let currentTile = level[onRight][yIndex];
+                rightTiles.push(currentTile);
+                if (currentTile.type === "SoftWall" || currentTile.bomb) {
+                    rightWallReached = true;
+                }
+            }
         }
 
-        let onBottom = yIndex + i + 1;
-        if (onBottom < levelHeight) {
-            bottomTiles.push(level[xIndex][onBottom]);
+        if (!bottomWallReached) {
+            let onBottom = yIndex + i + 1;
+            if (onBottom < levelHeight) {
+                let currentTile = level[xIndex][onBottom];
+                bottomTiles.push(currentTile);
+                if (currentTile.type === "SoftWall" || currentTile.bomb) {
+                    bottomWallReached = true;
+                }
+            }
         }
     }
 
@@ -91,7 +120,6 @@ function explode(bomb) {
 
     chainExplosions(tiles);
     setTilesOnFire(tiles);
-    // killEnemies(tiles);
 }
 
 function chainExplosions(tiles) {
@@ -146,12 +174,6 @@ function setTilesOnFire(tiles) {
                     }
                     // The tile turns already into a floor at this point so that it will render under the crumbling wall
                     currentTile.type = "Floor";
-                    // Make powerups and the door indestructible for a moment so that they wont be affected by double bombs
-                    currentTile.justCrumbled = true;
-                    currentTile.crumbleCheck = setTimeout(() => {
-                        currentTile.justCrumbled = false;
-                    }, 10);
-                    break;
                 }
                 else if (currentTile.type === "Floor") {
                     if (fieryFloors.indexOf(currentTile) === -1) {
@@ -159,16 +181,14 @@ function setTilesOnFire(tiles) {
                         fieryFloors.push(currentTile);
                     }
 
-                    if (!currentTile.justCrumbled) {
-                        if (currentTile.hasPowerup) {
-                            currentTile.hasPowerup = false;
-                        }
-                        else if (currentTile.isExit && !currentTile.hasSpawnedEnemies)
-                        {
-                            currentTile.isOpen = false;
-                            spawnEnemiesAtLocation(currentTile, 8);     // TODO: joku muuttuja vaikeustason mukaan
-                            currentTile.hasSpawnedEnemies = true;
-                        }
+                    if (currentTile.hasPowerup) {
+                        currentTile.hasPowerup = false;
+                    }
+                    else if (currentTile.isExit && !currentTile.hasSpawnedEnemies)
+                    {
+                        currentTile.isOpen = false;
+                        spawnEnemiesAtLocation(currentTile, 8);     // TODO: joku muuttuja vaikeustason mukaan
+                        currentTile.hasSpawnedEnemies = true;
                     }
                 }
         }
