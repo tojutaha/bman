@@ -54,6 +54,8 @@ function Render(timeStamp)
     renderExplosions();
     renderPlayer();
 
+    game.checkGameState();  // TODO: selkeämpi jos tää olis jossain process funktiossa kun ei oo render?
+
     /*
     const fps = 1 / deltaTime;
     ctx.fillStyle = "#a2f3a2";

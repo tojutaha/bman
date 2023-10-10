@@ -1,10 +1,9 @@
 import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, game } from "./main.js";
 import { PlayAudio } from "./audio.js";
-import { spawnEnemiesAtLocation, findEnemyById, enemies, movementMode } from "./enemy.js";
+import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 
-// TODO: tuplapommin liekki menee seinien läpi
 
 export let tilesWithBombs = [];
 let crumblingWalls = [];
@@ -195,28 +194,14 @@ function setTilesOnFire(tiles) {
     }
 }
 
-
+// TODO: mahdollisesti tehdä tämä enemyssä itsessään
 function killEnemies(tile) {
     if (tile.isDeadly) {
         enemies.forEach(enemy => {
-            if (enemy.justSpawned) {
-                return;
-            }
+            if (enemy.justSpawned) return;
 
             if (getDistanceTo(tile, enemy) < tileSize) {
-                let result = findEnemyById(enemy.id);
-                // console.info("Enemy ID", enemy.id, "died");
-                enemies.splice(result.index, 1);
-                enemy.movementMode = movementMode.IDLE;
-                clearInterval(enemy.timer);
-                enemy = null;               // TODO: Varmistetaan että nämä varmasti poistuu!
-                game.increaseScore(500);    // TODO: Score by enemy type
-                game.decreaseEnemies();
-                // console.log("Enemies left:", game.numOfEnemies);
-                if (game.numOfEnemies === 0) {
-                    game.openDoor();
-                    PlayAudio("assets/audio/exitopen01.wav");
-                }
+                enemy.die();
             }
         })
     }

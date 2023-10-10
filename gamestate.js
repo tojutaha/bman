@@ -1,3 +1,4 @@
+import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { newLevel } from "./main.js";
 import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
@@ -10,11 +11,12 @@ export class Game {
     constructor() {
         this.score = 0;
         this.level = 1;
-        this.numOfEnemies = 0;
+        this.numOfEnemies = -1;
         this.isPaused = false;
     }
 
     init() {
+        this.numOfEnemies = 0;
         // Escin kuuntelija (ehkä muualle?)
         document.addEventListener('keyup', function(event) {
             if (event.key === 'Escape') {
@@ -47,8 +49,15 @@ export class Game {
         this.numOfEnemies--;
     }
     
-    openDoor() {
-        exitLocation.isOpen = true;
+    toggleDoor() {
+        exitLocation.isOpen = !exitLocation.isOpen;
+    }
+
+    checkGameState() {
+        if (this.numOfEnemies === 0 && exitLocation.isOpen === false) {
+            this.toggleDoor();
+            PlayAudio("assets/audio/exitopen01.wav");
+        }
     }
     
     // Saving & loading

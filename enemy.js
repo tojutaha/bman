@@ -19,6 +19,7 @@ class Enemy
 
     constructor(x, y, w, h, newMovementMode, speed) {
         this.id = ++Enemy.lastId;
+        this.justSpawned = true;
 
         // Coordinates
         this.x  = x;
@@ -100,11 +101,14 @@ class Enemy
                 this.followPlayer();
                 break;
         }
-
-        this.justSpawned = true;
-        this.spawnImmortality = setTimeout(() => {
-            this.justSpawned = false;
-        }, 2000);
+        
+        if (this.justSpawned) {
+            this.spawnImmortality = setTimeout(() => {
+                this.justSpawned = false;
+            }, 2000);
+    
+            game.increaseEnemies();
+        }
     }
 
     getRandomPath() {
@@ -258,6 +262,21 @@ class Enemy
         this.getPlayerLocation();
         requestPath(this, this.getLocation(), this.targetLocation);
     }
+
+    die() {
+        let result = findEnemyById(this.id);
+        enemies.splice(result.index, 1);
+
+        clearInterval(this.timer);
+
+        for (let prop in this) {
+            // console.log("nullifying", prop);
+            this[prop] = null;
+        }
+
+        game.increaseScore(500);    // TODO: Score by enemy type
+        game.decreaseEnemies();
+    }
 };
 
 function getRandomColor()
@@ -301,7 +320,6 @@ export function spawnEnemies()
         enemy.setDebugColors();
         enemy.init();
         enemies.push(enemy);
-        game.increaseEnemies();
 
         if (colIndex > movementValues.length) {
             colIndex = 0;
@@ -320,7 +338,6 @@ export function spawnEnemiesAtLocation(location, amount = 1)
         enemy.pathColor = enemy.color;
         enemy.init();
         enemies.push(enemy);
-        game.increaseEnemies();
     }
 }
 
