@@ -12,6 +12,7 @@ export class Game {
         this.score = 0;
         this.level = 1;
         this.numOfEnemies = -1;
+        this.firstBombExploded = false;
         this.isPaused = false;
     }
 

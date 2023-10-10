@@ -1,7 +1,7 @@
 ////////////////////
 // Imports
 import { createTiles } from "./tile.js";
-import { renderWalls, renderFloor, renderExit } from "./level.js";
+import { renderWalls, renderFloor, renderExit, renderLevelHeader } from "./level.js";
 import { renderPowerups } from "./powerup.js";
 import { players, renderPlayer, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
@@ -53,6 +53,7 @@ function Render(timeStamp)
     renderBombs();
     renderExplosions();
     renderPlayer();
+    renderLevelHeader();
 
     game.checkGameState();  // TODO: selkeämpi jos tää olis jossain process funktiossa kun ei oo render?
 
@@ -92,6 +93,7 @@ export function newLevel() {
         if (ctx) {
             level = createTiles();
             if (level.length > 0) {
+                game.firstBombExploded = false;
                 resetPlayerPositions();
                 spawnEnemies();
             } else {

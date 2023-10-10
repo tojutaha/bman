@@ -4,6 +4,7 @@ import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 
+// TODO: liekit jää lyhyiksi välillä
 
 export let tilesWithBombs = [];
 let crumblingWalls = [];
@@ -103,6 +104,10 @@ function getBombSurroundings(bomb) {
 }
 
 function explode(bomb) {
+    if (!game.firstBombExploded) {
+        game.firstBombExploded = true;
+    }
+
     let tiles = getBombSurroundings(bomb);
     let centerTile = tiles[0][0];
     

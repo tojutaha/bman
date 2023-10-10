@@ -1,4 +1,4 @@
-import { canvas, ctx, tileSize, levelHeight, levelWidth, level, spriteSheet } from "./main.js";
+import { canvas, ctx, tileSize, levelHeight, levelWidth, level, spriteSheet, game } from "./main.js";
 import { exitLocation } from "./tile.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 
@@ -49,5 +49,20 @@ export function renderExit()
     }
     else {
         ctx.drawImage(spriteSheet, 0, tileSize*5, tileSize, tileSize, exitLocation.x, exitLocation.y, tileSize, tileSize);
+    }
+}
+
+export function renderLevelHeader()
+{
+    if (!game.firstBombExploded) {
+        ctx.fillStyle = "#eee";
+        ctx.strokeStyle = "rgba(34, 34, 34, 0.9)";
+
+        ctx.lineWidth = 30;
+        ctx.font = "200px Minimal";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.strokeText("LEVEL " + game.level, canvas.width / 2, canvas.width / 2);
+        ctx.fillText("LEVEL " + game.level, canvas.width / 2, canvas.width / 2);
     }
 }
