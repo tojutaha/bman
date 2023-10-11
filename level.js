@@ -22,10 +22,26 @@ export function renderWalls()
     drawCoordinates(coordsToggle);
 }
 
+const floorTexture = new Image();
+//floorTexture.src = "./assets/cobblestone_01.png";
+floorTexture.src = "./assets/grass_01.png";
+//floorTexture.src = "./assets/grass_02.png";
+// Suurempi arvo kuin tileSize peittää näkyvän toistamisen paremmin.
+const textureSize = 128;
 export function renderFloor()
 {
-    ctx.fillStyle = "#4192c3";
-    ctx.fillRect(0, 0, levelWidth*tileSize, levelHeight*tileSize);
+    // TODO: oisko tämä parempi renderöidä html/css kanssa?
+    for (let x = 0; x < levelWidth; x++) {
+        for (let y = 0; y < levelHeight; y++) {
+            ctx.drawImage(floorTexture, 
+                          x * textureSize,
+                          y * textureSize,
+                          textureSize, textureSize);
+        }
+    }
+
+    //ctx.fillStyle = "#4192c3";
+    //ctx.fillRect(0, 0, levelWidth*tileSize, levelHeight*tileSize);
 
     // Yksi kerrallaan:
     // for (let x = 0; x < levelWidth; x++) {

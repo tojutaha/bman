@@ -13,7 +13,7 @@ export const Direction = {
 
 export function renderPlayer(timeStamp)
 {
-    players.forEach((p, index) => {
+    players.forEach(p => {
         // NOTE: Nämä spritet piirretään nyt updateAnimation funktiossa
         p.update(timeStamp);
     });
@@ -83,6 +83,7 @@ class Player
 
     // Handles movement and collision
     update(currentTime) {
+
         const nextX = this.x + this.dx;
         const nextY = this.y + this.dy;
 
@@ -92,6 +93,8 @@ class Player
 
         const animDt = currentTime - this.lastTime;
         this.updateAnimation(animDt, currentTime);
+
+        // TODO: Muut suunnat?
 
         if (this.dx < 0) {
             ctx.drawImage(this.mirroredFrames[this.currentFrame], this.x + tileSize/4, this.y);
@@ -278,8 +281,6 @@ class Player
 
     updateAnimation(dt, currentTime) {
         if (isNaN(dt)) return;
-
-        // TODO: Muut suunnat?
 
         if (this.dx === 0 && this.dy === 0) {
             this.currentFrame = 0;
