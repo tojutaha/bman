@@ -3,7 +3,7 @@ import { exitLocation } from "./tile.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 
 const hardWallTexture = new Image();
-hardWallTexture.src = "./assets/stone_brick_04.png"
+hardWallTexture.src = "./assets/stone_brick_05.png"
 const softWallTexture = new Image();
 softWallTexture.src = "./assets/stone_brick_03.png"
 export function renderWalls()
