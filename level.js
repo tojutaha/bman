@@ -52,17 +52,81 @@ export function renderExit()
     }
 }
 
-export function renderLevelHeader()
-{
-    if (!game.firstBombExploded) {
-        ctx.fillStyle = "#eee";
-        ctx.strokeStyle = "rgba(34, 34, 34, 0.9)";
 
-        ctx.lineWidth = 30;
-        ctx.font = "200px Minimal";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.strokeText("LEVEL " + game.level, canvas.width / 2, canvas.width / 2);
-        ctx.fillText("LEVEL " + game.level, canvas.width / 2, canvas.width / 2);
+export class LevelHeaderAnimation {
+    constructor() {
+        this.visible = true;
+        this.frames = 0;
+        this.alpha = 0.95;
+    }
+    
+    start() {
+        this.visible = true;
+        this.frames = 0;
+        this.alpha = 0.95;
+
+        setTimeout(() => {
+            this.frameTimer = setInterval(() => {
+                this.frames++;
+    
+                if (this.frames >= 7) {
+                    setTimeout(() => {
+                        this.fadeOut();
+                    }, 2000);
+                    clearInterval(this.frameTimer);
+                }
+            }, 100);
+        }, 500);
+    }
+
+    fadeOut() {
+        this.fadeOutTimer = setInterval(() => {
+            this.alpha -= 0.05;
+
+            if (this.alpha <= 0.0) {
+                clearInterval(this.fadeOutTimer);
+            }
+        }, 10);
+    }
+    
+    render() {
+        if (this.visible) {
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+            ctx.strokeStyle = `rgba(34, 34, 34, ${this.alpha})`;
+            
+            ctx.lineWidth = 30;
+            ctx.font = "200px Minimal";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            if (this.frames === 1) {
+                ctx.strokeText("L", canvas.width / 2, canvas.width / 2);
+                ctx.fillText("L", canvas.width / 2, canvas.width / 2);
+            }
+            if (this.frames === 2) {
+                ctx.strokeText("LE", canvas.width / 2, canvas.width / 2);
+                ctx.fillText("LE", canvas.width / 2, canvas.width / 2);
+            }
+            if (this.frames === 3) {
+                ctx.strokeText("LEV", canvas.width / 2, canvas.width / 2);
+                ctx.fillText("LEV", canvas.width / 2, canvas.width / 2);
+            }
+            if (this.frames === 4) {
+                ctx.strokeText("LEVE", canvas.width / 2, canvas.width / 2);
+                ctx.fillText("LEVE", canvas.width / 2, canvas.width / 2);
+            }
+            if (this.frames === 5) {
+                ctx.strokeText("LEVEL", canvas.width / 2, canvas.width / 2);
+                ctx.fillText("LEVEL", canvas.width / 2, canvas.width / 2);
+            }
+            if (this.frames === 6) {
+                ctx.strokeText("LEVEL ", canvas.width / 2, canvas.width / 2);
+                ctx.fillText("LEVEL ", canvas.width / 2, canvas.width / 2);
+            }
+            if (this.frames >= 7) {
+                ctx.strokeText("LEVEL " + game.level, canvas.width / 2, canvas.width / 2);
+                ctx.fillText("LEVEL " + game.level, canvas.width / 2, canvas.width / 2);
+            }
+        }
     }
 }

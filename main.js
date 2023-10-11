@@ -1,7 +1,7 @@
 ////////////////////
 // Imports
 import { createTiles } from "./tile.js";
-import { renderWalls, renderFloor, renderExit, renderLevelHeader } from "./level.js";
+import { renderWalls, renderFloor, renderExit, LevelHeaderAnimation } from "./level.js";
 import { renderPowerups } from "./powerup.js";
 import { players, renderPlayer, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
@@ -13,7 +13,7 @@ import { updateCamera } from "./camera.js";
 // Globals
 export let canvas;
 export let ctx;
-export let game = new Game(); 
+export let game = new Game();
 export let level = [];
 
 ////////////////////
@@ -34,6 +34,9 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
 export const scale = 1;
+
+let levelHeader = new LevelHeaderAnimation();
+
 function Render(timeStamp)
 {
     deltaTime = (timeStamp - lastTimeStamp) / 1000;
@@ -53,7 +56,7 @@ function Render(timeStamp)
     renderBombs();
     renderExplosions();
     renderPlayer();
-    renderLevelHeader();
+    levelHeader.render();
 
     game.checkGameState();  // TODO: selkeämpi jos tää olis jossain process funktiossa kun ei oo render?
 
@@ -94,6 +97,7 @@ export function newLevel() {
             level = createTiles();
             if (level.length > 0) {
                 game.firstBombExploded = false;
+                levelHeader.start();
                 resetPlayerPositions();
                 spawnEnemies();
             } else {
