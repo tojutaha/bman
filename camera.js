@@ -35,7 +35,7 @@ export function updateCamera()
         cameraRt += deltaTime * edgeCameraSpeed;
         cameraRt = Math.min(cameraRt, 1);
 
-        const targetX = canvas.width / 2 - scale * (levelWidth - 6) * tileSize;
+        const targetX = canvas.width / 2 - scale * (levelWidth - 6.5) * tileSize;
         cameraX = lerp(cameraX, targetX, cameraRt);
 
         ctx.setTransform(scale, 0, 0, scale, cameraX, 0);
