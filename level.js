@@ -24,10 +24,11 @@ export function renderWalls()
 
 const floorTexture = new Image();
 //floorTexture.src = "./assets/cobblestone_01.png";
-floorTexture.src = "./assets/grass_01.png";
+floorTexture.src = "./assets/cobblestone_02.png";
+//floorTexture.src = "./assets/grass_01.png";
 //floorTexture.src = "./assets/grass_02.png";
 // Suurempi arvo kuin tileSize peittää näkyvän toistamisen paremmin.
-const textureSize = 128;
+const textureSize = 64;
 export function renderFloor()
 {
     // TODO: oisko tämä parempi renderöidä html/css kanssa?
