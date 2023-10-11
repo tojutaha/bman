@@ -52,7 +52,7 @@ function Render(timeStamp)
     renderEnemies();
     renderBombs();
     renderExplosions();
-    renderPlayer();
+    renderPlayer(timeStamp);
     renderLevelHeader();
 
     game.checkGameState();  // TODO: selkeämpi jos tää olis jossain process funktiossa kun ei oo render?
