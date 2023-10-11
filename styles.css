@@ -1,3 +1,8 @@
+:root {
+    --bg: #303030;
+    --lightgrey: #444;
+  }
+
 * {
     margin: 0px;
     padding: 0px;
@@ -14,7 +19,7 @@
 }
 
 body {
-    background-color: #303030;
+    background-color: var(--bg);
 }
 
 .text-display {
@@ -29,6 +34,11 @@ body {
     margin: 0.2em auto;
     max-width: 800px;
     text-align: center;
+}
+
+#canvas {
+    border-color: var(--lightgrey);
+    border-style: solid;
 }
 
 .canvas-container {

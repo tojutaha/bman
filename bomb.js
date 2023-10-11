@@ -4,7 +4,6 @@ import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 
-// TODO: liekit jää lyhyiksi välillä
 
 export let tilesWithBombs = [];
 let crumblingWalls = [];
