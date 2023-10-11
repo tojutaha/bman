@@ -2,6 +2,10 @@ import { canvas, ctx, tileSize, levelHeight, levelWidth, level, spriteSheet, gam
 import { exitLocation } from "./tile.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 
+const hardWallTexture = new Image();
+hardWallTexture.src = "./assets/stone_brick_04.png"
+const softWallTexture = new Image();
+softWallTexture.src = "./assets/stone_brick_03.png"
 export function renderWalls()
 {
     for (let x = 0; x < levelWidth; x++) {
@@ -10,11 +14,13 @@ export function renderWalls()
             const yCoord = y * tileSize;
             // Hard tiles
             if (level[x][y].type === "HardWall") {
-                ctx.drawImage(spriteSheet, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                //ctx.drawImage(spriteSheet, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                ctx.drawImage(hardWallTexture, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
             }
             // Soft tiles
             else if (level[x][y].type === "SoftWall") {
-                ctx.drawImage(spriteSheet, tileSize, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                //ctx.drawImage(spriteSheet, tileSize, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                ctx.drawImage(softWallTexture, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
             }
         }
     }
@@ -26,16 +32,16 @@ const floorTexture = new Image();
 floorTexture.src = "./assets/cobblestone_03.png";
 //floorTexture.src = "./assets/grass_01.png";
 // Suurempi arvo kuin tileSize peittää näkyvän toistamisen paremmin.
-const textureSize = 128;
+const floorTextureSize = 128;
 export function renderFloor()
 {
     // TODO: oisko tämä parempi renderöidä html/css kanssa?
     for (let x = 0; x < levelWidth; x++) {
         for (let y = 0; y < levelHeight; y++) {
             ctx.drawImage(floorTexture, 
-                          x * textureSize,
-                          y * textureSize,
-                          textureSize, textureSize);
+                          x * floorTextureSize,
+                          y * floorTextureSize,
+                          floorTextureSize, floorTextureSize);
         }
     }
 
