@@ -107,11 +107,11 @@ export class LevelHeaderAnimation {
     
     render() {
         if (this.visible) {
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-            ctx.strokeStyle = `rgba(34, 34, 34, ${this.alpha})`;
+            ctx.fillStyle = `rgba(240, 240, 240, ${this.alpha})`;
+            ctx.strokeStyle = `rgba(30, 30, 30, ${this.alpha})`;
             
-            ctx.lineWidth = 30;
-            ctx.font = "200px Minimal";
+            ctx.lineWidth = 20;
+            ctx.font = "100px Minimal";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
