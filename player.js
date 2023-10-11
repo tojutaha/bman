@@ -332,7 +332,7 @@ class Player
     handleKeyDown(event) {
         event.preventDefault();
 
-        switch(event.key) {
+        switch(event.code) {
             case this.keybinds.move_up:
                 this.dy = -this.speed * deltaTime;
                 this.dx = 0;
@@ -366,7 +366,7 @@ class Player
     handleKeyUp(event) {
         event.preventDefault();
 
-        switch(event.key) {
+        switch(event.code) {
             case this.keybinds.move_up:
             case this.keybinds.move_down:
                 this.dy = 0;
@@ -389,11 +389,11 @@ class Player
 };
 
 export const keybinds1 = {
-    move_up: "w",
-    move_down: "s",
-    move_left: "a",
-    move_right: "d",
-    drop_bomb: " ",
+    move_up: "KeyW",
+    move_down: "KeyS",
+    move_left: "KeyA",
+    move_right: "KeyD",
+    drop_bomb: "Space",
 };
 
 export const keybinds2 = {
