@@ -53,14 +53,14 @@ function getBombSurroundings(bomb) {
         topWallReached = false,
         rightWallReached = false,
         bottomWallReached = false;
-
+    
     for (let i = 0; i < bomb.range; i++) {
         if (!leftWallReached) {
             let onLeft = xIndex - i - 1;
             if (onLeft >= 0) {
                 let currentTile = level[onLeft][yIndex];
                 leftTiles.push(currentTile);
-                if (currentTile.type === "SoftWall" || currentTile.bomb) {
+                if (currentTile.type === "SoftWall" || (currentTile.bomb && !currentTile.bomb.hasExploded)) {
                     leftWallReached = true;
                 }
             }
@@ -71,7 +71,7 @@ function getBombSurroundings(bomb) {
             if (onTop >= 0) {
                 let currentTile = level[xIndex][onTop];
                 topTiles.push(currentTile);
-                if (currentTile.type === "SoftWall" || currentTile.bomb) {
+                if (currentTile.type === "SoftWall" || (currentTile.bomb && !currentTile.bomb.hasExploded)) {
                     topWallReached = true;
                 }
             }            
@@ -82,7 +82,7 @@ function getBombSurroundings(bomb) {
             if (onRight < levelWidth) {
                 let currentTile = level[onRight][yIndex];
                 rightTiles.push(currentTile);
-                if (currentTile.type === "SoftWall" || currentTile.bomb) {
+                if (currentTile.type === "SoftWall" || (currentTile.bomb && !currentTile.bomb.hasExploded)) {
                     rightWallReached = true;
                 }
             }
@@ -93,7 +93,7 @@ function getBombSurroundings(bomb) {
             if (onBottom < levelHeight) {
                 let currentTile = level[xIndex][onBottom];
                 bottomTiles.push(currentTile);
-                if (currentTile.type === "SoftWall" || currentTile.bomb) {
+                if (currentTile.type === "SoftWall" || (currentTile.bomb && !currentTile.bomb.hasExploded)) {
                     bottomWallReached = true;
                 }
             }
