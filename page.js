@@ -1,3 +1,4 @@
+import { enemies } from "./enemy.js";
 import { ctx, tileSize, levelHeight, levelWidth, game } from "./main.js";
 import { players } from "./player.js";
 
@@ -88,6 +89,13 @@ resetPowerupsButton.addEventListener("click", function() {
         players[i].powerup.maxRange = 1;
         console.log("Player", i+1, "range and bombs resetted");
     }
+})
+
+let killEnemiesButton = document.getElementById("kill-enemies");
+killEnemiesButton.addEventListener("click", function() {
+    enemies.forEach(enemy => {
+        enemy.die();
+    })
 })
 
 // Save and load
