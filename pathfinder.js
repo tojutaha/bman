@@ -147,19 +147,3 @@ function astar(useDiagonalMovement, start, target)
     return null;
 }
 
-////////////////////
-// TODO: Debug
-export function drawPath()
-{
-    enemies.forEach(enemy => {
-        if (enemy.currentPath) {
-            enemy.currentPath.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 3, 0, 2*Math.PI);
-                ctx.strokeStyle = enemy.pathColor;
-                ctx.stroke();
-            });
-        }
-    });
-}
-

@@ -135,9 +135,6 @@ class Player
                                                       this.x + this.w / 2,
                                                       this.y + this.h / 2,
                                                       radius);
-        //radialGradient.addColorStop(0, 'rgba(255,140,0,0.5)');   // Orange at the center
-        //radialGradient.addColorStop(0.5, 'rgba(255,69,0,0.35)'); // Orange-Red in the middle
-        //radialGradient.addColorStop(1, 'rgba(0,0,0,0)');         // Transparent at the edges
 
         radialGradient.addColorStop(0,   'rgba(' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ',0.5)');
         radialGradient.addColorStop(0.5, 'rgba(' + rgb2.red + ',' + rgb2.green + ',' + rgb2.blue + ',0.35)');
@@ -370,7 +367,6 @@ class Player
         // TODO: Näkymättömät pommit (tarpeellinen vain jos 2+ pelaajaa tai jos tehdään co-op)
         // -> tulee jos seisoo pommin päällä loppuun asti
         // EHKÄ: Pakota menemään vain suuntaan johon lähdetään kävelemään
-        // TODO: Selvitä miksi joskus toooodella satunnaisesti pelaaja jää pommiin kiinni.
         let bombTile = getTileFromWorldLocation(this);
 
         if (this.activeBombs < this.powerup.maxBombs) {

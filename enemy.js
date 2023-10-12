@@ -1,7 +1,7 @@
 import { canvas, ctx, deltaTime, game, level, levelHeight, levelWidth, tileSize } from "./main.js";
 import { Direction, players } from "./player.js";
 import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
-import { requestPath, drawPath } from "./pathfinder.js";
+import { requestPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
 import { PlayAudio } from "./audio.js";
 
@@ -50,7 +50,7 @@ class Enemy
 
         // Animations
         this.spriteSheet = new Image();
-        this.spriteSheet.src = "./assets/player0_placeholder.png"; // TODO: Muuttujaksi, jos useampi pelaaja.
+        this.spriteSheet.src = "./assets/player0_placeholder.png"; // TODO: Muuttujaksi ja omat spritet.
         this.mirroredFrames = [];
         this.frameWidth = 128/4;
         this.frameHeight = 64;
@@ -79,31 +79,6 @@ class Enemy
                 );
                 this.mirroredFrames.push(mirroredCanvas);
             }
-        }
-
-        // TODO: Debug only
-        this.color = "#ff00ff";
-        this.pathColor = "yellow";
-    }
-
-    setDebugColors() {
-        switch(this.movementMode) {
-            case movementMode.IDLE:
-                this.color = "#00ff00";
-                this.pathColor = "#00ff00";
-                break;
-            case movementMode.ROAM:
-                this.color = "#ff00ff";
-                this.pathColor = "#ff00ff";
-                break;
-            case movementMode.PATROL:
-                this.color = "#00ffff";
-                this.pathColor = "#00ffff";
-                break;
-            case movementMode.FOLLOW:
-                this.color = "#ff0000";
-                this.pathColor = "#ff0000";
-                break;
         }
     }
 
@@ -388,7 +363,6 @@ export function spawnEnemies()
         enemy.setMovementMode(movementValues[colIndex]);
         //enemy.setMovementMode(movementMode.IDLE);
         enemy.speed = getRandomSpeed();
-        enemy.setDebugColors();
         enemy.init();
         enemies.push(enemy);
 
@@ -405,8 +379,6 @@ export function spawnEnemiesAtLocation(location, amount = 1)
         const enemy = new Enemy(location.x, location.y, tileSize, tileSize);
         enemy.setMovementMode(movementMode.ROAM);
         enemy.speed = getRandomSpeed();
-        enemy.color = getRandomColor();
-        enemy.pathColor = enemy.color;
         enemy.init();
         enemies.push(enemy);
     }
@@ -427,8 +399,6 @@ export function renderEnemies(timeStamp)
 
     enemies.forEach(enemy => {
         if (enemy) {
-            //ctx.fillStyle = "#00ff00";
-            //ctx.fillRect(enemy.x, enemy.y, enemy.w, enemy.h);
 
             enemy.t += deltaTime * (1 / (enemy.speed / 1000));
             enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
@@ -436,16 +406,9 @@ export function renderEnemies(timeStamp)
             const x = lerp(enemy.x, enemy.renderX, enemy.t);
             const y = lerp(enemy.y, enemy.renderY, enemy.t);
 
-            //ctx.fillStyle = enemy.color;
-            //ctx.fillRect(x, y, enemy.w, enemy.h);
-
             enemy.update(timeStamp, x, y);
         }
     });
-
-    // TODO: Poista jossain vaiheessa, debug-koodia
-    //drawPath();
-    //
 }
 
 // Load enemies
