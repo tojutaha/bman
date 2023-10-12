@@ -1,6 +1,6 @@
 import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
-import { newLevel } from "./main.js";
+import { exit, newLevel } from "./main.js";
 import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { players } from "./player.js";
 import { exitLocation} from "./tile.js";
@@ -52,6 +52,13 @@ export class Game {
     
     toggleDoor() {
         exitLocation.isOpen = !exitLocation.isOpen;
+        console.log("toggle")
+        
+        if (exitLocation.isOpen) {
+            exit.playAnimation();
+        } else {
+            exit.init();
+        }
     }
 
     checkGameState() {

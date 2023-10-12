@@ -3,6 +3,7 @@ import { PlayAudio } from "./audio.js";
 import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
+import { exitLocation } from "./tile.js";
 
 
 export let tilesWithBombs = [];
@@ -189,7 +190,9 @@ function setTilesOnFire(tiles) {
                     }
                     else if (currentTile.isExit && !currentTile.hasSpawnedEnemies)
                     {
-                        currentTile.isOpen = false;
+                        if (exitLocation.isOpen) {
+                            game.toggleDoor();
+                        }
                         spawnEnemiesAtLocation(currentTile, 8);     // TODO: joku muuttuja vaikeustason mukaan
                         currentTile.hasSpawnedEnemies = true;
                     }

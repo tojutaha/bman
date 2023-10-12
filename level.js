@@ -62,14 +62,59 @@ export function renderFloor()
     // }
 }
 
-export function renderExit()
-{
-    if (exitLocation.isOpen)
-    {
-        ctx.drawImage(spriteSheet, tileSize, tileSize*5, tileSize, tileSize, exitLocation.x, exitLocation.y, tileSize, tileSize);
+
+const doorAnimation = new Image();
+doorAnimation.src = "./assets/door_animation.png";
+export class EntranceAnimation {
+    constructor() {
+        this.frames = 0;
     }
-    else {
-        ctx.drawImage(spriteSheet, 0, tileSize*5, tileSize, tileSize, exitLocation.x, exitLocation.y, tileSize, tileSize);
+    
+    playAnimation() {
+        this.frames = 0;
+        this.frameTimer = setInterval(() => {
+            this.frames++;
+
+            if (this.frames >= 18) {
+                clearInterval(this.frameTimer);
+            }
+        }, 80);
+    }
+    
+    render() {
+        let frameW = tileSize * 3;
+        let frameH = tileSize;
+        
+        ctx.drawImage(doorAnimation, 0, frameH * this.frames, frameW, frameH, 0, tileSize, frameW, frameH);
+    }
+}
+
+export class ExitAnimation {
+    constructor() {
+        // The spritesheet goes backwards
+        this.frames = 11;
+    }
+
+    init() {
+        this.frames = 11;
+        console.log("init door");
+    }
+    
+    playAnimation() {
+        this.frameTimer = setInterval(() => {
+            this.frames--;
+
+            if (this.frames <= 6) {
+                clearInterval(this.frameTimer);
+            }
+        }, 80);
+    }
+    
+    render() {
+        let frameW = tileSize * 3;
+        let frameH = tileSize;
+        
+        ctx.drawImage(doorAnimation, 0, frameH * this.frames, frameW, frameH, exitLocation.x - tileSize, exitLocation.y, frameW, frameH);
     }
 }
 
@@ -81,7 +126,7 @@ export class LevelHeaderAnimation {
         this.alpha = 0.95;
     }
     
-    start() {
+    playAnimation() {
         this.visible = true;
         this.frames = 0;
         this.alpha = 0.95;

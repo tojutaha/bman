@@ -1,7 +1,7 @@
 ////////////////////
 // Imports
 import { createTiles } from "./tile.js";
-import { renderWalls, renderFloor, renderExit, LevelHeaderAnimation } from "./level.js";
+import { renderWalls, renderFloor, LevelHeaderAnimation, EntranceAnimation, ExitAnimation } from "./level.js";
 import { renderPowerups } from "./powerup.js";
 import { players, renderPlayer, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
@@ -35,7 +35,9 @@ let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
 export const scale = 1;
 
-let levelHeader = new LevelHeaderAnimation();
+const levelHeader = new LevelHeaderAnimation();
+const entrance = new EntranceAnimation();
+export const exit = new ExitAnimation();
 
 function Render(timeStamp)
 {
@@ -50,8 +52,9 @@ function Render(timeStamp)
     updateCamera();
     renderFloor();
     renderPowerups();
-    renderExit();
+    entrance.render();
     renderPlayer(timeStamp);
+    exit.render();
     renderWalls();
     renderEnemies(timeStamp);
     renderBombs();
@@ -97,7 +100,9 @@ export function newLevel() {
             level = createTiles();
             if (level.length > 0) {
                 game.firstBombExploded = false;
-                levelHeader.start();
+                levelHeader.playAnimation();
+                entrance.playAnimation();
+                exit.init();
                 resetPlayerPositions();
                 spawnEnemies();
             } else {
