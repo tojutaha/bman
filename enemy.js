@@ -30,8 +30,7 @@ class Enemy
         this.h  = h;
 
         // Movement
-        this.dx = 0;
-        this.dy = 0;
+        this.isMoving = false;
         this.useDiagonalMovement = false;
         this.movementMode = newMovementMode || movementMode.ROAM;
         this.speed = speed || 500;
@@ -49,7 +48,40 @@ class Enemy
         this.renderY = this.y;
         this.t = 0;
 
-        // Debug
+        // Animations
+        this.spriteSheet = new Image();
+        this.spriteSheet.src = "./assets/player0_placeholder.png"; // TODO: Muuttujaksi, jos useampi pelaaja.
+        this.mirroredFrames = [];
+        this.frameWidth = 128/4;
+        this.frameHeight = 64;
+        this.totalFrames = 4;
+        this.currentFrame = 0;
+        this.animationSpeed = 150; // TODO: Tweak
+        this.lastTime = 0;
+
+        this.spriteSheet.onload = () => {
+            for (let i = 0; i < this.totalFrames; i++) {
+                const mirroredCanvas = document.createElement('canvas');
+                mirroredCanvas.width = this.frameWidth;
+                mirroredCanvas.height = this.frameHeight;
+                const mirroredCtx = mirroredCanvas.getContext('2d');
+                mirroredCtx.scale(-1, 1);
+                mirroredCtx.drawImage(
+                    this.spriteSheet,
+                    i * this.frameWidth,
+                    0,
+                    this.frameWidth,
+                    this.frameHeight,
+                    -this.frameWidth,
+                    0,
+                    this.frameWidth,
+                    this.frameHeight
+                );
+                this.mirroredFrames.push(mirroredCanvas);
+            }
+        }
+
+        // TODO: Debug only
         this.color = "#ff00ff";
         this.pathColor = "yellow";
     }
@@ -156,6 +188,8 @@ class Enemy
         let renderIndex = index + 1;
         this.timer = setInterval(() => {
 
+            this.isMoving = true;
+
             const next = this.currentPath[index];
 
             // Check if there is a bomb on the path
@@ -196,6 +230,7 @@ class Enemy
                     // TODO: Varmaan stopataan myöhemmin, kun 
                     // ei ole pelaajia jäljellä?
                     //clearInterval(this.timer);
+                    this.isMoving = false;
                 }
             });
 
@@ -206,8 +241,8 @@ class Enemy
                 this.renderY = renderLoc.y;
                 renderIndex++;
             }
-            index++;
 
+            index++;
 
             //console.log("real location :", this.x, this.y);
             //console.log("render location :", this.renderX, this.renderY);
@@ -215,6 +250,7 @@ class Enemy
             if (index >= this.currentPath.length) {
 
                 clearInterval(this.timer);
+                this.isMoving = false;
                 switch(this.movementMode) {
                     case movementMode.IDLE:
                         // Nothing to do
@@ -277,6 +313,41 @@ class Enemy
         game.increaseScore(500);    // TODO: Score by enemy type
         game.decreaseEnemies();
     }
+
+    update(currentTime, x, y) {
+        // Animations
+        const animDt = currentTime - this.lastTime;
+        this.updateAnimation(animDt, currentTime);
+
+        // TODO: Muut suunnat?
+
+        if (this.isMoving && this.direction === Direction.LEFT) {
+            ctx.drawImage(this.mirroredFrames[this.currentFrame], x + tileSize/4, y);
+        } else {
+            ctx.drawImage(this.spriteSheet,
+                this.currentFrame * this.frameWidth, 0,
+                this.frameWidth, this.frameHeight,
+                x + tileSize/4, y,
+                this.frameWidth, this.frameHeight);
+        }
+    }
+
+    updateAnimation(dt, currentTime) {
+        if (isNaN(dt)) return;
+
+        if (!this.isMoving) {
+            this.currentFrame = 0;
+            return;
+        }
+
+        if (dt >= this.animationSpeed) {
+            this.currentFrame++;
+            if (this.currentFrame >= this.totalFrames) {
+                this.currentFrame = 0;
+            }
+            this.lastTime = currentTime;
+        }
+    }
 };
 
 function getRandomColor()
@@ -301,8 +372,8 @@ export let enemies = [];
 export function spawnEnemies()
 {
     const movementValues = Object.values(movementMode);
-    //const amount = movementValues.length;
-    const amount = 1;
+    const amount = movementValues.length;
+    //const amount = 1;
     const maxRadius = 25*tileSize;
     const minRadius = 10*tileSize;
 
@@ -314,8 +385,8 @@ export function spawnEnemies()
                                                        minRadius, maxRadius);
         const enemy = new Enemy(random.x, random.y, tileSize, tileSize);
         let colIndex = i;
-        //enemy.setMovementMode(movementValues[colIndex]);
-        enemy.setMovementMode(movementMode.IDLE);
+        enemy.setMovementMode(movementValues[colIndex]);
+        //enemy.setMovementMode(movementMode.IDLE);
         enemy.speed = getRandomSpeed();
         enemy.setDebugColors();
         enemy.init();
@@ -348,7 +419,7 @@ export function findEnemyById(id) {
     return {enemy: enemies[index], index};
 }
 
-export function renderEnemies()
+export function renderEnemies(timeStamp)
 {
     if (isNaN(deltaTime)) {
         return;
@@ -365,23 +436,16 @@ export function renderEnemies()
             const x = lerp(enemy.x, enemy.renderX, enemy.t);
             const y = lerp(enemy.y, enemy.renderY, enemy.t);
 
-            ctx.fillStyle = enemy.color;
-            ctx.fillRect(x, y, enemy.w, enemy.h);
+            //ctx.fillStyle = enemy.color;
+            //ctx.fillRect(x, y, enemy.w, enemy.h);
+
+            enemy.update(timeStamp, x, y);
         }
     });
 
+    // TODO: Poista jossain vaiheessa, debug-koodia
+    //drawPath();
     //
-    drawPath();
-    //
-}
-
-// Example usages:
-if (0) {
-    setTimeout(() => {
-    //spawnEnemiesAtLocation({x: 32, y: 32}, 5); // Spawn 5 enemies on location 32, 32
-    let result = findEnemyById(1); // Find enemy that has id 1
-    enemies.splice(result.index, 1); // Deletes the enemy
-    }, 1000);
 }
 
 // Load enemies

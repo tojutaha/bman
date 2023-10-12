@@ -51,11 +51,11 @@ function Render(timeStamp)
     renderFloor();
     renderPowerups();
     renderExit();
+    renderPlayer(timeStamp);
     renderWalls();
     renderEnemies(timeStamp);
     renderBombs();
     renderExplosions();
-    renderPlayer(timeStamp);
     levelHeader.render();
 
     game.checkGameState();  // TODO: selkeämpi jos tää olis jossain process funktiossa kun ei oo render?

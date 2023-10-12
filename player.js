@@ -19,6 +19,45 @@ export function renderPlayer(timeStamp)
     });
 }
 
+function colorTemperatureToRGB(kelvin)
+{
+    var temp = kelvin / 100;
+    var red, green, blue;
+
+    if(temp <= 66) {
+        red = 255;
+        green = temp;
+        green = 99.4708025861 * Math.log(green) - 161.1195681661;
+    } else {
+        red = temp - 60;
+        red = 329.698727446 * Math.pow(red, -0.1332047592);
+        green = temp - 60;
+        green = 288.1221695283 * Math.pow(green, -0.0755148492);
+    }
+
+    if(temp >= 66) {
+        blue = 255;
+    } else if(temp <= 19) {
+        blue = 0;
+    } else {
+        blue = temp - 10;
+        blue = 138.5177312231 * Math.log(blue) - 305.0447927307;
+    }
+
+    return {
+        red : clamp(red, 0, 255),
+        green : clamp(green, 0, 255),
+        blue : clamp(blue, 0, 255)
+    }
+}
+
+function clamp(x, min, max)
+{
+    if(x<min) return min;
+    if(x>max) return max;
+    return x;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // Players
 export const players = [];
@@ -84,6 +123,36 @@ class Player
     // Handles movement and collision
     update(currentTime) {
 
+/////
+
+        // Create radial gradient
+        var rgb = colorTemperatureToRGB(2600);
+        var rgb2 = colorTemperatureToRGB(3000);
+        var radius = 96;
+        var radialGradient = ctx.createRadialGradient(this.x + this.w / 2,
+                                                      this.y + this.h / 2,
+                                                      radius/4,
+                                                      this.x + this.w / 2,
+                                                      this.y + this.h / 2,
+                                                      radius);
+        //radialGradient.addColorStop(0, 'rgba(255,140,0,0.5)');   // Orange at the center
+        //radialGradient.addColorStop(0.5, 'rgba(255,69,0,0.35)'); // Orange-Red in the middle
+        //radialGradient.addColorStop(1, 'rgba(0,0,0,0)');         // Transparent at the edges
+
+        radialGradient.addColorStop(0,   'rgba(' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ',0.5)');
+        radialGradient.addColorStop(0.5, 'rgba(' + rgb2.red + ',' + rgb2.green + ',' + rgb2.blue + ',0.35)');
+        radialGradient.addColorStop(1,   'rgba(0,0,0,0)');
+
+        // Use the gradient as the fillStyle
+        ctx.globalCompositeOperation = "source-over";
+        ctx.fillStyle = radialGradient;
+
+        // Draw the circle
+        ctx.beginPath();
+        ctx.arc(this.x + this.w / 2, this.y + this.h / 2, radius, 0, Math.PI*2);
+        ctx.fill();
+/////
+
         const nextX = this.x + this.dx;
         const nextY = this.y + this.dy;
 
@@ -91,6 +160,7 @@ class Player
         const playerBox = {x: nextX + 16, y: nextY + 8, w: this.collisionW, h: this.collisionH};
         //ctx.fillRect(playerBox.x, playerBox. y, playerBox.w, playerBox.h);
 
+        // Animations
         const animDt = currentTime - this.lastTime;
         this.updateAnimation(animDt, currentTime);
 
@@ -105,7 +175,6 @@ class Player
                 this.x + tileSize/4, this.y,
                 this.frameWidth, this.frameHeight);
         }
-
 
         const tilesToCheck = getSurroundingTiles(playerBox);
 
