@@ -52,7 +52,7 @@ function Render(timeStamp)
     renderPowerups();
     renderExit();
     renderWalls();
-    renderEnemies();
+    renderEnemies(timeStamp);
     renderBombs();
     renderExplosions();
     renderPlayer(timeStamp);
