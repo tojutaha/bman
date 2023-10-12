@@ -50,7 +50,8 @@ class Enemy
 
         // Animations
         this.spriteSheet = new Image();
-        this.spriteSheet.src = "./assets/ghost_01.png"; // TODO: Muuttujaksi
+        //this.spriteSheet.src = "./assets/ghost_01.png"; // TODO: Muuttujaksi
+        this.spriteSheet.src = "./assets/skeleton_01.png"; // TODO: Muuttujaksi
         this.frameWidth = 192/3;
         this.frameHeight = 336/4;
         this.totalFrames = 3;
