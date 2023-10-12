@@ -50,36 +50,14 @@ class Enemy
 
         // Animations
         this.spriteSheet = new Image();
-        this.spriteSheet.src = "./assets/player0_placeholder.png"; // TODO: Muuttujaksi ja omat spritet.
-        this.mirroredFrames = [];
-        this.frameWidth = 128/4;
-        this.frameHeight = 64;
-        this.totalFrames = 4;
+        this.spriteSheet.src = "./assets/ghost_01.png"; // TODO: Muuttujaksi
+        this.frameWidth = 192/3;
+        this.frameHeight = 336/4;
+        this.totalFrames = 3;
         this.currentFrame = 0;
         this.animationSpeed = 150; // TODO: Tweak
         this.lastTime = 0;
 
-        this.spriteSheet.onload = () => {
-            for (let i = 0; i < this.totalFrames; i++) {
-                const mirroredCanvas = document.createElement('canvas');
-                mirroredCanvas.width = this.frameWidth;
-                mirroredCanvas.height = this.frameHeight;
-                const mirroredCtx = mirroredCanvas.getContext('2d');
-                mirroredCtx.scale(-1, 1);
-                mirroredCtx.drawImage(
-                    this.spriteSheet,
-                    i * this.frameWidth,
-                    0,
-                    this.frameWidth,
-                    this.frameHeight,
-                    -this.frameWidth,
-                    0,
-                    this.frameWidth,
-                    this.frameHeight
-                );
-                this.mirroredFrames.push(mirroredCanvas);
-            }
-        }
     }
 
     getLocation() {
@@ -180,6 +158,8 @@ class Enemy
             }
             
             // Store movement direction
+            // TODO: Tämä pitää muuttaa jonnekkin muualle timerin
+            // sisältä, muuten animaatiot ei päivity ajoissa
             if (next.x < this.x) {
                 this.direction = Direction.LEFT;
             } else if (next.x > this.x) {
@@ -294,26 +274,53 @@ class Enemy
         const animDt = currentTime - this.lastTime;
         this.updateAnimation(animDt, currentTime);
 
-        // TODO: Muut suunnat?
-
-        if (this.isMoving && this.direction === Direction.LEFT) {
-            ctx.drawImage(this.mirroredFrames[this.currentFrame], x + tileSize/4, y);
+        if (this.isMoving) {
+            switch(this.direction) {
+                case Direction.LEFT: {
+                    ctx.drawImage(this.spriteSheet,
+                        this.currentFrame * this.frameWidth, this.frameHeight*3,
+                        this.frameWidth, this.frameHeight,
+                        x, y,
+                        this.frameWidth, this.frameHeight);
+                    break;
+                }
+                case Direction.UP: {
+                    ctx.drawImage(this.spriteSheet,
+                        this.currentFrame * this.frameWidth, 0,
+                        this.frameWidth, this.frameHeight,
+                        x, y,
+                        this.frameWidth, this.frameHeight);
+                    break;
+                }
+                case Direction.DOWN: {
+                    ctx.drawImage(this.spriteSheet,
+                        this.currentFrame * this.frameWidth, this.frameHeight*2,
+                        this.frameWidth, this.frameHeight,
+                        x, y,
+                        this.frameWidth, this.frameHeight);
+                    break;
+                }
+                case Direction.RIGHT:
+                {
+                    ctx.drawImage(this.spriteSheet,
+                        this.currentFrame * this.frameWidth, this.frameHeight,
+                        this.frameWidth, this.frameHeight,
+                        x, y,
+                        this.frameWidth, this.frameHeight);
+                    break;
+                }
+            }
         } else {
+            this.currentFrame = 0;
             ctx.drawImage(this.spriteSheet,
                 this.currentFrame * this.frameWidth, 0,
                 this.frameWidth, this.frameHeight,
-                x + tileSize/4, y,
+                x, y,
                 this.frameWidth, this.frameHeight);
         }
     }
 
     updateAnimation(dt, currentTime) {
-        if (isNaN(dt)) return;
-
-        if (!this.isMoving) {
-            this.currentFrame = 0;
-            return;
-        }
 
         if (dt >= this.animationSpeed) {
             this.currentFrame++;
