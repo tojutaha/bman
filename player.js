@@ -88,10 +88,10 @@ class Player
 
         // Animations
         this.spriteSheet = new Image();
-        this.spriteSheet.src = "./assets/player0_placeholder.png"; // TODO: Muuttujaksi, jos useampi pelaaja.
+        this.spriteSheet.src = sprite || "./assets/player0.png";
         this.mirroredFrames = [];
         this.frameWidth = 128/4;
-        this.frameHeight = 64;
+        this.frameHeight = 248/4;
         this.totalFrames = 4;
         this.currentFrame = 0;
         this.animationSpeed = 150; // TODO: Tweak
@@ -161,17 +161,7 @@ class Player
         const animDt = currentTime - this.lastTime;
         this.updateAnimation(animDt, currentTime);
 
-        // TODO: Muut suunnat?
-
-        if (this.dx < 0) {
-            ctx.drawImage(this.mirroredFrames[this.currentFrame], this.x + tileSize/4, this.y);
-        } else {
-            ctx.drawImage(this.spriteSheet,
-                this.currentFrame * this.frameWidth, 0,
-                this.frameWidth, this.frameHeight,
-                this.x + tileSize/4, this.y,
-                this.frameWidth, this.frameHeight);
-        }
+        this.drawAnimation();
 
         const tilesToCheck = getSurroundingTiles(playerBox);
 
@@ -362,6 +352,44 @@ class Player
         }
     }
 
+    drawAnimation() {
+
+        switch(this.direction) {
+            case Direction.LEFT: {
+                ctx.drawImage(this.spriteSheet,
+                    this.currentFrame * this.frameWidth, this.frameHeight*3,
+                    this.frameWidth, this.frameHeight,
+                    this.x + tileSize/4, this.y,
+                    this.frameWidth, this.frameHeight);
+                break;
+            }
+            case Direction.UP: {
+                ctx.drawImage(this.spriteSheet,
+                    this.currentFrame * this.frameWidth, 0,
+                    this.frameWidth, this.frameHeight,
+                    this.x + tileSize/4, this.y,
+                    this.frameWidth, this.frameHeight);
+                break;
+            }
+            case Direction.DOWN: {
+                ctx.drawImage(this.spriteSheet,
+                    this.currentFrame * this.frameWidth, this.frameHeight*2,
+                    this.frameWidth, this.frameHeight,
+                    this.x + tileSize/4, this.y,
+                    this.frameWidth, this.frameHeight);
+                break;
+            }
+            case Direction.RIGHT:
+            {
+                    ctx.drawImage(this.spriteSheet,
+                        this.currentFrame * this.frameWidth, this.frameHeight,
+                        this.frameWidth, this.frameHeight,
+                        this.x + tileSize/4, this.y,
+                        this.frameWidth, this.frameHeight);
+                    break;
+                }
+        }
+    }
     // Bomb
     dropBomb() {
         // TODO: Näkymättömät pommit (tarpeellinen vain jos 2+ pelaajaa tai jos tehdään co-op)
@@ -498,7 +526,7 @@ export function resetPlayerPositions() {    // TODO: muut pelaajat
 
 export function spawnPlayers()
 {
-    players.push(new Player(0, StartPos.P0X, StartPos.P0Y, keybinds1));
+    players.push(new Player(0, StartPos.P0X, StartPos.P0Y, keybinds1, "./assets/player0.png"));
     // players.push(new Player(1, (levelWidth-2)*tileSize, (levelHeight-2)*tileSize, keybinds2));
     for (let i = 0; i < players.length; i++) {
         document.addEventListener("keyup", function(event) {
