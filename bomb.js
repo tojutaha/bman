@@ -155,7 +155,7 @@ function animateExplosion(tile) {
             tile.isBeingAnimated = false;
             clearInterval(interval);
         }
-    }, 150);
+    }, 130);
 }
 
 function setTilesOnFire(tiles) {
@@ -236,7 +236,7 @@ export function renderBombs() {
 }
 
 const softWallTexture = new Image();
-softWallTexture.src = "./assets/stone_brick_03.png"
+softWallTexture.src = "./assets/stone_brick_03_alt.png"
 export function renderExplosions() {
     // Walls
     if (crumblingWalls.length > 0) {
@@ -244,16 +244,16 @@ export function renderExplosions() {
             if (tile.animationTimer >= 7) {
                 ctx.drawImage(softWallTexture, tileSize, 0, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (tile.animationTimer >= 6) {
+            else if (tile.animationTimer === 6) {
                 ctx.drawImage(softWallTexture, tileSize*2, 0, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (tile.animationTimer >= 5) {
+            else if (tile.animationTimer === 5) {
                 ctx.drawImage(softWallTexture, tileSize*3, 0, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (tile.animationTimer >= 4) {
+            else if (tile.animationTimer === 4) {
                 ctx.drawImage(softWallTexture, tileSize*4, 0, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
-            else if (tile.animationTimer >= 3) {
+            else if (tile.animationTimer === 3) {
                 crumblingWalls.splice(0, 1);
             }
         })
@@ -262,7 +262,7 @@ export function renderExplosions() {
     // Floor
     if (fieryFloors.length > 0) {
         fieryFloors.forEach(tile => {
-            if (tile.animationTimer === 7) {
+            if (tile.animationTimer >= 7) {
                 ctx.drawImage(spriteSheet, 0, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer === 6) {
