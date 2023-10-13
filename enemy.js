@@ -58,7 +58,7 @@ class Enemy
         // Animations
         this.spriteSheet = new Image();
         this.frameWidth = 192/3;
-        this.frameHeight = 336/4;
+        this.frameHeight = 256/4;
         this.totalFrames = 3;
         this.currentFrame = 0;
         this.animationSpeed = 150; // TODO: Tweak
