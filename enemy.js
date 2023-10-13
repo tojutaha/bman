@@ -6,6 +6,12 @@ import { tilesWithBombs } from "./bomb.js";
 import { PlayAudio } from "./audio.js";
 
 
+export const enemyType = {
+    ZOMBIE: "Zombie",
+    GHOST: "Ghost",
+    SKELETON: "Skeleton",
+}
+
 export const movementMode = {
     IDLE: "Idle",
     ROAM: "Roam",
@@ -17,7 +23,7 @@ class Enemy
 {
     static lastId = 0;
 
-    constructor(x, y, w, h, newMovementMode, speed) {
+    constructor(x, y, w, h, newMovementMode, speed, type) {
         this.id = ++Enemy.lastId;
         this.justSpawned = true;
 
@@ -38,6 +44,7 @@ class Enemy
         this.timer = null;
 
         // Behaviour
+        this.enemyType = type || enemyType.ZOMBIE;
         this.currentPath = [];
         this.startLocation = {x: this.x, y: this.y};
         this.targetLocation = {x: 0, y: 0};
@@ -50,8 +57,6 @@ class Enemy
 
         // Animations
         this.spriteSheet = new Image();
-        //this.spriteSheet.src = "./assets/ghost_01.png"; // TODO: Muuttujaksi
-        this.spriteSheet.src = "./assets/skeleton_01.png"; // TODO: Muuttujaksi
         this.frameWidth = 192/3;
         this.frameHeight = 336/4;
         this.totalFrames = 3;
@@ -61,31 +66,28 @@ class Enemy
 
     }
 
-    getLocation() {
-        return {x: this.x, y: this.y};
-    }
-
-    setMovementMode(newMovementMode) {
-        this.movementMode = newMovementMode;
-    }
-
     init() {
-        switch(this.movementMode) {
-            case movementMode.IDLE:
-                // Nothing to do
-                break;
-            case movementMode.ROAM:
-                // Randomly roam around map
-                this.roam();
-                break;
-            case movementMode.PATROL:
-                // Patrol between two points
+
+        switch(this.enemyType) {
+            case enemyType.ZOMBIE: {
+                // TODO: Oikea sprite tälle.
+                this.spriteSheet.src = "./assets/ghost_01.png";
+                this.movementMode = movementMode.PATROL;
                 this.patrol();
                 break;
-            case movementMode.FOLLOW:
-                // Follow player
+            }
+            case enemyType.GHOST: {
+                this.spriteSheet.src = "./assets/ghost_01.png";
+                this.movementMode = movementMode.ROAM;
+                this.roam();
+                break;
+            }
+            case enemyType.SKELETON: {
+                this.spriteSheet.src = "./assets/skeleton_01.png";
+                this.movementMode = movementMode.FOLLOW;
                 this.followPlayer();
                 break;
+            }
         }
         
         if (this.justSpawned) {
@@ -95,6 +97,10 @@ class Enemy
     
             game.increaseEnemies();
         }
+    }
+
+    getLocation() {
+        return {x: this.x, y: this.y};
     }
 
     getRandomPath() {
@@ -256,6 +262,23 @@ class Enemy
     }
 
     die() {
+
+        // TODO: Oikeat scoret tänne
+        switch(this.enemyType) {
+            case enemyType.ZOMBIE: {
+                game.increaseScore(500);
+                break;
+            }
+            case enemyType.GHOST: {
+                game.increaseScore(1000);
+                break;
+            }
+            case enemyType.SKELETON: {
+                game.increaseScore(1500);
+                break;
+            }
+        }
+
         let result = findEnemyById(this.id);
         enemies.splice(result.index, 1);
 
@@ -266,7 +289,6 @@ class Enemy
             this[prop] = null;
         }
 
-        game.increaseScore(500);    // TODO: Score by enemy type
         game.decreaseEnemies();
     }
 
@@ -333,15 +355,6 @@ class Enemy
     }
 };
 
-function getRandomColor()
-{
-
-    const red = Math.floor(Math.random() * 256);
-    const green = Math.floor(Math.random() * 256);
-    const blue = Math.floor(Math.random() * 256);
-    return `rgb(${red}, ${green}, ${blue})`;
-}
-
 function getRandomSpeed()
 {
     const max = 500;
@@ -354,8 +367,8 @@ export let enemies = [];
 // Initial spawn
 export function spawnEnemies()
 {
-    const movementValues = Object.values(movementMode);
-    const amount = movementValues.length;
+    const typeValues = Object.values(enemyType);
+    const amount = typeValues.length;
     //const amount = 1;
     const maxRadius = 25*tileSize;
     const minRadius = 10*tileSize;
@@ -367,15 +380,14 @@ export function spawnEnemies()
                                                        y: player.y},
                                                        minRadius, maxRadius);
         const enemy = new Enemy(random.x, random.y, tileSize, tileSize);
-        let colIndex = i;
-        enemy.setMovementMode(movementValues[colIndex]);
-        //enemy.setMovementMode(movementMode.IDLE);
-        enemy.speed = getRandomSpeed();
+        let typeIndex = i;
+        enemy.enemyType = typeValues[typeIndex];
+        enemy.speed = getRandomSpeed(); // TODO: Pitäiskö määritellä nopeudet tyypin mukaan?
         enemy.init();
         enemies.push(enemy);
 
-        if (colIndex > movementValues.length) {
-            colIndex = 0;
+        if (typeIndex > typeValues.length) {
+            typeIndex = 0;
         }
     }
 }
@@ -385,7 +397,6 @@ export function spawnEnemiesAtLocation(location, amount = 1)
 {
     for (let i = 0; i < amount; i++) {
         const enemy = new Enemy(location.x, location.y, tileSize, tileSize);
-        enemy.setMovementMode(movementMode.ROAM);
         enemy.speed = getRandomSpeed();
         enemy.init();
         enemies.push(enemy);
