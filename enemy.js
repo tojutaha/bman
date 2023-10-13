@@ -164,21 +164,6 @@ class Enemy
                 }
             }
             
-            // Store movement direction
-            // TODO: Tämä pitää muuttaa jonnekkin muualle timerin
-            // sisältä, muuten animaatiot ei päivity ajoissa
-            if (next.x < this.x) {
-                this.direction = Direction.LEFT;
-            } else if (next.x > this.x) {
-                this.direction = Direction.RIGHT;
-            }
-
-            if (next.y < this.y) {
-                this.direction = Direction.UP;
-            } else if (next.y > this.y) {
-                this.direction = Direction.DOWN;
-            }
-
             // Move enemy
             this.x = next.x;
             this.y = next.y;
@@ -293,9 +278,16 @@ class Enemy
     }
 
     update(currentTime, x, y) {
+
         // Animations
         const animDt = currentTime - this.lastTime;
-        this.updateAnimation(animDt, currentTime);
+        if (animDt >= this.animationSpeed) {
+            this.currentFrame++;
+            if (this.currentFrame >= this.totalFrames) {
+                this.currentFrame = 0;
+            }
+            this.lastTime = currentTime;
+        }
 
         if (this.isMoving) {
             switch(this.direction) {
@@ -340,17 +332,6 @@ class Enemy
                 this.frameWidth, this.frameHeight,
                 x, y,
                 this.frameWidth, this.frameHeight);
-        }
-    }
-
-    updateAnimation(dt, currentTime) {
-
-        if (dt >= this.animationSpeed) {
-            this.currentFrame++;
-            if (this.currentFrame >= this.totalFrames) {
-                this.currentFrame = 0;
-            }
-            this.lastTime = currentTime;
         }
     }
 };
@@ -419,6 +400,20 @@ export function renderEnemies(timeStamp)
     enemies.forEach(enemy => {
         if (enemy) {
 
+            // Store movement direction
+            if (enemy.renderX < enemy.x) {
+                enemy.direction = Direction.LEFT;
+            } else if (enemy.renderX > enemy.x) {
+                enemy.direction = Direction.RIGHT;
+            }
+
+            if (enemy.renderY < enemy.y) {
+                enemy.direction = Direction.UP;
+            } else if (enemy.renderY > enemy.y) {
+                enemy.direction = Direction.DOWN;
+            }
+
+            // Smooth rendering
             enemy.t += deltaTime * (1 / (enemy.speed / 1000));
             enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
 
