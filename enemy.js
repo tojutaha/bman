@@ -290,33 +290,41 @@ class Enemy
         }
 
         if (this.isMoving) {
-            switch(this.direction) {
-                case Direction.LEFT: {
-                    ctx.drawImage(this.spriteSheet,
-                        this.currentFrame * this.frameWidth, this.frameHeight*3,
-                        this.frameWidth, this.frameHeight,
-                        x, y,
-                        this.frameWidth, this.frameHeight);
-                    break;
-                }
-                case Direction.UP: {
-                    ctx.drawImage(this.spriteSheet,
-                        this.currentFrame * this.frameWidth, 0,
-                        this.frameWidth, this.frameHeight,
-                        x, y,
-                        this.frameWidth, this.frameHeight);
-                    break;
-                }
-                case Direction.DOWN: {
-                    ctx.drawImage(this.spriteSheet,
-                        this.currentFrame * this.frameWidth, this.frameHeight*2,
-                        this.frameWidth, this.frameHeight,
-                        x, y,
-                        this.frameWidth, this.frameHeight);
-                    break;
-                }
-                case Direction.RIGHT:
-                {
+            this.drawAnimation(x, y);
+        } else {
+            this.currentFrame = 0;
+            this.drawAnimation(x, y);
+        }
+    }
+
+    drawAnimation(x, y) {
+        switch(this.direction) {
+            case Direction.LEFT: {
+                ctx.drawImage(this.spriteSheet,
+                    this.currentFrame * this.frameWidth, this.frameHeight*3,
+                    this.frameWidth, this.frameHeight,
+                    x, y,
+                    this.frameWidth, this.frameHeight);
+                break;
+            }
+            case Direction.UP: {
+                ctx.drawImage(this.spriteSheet,
+                    this.currentFrame * this.frameWidth, 0,
+                    this.frameWidth, this.frameHeight,
+                    x, y,
+                    this.frameWidth, this.frameHeight);
+                break;
+            }
+            case Direction.DOWN: {
+                ctx.drawImage(this.spriteSheet,
+                    this.currentFrame * this.frameWidth, this.frameHeight*2,
+                    this.frameWidth, this.frameHeight,
+                    x, y,
+                    this.frameWidth, this.frameHeight);
+                break;
+            }
+            case Direction.RIGHT:
+            {
                     ctx.drawImage(this.spriteSheet,
                         this.currentFrame * this.frameWidth, this.frameHeight,
                         this.frameWidth, this.frameHeight,
@@ -324,14 +332,6 @@ class Enemy
                         this.frameWidth, this.frameHeight);
                     break;
                 }
-            }
-        } else {
-            this.currentFrame = 0;
-            ctx.drawImage(this.spriteSheet,
-                this.currentFrame * this.frameWidth, 0,
-                this.frameWidth, this.frameHeight,
-                x, y,
-                this.frameWidth, this.frameHeight);
         }
     }
 };
