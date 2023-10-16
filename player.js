@@ -1,12 +1,14 @@
 import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet, deltaTime, game } from "./main.js";
 import { PlayAudio } from "./audio.js";
-import { Bomb, tilesWithBombs } from "./bomb.js";
+import { Bomb, clearBombs, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";
 import { clamp, colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear, getRandomColor, getTileFromWorldLocationF, getSurroundingTiles } from "./utils.js";
 import { enemies, movementMode, spawnEnemies } from "./enemy.js";
 
 function restartLevel()
 {
+    clearBombs();
+
     enemies.forEach(enemy => {
         enemy.movementMode = movementMode.IDLE;
         clearInterval(enemy.timer);
@@ -16,11 +18,13 @@ function restartLevel()
     enemies.length = 0;
 
     resetPlayerPositions();
-    spawnEnemies();
 
-    players.forEach(p => {
-        p.isDead = false;
-    });
+    setTimeout(() => {
+        spawnEnemies();
+        players.forEach(p => {
+            p.isDead = false;
+        });
+    }, 2000);
 }
 
 export const Direction = {
@@ -117,10 +121,12 @@ class Player
 
     // Handles movement and collision
     update(currentTime) {
+        if (this.isDead) return;
 
 /////
 
         // Create radial gradient
+        // TODO: Muuttujiksi, ei tartte setata joka kerta..
         var rgb = colorTemperatureToRGB(2600);
         var rgb2 = colorTemperatureToRGB(3000);
         var radius = 96;
@@ -320,6 +326,7 @@ class Player
         }
 
         if (playerTile.isDeadly) {
+            collides = true;
             this.onDeath();
         }
 
@@ -469,8 +476,8 @@ class Player
 
     onDeath() {
         if (!this.isDead) {
-            PlayAudio("assets/audio/death01.wav");
             this.isDead = true;
+            PlayAudio("assets/audio/death01.wav");
             this.healthPoints--;
             this.updateHealthPoints();
             if(this.healthPoints <= 0) {
