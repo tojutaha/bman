@@ -81,7 +81,7 @@ class Player
         this.frameHeight = 248/4;
         this.totalFrames = 4;
         this.currentFrame = 0;
-        this.animationSpeed = 150; // TODO: Tweak
+        this.animationSpeed = 150;
         this.lastTime = 0;
 
         this.spriteSheet.onload = () => {
@@ -109,6 +109,11 @@ class Player
         // HealthPoints
         this.healthPoints = 3;
         this.updateHealthPoints();
+
+        // "Light"
+        this.rgb = colorTemperatureToRGB(2600);
+        this.rgb2 = colorTemperatureToRGB(3000);
+        this.radius = 96;
     }
 
     updateHealthPoints() {
@@ -125,22 +130,18 @@ class Player
     update(currentTime) {
         if (this.isDead) return;
 
-/////
+/// Light
 
         // Create radial gradient
-        // TODO: Muuttujiksi, ei tartte setata joka kerta..
-        var rgb = colorTemperatureToRGB(2600);
-        var rgb2 = colorTemperatureToRGB(3000);
-        var radius = 96;
         var radialGradient = ctx.createRadialGradient(this.x + this.w / 2,
                                                       this.y + this.h / 2,
-                                                      radius/4,
+                                                      this.radius/4,
                                                       this.x + this.w / 2,
                                                       this.y + this.h / 2,
-                                                      radius);
+                                                      this.radius);
 
-        radialGradient.addColorStop(0,   'rgba(' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ',0.5)');
-        radialGradient.addColorStop(0.5, 'rgba(' + rgb2.red + ',' + rgb2.green + ',' + rgb2.blue + ',0.35)');
+        radialGradient.addColorStop(0,   'rgba(' + this.rgb.red + ',' + this.rgb.green + ',' + this.rgb.blue + ',0.5)');
+        radialGradient.addColorStop(0.5, 'rgba(' + this.rgb2.red + ',' + this.rgb2.green + ',' + this.rgb2.blue + ',0.35)');
         radialGradient.addColorStop(1,   'rgba(0,0,0,0)');
 
         // Use the gradient as the fillStyle
@@ -149,10 +150,9 @@ class Player
 
         // Draw the circle
         ctx.beginPath();
-        ctx.arc(this.x + this.w / 2, this.y + this.h / 2, radius, 0, Math.PI*2);
+        ctx.arc(this.x + this.w / 2, this.y + this.h / 2, this.radius, 0, Math.PI*2);
         ctx.fill();
-/////
-
+///
         const nextX = this.x + this.dx;
         const nextY = this.y + this.dy;
 
@@ -207,9 +207,8 @@ class Player
                     closestCorner = bottomRightCorner;
                 }
 
-                // TODO: Tämän pitäisi varmaan olla liikkumisssuunnasta riippuen joku tietty kulma, eikä keskeltä pelaajaa(?)
                 const distToClosestCorner = Math.hypot(playerCenter.x - closestCorner.x, playerCenter.y - closestCorner.y);
-                if (distToClosestCorner <= 50) { // TODO: Tweak. n pikseliä kulmasta
+                if (distToClosestCorner <= 50) { // Pikseliä kulmasta
 
                     // Left
                     const lx = (tile.x - tileSize) / tileSize;
@@ -528,8 +527,8 @@ const StartPos = {
     // P1Y: (levelHeight-2)*tileSize,
 }
 
-export function resetPlayerPositions() {    // TODO: muut pelaajat
-
+export function resetPlayerPositions()
+{
     players.forEach((p) => {
         if (p.id === 0) {
             p.x = StartPos.P0X;

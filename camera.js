@@ -7,7 +7,7 @@ let cameraLt = 0;
 let cameraRt = 0;
 let cameraPt = 0;
 const followCameraSpeed = 0.05;
-const edgeCameraSpeed = 0.25; // TODO: Parempi vaihtoehto tälle
+const edgeCameraSpeed = 0.25;
 export function updateCamera()
 {
 
