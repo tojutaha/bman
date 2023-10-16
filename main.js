@@ -23,7 +23,7 @@ export const levelWidth = 33;
 export const levelHeight = 13;
 export const softTilePercent = 0.1;
 export const powerUpCount = 1;
-export const cagePlayers = false;
+export const cagePlayers = true;
 
 ////////////////////
 // Assets

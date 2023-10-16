@@ -10,7 +10,7 @@ export let pause = false;
 export class Game {
     constructor() {
         this.score = 0;
-        this.level = 1;
+        this.level = 0;
         this.numOfEnemies = -1;
         this.firstBombExploded = false;
         this.isPaused = false;
@@ -34,12 +34,19 @@ export class Game {
         updateScoreDisplay(this.score);
     }
     
+    async fetchLevelData() {
+        const response = await fetch("levels.json");
+        const data = await response.json();
+        console.info("fetched level data:", data[this.level]);
+        return data[this.level];
+    }
+    
     nextLevel() {
         this.level++;
         updateLevelDisplay(this.level);
-        newLevel();
         clearBombs();
         this.saveGame();
+        newLevel();
     }
     
     increaseEnemies() {
@@ -67,7 +74,7 @@ export class Game {
             PlayAudio("assets/audio/exitopen01.wav");
         }
     }
-    
+
     // Saving & loading
     // TODO: pelaajat häviää jos ottaa tallennetun powerupin
     // juuri jätetty pommi/tile räjähtää näkymättömänä kun lataa pelin
@@ -113,6 +120,12 @@ export class Game {
         }
     }
 }
+
+// async function fetchLevelData(lvl) {
+//     const response = await fetch("levels.json");
+//     const data = await response.json();
+//     return data[lvl];
+// }
 
 function loadPowerups(loadedPlayers) {
     for (let i = 0; i < players.length; i++) {
