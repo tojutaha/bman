@@ -392,11 +392,8 @@ class Player
                 }
         }
     }
-    // Bomb
+
     dropBomb() {
-        // TODO: Näkymättömät pommit (tarpeellinen vain jos 2+ pelaajaa tai jos tehdään co-op)
-        // -> tulee jos seisoo pommin päällä loppuun asti
-        // EHKÄ: Pakota menemään vain suuntaan johon lähdetään kävelemään
         let bombTile = getTileFromWorldLocation(this);
 
         if (this.activeBombs < this.powerup.maxBombs) {
