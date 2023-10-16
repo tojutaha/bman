@@ -3,6 +3,25 @@ import { PlayAudio } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";
 import { clamp, colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear, getRandomColor, getTileFromWorldLocationF, getSurroundingTiles } from "./utils.js";
+import { enemies, movementMode, spawnEnemies } from "./enemy.js";
+
+function restartLevel()
+{
+    enemies.forEach(enemy => {
+        enemy.movementMode = movementMode.IDLE;
+        clearInterval(enemy.timer);
+        for (let prop in enemy)
+            enemy[prop] = null;
+    });
+    enemies.length = 0;
+
+    resetPlayerPositions();
+    spawnEnemies();
+
+    players.forEach(p => {
+        p.isDead = false;
+    });
+}
 
 export const Direction = {
     UP: "Up",
@@ -449,17 +468,15 @@ class Player
     }
 
     onDeath() {
-        console.log("onDeath");
-        //if (!this.isDead) {
-        if (1) {
-            // PlayAudio("assets/audio/death01.wav");
+        if (!this.isDead) {
+            PlayAudio("assets/audio/death01.wav");
             this.isDead = true;
             this.healthPoints--;
             this.updateHealthPoints();
             if(this.healthPoints <= 0) {
                 console.log("Game over");
             } else {
-                console.log("Restart level");
+                restartLevel();
             }
         }
     }

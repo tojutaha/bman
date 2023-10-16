@@ -173,20 +173,20 @@ class Enemy
                 if (getDistanceTo(this, player) < tileSize) {
                     player.onDeath();
                     this.playerTarget = null;
-                    // TODO: Varmaan stopataan myöhemmin, kun 
-                    // ei ole pelaajia jäljellä?
-                    //clearInterval(this.timer);
+                    clearInterval(this.timer);
                     this.isMoving = false;
                 }
             });
 
             // Smoother movement for rendering
-            if (renderIndex < this.currentPath.length) {
-                const renderLoc = this.currentPath[renderIndex]
-                this.renderX = renderLoc.x;
-                this.renderY = renderLoc.y;
-                renderIndex++;
-            }
+            if (this.currentPath) {
+                if (renderIndex < this.currentPath.length) {
+                    const renderLoc = this.currentPath[renderIndex]
+                    this.renderX = renderLoc.x;
+                    this.renderY = renderLoc.y;
+                    renderIndex++;
+                }
+            } else return;
 
             index++;
 
@@ -264,8 +264,10 @@ class Enemy
         }
 
         let result = findEnemyById(this.id);
+        console.log("ID:", result);
         enemies.splice(result.index, 1);
 
+        this.movementMode = movementMode.IDLE;
         clearInterval(this.timer);
 
         for (let prop in this) {
