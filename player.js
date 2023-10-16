@@ -2,7 +2,7 @@ import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet, del
 import { PlayAudio } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";
-import { aabbCollision, getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear, getRandomColor, getTileFromWorldLocationF, getSurroundingTiles } from "./utils.js";
+import { clamp, colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear, getRandomColor, getTileFromWorldLocationF, getSurroundingTiles } from "./utils.js";
 
 export const Direction = {
     UP: "Up",
@@ -19,45 +19,6 @@ export function renderPlayer(timeStamp)
     });
 }
 
-function colorTemperatureToRGB(kelvin)
-{
-    var temp = kelvin / 100;
-    var red, green, blue;
-
-    if(temp <= 66) {
-        red = 255;
-        green = temp;
-        green = 99.4708025861 * Math.log(green) - 161.1195681661;
-    } else {
-        red = temp - 60;
-        red = 329.698727446 * Math.pow(red, -0.1332047592);
-        green = temp - 60;
-        green = 288.1221695283 * Math.pow(green, -0.0755148492);
-    }
-
-    if(temp >= 66) {
-        blue = 255;
-    } else if(temp <= 19) {
-        blue = 0;
-    } else {
-        blue = temp - 10;
-        blue = 138.5177312231 * Math.log(blue) - 305.0447927307;
-    }
-
-    return {
-        red : clamp(red, 0, 255),
-        green : clamp(green, 0, 255),
-        blue : clamp(blue, 0, 255)
-    }
-}
-
-function clamp(x, min, max)
-{
-    if(x<min) return min;
-    if(x>max) return max;
-    return x;
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 // Players
 export const players = [];
@@ -65,6 +26,7 @@ export const players = [];
 class Player
 {
     constructor(id, x, y, keybinds, sprite) {
+
         this.id = id;
         this.x = x;
         this.y = y;
@@ -117,6 +79,20 @@ class Player
                 );
                 this.mirroredFrames.push(mirroredCanvas);
             }
+        }
+
+        // HealthPoints
+        this.healthPoints = 3;
+        this.updateHealthPoints();
+    }
+
+    updateHealthPoints() {
+        const healthPointsContainer = document.getElementById("healthPointsContainer");
+        healthPointsContainer.innerHTML = '';
+        for(let i = 0; i < this.healthPoints; i++) {
+            const circle = document.createElement("div");
+            circle.classList.add("hp-circle");
+            healthPointsContainer.appendChild(circle);
         }
     }
 
@@ -474,9 +450,17 @@ class Player
 
     onDeath() {
         console.log("onDeath");
-        if (!this.isDead) {
+        //if (!this.isDead) {
+        if (1) {
             // PlayAudio("assets/audio/death01.wav");
             this.isDead = true;
+            this.healthPoints--;
+            this.updateHealthPoints();
+            if(this.healthPoints <= 0) {
+                console.log("Game over");
+            } else {
+                console.log("Restart level");
+            }
         }
     }
 };

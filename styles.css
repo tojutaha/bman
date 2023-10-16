@@ -34,6 +34,8 @@ body {
     margin: 0.2em auto;
     max-width: 800px;
     text-align: center;
+    align-items: center;
+    position: relative;
 }
 
 #canvas {
@@ -58,4 +60,20 @@ body {
 
 #sprite-sheet {
     display: none;
+}
+
+.health-points {
+    position: absolute;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+}
+
+.hp-circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: white;
 }
