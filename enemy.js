@@ -70,7 +70,7 @@ class Enemy
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
                 // TODO: Oikea sprite tälle.
-                this.spriteSheet.src = "./assets/ghost_01.png";
+                this.spriteSheet.src = "./assets/placeholder_zombi.png";
                 this.movementMode = movementMode.PATROL;
                 this.patrol();
                 break;
@@ -349,18 +349,18 @@ export let enemies = [];
 // Initial spawn
 export function spawnEnemies()
 {
-    game.fetchLevelData()
-    .then(data => {
-        let total = data.zombies + data.ghosts + data.skeletons;
-        console.log(
-            "Ghosts:", data.ghosts, 
-            "Zombies:", data.zombies, 
-            "Skeletons:", data.skeletons,
-            "Total:", total);
-    })
-    .catch(error => {
-        console.error("Couldn't fetch the enemies from levels.json");
-    });
+    // game.fetchLevelData()
+    // .then(data => {
+    //     let total = data.zombies + data.ghosts + data.skeletons;
+    //     console.log(
+    //         "Ghosts:", data.ghosts, 
+    //         "Zombies:", data.zombies, 
+    //         "Skeletons:", data.skeletons,
+    //         "Total:", total);
+    // })
+    // .catch(error => {
+    //     console.error("Couldn't fetch the enemies from levels.json");
+    // });
 
     
     const typeValues = Object.values(enemyType);
@@ -438,9 +438,4 @@ export function renderEnemies(timeStamp)
             enemy.update(timeStamp, x, y);
         }
     });
-}
-
-// Load enemies
-export function loadEnemies(loadedEnemies) {
-    enemies = loadedEnemies;
 }
