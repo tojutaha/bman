@@ -5,10 +5,11 @@ import { Powerup, powerups } from "./powerup.js";
 import { clamp, colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear, getRandomColor, getTileFromWorldLocationF, getSurroundingTiles } from "./utils.js";
 import { enemies, movementMode, spawnEnemies } from "./enemy.js";
 
-const godMode = true;
+const godMode = false;
 
 function restartLevel()
 {
+    // TODO: GameState pitää myös päivittää, muuten ei mee levelit läpi!
     clearBombs();
 
     enemies.forEach(enemy => {
