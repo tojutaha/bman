@@ -414,6 +414,11 @@ class Player
                             break;
                         }
                     }
+                    if (this.isDead) {
+                        bombTile.isWalkable = true;
+                        bombTile.isDeadly = false;
+                        clearInterval(posCheck);
+                    }
                     if (!isPlayerOnBomb) {
                         bombTile.isWalkable = false;
                         clearInterval(posCheck);
