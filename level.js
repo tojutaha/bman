@@ -97,7 +97,6 @@ export class ExitAnimation {
 
     init() {
         this.frames = 11;
-        console.log("init door");
     }
     
     playAnimation() {
