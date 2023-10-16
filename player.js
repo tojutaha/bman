@@ -5,6 +5,8 @@ import { Powerup, powerups } from "./powerup.js";
 import { clamp, colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear, getRandomColor, getTileFromWorldLocationF, getSurroundingTiles } from "./utils.js";
 import { enemies, movementMode, spawnEnemies } from "./enemy.js";
 
+const godMode = true;
+
 function restartLevel()
 {
     clearBombs();
@@ -477,6 +479,8 @@ class Player
     }
 
     onDeath() {
+        if (godMode) return;
+
         if (!this.isDead) {
             this.isDead = true;
             PlayAudio("assets/audio/death01.wav");
