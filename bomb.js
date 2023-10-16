@@ -279,12 +279,12 @@ export function renderExplosions() {
             }
             else if (tile.animationTimer === 2) {
                 ctx.drawImage(spriteSheet, tileSize*5, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
+                tile.isDeadly = false;
             }
             else if (tile.animationTimer === 1) {
                 ctx.drawImage(spriteSheet, tileSize*6, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
             }
             else if (tile.animationTimer <= 0) {
-                tile.isDeadly = false;
                 fieryFloors.splice(0, 1);
             }
             
