@@ -299,6 +299,9 @@ export function clearBombs() {
     tilesWithBombs.forEach(tile => {
         tile.isWalkable = true;
         clearInterval(tile.bomb.ticking);
+        for (let prop in tile) {
+            tile.bomb[prop] = null;
+        }
     });
     tilesWithBombs = [];
     crumblingWalls = [];

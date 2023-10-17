@@ -53,9 +53,9 @@ function Render(timeStamp)
     renderFloor();
     renderPowerups();
     entrance.render();
-    exit.render();
     renderPlayer(timeStamp);
     renderWalls();
+    exit.render();
     renderEnemies(timeStamp);
     renderBombs();
     renderExplosions();
