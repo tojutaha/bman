@@ -1,7 +1,7 @@
 import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
-import { exit, levelHeader, entrance } from "./main.js";
+import { level, exit, levelHeader, entrance } from "./main.js";
 import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { players, resetPlayerPositions } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
@@ -27,6 +27,12 @@ export class Game {
         });
     }
 
+    newGame() {
+        this.loadGame();
+        this.initLevel();
+        this.newLevel();
+    }
+
     initLevel() {
         // Endgame
         if (this.level > 3) {   // TODO: Numero
@@ -50,7 +56,7 @@ export class Game {
         });
     }
 
-    newLevel(level) {
+    newLevel() {
         let newLevel = createTiles();
         level.length = 0;
         Array.prototype.push.apply(level, newLevel);
@@ -92,7 +98,7 @@ export class Game {
         this.numOfEnemies = -1;
         this.level++;
         clearBombs();
-        newLevel();
+        this.newLevel();
         this.initLevel();
         updateLevelDisplay(this.level);
 

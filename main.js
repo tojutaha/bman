@@ -91,9 +91,7 @@ document.addEventListener("DOMContentLoaded", function ()
         // canvas.height = levelHeight * tileSize;
         ctx = canvas.getContext("2d");
         if (ctx) {
-                game.loadGame();
-                game.initLevel();
-                game.newLevel(level);
+                game.newGame();
                 spawnPlayers();
                 Render();
         } else {
