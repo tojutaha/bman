@@ -9,7 +9,6 @@ const godMode = false;
 
 function restartLevel()
 {
-    // TODO: GameState pitää myös päivittää, muuten ei mee levelit läpi!
     clearBombs();
 
     enemies.forEach(enemy => {
@@ -24,6 +23,7 @@ function restartLevel()
 
     setTimeout(() => {
         spawnEnemies();
+        game.numOfEnemies = enemies.length;
         players.forEach(p => {
             p.isDead = false;
         });
@@ -43,6 +43,8 @@ export function renderPlayer(timeStamp)
         // NOTE: Nämä spritet piirretään nyt updateAnimation funktiossa
         p.update(timeStamp);
     });
+
+    console.log(game.numOfEnemies);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
