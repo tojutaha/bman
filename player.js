@@ -21,6 +21,9 @@ function restartLevel()
 
     setTimeout(() => {
         clearBombs();
+    }, 1000);
+
+    setTimeout(() => {
         spawnEnemies();
         game.numOfEnemies = enemies.length;
         players.forEach(p => {
@@ -42,8 +45,6 @@ export function renderPlayer(timeStamp)
         // NOTE: Nämä spritet piirretään nyt updateAnimation funktiossa
         p.update(timeStamp);
     });
-
-    console.log(game.numOfEnemies);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
