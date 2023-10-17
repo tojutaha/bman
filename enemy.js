@@ -69,7 +69,6 @@ class Enemy
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
-                // TODO: Oikea sprite tälle.
                 this.spriteSheet.src = "./assets/placeholder_zombi.png";
                 this.movementMode = movementMode.PATROL;
                 this.patrol();
@@ -93,8 +92,6 @@ class Enemy
             this.spawnImmortality = setTimeout(() => {
                 this.justSpawned = false;
             }, 2000);
-    
-            // game.increaseEnemies();
         }
     }
 
@@ -271,7 +268,6 @@ class Enemy
         clearInterval(this.timer);
 
         for (let prop in this) {
-            // console.log("nullifying", prop);
             this[prop] = null;
         }
 
@@ -394,6 +390,7 @@ export function spawnEnemiesAtLocation(location, amount = 1)
         enemy.speed = getRandomSpeed();
         enemy.init();
         enemies.push(enemy);
+        game.increaseEnemies();
     }
 }
 

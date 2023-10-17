@@ -39,10 +39,6 @@ export class Game {
             this.numOfEnemies = enemiesArray.length;
             console.info("Initial numOfEnemies:", this.numOfEnemies, enemiesArray);
             spawnEnemies(enemiesArray);
-            
-            if (exitLocation.isOpen) {
-                this.toggleDoor();
-            }
         });
 
     }
@@ -53,6 +49,7 @@ export class Game {
     }
     
     nextLevel() {   // TODO: yks iso sekamelska tää
+        this.numOfEnemies = -1;
         this.level++;
         updateLevelDisplay(this.level);
         clearBombs();
@@ -68,11 +65,12 @@ export class Game {
     
     increaseEnemies() {
         this.numOfEnemies++;
+        // console.info("numOfEnemies:", this.numOfEnemies);
     }
     
     decreaseEnemies() {
         this.numOfEnemies--;
-        console.info("Current numOfEnemies:", this.numOfEnemies);
+        console.info("numOfEnemies:", this.numOfEnemies);
     }
     
     toggleDoor() {
