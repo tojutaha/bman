@@ -17,7 +17,7 @@ export class Game {
         this.isPaused = false;
     }
 
-    init() {
+    initLevel() {
         fetchEnemies(this.level).then((enemiesArray) => {
             this.numOfEnemies = enemiesArray.length;
             console.info("Initial numOfEnemies:", this.numOfEnemies, enemiesArray);
@@ -50,7 +50,7 @@ export class Game {
         clearBombs();
         this.saveGame();
         newLevel();
-        this.init();
+        this.initLevel();
     }
     
     increaseEnemies() {

@@ -3,7 +3,7 @@ import { PlayAudio } from "./audio.js";
 import { Bomb, clearBombs, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";
 import { clamp, colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear, getRandomColor, getTileFromWorldLocationF, getSurroundingTiles } from "./utils.js";
-import { enemies, movementMode, spawnEnemies } from "./enemy.js";
+import { enemies, movementMode } from "./enemy.js";
 
 const godMode = false;
 
@@ -24,8 +24,7 @@ function restartLevel()
     }, 1000);
 
     setTimeout(() => {
-        spawnEnemies();
-        game.numOfEnemies = enemies.length;
+        game.initLevel();
         players.forEach(p => {
             p.isDead = false;
         });

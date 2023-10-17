@@ -119,7 +119,7 @@ export function newLevel() {
 // DOM
 document.addEventListener("DOMContentLoaded", function ()
 {
-    game.init();
+    game.initLevel();
     spawnPlayers();
     newLevel();
     game.loadGame();
