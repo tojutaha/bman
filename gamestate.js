@@ -20,7 +20,7 @@ export class Game {
     init() {
         fetchEnemies(this.level).then((enemiesArray) => {
             this.numOfEnemies = enemiesArray.length;
-            console.log(enemiesArray);
+            console.info("Initial numOfEnemies:", this.numOfEnemies, enemiesArray);
             spawnEnemies(enemiesArray);
         });
 
@@ -59,6 +59,7 @@ export class Game {
     
     decreaseEnemies() {
         this.numOfEnemies--;
+        console.info("Current numOfEnemies:", this.numOfEnemies);
     }
     
     toggleDoor() {
