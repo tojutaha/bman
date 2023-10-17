@@ -1,26 +1,38 @@
 {
     "1": {
-        "width": 13,
-        "height": 13,
-        "zombies": 3,
-        "ghosts": 0,
-        "skeletons": 0,
-        "type": "forest"
+        "enemies": {
+            "zombie": 3,
+            "ghost": 0,
+            "skeleton": 0
+        },
+        "tiles": {
+            "width": 13,
+            "height": 13,
+            "type": "forest"
+        }
     },
     "2": {
-        "width": 17,
-        "height": 13,
-        "zombies": 6,
-        "ghosts": 0,
-        "skeletons": 0,
-        "type": "forest"
+        "enemies": {
+            "zombie": 6,
+            "ghost": 0,
+            "skeleton": 0
+        },
+        "tiles": {
+            "width": 17,
+            "height": 13,
+            "type": "forest"
+        }
     },
     "3": {
-        "width": 17,
-        "height": 13,
-        "zombies": 8,
-        "ghosts": 1,
-        "skeletons": 0,
-        "type": "forest"
+        "enemies": {
+            "zombie": 8,
+            "ghost": 1,
+            "skeleton": 0
+        },
+        "tiles": {
+            "width": 17,
+            "height": 13,
+            "type": "forest"
+        }
     }
 }

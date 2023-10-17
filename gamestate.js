@@ -1,9 +1,10 @@
 import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
+import { spawnEnemies } from "./enemy.js";
 import { exit, newLevel } from "./main.js";
 import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { players } from "./player.js";
-import { exitLocation} from "./tile.js";
+import { createTiles, exitLocation} from "./tile.js";
 
 export let pause = false;
 
@@ -17,7 +18,17 @@ export class Game {
     }
 
     init() {
-        this.numOfEnemies = 0;
+        fetchEnemies(this.level).then((enemiesArray) => {
+            this.numOfEnemies = 0;  // TODO: järkevämmin tämä ovisysteemi
+            spawnEnemies(enemiesArray);
+        });
+
+        fetchLevelInfo(this.level).then((tilesObject) => {
+            // console.log(tilesObject);
+            // TODO: tässä säätämiset. Missä määritetään levelWidth ja -height?
+            createTiles(tilesObject);
+        });
+          
         // TODO: Escin kuuntelija (ehkä muualle?)
         document.addEventListener('keyup', function(event) {
             if (event.key === 'Escape') {
@@ -30,13 +41,6 @@ export class Game {
     increaseScore(points) {
         this.score += points;
         updateScoreDisplay(this.score);
-    }
-    
-    async fetchLevelData() {
-        const response = await fetch("levels.json");
-        const data = await response.json();
-        console.info("level", this.level, data[this.level]);
-        return data[this.level];
     }
     
     nextLevel() {
@@ -100,7 +104,25 @@ function loadPowerups(loadedPlayers) {
         players[i].speed = loadedPlayers[i].speed;
         players[i].powerup.maxBombs = loadedPlayers[i].powerup.maxBombs;
         players[i].powerup.maxRange = loadedPlayers[i].powerup.maxRange;
-
+        
         console.info("LOADED PLAYER", i+1, "\nSpeed:", players[i].speed, "Bombs:", players[i].powerup.maxBombs, "Range:", players[i].powerup.maxRange)
     }
+}
+
+// JSON
+async function fetchEnemies(lvl) {
+    const response = await fetch("levels.json");
+    const data = await response.json();
+    const enemiesObject = data[lvl].enemies;
+
+    const enemiesArray = Object.entries(enemiesObject).flatMap(([key, value]) => Array(value).fill(key));
+    return enemiesArray;
+}
+
+async function fetchLevelInfo(lvl) {
+    const response = await fetch("levels.json");
+    const data = await response.json();
+    const tilesObject = data[lvl].tiles;
+
+    return tilesObject;
 }
