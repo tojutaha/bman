@@ -434,3 +434,13 @@ export function renderEnemies(timeStamp)
         }
     });
 }
+
+export function clearEnemies() {
+    enemies.forEach(enemy => {
+        enemy.movementMode = movementMode.IDLE;
+        clearInterval(enemy.timer);
+        for (let prop in enemy)
+            enemy[prop] = null;
+    });
+    enemies.length = 0;
+}

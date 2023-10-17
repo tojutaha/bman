@@ -1,9 +1,9 @@
 import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
-import { spawnEnemies } from "./enemy.js";
+import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
 import { exit, newLevel } from "./main.js";
 import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
-import { players } from "./player.js";
+import { players, resetPlayerPositions } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
 
 export let pause = false;
@@ -17,8 +17,7 @@ export class Game {
         this.isPaused = false;
     }
 
-    init()
-    {
+    init() {
         // TODO: Escin kuuntelija (ehkä muualle?)
         document.addEventListener('keyup', function(event) {
             if (event.key === 'Escape') {
@@ -44,8 +43,28 @@ export class Game {
             this.numOfEnemies = enemiesArray.length;
             console.info("Initial numOfEnemies:", this.numOfEnemies, enemiesArray);
             spawnEnemies(enemiesArray);
-        });
 
+            if (exitLocation.isOpen) {
+                this.toggleDoor();
+            };
+        });
+    }
+
+    restartLevel()
+    {
+        clearEnemies();
+        resetPlayerPositions();
+
+        setTimeout(() => {
+            clearBombs();
+        }, 1000);
+
+        setTimeout(() => {
+            this.initLevel();
+            players.forEach(p => {
+                p.isDead = false;
+            });
+        }, 2000);
     }
     
     increaseScore(points) {

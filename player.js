@@ -7,35 +7,6 @@ import { enemies, movementMode } from "./enemy.js";
 
 const godMode = false;
 
-function restartLevel()
-{
-
-    // TODO: Ovi pitää sulkea jos jostain syystä käy 
-    // vahinko, ja pelaaja kuolee kun kaikki viholliset
-    // on tapettu ja leveli alkaa alusta.
-
-    enemies.forEach(enemy => {
-        enemy.movementMode = movementMode.IDLE;
-        clearInterval(enemy.timer);
-        for (let prop in enemy)
-            enemy[prop] = null;
-    });
-    enemies.length = 0;
-
-    resetPlayerPositions();
-
-    setTimeout(() => {
-        clearBombs();
-    }, 1000);
-
-    setTimeout(() => {
-        game.initLevel();
-        players.forEach(p => {
-            p.isDead = false;
-        });
-    }, 2000);
-}
-
 export const Direction = {
     UP: "Up",
     DOWN: "Down",
@@ -498,7 +469,7 @@ class Player
             if(this.healthPoints <= 0) {
                 console.log("Game over");
             } else {
-                restartLevel();
+                game.restartLevel();
             }
         }
     }
