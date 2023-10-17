@@ -337,6 +337,19 @@ class Enemy
     }
 };
 
+function getEnemySpeed(enemy)
+{
+    if (enemy.enemyType === "Zombie") {
+        return 800;
+    }
+    else if (enemy.enemyType === "Ghost") {
+        return 500;
+    }
+    else if (enemy.enemyType === "Skeleton") {
+        return 400;
+    }
+}
+
 function getRandomSpeed()
 {
     const max = 500;
@@ -363,7 +376,7 @@ export function spawnEnemies(array)
         const enemy = new Enemy(random.x, random.y, tileSize, tileSize);
         let typeIndex = i;
         enemy.enemyType = array[i];
-        enemy.speed = getRandomSpeed(); // TODO: Pitäiskö määritellä nopeudet tyypin mukaan?
+        enemy.speed = getEnemySpeed(enemy);
         enemy.init();
         enemies.push(enemy);
 
