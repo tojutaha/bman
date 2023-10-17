@@ -1,4 +1,4 @@
-import { canvas, ctx, tileSize, levelHeight, levelWidth, softTilePercent, powerUpCount, cagePlayers } from "./main.js";
+import { canvas, ctx, tileSize, levelHeight, levelWidth, softTilePercent, powerUpCount, cagePlayers, game } from "./main.js";
 import { randomPowerup } from "./powerup.js";
 
 export let exitLocation = undefined;
@@ -105,7 +105,7 @@ function populateSoftWalls(result, softWallTotal) {
         const y = Math.floor(Math.random() * levelHeight);
         const tile = result[x][y];
 
-        if (tile.type === "SoftWall") {
+        if (tile.type === "SoftWall" && game.level != "Z") {    // TODO: tilet luodaan ennen kuin level päätetään
             // Create the exit
             if (!exitCreated) {
                 console.info("The door is in", tile.x, tile.y);

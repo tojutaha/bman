@@ -29,6 +29,11 @@ export class Game {
     }
 
     initLevel() {
+        // Endgame
+        if (this.level > 1) {   // TODO: Numero
+            this.level = "Z";
+        }
+
         fetchLevelInfo(this.level).then((tilesObject) => {
             // console.log(tilesObject);
             // TODO: tässä säätämiset. Missä määritetään levelWidth ja -height?
@@ -51,11 +56,14 @@ export class Game {
     nextLevel() {   // TODO: yks iso sekamelska tää
         this.numOfEnemies = -1;
         this.level++;
-        updateLevelDisplay(this.level);
         clearBombs();
-        this.saveGame();
         newLevel();
         this.initLevel();
+        updateLevelDisplay(this.level);
+
+        if (this.level != "Z") {
+            this.saveGame();
+        }
 
         players.forEach(p => {
             p.healthPoints = 3;

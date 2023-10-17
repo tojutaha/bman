@@ -34,5 +34,17 @@
             "height": 13,
             "type": "forest"
         }
+    },
+    "Z": {
+        "enemies": {
+            "Zombie": 100,
+            "Ghost": 10,
+            "Skeleton": 1
+        },
+        "tiles": {
+            "width": 13,
+            "height": 13,
+            "type": "forest"
+        }
     }
 }
