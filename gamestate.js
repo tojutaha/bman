@@ -32,6 +32,7 @@ export class Game {
         // TODO: Leveli pitäisi resetoida ykköseksi
         // TODO: Erillinen edellisen peli lataus funktio
         clearPlayers();
+        clearEnemies();
         this.loadGame();
         this.initLevel();
         this.newLevel();

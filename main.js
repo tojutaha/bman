@@ -78,8 +78,6 @@ function Render(timeStamp)
     ctx.fillText("dt:  " + (deltaTime*1000).toFixed(2) + "ms", canvas.width - 125, 50);
     */
 
-    console.log("players: ", players.length);
-
     lastTimeStamp = timeStamp
 
     requestAnimationFrame(Render);
