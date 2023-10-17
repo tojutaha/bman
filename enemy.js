@@ -94,7 +94,7 @@ class Enemy
                 this.justSpawned = false;
             }, 2000);
     
-            game.increaseEnemies();
+            // game.increaseEnemies();
         }
     }
 

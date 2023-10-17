@@ -19,7 +19,8 @@ export class Game {
 
     init() {
         fetchEnemies(this.level).then((enemiesArray) => {
-            this.numOfEnemies = 0;  // TODO: järkevämmin tämä ovisysteemi
+            this.numOfEnemies = enemiesArray.length;
+            console.log(enemiesArray);
             spawnEnemies(enemiesArray);
         });
 
