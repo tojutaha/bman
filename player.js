@@ -9,8 +9,6 @@ const godMode = false;
 
 function restartLevel()
 {
-    clearBombs();
-
     enemies.forEach(enemy => {
         enemy.movementMode = movementMode.IDLE;
         clearInterval(enemy.timer);
@@ -22,6 +20,7 @@ function restartLevel()
     resetPlayerPositions();
 
     setTimeout(() => {
+        clearBombs();
         spawnEnemies();
         game.numOfEnemies = enemies.length;
         players.forEach(p => {
