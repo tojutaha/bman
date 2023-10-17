@@ -53,7 +53,7 @@ function Render(timeStamp)
 
     updateCamera();
     renderFloor();
-    //renderPowerups();
+    renderPowerups();
     entrance.render();
     renderPlayer(timeStamp);
     renderWalls();
