@@ -4,6 +4,7 @@ import { Bomb, clearBombs, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";
 import { clamp, colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear, getRandomColor, getTileFromWorldLocationF, getSurroundingTiles } from "./utils.js";
 import { enemies, movementMode } from "./enemy.js";
+import { showGameOverMenu } from "./page.js";
 
 const godMode = false;
 
@@ -468,7 +469,11 @@ class Player
             this.updateHealthPoints();
             if(this.healthPoints <= 0) {
                 console.log("Game over");
-                gameOverText.playAnimation();
+                // TODO: Tältä pitäisi saada kaiveltua tieto
+                // milloin animaatio framet on mennyt loppuun,
+                // jonka jälkeen voidaan näyttää tuo menu.
+                //gameOverText.playAnimation();
+                showGameOverMenu();
             } else {
                 game.restartLevel();
             }
@@ -532,3 +537,13 @@ export function spawnPlayers()
         });
     }
 };
+
+export function clearPlayers() {
+    players.forEach(p => {
+        for(let prop in p) {
+            p[prop] = null;
+        }
+    });
+
+    players.length = 0;
+}

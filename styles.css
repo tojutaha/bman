@@ -78,6 +78,8 @@ body {
     background-color: white;
 }
 
+
+/* Game Over Menu */
 .game-over-container {
     visibility: hidden;
     position: absolute;
@@ -88,5 +90,33 @@ body {
 }
 
 .game-over-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: white;
+    align-content: center;
+}
+
+.game-over-content h1 {
+    color: white;
+}
+
+.game-over-content #game-over-score {
+    padding-top: 50px;
+}
+
+.game-over-content .button-container {
+    display: flex;
+    padding-top: 100px;
+    width: 300px;
+    justify-content: space-around;
+}
+
+.game-over-content button {
+    width: 100px;
+    height: 50px;
+    background: black;
     color: white;
 }

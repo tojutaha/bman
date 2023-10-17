@@ -15,6 +15,30 @@ export function updateLevelDisplay(level) {
 }
 
 ////////////////////
+// Game over menu / buttons
+const gameOverMenu = document.querySelector(".game-over-container");
+const restartButton = document.getElementById("restartButton");
+const exitButton = document.getElementById("exitButton");
+const gameOverScore = document.getElementById("game-over-score");
+
+export function showGameOverMenu()
+{
+    gameOverScore.innerText = `Score ${game.score}`;
+    gameOverMenu.style.visibility = 'visible';
+}
+
+restartButton.addEventListener('click', function () {
+    gameOverMenu.style.visibility = 'hidden';
+    game.newGame();
+});
+
+exitButton.addEventListener('click', function () {
+    gameOverMenu.style.visibility = 'hidden';
+    console.log("TODO: goto main menu");
+});
+
+
+////////////////////
 // DEBUG & TESTING
 
 // Scale buttons

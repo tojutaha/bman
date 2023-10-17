@@ -3,7 +3,7 @@ import { clearBombs } from "./bomb.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
 import { level, exit, levelHeader, entrance } from "./main.js";
 import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
-import { players, resetPlayerPositions } from "./player.js";
+import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
 
 export let pause = false;
@@ -28,9 +28,14 @@ export class Game {
     }
 
     newGame() {
+        // TODO: Ei ladata saveja täältä
+        // TODO: Leveli pitäisi resetoida ykköseksi
+        // TODO: Erillinen edellisen peli lataus funktio
+        clearPlayers();
         this.loadGame();
         this.initLevel();
         this.newLevel();
+        spawnPlayers()
     }
 
     initLevel() {
