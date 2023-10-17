@@ -1,9 +1,9 @@
 {
     "1": {
         "enemies": {
-            "zombie": 3,
-            "ghost": 0,
-            "skeleton": 0
+            "Zombie": 3,
+            "Ghost": 0,
+            "Skeleton": 0
         },
         "tiles": {
             "width": 13,
@@ -13,9 +13,9 @@
     },
     "2": {
         "enemies": {
-            "zombie": 6,
-            "ghost": 0,
-            "skeleton": 0
+            "Zombie": 6,
+            "Ghost": 0,
+            "Skeleton": 0
         },
         "tiles": {
             "width": 17,
@@ -25,9 +25,9 @@
     },
     "3": {
         "enemies": {
-            "zombie": 8,
-            "ghost": 1,
-            "skeleton": 0
+            "Zombie": 8,
+            "Ghost": 1,
+            "Skeleton": 0
         },
         "tiles": {
             "width": 17,

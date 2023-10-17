@@ -349,20 +349,6 @@ export let enemies = [];
 // Initial spawn
 export function spawnEnemies()
 {
-    // game.fetchLevelData()
-    // .then(data => {
-    //     let total = data.zombies + data.ghosts + data.skeletons;
-    //     console.log(
-    //         "Ghosts:", data.ghosts, 
-    //         "Zombies:", data.zombies, 
-    //         "Skeletons:", data.skeletons,
-    //         "Total:", total);
-    // })
-    // .catch(error => {
-    //     console.error("Couldn't fetch the enemies from levels.json");
-    // });
-
-    
     const typeValues = Object.values(enemyType);
     const amount = typeValues.length;
     //const amount = 1;
