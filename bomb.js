@@ -297,6 +297,7 @@ export function renderExplosions() {
 // - it doesn't do the whole exploding process and make the tiles walkable for example.
 export function clearBombs() {
     tilesWithBombs.forEach(tile => {
+        tile.isWalkable = true;
         clearInterval(tile.bomb.ticking);
     });
     tilesWithBombs = [];
