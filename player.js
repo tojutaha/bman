@@ -9,6 +9,11 @@ const godMode = false;
 
 function restartLevel()
 {
+
+    // TODO: Ovi pitää sulkea jos jostain syystä käy 
+    // vahinko, ja pelaaja kuolee kun kaikki viholliset
+    // on tapettu ja leveli alkaa alusta.
+
     enemies.forEach(enemy => {
         enemy.movementMode = movementMode.IDLE;
         clearInterval(enemy.timer);
