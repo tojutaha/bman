@@ -77,3 +77,13 @@ body {
     border-radius: 50%;
     background-color: white;
 }
+
+.game-over-container {
+    visibility: hidden;
+    position: absolute;
+    width: 832px;
+    height: 832px;
+    color: black;
+    background: black;
+    z-index: 999;
+}
