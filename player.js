@@ -398,6 +398,9 @@ class Player
     }
 
     dropBomb() {
+
+        if (this.isDead) return;
+
         let bombTile = getTileFromWorldLocation(this);
 
         if (this.activeBombs < this.powerup.maxBombs) {
