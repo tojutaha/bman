@@ -17,19 +17,8 @@ export class Game {
         this.isPaused = false;
     }
 
-    initLevel() {
-        fetchEnemies(this.level).then((enemiesArray) => {
-            this.numOfEnemies = enemiesArray.length;
-            console.info("Initial numOfEnemies:", this.numOfEnemies, enemiesArray);
-            spawnEnemies(enemiesArray);
-        });
-
-        fetchLevelInfo(this.level).then((tilesObject) => {
-            // console.log(tilesObject);
-            // TODO: tässä säätämiset. Missä määritetään levelWidth ja -height?
-            // createTiles(tilesObject);
-        });
-          
+    init()
+    {
         // TODO: Escin kuuntelija (ehkä muualle?)
         document.addEventListener('keyup', function(event) {
             if (event.key === 'Escape') {
@@ -37,6 +26,25 @@ export class Game {
                 console.log("pause", this.isPaused);
             }
         });
+    }
+
+    initLevel() {
+        fetchLevelInfo(this.level).then((tilesObject) => {
+            // console.log(tilesObject);
+            // TODO: tässä säätämiset. Missä määritetään levelWidth ja -height?
+            // createTiles(tilesObject);
+        });
+
+        fetchEnemies(this.level).then((enemiesArray) => {
+            this.numOfEnemies = enemiesArray.length;
+            console.info("Initial numOfEnemies:", this.numOfEnemies, enemiesArray);
+            spawnEnemies(enemiesArray);
+            
+            if (exitLocation.isOpen) {
+                this.toggleDoor();
+            }
+        });
+
     }
     
     increaseScore(points) {
