@@ -1,7 +1,7 @@
 import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
-import { exit, newLevel } from "./main.js";
+import { exit, levelHeader, entrance } from "./main.js";
 import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { players, resetPlayerPositions } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
@@ -48,6 +48,22 @@ export class Game {
                 this.toggleDoor();
             };
         });
+    }
+
+    newLevel(level) {
+        let newLevel = createTiles();
+        level.length = 0;
+        Array.prototype.push.apply(level, newLevel);
+
+        if (level.length > 0) {
+            this.firstBombExploded = false;
+            levelHeader.playAnimation();
+            entrance.playAnimation();
+            exit.init();
+            resetPlayerPositions();
+        } else {
+            throw new Error("Failed to create level");
+        }
     }
 
     restartLevel()
@@ -116,6 +132,10 @@ export class Game {
             this.toggleDoor();
             PlayAudio("assets/audio/exitopen01.wav");
         }
+    }
+
+    restartGame() {
+        console.log("TODO: restartGame()");
     }
 
     // Saving & loading

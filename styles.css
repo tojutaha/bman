@@ -83,7 +83,10 @@ body {
     position: absolute;
     width: 832px;
     height: 832px;
-    color: black;
     background: black;
     z-index: 999;
+}
+
+.game-over-content {
+    color: white;
 }

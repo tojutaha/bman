@@ -35,8 +35,8 @@ let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
 export const scale = 1;
 
-const levelHeader = new LevelHeaderAnimation();
-const entrance = new EntranceAnimation();
+export const levelHeader = new LevelHeaderAnimation();
+export const entrance = new EntranceAnimation();
 export const exit = new ExitAnimation();
 
 function Render(timeStamp)
@@ -51,7 +51,7 @@ function Render(timeStamp)
 
     updateCamera();
     renderFloor();
-    renderPowerups();
+    //renderPowerups();
     entrance.render();
     renderPlayer(timeStamp);
     renderWalls();
@@ -81,15 +81,9 @@ function Render(timeStamp)
 }
 
 ////////////////////
-// Setters
-export function loadLevel(loadedLevel) {    //  TODO: tarpeeton toistaiseksi 
-    level = loadedLevel;
-}
-
-////////////////////
-// New level
-// TODO: tämä gamestateen vai tänne?
-export function newLevel() {
+// DOM
+document.addEventListener("DOMContentLoaded", function ()
+{
     canvas = document.getElementById("canvas");
     if (canvas) {
         // Dynamic canvas size (ennen kameran seuraamista)
@@ -97,32 +91,16 @@ export function newLevel() {
         // canvas.height = levelHeight * tileSize;
         ctx = canvas.getContext("2d");
         if (ctx) {
-            level = createTiles();
-            if (level.length > 0) {
-                game.firstBombExploded = false;
-                levelHeader.playAnimation();
-                entrance.playAnimation();
-                exit.init();
-                resetPlayerPositions();
-            } else {
-                throw new Error("Failed to create level");
-            }
+                game.loadGame();
+                game.initLevel();
+                game.newLevel(level);
+                spawnPlayers();
+                Render();
         } else {
             throw new Error("Could not find ctx object.");
         }
     } else {
         throw new Error("Could not find canvas object.");
     }
-}
-
-////////////////////
-// DOM
-document.addEventListener("DOMContentLoaded", function ()
-{
-    game.loadGame();
-    game.initLevel();
-    spawnPlayers();
-    newLevel();
-    Render();
 });
 
