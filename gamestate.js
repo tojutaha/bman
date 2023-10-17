@@ -59,6 +59,11 @@ export class Game {
         this.saveGame();
         newLevel();
         this.initLevel();
+
+        players.forEach(p => {
+            p.healthPoints = 3;
+            p.updateHealthPoints();
+        });
     }
     
     increaseEnemies() {
