@@ -30,7 +30,7 @@ export class Game {
 
     initLevel() {
         // Endgame
-        if (this.level > 1) {   // TODO: Numero
+        if (this.level > 3) {   // TODO: Numero
             this.level = "Z";
         }
 
