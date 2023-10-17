@@ -347,11 +347,10 @@ function getRandomSpeed()
 
 export let enemies = [];
 // Initial spawn
-export function spawnEnemies()
+export function spawnEnemies(array)
 {
     const typeValues = Object.values(enemyType);
-    const amount = typeValues.length;
-    //const amount = 1;
+    const amount = array.length;
     const maxRadius = 25*tileSize;
     const minRadius = 10*tileSize;
 
@@ -363,7 +362,7 @@ export function spawnEnemies()
                                                        minRadius, maxRadius);
         const enemy = new Enemy(random.x, random.y, tileSize, tileSize);
         let typeIndex = i;
-        enemy.enemyType = typeValues[typeIndex];
+        enemy.enemyType = array[i];
         enemy.speed = getRandomSpeed(); // TODO: Pitäiskö määritellä nopeudet tyypin mukaan?
         enemy.init();
         enemies.push(enemy);
