@@ -26,7 +26,7 @@ export class Game {
         fetchLevelInfo(this.level).then((tilesObject) => {
             // console.log(tilesObject);
             // TODO: tässä säätämiset. Missä määritetään levelWidth ja -height?
-            createTiles(tilesObject);
+            // createTiles(tilesObject);
         });
           
         // TODO: Escin kuuntelija (ehkä muualle?)
@@ -43,12 +43,13 @@ export class Game {
         updateScoreDisplay(this.score);
     }
     
-    nextLevel() {
+    nextLevel() {   // TODO: yks iso sekamelska tää
         this.level++;
         updateLevelDisplay(this.level);
         clearBombs();
         this.saveGame();
         newLevel();
+        this.init();
     }
     
     increaseEnemies() {
