@@ -1,7 +1,8 @@
 ////////////////////
 // Imports
 import { createTiles } from "./tile.js";
-import { renderWalls, renderFloor, LevelHeaderAnimation, EntranceAnimation, ExitAnimation } from "./level.js";
+import { renderWalls, renderFloor, LevelHeaderAnimation, EntranceAnimation, ExitAnimation, GameOverAnimation } from "./level.js";
+// import { LevelHeaderAnimation, GameOverAnimation } from "./textanimations.js"; // TODO: siirto tänne tai jonnekkin
 import { renderPowerups } from "./powerup.js";
 import { players, renderPlayer, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
@@ -36,6 +37,7 @@ export let deltaTime = 16.6; // ~60fps alkuun..
 export const scale = 1;
 
 export const levelHeader = new LevelHeaderAnimation();
+export const gameOverText = new GameOverAnimation();
 export const entrance = new EntranceAnimation();
 export const exit = new ExitAnimation();
 
@@ -60,6 +62,7 @@ function Render(timeStamp)
     renderBombs();
     renderExplosions();
     levelHeader.render();
+    gameOverText.render();
 
     game.checkGameState();  // TODO: selkeämpi jos tää olis jossain process funktiossa kun ei oo render?
 

@@ -1,4 +1,4 @@
-import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet, deltaTime, game } from "./main.js";
+import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet, deltaTime, game, gameOverText } from "./main.js";
 import { PlayAudio } from "./audio.js";
 import { Bomb, clearBombs, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";
@@ -468,6 +468,7 @@ class Player
             this.updateHealthPoints();
             if(this.healthPoints <= 0) {
                 console.log("Game over");
+                gameOverText.playAnimation();
             } else {
                 game.restartLevel();
             }

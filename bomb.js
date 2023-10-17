@@ -5,7 +5,7 @@ import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 import { exitLocation } from "./tile.js";
 
-
+// TODO: Joskus jää rändöm näkymättömiä pommeja?
 export let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
