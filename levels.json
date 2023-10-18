@@ -1,4 +1,16 @@
 {
+    "0": {
+        "enemies": {
+            "Zombie": 0,
+            "Ghost": 0,
+            "Skeleton": 0
+        },
+        "tiles": {
+            "width": 0,
+            "height": 0,
+            "type": "none"
+        }
+    },
     "1": {
         "enemies": {
             "Zombie": 3,
@@ -30,7 +42,7 @@
             "Skeleton": 0
         },
         "tiles": {
-            "width": 17,
+            "width": 19,
             "height": 13,
             "type": "forest"
         }

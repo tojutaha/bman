@@ -1,13 +1,12 @@
 ////////////////////
 // Imports
-import { createTiles } from "./tile.js";
 import { renderWalls, renderFloor, EntranceAnimation, ExitAnimation } from "./level.js";
 import { LevelHeaderAnimation, GameOverAnimation } from "./ui_animations.js";
 import { renderPowerups } from "./powerup.js";
-import { players, renderPlayer, resetPlayerPositions, spawnPlayers } from "./player.js";
-import { renderEnemies, spawnEnemies } from "./enemy.js";
+import { renderPlayer } from "./player.js";
+import { renderEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
-import { Game } from "./gamestate.js";
+import { Game, fetchLevels } from "./gamestate.js";
 import { updateCamera } from "./camera.js";
 import { showMainMenu } from "./page.js";
 
@@ -21,9 +20,10 @@ export let level = [];
 ////////////////////
 // Settings
 export const tileSize = 64;
-export const softTilePercent = 0.1;
+export const softTilePercent = 0.3;
 export const powerUpCount = 1;
-export const cagePlayers = false;
+export const cagePlayer = true;
+export const cageMultiplayer = false;
 
 ////////////////////
 // Assets
@@ -86,12 +86,10 @@ document.addEventListener("DOMContentLoaded", function ()
 {
     canvas = document.getElementById("canvas");
     if (canvas) {
-        // Dynamic canvas size (ennen kameran seuraamista)
-        // canvas.width = levelWidth * tileSize;
-        // canvas.height = levelHeight * tileSize;
         ctx = canvas.getContext("2d");
         if (ctx) {
                 showMainMenu();
+                fetchLevels();
                 //game.newGame();
                 //Render();
         } else {

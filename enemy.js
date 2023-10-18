@@ -261,7 +261,7 @@ class Enemy
         }
 
         let result = findEnemyById(this.id);
-        console.log("ID:", result);
+        // console.log("ID:", result);
         enemies.splice(result.index, 1);
 
         this.movementMode = movementMode.IDLE;

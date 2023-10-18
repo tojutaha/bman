@@ -111,3 +111,47 @@ export class GameOverAnimation {
         }
     }
 }
+
+export class FadeTransition {
+    constructor() {
+        this.visible = false;
+        this.frames = 0;
+        this.alpha = 1.0;
+    }
+    
+    // playAnimation() {
+    //     this.visible = true;
+    //     this.frames = 0;
+    //     this.alpha = 1.0;
+
+    //     setTimeout(() => {
+    //         this.frameTimer = setInterval(() => {
+    //             this.frames++;
+    
+    //             if (this.frames >= this.text.length) {
+    //                 setTimeout(() => {
+    //                     this.fadeOut();
+    //                 }, 2000);
+    //                 clearInterval(this.frameTimer);
+    //             }
+    //         }, 100);
+    //     }, 500);
+    // }
+
+    // fadeOut() {
+    //     this.fadeOutTimer = setInterval(() => {
+    //         this.alpha -= 0.05;
+
+    //         if (this.alpha <= 0.0) {
+    //             clearInterval(this.fadeOutTimer);
+    //         }
+    //     }, 10);
+    // }
+    
+    render() {
+        if (this.visible) {
+            ctx.fillStyle = `rgba(0, 0, 0, 0)`;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+}

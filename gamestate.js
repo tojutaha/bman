@@ -1,6 +1,6 @@
 import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
-import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
+import { clearEnemies, spawnEnemies } from "./enemy.js";
 import { level, exit, levelHeader, entrance, gameOverText, Render } from "./main.js";
 import { showGameOverMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
@@ -9,12 +9,13 @@ import { createTiles, exitLocation} from "./tile.js";
 export let pause = false;
 export let levelWidth = 19;
 export let levelHeight = 13;
+const levels = [];
 
 export class Game {
     constructor() {
         this.score = 0;
         this.level = 1;
-        this.numOfEnemies = -1;
+        this.numOfEnemies = 0;
         this.firstBombExploded = false;
         this.isPaused = false;
     }
@@ -35,9 +36,9 @@ export class Game {
         this.score = 0;
         clearPlayers();
         clearEnemies();
-        this.initLevel();
-        this.newLevel();    // TODO: Tämän jos kommentoi pois niin menee rikki
+        this.newLevel();
         spawnPlayers();
+        this.initLevel();
         updateLevelDisplay(this.level);
         updateScoreDisplay(this.score);
         Render();
@@ -47,39 +48,35 @@ export class Game {
         clearPlayers();
         clearEnemies();
         this.loadGame();
-        this.initLevel();
-        this.newLevel();    // TODO: Tämän jos kommentoi pois niin menee rikki
+        this.newLevel();
         spawnPlayers();
+        this.initLevel();
         updateLevelDisplay(this.level);
         updateScoreDisplay(this.score);
         Render();
     }
 
     initLevel() {
+        const levelEnemies = levels[this.level].enemies;
+        spawnEnemies(levelEnemies);
+        this.numOfEnemies = levelEnemies.length;
+        
+        if (exitLocation.isOpen) {
+            this.toggleDoor();
+        };
+        // console.info("Initial numOfEnemies:", this.numOfEnemies, levelEnemies);
+    }
+    
+    newLevel() {
+        console.log("Level", this.level, levels[this.level]);
         // Endgame
-        if (this.level > 3) {   // TODO: Numero
+        if (this.level > 3 || this.level === "Z") {   // TODO: Numero
             this.level = "Z";
         }
 
-        fetchLevelInfo(this.level).then((tilesObject) => {
-            console.log(tilesObject);
-            levelWidth = tilesObject.width;
-            levelHeight = tilesObject.height;
-            this.newLevel();    // TODO: kutsuakko tässä vai..?
-        });
+        levelHeight = levels[this.level].height;
+        levelWidth = levels[this.level].width;
 
-        fetchEnemies(this.level).then((enemiesArray) => {
-            this.numOfEnemies = enemiesArray.length;
-            console.info("Initial numOfEnemies:", this.numOfEnemies, enemiesArray);
-            spawnEnemies(enemiesArray);
-
-            if (exitLocation.isOpen) {
-                this.toggleDoor();
-            };
-        });
-    }
-
-    newLevel() {
         let newLevel = createTiles();
         level.length = 0;
         Array.prototype.push.apply(level, newLevel);
@@ -97,8 +94,8 @@ export class Game {
 
     restartLevel()
     {
-        clearEnemies();
         resetPlayerPositions();
+        clearEnemies();
 
         setTimeout(() => {
             clearBombs();
@@ -118,8 +115,10 @@ export class Game {
     }
     
     nextLevel() {   // TODO: yks iso sekamelska tää
-        this.numOfEnemies = -1;
         this.level++;
+        this.newLevel();
+        // resetPlayerPositions();
+        // console.log("Next level:", this.level);
         clearBombs();
         // this.newLevel();
         this.initLevel();
@@ -142,12 +141,11 @@ export class Game {
     
     decreaseEnemies() {
         this.numOfEnemies--;
-        console.info("numOfEnemies:", this.numOfEnemies);
+        // console.info("numOfEnemies:", this.numOfEnemies);
     }
     
-    toggleDoor() {
+    toggleDoor() {  // TODO ehkä: uudemmissa Bombermaneissa powerup-tiili alkaa välkkymään
         exitLocation.isOpen = !exitLocation.isOpen;
-        console.log("toggle")
         
         if (exitLocation.isOpen) {
             exit.playAnimation();
@@ -157,7 +155,7 @@ export class Game {
     }
 
     checkGameState() {
-        if (this.numOfEnemies === 0 && exitLocation.isOpen === false) {
+        if (this.numOfEnemies <= 0 && exitLocation.isOpen === false) {
             this.toggleDoor();
             PlayAudio("assets/audio/exitopen01.wav");
         }
@@ -195,6 +193,7 @@ export class Game {
 }
 
 function loadPowerups(loadedPlayers) {
+    console.log("called loadPowerups (TODO: tää ei toimi)");
     for (let i = 0; i < players.length; i++) {
         players[i].speed = loadedPlayers[i].speed;
         players[i].powerup.maxBombs = loadedPlayers[i].powerup.maxBombs;
@@ -205,19 +204,38 @@ function loadPowerups(loadedPlayers) {
 }
 
 // JSON
-async function fetchEnemies(lvl) {
+export async function fetchLevels() {
     const response = await fetch("levels.json");
     const data = await response.json();
-    const enemiesObject = data[lvl].enemies;
+    
+    for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+            // console.log(`Level ${key}:`, data[key]);
+            const enemyObject = data[key].enemies;
+            const enemyArray = Object.entries(enemyObject).flatMap(([key, value]) => Array(value).fill(key));
+            const levelObject = data[key].tiles;
 
-    const enemiesArray = Object.entries(enemiesObject).flatMap(([key, value]) => Array(value).fill(key));
-    return enemiesArray;
+            levelObject.enemies = enemyArray;
+            levels.push(levelObject);
+        }
+    }
+    console.log("Levels fetched and ready.");
 }
 
-async function fetchLevelInfo(lvl) {
-    const response = await fetch("levels.json");
-    const data = await response.json();
-    const tilesObject = data[lvl].tiles;
+// orig
+// async function fetchEnemies(lvl) {
+//     const response = await fetch("levels.json");
+//     const data = await response.json();
+//     const enemiesObject = data[lvl].enemies;
 
-    return tilesObject;
-}
+//     const enemiesArray = Object.entries(enemiesObject).flatMap(([key, value]) => Array(value).fill(key));
+//     return enemiesArray;
+// }
+
+// async function fetchLevelInfo(lvl) {
+//     const response = await fetch("levels.json");
+//     const data = await response.json();
+//     const tilesObject = data[lvl].tiles;
+
+//     return tilesObject;
+// }

@@ -1,4 +1,4 @@
-import { canvas, ctx, tileSize, softTilePercent, powerUpCount, cagePlayers, game } from "./main.js";
+import { tileSize, softTilePercent, powerUpCount, cagePlayer, cageMultiplayer } from "./main.js";
 import { randomPowerup } from "./powerup.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 
@@ -62,8 +62,12 @@ function createSoftWalls(result, hardWallTotal) {
     let floorLeft = levelHeight * levelWidth - hardWallTotal - EMPTY_CORNERS;
     let softWallsLeft = Math.floor(floorLeft * softTilePercent);
     
-    if (cagePlayers) {
+    if (cagePlayer) {
         createCage(result);
+        softWallTotal += 2;
+    }
+    if (cageMultiplayer) {
+        createMultiplayerCage(result);
         softWallTotal += 8;
     }
     
@@ -130,6 +134,14 @@ function populateSoftWalls(result, softWallTotal) {
 
 // Creates two soft wall tiles to make the player spawn safe
 function createCage(result) {
+    // Top right corner
+    result[3][1].type = "SoftWall";
+    result[3][1].isWalkable = false;
+    result[1][3].type = "SoftWall";
+    result[1][3].isWalkable = false;
+}
+
+function createMultiplayerCage(result) {
     // Top right corner
     result[3][1].type = "SoftWall";
     result[3][1].isWalkable = false;
