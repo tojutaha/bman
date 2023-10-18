@@ -14,12 +14,10 @@ export function renderWalls()
             const yCoord = y * tileSize;
             // Hard tiles
             if (level[x][y].type === "HardWall") {
-                //ctx.drawImage(spriteSheet, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 ctx.drawImage(hardWallTexture, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
             }
             // Soft tiles
             else if (level[x][y].type === "SoftWall") {
-                //ctx.drawImage(spriteSheet, tileSize, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 ctx.drawImage(softWallTexture, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
             }
         }
@@ -35,7 +33,6 @@ floorTexture.src = "./assets/cobblestone_03.png";
 const floorTextureSize = 128;
 export function renderFloor()
 {
-    // TODO: oisko tämä parempi renderöidä html/css kanssa?
     for (let x = 0; x < levelWidth; x++) {
         for (let y = 0; y < levelHeight; y++) {
             ctx.drawImage(floorTexture, 
@@ -44,22 +41,6 @@ export function renderFloor()
                           floorTextureSize, floorTextureSize);
         }
     }
-
-    //ctx.fillStyle = "#4192c3";
-    //ctx.fillRect(0, 0, levelWidth*tileSize, levelHeight*tileSize);
-
-    // Yksi kerrallaan:
-    // for (let x = 0; x < levelWidth; x++) {
-    //     for (let y = 0; y < levelHeight; y++) {
-    //         const xCoord = x * tileSize;
-    //         const yCoord = y * tileSize;
-
-    //         if (level[x][y].type === "Floor") {
-    //             ctx.fillStyle = "#4192c3";
-    //             ctx.fillRect(xCoord, yCoord, tileSize, tileSize);
-    //         }
-    //     }
-    // }
 }
 
 
@@ -123,18 +104,20 @@ export class LevelHeaderAnimation {
         this.visible = true;
         this.frames = 0;
         this.alpha = 0.95;
+        this.text = ` LEVEL ${game.level}`;
     }
     
     playAnimation() {
         this.visible = true;
         this.frames = 0;
         this.alpha = 0.95;
+        this.text = ` LEVEL ${game.level}`;
 
         setTimeout(() => {
             this.frameTimer = setInterval(() => {
                 this.frames++;
     
-                if (this.frames >= 7) {
+                if (this.frames >= this.text.length) {
                     setTimeout(() => {
                         this.fadeOut();
                     }, 2000);
@@ -164,62 +147,41 @@ export class LevelHeaderAnimation {
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
-            if (this.frames === 1) {
-                ctx.strokeText("L", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("L", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 2) {
-                ctx.strokeText("LE", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("LE", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 3) {
-                ctx.strokeText("LEV", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("LEV", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 4) {
-                ctx.strokeText("LEVE", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("LEVE", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 5) {
-                ctx.strokeText("LEVEL", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("LEVEL", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 6) {
-                ctx.strokeText("LEVEL ", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("LEVEL ", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames >= 7) {
-                ctx.strokeText("LEVEL " + game.level, canvas.width / 2, canvas.width / 2);
-                ctx.fillText("LEVEL " + game.level, canvas.width / 2, canvas.width / 2);
-            }
+            const substring = this.text.substring(0, this.frames);
+            ctx.strokeText(substring, canvas.width / 2, canvas.width / 2);
+            ctx.fillText(substring, canvas.width / 2, canvas.width / 2);
         }
     }
 }
 
 export class GameOverAnimation {
     constructor() {
-        this.visible = true;
+        this.visible = false;
         this.frames = 0;
         this.alpha = 0.95;
+        this.text = " GAME OVER";
     }
-    
+        
     playAnimation() {
-        this.visible = true;
-        this.frames = 0;
-        this.alpha = 0.95;
+        return new Promise((resolve) => {
+            this.visible = true;
+            this.frames = 0;
+            this.alpha = 0.95;
 
-        setTimeout(() => {
-            this.frameTimer = setInterval(() => {
-                this.frames++;
-    
-                if (this.frames >= 8) {
-                    setTimeout(() => {
-                        this.fadeOut();
-                    }, 2000);
-                    clearInterval(this.frameTimer);
-                }
-            }, 100);
-        }, 500);
+            setTimeout(() => {
+                this.frameTimer = setInterval(() => {
+                    this.frames++;
+
+                    if (this.frames >= this.text.length) {
+                        setTimeout(() => {
+                            this.fadeOut();
+                            resolve();
+                        }, 2000);
+                        clearInterval(this.frameTimer);
+                    }
+                }, 100);
+            }, 500);
+        });
     }
 
     fadeOut() {
@@ -231,53 +193,20 @@ export class GameOverAnimation {
             }
         }, 10);
     }
-    
+
     render() {
         if (this.visible) {
             ctx.fillStyle = `rgba(240, 240, 240, ${this.alpha})`;
             ctx.strokeStyle = `rgba(30, 30, 30, ${this.alpha})`;
-            
+
             ctx.lineWidth = 20;
             ctx.font = "100px Minimal";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
-            if (this.frames === 1) {
-                ctx.strokeText("G", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("G", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 2) {
-                ctx.strokeText("GA", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("GA", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 3) {
-                ctx.strokeText("GAM", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("GAM", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 3) {
-                ctx.strokeText("GAME", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("GAME", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 4) {
-                ctx.strokeText("GAME ", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("GAME ", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 5) {
-                ctx.strokeText("GAME O", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("GAME O", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 6) {
-                ctx.strokeText("GAME OV", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("GAME OV", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 7) {
-                ctx.strokeText("GAME OVE", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("GAME OVE", canvas.width / 2, canvas.width / 2);
-            }
-            if (this.frames === 8) {
-                ctx.strokeText("GAME OVER", canvas.width / 2, canvas.width / 2);
-                ctx.fillText("GAME OVER", canvas.width / 2, canvas.width / 2);
-            }
+            const substring = this.text.substring(0, this.frames);
+            ctx.strokeText(substring, canvas.width / 2, canvas.width / 2);
+            ctx.fillText(substring, canvas.width / 2, canvas.width / 2);
         }
     }
 }

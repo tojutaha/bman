@@ -468,12 +468,9 @@ class Player
             this.healthPoints--;
             this.updateHealthPoints();
             if(this.healthPoints <= 0) {
-                console.log("Game over");
-                // TODO: Tältä pitäisi saada kaiveltua tieto
-                // milloin animaatio framet on mennyt loppuun,
-                // jonka jälkeen voidaan näyttää tuo menu.
-                //gameOverText.playAnimation();
-                showGameOverMenu();
+                gameOverText.playAnimation().then(() => {
+                    showGameOverMenu();
+                });
             } else {
                 game.restartLevel();
             }
