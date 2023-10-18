@@ -9,6 +9,7 @@ import { renderEnemies, spawnEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game } from "./gamestate.js";
 import { updateCamera } from "./camera.js";
+import { showMainMenu } from "./page.js";
 
 ////////////////////
 // Globals
@@ -39,7 +40,7 @@ export const gameOverText = new GameOverAnimation();
 export const entrance = new EntranceAnimation();
 export const exit = new ExitAnimation();
 
-function Render(timeStamp)
+export function Render(timeStamp)
 {
     deltaTime = (timeStamp - lastTimeStamp) / 1000;
     ctx.save();
@@ -92,8 +93,9 @@ document.addEventListener("DOMContentLoaded", function ()
         // canvas.height = levelHeight * tileSize;
         ctx = canvas.getContext("2d");
         if (ctx) {
-                game.newGame();
-                Render();
+                showMainMenu();
+                //game.newGame();
+                //Render();
         } else {
             throw new Error("Could not find ctx object.");
         }

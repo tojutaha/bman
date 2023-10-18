@@ -1,7 +1,7 @@
 import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
-import { level, exit, levelHeader, entrance, gameOverText } from "./main.js";
+import { level, exit, levelHeader, entrance, gameOverText, Render } from "./main.js";
 import { showGameOverMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
@@ -30,9 +30,20 @@ export class Game {
     }
 
     newGame() {
-        // TODO: Ei ladata saveja täältä
-        // TODO: Leveli pitäisi resetoida ykköseksi
-        // TODO: Erillinen edellisen peli lataus funktio
+        localStorage.clear();
+        this.level = 1;
+        this.score = 0;
+        clearPlayers();
+        clearEnemies();
+        this.initLevel();
+        this.newLevel();    // TODO: Tämän jos kommentoi pois niin menee rikki
+        spawnPlayers();
+        updateLevelDisplay(this.level);
+        updateScoreDisplay(this.score);
+        Render();
+    }
+
+    continueGame() {
         clearPlayers();
         clearEnemies();
         this.loadGame();
@@ -41,6 +52,7 @@ export class Game {
         spawnPlayers();
         updateLevelDisplay(this.level);
         updateScoreDisplay(this.score);
+        Render();
     }
 
     initLevel() {
@@ -158,10 +170,6 @@ export class Game {
             this.level = 1;
             this.score = 0;
         });
-    }
-
-    restartGame() {
-        console.log("TODO: restartGame()");
     }
 
     // Saving & loading

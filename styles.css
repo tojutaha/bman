@@ -80,7 +80,7 @@ body {
 
 /* Main Menu */
 .main-menu-container {
-    visibility: hidden;
+    /*visibility: hidden;*/
     position: absolute;
     width: 832px;
     height: 832px;
@@ -106,7 +106,7 @@ body {
     display: flex;
     flex-direction: column;
     padding-top: 20px;
-    height: 50%;
+    height: 33%;
     justify-content: space-evenly;
 }
 

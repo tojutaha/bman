@@ -20,28 +20,26 @@ export function updateLevelDisplay(level) {
 const mainMenu = document.querySelector('.main-menu-container');
 const newGameButton = document.getElementById("newGameButton");
 const continueGameButton = document.getElementById("continueGameButton");
-const settingsButton = document.getElementById("settingsButton");
 const howToPlayButton = document.getElementById("howToPlayButton");
 
 export function showMainMenu()
 {
+    // TODO: Disable continue napille, jos savea ei ole olemassa
     mainMenu.style.visibility = 'visible';
 }
 
 newGameButton.addEventListener('click', function() {
-    console.log("New Game");
+    game.newGame();
+    mainMenu.style.visibility = 'hidden';
 });
 
 continueGameButton.addEventListener('click', function() {
-    console.log("Continue");
-});
-
-settingsButton.addEventListener('click', function() {
-    console.log("Settings");
+    game.continueGame();
+    mainMenu.style.visibility = 'hidden';
 });
 
 howToPlayButton.addEventListener('click', function() {
-    console.log("How To Play");
+    console.log("TODO: How To Play");
 });
 
 
