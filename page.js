@@ -152,6 +152,13 @@ killEnemiesButton.addEventListener("click", function() {
     })
 })
 
+let killPlayersButton = document.getElementById("kill-players");
+killPlayersButton.addEventListener("click", function() {
+    players.forEach(p => {
+        p.onDeath();
+    })
+})
+
 // Save and load
 let saveButton = document.getElementById("save");
 saveButton.addEventListener("click", function() {
