@@ -36,7 +36,9 @@ export class Game {
         this.loadGame();
         this.initLevel();
         this.newLevel();
-        spawnPlayers()
+        spawnPlayers();
+        updateLevelDisplay(this.level);
+        updateScoreDisplay(this.score);
     }
 
     initLevel() {
@@ -152,8 +154,6 @@ export class Game {
             localStorage.clear();
             this.level = 1;
             this.score = 0;
-            updateLevelDisplay(this.level);
-            updateScoreDisplay(this.score);
         });
     }
 
