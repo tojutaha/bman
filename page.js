@@ -1,5 +1,6 @@
 import { enemies } from "./enemy.js";
-import { ctx, tileSize, levelHeight, levelWidth, game } from "./main.js";
+import { ctx, tileSize, game } from "./main.js";
+import { levelHeight, levelWidth } from "./gamestate.js";
 import { players } from "./player.js";
 
 ////////////////////
