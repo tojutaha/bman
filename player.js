@@ -7,6 +7,10 @@ import { clamp, colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, 
 import { enemies, movementMode } from "./enemy.js";
 import { showGameOverMenu } from "./page.js";
 
+
+// TODO: Selvitä miksi game overin jälkeen restarttia painettaessa
+//       pelaaja ei pysty liikkumaan...
+
 const godMode = false;
 
 export const Direction = {
@@ -60,7 +64,6 @@ class Player
         // Animations
         this.spriteSheet = new Image();
         this.spriteSheet.src = sprite || "./assets/player0.png";
-        this.mirroredFrames = [];
         this.frameWidth = 128/4;
         this.frameHeight = 248/4;
         this.totalFrames = 4;
@@ -68,29 +71,8 @@ class Player
         this.animationSpeed = 150;
         this.lastTime = 0;
 
-        this.spriteSheet.onload = () => {
-            for (let i = 0; i < this.totalFrames; i++) {
-                const mirroredCanvas = document.createElement('canvas');
-                mirroredCanvas.width = this.frameWidth;
-                mirroredCanvas.height = this.frameHeight;
-                const mirroredCtx = mirroredCanvas.getContext('2d');
-                mirroredCtx.scale(-1, 1);
-                mirroredCtx.drawImage(
-                    this.spriteSheet,
-                    i * this.frameWidth,
-                    0,
-                    this.frameWidth,
-                    this.frameHeight,
-                    -this.frameWidth,
-                    0,
-                    this.frameWidth,
-                    this.frameHeight
-                );
-                this.mirroredFrames.push(mirroredCanvas);
-            }
-        }
-
         // HealthPoints
+        this.isDead = false;
         this.healthPoints = 3;
         this.updateHealthPoints();
 
