@@ -305,8 +305,8 @@ class Player
 
         if (playerTile.isExit) {
             if (playerTile.isOpen) {
-                game.nextLevel();
                 collides = true;
+                game.nextLevel();
             }
         }
 

@@ -106,7 +106,9 @@ function populateSoftWalls(result, softWallTotal) {
         const y = Math.floor(Math.random() * levelHeight);
         const tile = result[x][y];
 
-        if (tile.type === "SoftWall" && game.level != "Z") {    // TODO: tilet luodaan ennen kuin level päätetään
+        // NOTE: Tää ei koskaan menis läpi z-levelissä ja ois päättymätön luuppi
+        //if (tile.type === "SoftWall" && game.level != "Z") {    // TODO: tilet luodaan ennen kuin level päätetään
+        if (tile.type === "SoftWall") {    // TODO: tilet luodaan ennen kuin level päätetään
             // Create the exit
             if (!exitCreated) {
                 console.info("The door is in", tile.x, tile.y);
