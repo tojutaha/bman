@@ -1,4 +1,5 @@
-import { canvas, ctx, deltaTime, game, level, levelHeight, levelWidth, tileSize } from "./main.js";
+import { canvas, ctx, deltaTime, game, level, tileSize } from "./main.js";
+import { levelHeight, levelWidth } from "./gamestate.js";
 import { Direction, players } from "./player.js";
 import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
 import { requestPath } from "./pathfinder.js";

@@ -7,6 +7,8 @@ import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./pla
 import { createTiles, exitLocation} from "./tile.js";
 
 export let pause = false;
+export let levelWidth = 13;
+export let levelHeight = 13;
 
 export class Game {
     constructor() {

@@ -1,4 +1,6 @@
-import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet } from "./main.js";
+import { canvas, ctx, level, tileSize, spriteSheet } from "./main.js";
+import { levelHeight, levelWidth } from "./gamestate.js";
+
 
 export function isWalkable(x, y)
 {

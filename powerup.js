@@ -1,4 +1,6 @@
-import { ctx, spriteSheet, level, levelHeight, levelWidth, tileSize } from "./main.js";
+import { ctx, spriteSheet, level, tileSize } from "./main.js";
+import { levelHeight, levelWidth } from "./gamestate.js";
+
 
 export class Powerup
 {

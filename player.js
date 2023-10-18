@@ -1,4 +1,5 @@
-import { canvas, ctx, level, levelHeight, levelWidth, tileSize, spriteSheet, deltaTime, game, gameOverText } from "./main.js";
+import { canvas, ctx, level, tileSize, spriteSheet, deltaTime, game, gameOverText } from "./main.js";
+import { levelHeight, levelWidth } from "./gamestate.js";
 import { PlayAudio } from "./audio.js";
 import { Bomb, clearBombs, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";

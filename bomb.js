@@ -1,4 +1,5 @@
-import { ctx, level, tileSize, spriteSheet, levelWidth, levelHeight, game } from "./main.js";
+import { ctx, level, tileSize, spriteSheet, game } from "./main.js";
+import { levelHeight, levelWidth } from "./gamestate.js";
 import { PlayAudio } from "./audio.js";
 import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo } from "./utils.js";

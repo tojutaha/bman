@@ -1,4 +1,5 @@
-import { canvas, ctx, tileSize, levelHeight, levelWidth, level, spriteSheet, game } from "./main.js";
+import { canvas, ctx, tileSize, level, spriteSheet, game } from "./main.js";
+import { levelHeight, levelWidth } from "./gamestate.js";
 import { exitLocation } from "./tile.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 

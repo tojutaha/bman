@@ -1,5 +1,6 @@
-import { canvas, ctx, tileSize, levelHeight, levelWidth, softTilePercent, powerUpCount, cagePlayers, game } from "./main.js";
+import { canvas, ctx, tileSize, softTilePercent, powerUpCount, cagePlayers, game } from "./main.js";
 import { randomPowerup } from "./powerup.js";
+import { levelHeight, levelWidth } from "./gamestate.js";
 
 export let exitLocation = undefined;
 

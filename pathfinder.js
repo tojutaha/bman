@@ -1,4 +1,4 @@
-import { canvas, ctx, level, levelHeight, levelWidth, tileSize } from "./main.js";
+import { canvas, ctx, level, tileSize } from "./main.js";
 import { enemies } from "./enemy.js";
 import { getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, getNeigbouringTiles_linear, getNeigbouringTiles_diagonal } from "./utils.js";
 
