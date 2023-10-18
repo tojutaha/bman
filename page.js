@@ -15,6 +15,36 @@ export function updateLevelDisplay(level) {
 }
 
 ////////////////////
+// Main menu / buttons
+const mainMenu = document.querySelector('.main-menu-container');
+const newGameButton = document.getElementById("newGameButton");
+const continueGameButton = document.getElementById("continueGameButton");
+const settingsButton = document.getElementById("settingsButton");
+const howToPlayButton = document.getElementById("howToPlayButton");
+
+export function showMainMenu()
+{
+    mainMenu.style.visibility = 'visible';
+}
+
+newGameButton.addEventListener('click', function() {
+    console.log("New Game");
+});
+
+continueGameButton.addEventListener('click', function() {
+    console.log("Continue");
+});
+
+settingsButton.addEventListener('click', function() {
+    console.log("Settings");
+});
+
+howToPlayButton.addEventListener('click', function() {
+    console.log("How To Play");
+});
+
+
+////////////////////
 // Game over menu / buttons
 const gameOverMenu = document.querySelector(".game-over-container");
 const restartButton = document.getElementById("restartButton");
@@ -27,14 +57,14 @@ export function showGameOverMenu()
     gameOverMenu.style.visibility = 'visible';
 }
 
-restartButton.addEventListener('click', function () {
+restartButton.addEventListener('click', function() {
     gameOverMenu.style.visibility = 'hidden';
     game.newGame();
 });
 
-exitButton.addEventListener('click', function () {
+exitButton.addEventListener('click', function() {
     gameOverMenu.style.visibility = 'hidden';
-    console.log("TODO: goto main menu");
+    showMainMenu();
 });
 
 
