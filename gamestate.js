@@ -7,7 +7,7 @@ import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./pla
 import { createTiles, exitLocation} from "./tile.js";
 
 export let pause = false;
-export let levelWidth = 13;
+export let levelWidth = 19;
 export let levelHeight = 13;
 
 export class Game {
@@ -37,7 +37,7 @@ export class Game {
         clearEnemies();
         this.loadGame();
         this.initLevel();
-        this.newLevel();
+        this.newLevel();    // TODO: Tämän jos kommentoi pois niin menee rikki
         spawnPlayers();
         updateLevelDisplay(this.level);
         updateScoreDisplay(this.score);
@@ -50,9 +50,10 @@ export class Game {
         }
 
         fetchLevelInfo(this.level).then((tilesObject) => {
-            // console.log(tilesObject);
-            // TODO: tässä säätämiset. Missä määritetään levelWidth ja -height?
-            // createTiles(tilesObject);
+            console.log(tilesObject);
+            levelWidth = tilesObject.width;
+            levelHeight = tilesObject.height;
+            this.newLevel();    // TODO: kutsuakko tässä vai..?
         });
 
         fetchEnemies(this.level).then((enemiesArray) => {
@@ -108,7 +109,7 @@ export class Game {
         this.numOfEnemies = -1;
         this.level++;
         clearBombs();
-        this.newLevel();
+        // this.newLevel();
         this.initLevel();
         updateLevelDisplay(this.level);
 
