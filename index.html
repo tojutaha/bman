@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script type="module" src="main.js"></script>
     <script type="module" src="page.js"></script>
-    <title>Bomberman</title>
+    <title>Not Bomberman</title>
 </head>
 <body>
     <div class="info-displays text-display">
@@ -19,11 +19,22 @@
     </div>
     <div class="canvas-container">
         <canvas id="canvas" width="832" height="832"></canvas>
+        <div class="main-menu-container">
+            <div class="main-menu-content">
+                <h1>NOT BOMBERMAN</h1>
+                <div class="main-menu-button-container">
+                    <button id="newGameButton">New Game</button>
+                    <button id="continueGameButton">Continue</button>
+                    <button id="settingsButton">Settings</button>
+                    <button id="howToPlayButton">How To Play</button>
+                </div>
+            </div>
+        </div>
         <div class="game-over-container">
             <div class="game-over-content">
                 <h1>GAME OVER!</h1>
                 <p id="game-over-score">Score: 12345</p>
-                <div class="button-container">
+                <div class="game-overbutton-container">
                     <button id="restartButton">Restart</button>
                     <button id="exitButton">Exit</button>
                 </div>
