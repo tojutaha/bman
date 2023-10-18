@@ -272,6 +272,7 @@ class Enemy
         }
 
         game.decreaseEnemies();
+        game.checkGameState();
     }
 
     update(currentTime, x, y) {
@@ -379,6 +380,8 @@ export function spawnEnemies(array)
             typeIndex = 0;
         }
     }
+
+    game.numOfEnemies = enemies.length;
 }
 
 // Spawn enemies at location

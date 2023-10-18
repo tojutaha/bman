@@ -25,6 +25,11 @@ const howToPlayButton = document.getElementById("howToPlayButton");
 export function showMainMenu()
 {
     // TODO: Disable continue napille, jos savea ei ole olemassa
+    if (localStorage.length === 0) {
+        console.log("Local storage is empty.");
+    } else {
+        console.log("Local storage is not empty.");
+    }
     mainMenu.style.visibility = 'visible';
 }
 
