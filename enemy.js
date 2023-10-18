@@ -60,7 +60,7 @@ class Enemy
         this.frameHeight = 256/4;
         this.totalFrames = 3;
         this.currentFrame = 0;
-        this.animationSpeed = 150; // TODO: Tweak
+        this.animationSpeed = 150;
         this.lastTime = 0;
 
     }
@@ -244,7 +244,6 @@ class Enemy
 
     die() {
 
-        // TODO: Oikeat scoret tänne
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
                 game.increaseScore(500);
@@ -363,7 +362,6 @@ export function spawnEnemies(array)
     const maxRadius = 25*tileSize;
     const minRadius = 10*tileSize;
 
-    // TODO: Muut pelaajat?
     const player = players[0];
     for (let i = 0; i < amount; i++) {
         const random = getRandomWalkablePointInRadius({x: player.x,
