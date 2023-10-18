@@ -147,6 +147,7 @@ body {
 
 .game-over-content #game-over-score {
     padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .game-over-content .game-over-button-container {
