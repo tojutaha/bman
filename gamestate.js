@@ -1,8 +1,8 @@
 import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
-import { level, exit, levelHeader, entrance } from "./main.js";
-import { updateLevelDisplay, updateScoreDisplay } from "./page.js";
+import { level, exit, levelHeader, entrance, gameOverText } from "./main.js";
+import { showGameOverMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
 
@@ -144,6 +144,17 @@ export class Game {
             this.toggleDoor();
             PlayAudio("assets/audio/exitopen01.wav");
         }
+    }
+
+    over() {
+        gameOverText.playAnimation().then(() => {
+            showGameOverMenu();
+            localStorage.clear();
+            this.level = 1;
+            this.score = 0;
+            updateLevelDisplay(this.level);
+            updateScoreDisplay(this.score);
+        });
     }
 
     restartGame() {

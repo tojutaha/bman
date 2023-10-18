@@ -472,9 +472,10 @@ class Player
             this.healthPoints--;
             this.updateHealthPoints();
             if(this.healthPoints <= 0) {
-                gameOverText.playAnimation().then(() => {
-                    showGameOverMenu();
-                });
+                game.over();
+                // gameOverText.playAnimation().then(() => {
+                //     showGameOverMenu();
+                // });
             } else {
                 game.restartLevel();
             }
