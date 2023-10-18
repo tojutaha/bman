@@ -1,8 +1,8 @@
 ////////////////////
 // Imports
 import { createTiles } from "./tile.js";
-import { renderWalls, renderFloor, LevelHeaderAnimation, EntranceAnimation, ExitAnimation, GameOverAnimation } from "./level.js";
-// import { LevelHeaderAnimation, GameOverAnimation } from "./textanimations.js"; // TODO: siirto tänne tai jonnekkin
+import { renderWalls, renderFloor, EntranceAnimation, ExitAnimation } from "./level.js";
+import { LevelHeaderAnimation, GameOverAnimation } from "./ui_animations.js";
 import { renderPowerups } from "./powerup.js";
 import { players, renderPlayer, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { renderEnemies, spawnEnemies } from "./enemy.js";
