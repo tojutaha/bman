@@ -29,11 +29,15 @@ export const players = [];
 
 class Player
 {
-    constructor(id, x, y, keybinds, sprite) {
+    constructor(id, startX, startY, keybinds, sprite) {
+
+        // Spawn point
+        this.startX = startX || tileSize;
+        this.startY = startY || tileSize;
 
         this.id = id;
-        this.x = x;
-        this.y = y;
+        this.x = this.startX;
+        this.y = this.startY;
         this.w = tileSize-2;
         this.h = tileSize-2;
         this.dx = 0;
@@ -500,30 +504,18 @@ export function findPlayerById(id) {
     return players[index];
 }
 
-const StartPos = {
-    // TODO: taikanumerot pois, mainin settingejä ei deklaroitu vielä tässä vaiheessa?
-    // Top left
-    P0X: 64,
-    P0Y: 64,
-
-    // Bottom right
-    // P1X: (levelWidth-2)*tileSize,
-    // P1Y: (levelHeight-2)*tileSize,
-}
-
 export function resetPlayerPositions()
 {
     players.forEach((p) => {
-        if (p.id === 0) {
-            p.x = StartPos.P0X;
-            p.y = StartPos.P0Y;
-        }
+        p.x = p.startX;
+        p.y = p.startY;
     });
 }
 
 export function spawnPlayers()
 {
-    players.push(new Player(0, StartPos.P0X, StartPos.P0Y, keybinds1, "./assets/player0.png"));
+    // NOTE: startX, startY = null menee aina vasempaan yläkulmaan tileSizen mukaan
+    players.push(new Player(0, null, null, keybinds1, "./assets/player0.png"));
     // players.push(new Player(1, (levelWidth-2)*tileSize, (levelHeight-2)*tileSize, keybinds2));
     for (let i = 0; i < players.length; i++) {
         document.addEventListener("keyup", function(event) {
