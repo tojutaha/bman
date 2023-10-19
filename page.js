@@ -1,5 +1,5 @@
 import { enemies } from "./enemy.js";
-import { ctx, tileSize, game, setGlobalPause } from "./main.js";
+import { ctx, tileSize, game, setGlobalPause, globalPause } from "./main.js";
 import { lastLevel, levelHeight, levelWidth, levels } from "./gamestate.js";
 import { players } from "./player.js";
 
@@ -92,8 +92,9 @@ const pauseMenuContinueButton = document.getElementById("pauseMenu-ContinueButto
 const pauseMenuExitButton = document.getElementById("pauseMenu-ExitButton");
 
 export function showPauseMenu() {
-    pauseMenu.style.visibility = 'visible';
-    setGlobalPause(true);
+    setGlobalPause(!globalPause);
+    const visibility = globalPause ? 'visible' : 'hidden';
+    pauseMenu.style.visibility = visibility;
 }
 
 pauseMenuContinueButton.addEventListener('click', function() {
