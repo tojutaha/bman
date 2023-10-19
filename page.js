@@ -164,15 +164,10 @@ killPlayersButton.addEventListener("click", function() {
     })
 })
 
-// Save and load
-let saveButton = document.getElementById("save");
-saveButton.addEventListener("click", function() {
-    game.saveGame();
-})
-
-let loadButton = document.getElementById("load");
-loadButton.addEventListener("click", function() {
-    game.loadGame();
+// Next level
+let nxtLvlButton = document.getElementById("next-level");
+nxtLvlButton.addEventListener("click", function() {
+    game.nextLevel();
 })
 
 // Delete save
