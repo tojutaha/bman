@@ -8,7 +8,7 @@ import { renderEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game, fetchLevels } from "./gamestate.js";
 import { updateCamera } from "./camera.js";
-import { showMainMenu } from "./page.js";
+import { showMainMenu, showPauseMenu } from "./page.js";
 
 ////////////////////
 // Globals
@@ -97,8 +97,7 @@ document.addEventListener("DOMContentLoaded", function ()
 
 document.addEventListener('keyup', function(event) {
     if (event.key === 'Escape') {
-        // TODO: Pause menu?
-        globalPause = !globalPause;
+        showPauseMenu();
     }
 });
 

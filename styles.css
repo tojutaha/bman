@@ -129,6 +129,48 @@ body {
     background: inherit;
 }
 
+/* Pause menu */
+.pause-menu-container {
+    visibility: hidden;
+    position: absolute;
+    width: 832px;
+    height: 832px;
+    background: black;
+    z-index: 999;
+}
+
+.pause-menu-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: white;
+    align-content: center;
+}
+
+.pause-menu-content h1 {
+    color: white;
+}
+
+.pause-menu-content .pause-menu-button-container {
+    display: flex;
+    padding-top: 100px;
+    width: 300px;
+    justify-content: space-around;
+}
+
+.pause-menu-content button {
+    width: 100px;
+    height: 50px;
+    background: black;
+    color: white;
+}
+
+.pause-menu-content button:hover {
+    background: grey;
+}
+
 /* Game Over Menu */
 .game-over-container {
     visibility: hidden;
