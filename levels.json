@@ -20,7 +20,7 @@
         "tiles": {
             "width": 13,
             "height": 13,
-            "type": "forest"
+            "type": "forest_day"
         }
     },
     "2": {
@@ -32,7 +32,7 @@
         "tiles": {
             "width": 17,
             "height": 13,
-            "type": "forest"
+            "type": "forest_night"
         }
     },
     "3": {
@@ -44,7 +44,7 @@
         "tiles": {
             "width": 19,
             "height": 13,
-            "type": "forest"
+            "type": "forest_night"
         }
     },
     "Z": {
@@ -56,7 +56,7 @@
         "tiles": {
             "width": 13,
             "height": 13,
-            "type": "forest"
+            "type": "forest_night"
         }
     }
 }

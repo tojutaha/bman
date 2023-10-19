@@ -1,5 +1,5 @@
 import { canvas, ctx, level, tileSize, spriteSheet, deltaTime, game, gameOverText } from "./main.js";
-import { levelHeight, levelWidth } from "./gamestate.js";
+import { levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { PlayAudio } from "./audio.js";
 import { Bomb, clearBombs, tilesWithBombs } from "./bomb.js";
 import { Powerup, powerups } from "./powerup.js";
@@ -94,14 +94,14 @@ class Player
         if (this.isDead) return;
 
 /// Light
-
+    if (levelType != "forest_day") {
         // Create radial gradient
         var radialGradient = ctx.createRadialGradient(this.x + this.w / 2,
-                                                      this.y + this.h / 2,
-                                                      this.radius/4,
-                                                      this.x + this.w / 2,
-                                                      this.y + this.h / 2,
-                                                      this.radius);
+                                                        this.y + this.h / 2,
+                                                        this.radius/4,
+                                                        this.x + this.w / 2,
+                                                        this.y + this.h / 2,
+                                                        this.radius);
 
         radialGradient.addColorStop(0,   'rgba(' + this.rgb.red + ',' + this.rgb.green + ',' + this.rgb.blue + ',0.5)');
         radialGradient.addColorStop(0.5, 'rgba(' + this.rgb2.red + ',' + this.rgb2.green + ',' + this.rgb2.blue + ',0.35)');
@@ -115,6 +115,7 @@ class Player
         ctx.beginPath();
         ctx.arc(this.x + this.w / 2, this.y + this.h / 2, this.radius, 0, Math.PI*2);
         ctx.fill();
+    }
 ///
         const nextX = this.x + this.dx;
         const nextY = this.y + this.dy;

@@ -1,16 +1,21 @@
 import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, spawnEnemies } from "./enemy.js";
+import { setTextures } from "./level.js";
 import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause } from "./main.js";
 import { showGameOverMenu, showMainMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
 
 export let pause = false;
-export let levelWidth = 19;
-export let levelHeight = 13;
+
+// Level settings
 export const levels = [];
 export let lastLevel = false;
+export let levelWidth = 13;
+export let levelHeight = 13;
+export let levelType = "none";
+
 
 export class Game {
     constructor() {
@@ -66,6 +71,9 @@ export class Game {
 
         levelHeight = levels[this.level].height;
         levelWidth = levels[this.level].width;
+        levelType = levels[this.level].type;
+        console.log(levelType);
+        setTextures();
 
         let newLevel = createTiles();
         level.length = 0;

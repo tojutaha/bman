@@ -1,12 +1,29 @@
-import { canvas, ctx, tileSize, level, spriteSheet, game } from "./main.js";
-import { levelHeight, levelWidth } from "./gamestate.js";
+import { canvas, ctx, tileSize, level, spriteSheet } from "./main.js";
+import { levelHeight, levelType, levelWidth, levels } from "./gamestate.js";
 import { exitLocation } from "./tile.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 
 const hardWallTexture = new Image();
-hardWallTexture.src = "./assets/stone_brick_05.png"
 const softWallTexture = new Image();
-softWallTexture.src = "./assets/stone_brick_03.png"
+const floorTexture = new Image();
+
+export function setTextures() {
+    if (levelType === "forest_day") {
+        floorTexture.src = "./assets/grass_01.png";
+        hardWallTexture.src = "./assets/stone_brick_04.png"
+        softWallTexture.src = "./assets/stone_brick_02.png"
+    } 
+    else if (levelType === "forest_night") {
+        floorTexture.src = "./assets/cobblestone_03.png";
+        hardWallTexture.src = "./assets/stone_brick_05.png"
+        softWallTexture.src = "./assets/stone_brick_03.png"
+    } else {
+        floorTexture.src = "./assets/cobblestone_03.png";
+        hardWallTexture.src = "./assets/stone_brick_05.png"
+        softWallTexture.src = "./assets/stone_brick_03.png"
+    }
+}
+
 export function renderWalls()
 {
     for (let x = 0; x < levelWidth; x++) {
@@ -27,10 +44,7 @@ export function renderWalls()
     drawCoordinates(coordsToggle);
 }
 
-const floorTexture = new Image();
-floorTexture.src = "./assets/cobblestone_03.png";
-//floorTexture.src = "./assets/grass_01.png";
-// Suurempi arvo kuin tileSize peittää näkyvän toistamisen paremmin.
+
 const floorTextureSize = 128;
 export function renderFloor()
 {
