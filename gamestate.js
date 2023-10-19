@@ -9,7 +9,8 @@ import { createTiles, exitLocation} from "./tile.js";
 export let pause = false;
 export let levelWidth = 19;
 export let levelHeight = 13;
-const levels = [];
+export const levels = [];
+export let lastLevel = false;
 
 export class Game {
     constructor() {
@@ -64,15 +65,16 @@ export class Game {
         if (exitLocation.isOpen) {
             this.toggleDoor();
         };
-        // console.info("Initial numOfEnemies:", this.numOfEnemies, levelEnemies);
     }
     
     newLevel() {
         console.log("Level", this.level, levels[this.level]);
-        // Endgame
-        if (this.level > 3 || this.level === "Z") {   // TODO: Numero
-            this.level = "Z";
+        if (this.level >= levels.length - 1) {
+            lastLevel = true;
         }
+
+        clearEnemies();
+        clearBombs();
 
         levelHeight = levels[this.level].height;
         levelWidth = levels[this.level].width;
@@ -114,24 +116,28 @@ export class Game {
         updateScoreDisplay(this.score);
     }
     
-    nextLevel() {   // TODO: yks iso sekamelska tää
+    nextLevel() {
+        if (lastLevel) {
+            return;
+        }
+        
         this.level++;
         this.newLevel();
-        // resetPlayerPositions();
-        // console.log("Next level:", this.level);
-        clearBombs();
-        // this.newLevel();
         this.initLevel();
         updateLevelDisplay(this.level);
+        this.saveGame();
 
-        if (this.level != "Z") {
-            this.saveGame();
+        if (!lastLevel) {
+            players.forEach(p => {
+                p.healthPoints = 3;
+                p.updateHealthPoints();
+            });
+        } else {
+            players.forEach(p => {
+                p.healthPoints = 1;
+                p.updateHealthPoints();
+            });
         }
-
-        players.forEach(p => {
-            p.healthPoints = 3;
-            p.updateHealthPoints();
-        });
     }
     
     increaseEnemies() {

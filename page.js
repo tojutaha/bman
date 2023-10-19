@@ -1,6 +1,6 @@
 import { enemies } from "./enemy.js";
 import { ctx, tileSize, game } from "./main.js";
-import { levelHeight, levelWidth } from "./gamestate.js";
+import { lastLevel, levelHeight, levelWidth, levels } from "./gamestate.js";
 import { players } from "./player.js";
 
 ////////////////////
@@ -12,7 +12,12 @@ export function updateScoreDisplay(score) {
 
 let levelDisplay = document.getElementById("level");
 export function updateLevelDisplay(level) {
-    levelDisplay.textContent = `LEVEL ${level}`;
+    if (!lastLevel)
+    {
+        levelDisplay.textContent = `LEVEL ${level}`;
+    } else {
+        levelDisplay.textContent = "HAHAHA YOU'RE GONNA DIE";
+    }
 }
 
 ////////////////////

@@ -1,3 +1,4 @@
+import { lastLevel, levels } from "./gamestate.js";
 import { ctx, game } from "./main.js";
 
 export class LevelHeaderAnimation {
@@ -9,10 +10,14 @@ export class LevelHeaderAnimation {
     }
     
     playAnimation() {
-        this.visible = true;
+        this.visible = true;    // TODO: turha atm
         this.frames = 0;
         this.alpha = 0.95;
-        this.text = ` LEVEL ${game.level}`;
+        if (!lastLevel) {
+            this.text = ` LEVEL ${game.level}`;
+        } else {
+            this.text = " LEVEL Z";
+        }
 
         setTimeout(() => {
             this.frameTimer = setInterval(() => {
@@ -21,7 +26,7 @@ export class LevelHeaderAnimation {
                 if (this.frames >= this.text.length) {
                     setTimeout(() => {
                         this.fadeOut();
-                    }, 2000);
+                    }, 2100);
                     clearInterval(this.frameTimer);
                 }
             }, 100);
@@ -55,7 +60,7 @@ export class LevelHeaderAnimation {
     }
 }
 
-export class GameOverAnimation {
+export class GameOverAnimation {    // TODO: laske keskikohta kamerasta
     constructor() {
         this.visible = false;
         this.frames = 0;
