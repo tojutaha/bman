@@ -1,6 +1,6 @@
-import { tileSize, softTilePercent, powerUpCount, cagePlayer, cageMultiplayer } from "./main.js";
+import { tileSize, cagePlayer, cageMultiplayer } from "./main.js";
 import { randomPowerup } from "./powerup.js";
-import { levelHeight, levelWidth } from "./gamestate.js";
+import { levelHeight, levelPowerup, levelWidth, softwallPercent, powerupCount } from "./gamestate.js";
 
 export let exitLocation = undefined;
 
@@ -18,7 +18,6 @@ function Tile(x, y, isWalkable, isDeadly, hasPowerup, powerup, type) {
     this.hasPowerup = hasPowerup || false;
     this.powerup = powerup || "None";
     this.type = type || TileType.FLOOR
-    // TODO: tekstuurit jne vois laitella myös tänne.
 };
 
 export function createTiles() {
@@ -60,7 +59,7 @@ function createSoftWalls(result, hardWallTotal) {
     
     const EMPTY_CORNERS = 12;
     let floorLeft = levelHeight * levelWidth - hardWallTotal - EMPTY_CORNERS;
-    let softWallsLeft = Math.floor(floorLeft * softTilePercent);
+    let softWallsLeft = Math.floor(floorLeft * softwallPercent);
     
     if (cagePlayer) {
         createCage(result);
@@ -99,10 +98,10 @@ function populateSoftWalls(result, softWallTotal) {
 
     // If settings have more powerups than softwalls generated,
     // the amount of powerups is the amount of softwalls -1 for exit.
-    if (powerUpCount >= softWallTotal) {
+    if (powerupCount >= softWallTotal) {
         powerupsLeft = softWallTotal - 1;
     } else {
-        powerupsLeft = powerUpCount;
+        powerupsLeft = powerupCount;
     }
 
     while (powerupsLeft > 0) {
@@ -123,8 +122,12 @@ function populateSoftWalls(result, softWallTotal) {
             }
             // Create powerups
             else if (!tile.hasPowerup && !tile.isExit) {
-                tile.powerup = randomPowerup();
-                tile.hasPowerup = randomPowerup();
+                if (levelPowerup === "random") {
+                    tile.powerup = randomPowerup();
+                } else {
+                    tile.powerup = levelPowerup;
+                }
+                tile.hasPowerup = true;
                 powerupsLeft--;
             }
         }
@@ -165,10 +168,4 @@ function createMultiplayerCage(result) {
     result[levelWidth - 4][levelHeight - 2].isWalkable = false;
     result[levelWidth - 2][levelHeight - 4].type = "SoftWall";
     result[levelWidth - 2][levelHeight - 4].isWalkable = false;
-}
-
-// TODO: savestate
-// Exit loader
-export function loadExit(loadedExit) {
-    exitLocation = loadedExit;
 }

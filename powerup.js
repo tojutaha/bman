@@ -13,20 +13,20 @@ export class Powerup
     pickup(tile, player) {
         tile.hasPowerup = false;
 
-        if (tile.powerup === "ExtraBomb") {
+        if (tile.powerup === "bomb") {
             this.maxBombs += 1;
         }
-        else if (tile.powerup === "ExtraRange") {
+        else if (tile.powerup === "range") {
             this.maxRange += 1;
         }
 
-        else if (tile.powerup === "ExtraSpeed") {
+        else if (tile.powerup === "speed") {
             player.speed += 40;
         }
     }
 }
 
-export const powerups = ["ExtraBomb", "ExtraRange", "ExtraSpeed"];
+export const powerups = ["bomb", "range", "speed"];
 
 export function randomPowerup() {
     return powerups[Math.floor(Math.random() * powerups.length)];
@@ -43,13 +43,13 @@ export function renderPowerups()
             const currentTile = level[x][y];
 
             if (currentTile.hasPowerup) {
-                if (currentTile.powerup === "ExtraBomb") {
+                if (currentTile.powerup === "bomb") {
                     ctx.drawImage(spriteSheet, 0, tileSize*4, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
-                else if (currentTile.powerup === "ExtraRange") {
+                else if (currentTile.powerup === "range") {
                     ctx.drawImage(spriteSheet, tileSize, tileSize*4, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
-                else if (currentTile.powerup === "ExtraSpeed") {
+                else if (currentTile.powerup === "speed") {
                     ctx.drawImage(spriteSheet, tileSize*2, tileSize*4, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
             }

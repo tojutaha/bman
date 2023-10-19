@@ -8,7 +8,7 @@ import { renderEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game, fetchLevels } from "./gamestate.js";
 import { updateCamera } from "./camera.js";
-import { showMainMenu, showPauseMenu } from "./page.js";
+import { showPauseMenu } from "./page.js";
 
 ////////////////////
 // Globals
@@ -25,8 +25,6 @@ export function setGlobalPause(value) {
 ////////////////////
 // Settings
 export const tileSize = 64;
-export const softTilePercent = 0.3;
-export const powerUpCount = 1;
 export const cagePlayer = true;
 export const cageMultiplayer = false;
 
@@ -59,13 +57,13 @@ function Render(timeStamp)
 
         updateCamera();
         renderFloor();
-        renderPowerups();
         entrance.render();
+        renderBombs();
+        renderPowerups();
         renderPlayer(timeStamp);
         renderWalls();
         exit.render();
         renderEnemies(timeStamp);
-        renderBombs();
         renderExplosions();
         levelHeader.render();
         gameOverText.render();

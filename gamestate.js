@@ -15,6 +15,9 @@ export let lastLevel = false;
 export let levelWidth = 13;
 export let levelHeight = 13;
 export let levelType = "none";
+export let levelPowerup = "random";
+export let softwallPercent = 0.1;
+export let powerupCount = 2;
 
 
 export class Game {
@@ -61,20 +64,23 @@ export class Game {
     
     newLevel() {
         setGlobalPause(true);
-        console.log("Level", this.level, levels[this.level]);
+        clearEnemies();
+        clearBombs();
+ 
+        const levelData = levels[this.level];
+        levelHeight = levelData.height;
+        levelWidth = levelData.width;
+        levelType = levelData.type;
+        levelPowerup = levelData.powerup;
+        powerupCount = levelData.powerupCount;
+        softwallPercent = levelData.softwallPercent;
+        setTextures();
+        console.log("Level", this.level, levelData);
+
         if (this.level >= levels.length - 1) {
             lastLevel = true;
         } else lastLevel = false;
-
-        clearEnemies();
-        clearBombs();
-
-        levelHeight = levels[this.level].height;
-        levelWidth = levels[this.level].width;
-        levelType = levels[this.level].type;
-        console.log(levelType);
-        setTextures();
-
+        
         let newLevel = createTiles();
         level.length = 0;
         Array.prototype.push.apply(level, newLevel);
@@ -225,22 +231,3 @@ export async function fetchLevels() {
     showMainMenu();
     console.log("Levels fetched and ready.");
 }
-
-
-// orig
-// async function fetchEnemies(lvl) {
-//     const response = await fetch("levels.json");
-//     const data = await response.json();
-//     const enemiesObject = data[lvl].enemies;
-
-//     const enemiesArray = Object.entries(enemiesObject).flatMap(([key, value]) => Array(value).fill(key));
-//     return enemiesArray;
-// }
-
-// async function fetchLevelInfo(lvl) {
-//     const response = await fetch("levels.json");
-//     const data = await response.json();
-//     const tilesObject = data[lvl].tiles;
-
-//     return tilesObject;
-// }

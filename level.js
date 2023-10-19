@@ -7,6 +7,7 @@ const hardWallTexture = new Image();
 const softWallTexture = new Image();
 const floorTexture = new Image();
 
+
 export function setTextures() {
     if (levelType === "forest_day") {
         floorTexture.src = "./assets/grass_01.png";
@@ -84,6 +85,7 @@ export class EntranceAnimation {
         ctx.drawImage(doorAnimation, 0, frameH * this.frames, frameW, frameH, 0, tileSize, frameW, frameH);
     }
 }
+
 
 export class ExitAnimation {
     constructor() {
