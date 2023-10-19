@@ -48,12 +48,10 @@ export class Game {
     continueGame() {
         clearPlayers();
         clearEnemies();
+        spawnPlayers();
         this.loadGame();
         this.newLevel();
-        spawnPlayers();
         this.initLevel();
-        updateLevelDisplay(this.level);
-        updateScoreDisplay(this.score);
         Render();
     }
 
@@ -125,9 +123,10 @@ export class Game {
         this.newLevel();
         this.initLevel();
         updateLevelDisplay(this.level);
-        this.saveGame();
-
+        
         if (!lastLevel) {
+            // No saving on level Z
+            this.saveGame();
             players.forEach(p => {
                 p.healthPoints = 3;
                 p.updateHealthPoints();
@@ -199,7 +198,6 @@ export class Game {
 }
 
 function loadPowerups(loadedPlayers) {
-    console.log("called loadPowerups (TODO: tää ei toimi)");
     for (let i = 0; i < players.length; i++) {
         players[i].speed = loadedPlayers[i].speed;
         players[i].powerup.maxBombs = loadedPlayers[i].powerup.maxBombs;
@@ -227,6 +225,7 @@ export async function fetchLevels() {
     }
     console.log("Levels fetched and ready.");
 }
+
 
 // orig
 // async function fetchEnemies(lvl) {
