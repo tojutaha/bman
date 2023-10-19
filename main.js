@@ -16,6 +16,11 @@ export let canvas;
 export let ctx;
 export let game = new Game();
 export let level = [];
+let globalPause = true;
+// Tarttee setterin koska JS..
+export function setGlobalPause(value) {
+    globalPause = value;
+}
 
 ////////////////////
 // Settings
@@ -40,7 +45,7 @@ export const gameOverText = new GameOverAnimation();
 export const entrance = new EntranceAnimation();
 export const exit = new ExitAnimation();
 
-export function Render(timeStamp)
+function Render(timeStamp)
 {
     deltaTime = (timeStamp - lastTimeStamp) / 1000;
     ctx.save();
@@ -50,30 +55,21 @@ export function Render(timeStamp)
 
     ctx.restore();
 
-    updateCamera();
-    renderFloor();
-    renderPowerups();
-    entrance.render();
-    renderPlayer(timeStamp);
-    renderWalls();
-    exit.render();
-    renderEnemies(timeStamp);
-    renderBombs();
-    renderExplosions();
-    levelHeader.render();
-    gameOverText.render();
+    if(!globalPause) {
 
-    /*
-    const fps = 1 / deltaTime;
-    ctx.fillStyle = "#a2f3a2";
-    ctx.strokeStyle = "#000000";
-    ctx.lineWidth = 2;
-    ctx.font = "24px Arial";
-    ctx.strokeText("FPS: " + fps.toFixed(1), canvas.width - 125, 25);
-    ctx.fillText("FPS: " + fps.toFixed(1), canvas.width - 125, 25);
-    ctx.strokeText("dt:  " + (deltaTime*1000).toFixed(2) + "ms", canvas.width - 125, 50);
-    ctx.fillText("dt:  " + (deltaTime*1000).toFixed(2) + "ms", canvas.width - 125, 50);
-    */
+        updateCamera();
+        renderFloor();
+        renderPowerups();
+        entrance.render();
+        renderPlayer(timeStamp);
+        renderWalls();
+        exit.render();
+        renderEnemies(timeStamp);
+        renderBombs();
+        renderExplosions();
+        levelHeader.render();
+        gameOverText.render();
+    }
 
     lastTimeStamp = timeStamp
 
@@ -91,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function ()
                 showMainMenu();
                 fetchLevels();
                 //game.newGame();
-                //Render();
+                Render();
         } else {
             throw new Error("Could not find ctx object.");
         }

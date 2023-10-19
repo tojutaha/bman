@@ -1,7 +1,7 @@
 import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, spawnEnemies } from "./enemy.js";
-import { level, exit, levelHeader, entrance, gameOverText, Render } from "./main.js";
+import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause } from "./main.js";
 import { showGameOverMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
@@ -32,6 +32,7 @@ export class Game {
     }
 
     newGame() {
+        setGlobalPause(true);
         localStorage.clear();
         this.level = 1;
         this.score = 0;
@@ -42,17 +43,16 @@ export class Game {
         this.initLevel();
         updateLevelDisplay(this.level);
         updateScoreDisplay(this.score);
-        Render();
     }
 
     continueGame() {
+        setGlobalPause(true);
         clearPlayers();
         clearEnemies();
         spawnPlayers();
         this.loadGame();
         this.newLevel();
         this.initLevel();
-        Render();
     }
 
     initLevel() {
@@ -66,10 +66,11 @@ export class Game {
     }
     
     newLevel() {
+        setGlobalPause(true);
         console.log("Level", this.level, levels[this.level]);
         if (this.level >= levels.length - 1) {
             lastLevel = true;
-        }
+        } else lastLevel = false;
 
         clearEnemies();
         clearBombs();
@@ -90,6 +91,7 @@ export class Game {
         } else {
             throw new Error("Failed to create level");
         }
+        setGlobalPause(false);
     }
 
     restartLevel()
