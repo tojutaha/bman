@@ -2,7 +2,7 @@ import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, spawnEnemies } from "./enemy.js";
 import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause } from "./main.js";
-import { showGameOverMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
+import { showGameOverMenu, showMainMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
 
@@ -225,6 +225,7 @@ export async function fetchLevels() {
             levels.push(levelObject);
         }
     }
+    showMainMenu();
     console.log("Levels fetched and ready.");
 }
 

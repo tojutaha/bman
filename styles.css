@@ -80,7 +80,7 @@ body {
 
 /* Main Menu */
 .main-menu-container {
-    /*visibility: hidden;*/
+    visibility: hidden;
     position: absolute;
     width: 832px;
     height: 832px;

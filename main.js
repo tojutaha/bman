@@ -84,7 +84,6 @@ document.addEventListener("DOMContentLoaded", function ()
     if (canvas) {
         ctx = canvas.getContext("2d");
         if (ctx) {
-                showMainMenu();
                 fetchLevels();
                 //game.newGame();
                 Render();
