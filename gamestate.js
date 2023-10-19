@@ -18,17 +18,6 @@ export class Game {
         this.level = 1;
         this.numOfEnemies = 0;
         this.firstBombExploded = false;
-        this.isPaused = false;
-    }
-
-    init() {
-        // TODO: Escin kuuntelija (ehkä muualle?)
-        document.addEventListener('keyup', function(event) {
-            if (event.key === 'Escape') {
-                this.isPaused = !this.isPaused;
-                console.log("pause", this.isPaused);
-            }
-        });
     }
 
     newGame() {
