@@ -10,7 +10,6 @@ export class LevelHeaderAnimation {
     }
     
     playAnimation() {
-        this.visible = true;    // TODO: turha atm
         this.frames = 0;
         this.alpha = 0.95;
         if (!lastLevel) {
@@ -60,7 +59,7 @@ export class LevelHeaderAnimation {
     }
 }
 
-export class GameOverAnimation {    // TODO: laske keskikohta kamerasta
+export class GameOverAnimation {
     constructor() {
         this.visible = false;
         this.frames = 0;
@@ -110,9 +109,16 @@ export class GameOverAnimation {    // TODO: laske keskikohta kamerasta
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
+            // Use identity matrix to draw the text to the center
+            // of canvas
+            ctx.save();
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+
             const substring = this.text.substring(0, this.frames);
             ctx.strokeText(substring, canvas.width / 2, canvas.width / 2);
             ctx.fillText(substring, canvas.width / 2, canvas.width / 2);
+
+            ctx.restore();
         }
     }
 }
