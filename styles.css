@@ -117,8 +117,16 @@ body {
     color: white;
 }
 
+.main-menu-content button:disabled {
+    color: darkgray;
+}
+
 .main-menu-content button:hover {
     background: grey;
+}
+
+.main-menu-content button:disabled:hover {
+    background: inherit;
 }
 
 /* Game Over Menu */
