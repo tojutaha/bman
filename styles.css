@@ -175,3 +175,55 @@ body {
 .game-over-content button:hover {
     background: grey;
 }
+
+/* How to play */
+.how-to-play-container {
+    visibility: hidden;
+    position: absolute;
+    width: 832px;
+    height: 832px;
+    background: black;
+    z-index: 999;
+}
+
+.how-to-play-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: white;
+    align-content: center;
+}
+
+.how-to-play-content h1 {
+    color: white;
+    text-decoration: underline;
+}
+
+.how-to-play-content h3 {
+    color: white;
+    padding-bottom: 10px;
+    text-decoration: underline;
+}
+
+.how-to-play-content .how-to-play-button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.how-to-play-content button {
+    width: 200px;
+    height: 50px;
+    background: black;
+    color: white;
+}
+
+.how-to-play-content button:hover {
+    background: grey;
+}
+
+.inner-list {
+    margin-left: 20px;
+}

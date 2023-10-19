@@ -20,7 +20,9 @@ export function updateLevelDisplay(level) {
 const mainMenu = document.querySelector('.main-menu-container');
 const newGameButton = document.getElementById("newGameButton");
 const continueGameButton = document.getElementById("continueGameButton");
+const howToPlayMenu = document.querySelector(".how-to-play-container");
 const howToPlayButton = document.getElementById("howToPlayButton");
+const closeButton = document.getElementById("closeButton");
 
 export function showMainMenu()
 {
@@ -45,7 +47,13 @@ continueGameButton.addEventListener('click', function() {
 });
 
 howToPlayButton.addEventListener('click', function() {
-    console.log("TODO: How To Play");
+    howToPlayMenu.style.visibility = 'visible';
+    mainMenu.style.visibility = 'hidden';
+});
+
+closeButton.addEventListener('click', function() {
+    howToPlayMenu.style.visibility = 'hidden';
+    mainMenu.style.visibility = 'visible';
 });
 
 
@@ -71,7 +79,6 @@ exitButton.addEventListener('click', function() {
     gameOverMenu.style.visibility = 'hidden';
     showMainMenu();
 });
-
 
 ////////////////////
 // DEBUG & TESTING
