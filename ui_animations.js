@@ -1,4 +1,4 @@
-import { lastLevel, levels } from "./gamestate.js";
+import { lastLevel } from "./gamestate.js";
 import { ctx, game } from "./main.js";
 
 export class LevelHeaderAnimation {
@@ -29,7 +29,7 @@ export class LevelHeaderAnimation {
                     clearInterval(this.frameTimer);
                 }
             }, 100);
-        }, 500);
+        }, 1000);
     }
 
     fadeOut() {

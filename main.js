@@ -58,11 +58,11 @@ function Render(timeStamp)
         updateCamera();
         renderFloor();
         entrance.render();
+        exit.render();
         renderBombs();
         renderPowerups();
         renderPlayer(timeStamp);
         renderWalls();
-        exit.render();
         renderEnemies(timeStamp);
         renderExplosions();
         levelHeader.render();

@@ -173,8 +173,8 @@ export class Game {
 
     over() {
         gameOverText.playAnimation().then(() => {
-            showGameOverMenu();
             localStorage.clear();
+            showGameOverMenu();
             this.level = 1;
             this.score = 0;
         });
