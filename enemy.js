@@ -1,4 +1,4 @@
-import { canvas, ctx, deltaTime, game, level, tileSize } from "./main.js";
+import { canvas, ctx, deltaTime, game, globalPause, level, tileSize } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 import { Direction, players } from "./player.js";
 import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
@@ -144,6 +144,9 @@ class Enemy
         let index = 0;
         let renderIndex = index + 1;
         this.timer = setInterval(() => {
+
+            // TODO: Näitä pitää tutkia ehkä vähän tarkemmin
+            if(globalPause) return;
 
             this.isMoving = true;
 

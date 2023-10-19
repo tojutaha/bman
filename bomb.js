@@ -1,4 +1,4 @@
-import { ctx, level, tileSize, spriteSheet, game } from "./main.js";
+import { ctx, level, tileSize, spriteSheet, game, globalPause } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 import { PlayAudio } from "./audio.js";
 import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
@@ -24,6 +24,8 @@ export class Bomb {
         this.playerId = playerId || 0;
 
         this.ticking = setInterval(() => {
+            // TODO: Näitä pitää tutkia ehkä vähän tarkemmin
+            if(globalPause) return;
             this.ticks--;
             if (this.hasExploded) {
                 clearInterval(this.ticking);

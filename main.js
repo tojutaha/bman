@@ -16,7 +16,7 @@ export let canvas;
 export let ctx;
 export let game = new Game();
 export let level = [];
-let globalPause = true;
+export let globalPause = true;
 // Tarttee setterin koska JS..
 export function setGlobalPause(value) {
     globalPause = value;
