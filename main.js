@@ -96,3 +96,10 @@ document.addEventListener("DOMContentLoaded", function ()
     }
 });
 
+document.addEventListener('keyup', function(event) {
+    if (event.key === 'Escape') {
+        // TODO: Pause menu?
+        globalPause = !globalPause;
+    }
+});
+
