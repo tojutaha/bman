@@ -101,8 +101,8 @@ class Enemy
     }
 
     getRandomPath() {
-        const maxRadius = 12*tileSize;
-        const minRadius = 4*tileSize;
+        const maxRadius = 25*tileSize;
+        const minRadius = 2*tileSize;
         const targetLocation = 
         getRandomWalkablePointInRadius({x: this.x, y: this.y},
                                         minRadius, maxRadius);
@@ -362,7 +362,7 @@ export function spawnEnemies(array)
     const typeValues = Object.values(enemyType);
     const amount = array.length;
     const maxRadius = 25*tileSize;
-    const minRadius = 10*tileSize;
+    const minRadius = 2*tileSize;
 
     const player = players[0];
     for (let i = 0; i < amount; i++) {
