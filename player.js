@@ -8,9 +8,6 @@ import { enemies, movementMode } from "./enemy.js";
 import { showGameOverMenu } from "./page.js";
 
 
-// TODO: Selvitä miksi game overin jälkeen restarttia painettaessa
-//       pelaaja ei pysty liikkumaan...
-
 const godMode = false;
 
 export const Direction = {
