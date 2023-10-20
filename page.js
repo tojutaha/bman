@@ -131,6 +131,13 @@ function scale100() {
     canvasContainer[0].style.cssText = "scale: 100%;";
 }
 
+// Show door and powerup location
+let doorButton = document.getElementById("show-door");
+export let showDoor = false;
+doorButton.addEventListener("click", function() {
+    showDoor = !showDoor;
+});
+
 // Show coordinates
 let coordButton = document.getElementById("show-coords");
 export let coordsToggle = false;
@@ -166,7 +173,7 @@ bombButton.addEventListener("click", function() {
         players[i].powerup.maxBombs += 1;
         console.log("Player", i+1, "bombs:", players[i].powerup.maxBombs);
     }
-})
+});
 
 let rangeButton = document.getElementById("rangeplus");
 rangeButton.addEventListener("click", function() {
@@ -174,7 +181,7 @@ rangeButton.addEventListener("click", function() {
         players[i].powerup.maxRange += 1;
         console.log("Player", i+1, "range:", players[i].powerup.maxRange);
     }
-})
+});
 
 let resetPowerupsButton = document.getElementById("reset-powerups");
 resetPowerupsButton.addEventListener("click", function() {
@@ -183,31 +190,31 @@ resetPowerupsButton.addEventListener("click", function() {
         players[i].powerup.maxRange = 1;
         console.log("Player", i+1, "range and bombs resetted");
     }
-})
+});
 
 let killEnemiesButton = document.getElementById("kill-enemies");
 killEnemiesButton.addEventListener("click", function() {
     enemies.forEach(enemy => {
         enemy.die();
     })
-})
+});
 
 let killPlayersButton = document.getElementById("kill-players");
 killPlayersButton.addEventListener("click", function() {
     players.forEach(p => {
         p.onDeath();
     })
-})
+});
 
 // Next level
 let nxtLvlButton = document.getElementById("next-level");
 nxtLvlButton.addEventListener("click", function() {
     game.nextLevel();
-})
+});
 
 // Delete save
 let deleteButton = document.getElementById("delete-save");
 deleteButton.addEventListener("click", function() {
     localStorage.clear();
     location.reload();
-})
+});

@@ -114,7 +114,7 @@ function populateSoftWalls(result, softWallTotal) {
         if (tile.type === "SoftWall") {    // TODO: tilet luodaan ennen kuin level päätetään
             // Create the exit
             if (!exitCreated) {
-                console.info("The door is in", tile.x, tile.y);
+                // console.info("The door is in", tile.x, tile.y);
                 tile.isExit = true;
                 tile.isOpen = false;
                 exitCreated = true;

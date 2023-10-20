@@ -196,7 +196,7 @@ function setTilesOnFire(tiles) {
                         if (exitLocation.isOpen) {
                             game.toggleDoor();
                         }
-                        spawnEnemiesAtLocation(currentTile, 8);     // TODO: joku muuttuja vaikeustason mukaan
+                        spawnEnemiesAtLocation(currentTile, game.level + 3);
                         currentTile.hasSpawnedEnemies = true;
                     }
                 }

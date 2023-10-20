@@ -8,7 +8,7 @@ import { renderEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game, fetchLevels } from "./gamestate.js";
 import { updateCamera } from "./camera.js";
-import { showPauseMenu } from "./page.js";
+import { showDoor, showPauseMenu } from "./page.js";
 
 ////////////////////
 // Globals
@@ -58,11 +58,17 @@ function Render(timeStamp)
         updateCamera();
         renderFloor();
         entrance.render();
-        exit.render();
+        if (!showDoor) {
+            exit.render();
+            renderPowerups();
+        }
         renderBombs();
-        renderPowerups();
         renderPlayer(timeStamp);
         renderWalls();
+        if (showDoor) {
+            exit.render();
+            renderPowerups();
+        }
         renderEnemies(timeStamp);
         renderExplosions();
         levelHeader.render();
