@@ -7,6 +7,7 @@
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
+    font-family: 'Minimal', 'Courier New', Courier, monospace;
 }
 
 /* Muutama fontti joista testailla */
@@ -23,16 +24,24 @@ body {
 }
 
 .text-display {
-    font-family: 'Minimal', 'Courier New', Courier, monospace;
     font-size: 1.8rem;
-    line-height: 0.8;
+}
+
+.text-button {
+    font-size: 1.4rem;
+    margin: auto;
+}
+
+.header {
+    font-size: 4rem;
 }
 
 .info-displays {
     display: grid;
     grid-template-columns: 1fr 1fr 100px;
-    margin: 0.2em auto;
-    max-width: 800px;
+    margin: 0 auto;
+    padding: 0.2em;
+    max-width: 832px;
     text-align: center;
     align-items: center;
     position: relative;
@@ -47,6 +56,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.debug {
+    visibility: hidden;
 }
 
 .debug-buttons {

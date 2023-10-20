@@ -21,12 +21,12 @@
         <canvas id="canvas" width="832" height="832"></canvas>
         <div class="main-menu-container">
             <div class="main-menu-content">
-                <h1>NOT BOMBERMAN</h1>
+                <h1 class="header">NOT BOMBERMAN</h1>
                 <div class="main-menu-button-container">
                     <small id="confirmText">This will delete your previous save.<br> Do you want to proceed?</small>
-                    <button id="newGameButton">New Game</button>
-                    <button id="continueGameButton" disabled>Continue</button>
-                    <button id="howToPlayButton">How To Play</button>
+                    <button id="newGameButton" class="text-button">New Game</button>
+                    <button id="continueGameButton" class="text-button" disabled>Continue</button>
+                    <button id="howToPlayButton" class="text-button">How To Play</button>
                 </div>
             </div>
         </div>
@@ -35,8 +35,8 @@
                 <h1>GAME OVER!</h1>
                 <p id="game-over-score">Score: 12345</p>
                 <div class="game-overbutton-container">
-                    <button id="restartButton">Restart</button>
-                    <button id="exitButton">Exit</button>
+                    <button id="restartButton" class="text-button">Restart</button>
+                    <button id="exitButton" class="text-button">Exit</button>
                 </div>
             </div>
         </div>
@@ -44,8 +44,8 @@
             <div class="pause-menu-content">
                 <h1>PAUSED</h1>
                 <div class="pause-menu-button-container">
-                    <button id="pauseMenu-ContinueButton">Continue</button>
-                    <button id="pauseMenu-ExitButton">Exit</button>
+                    <button id="pauseMenu-ContinueButton" class="text-button">Continue</button>
+                    <button id="pauseMenu-ExitButton" class="text-button">Exit</button>
                 </div>
             </div>
         </div>
@@ -99,31 +99,40 @@
                         <li>Eliminate all opponents, find the door and go through it.</li>
                     </ul>
                     <br>
-                    <button id="closeButton">Close</button>
+                    <button id="closeButton" class="text-button">Close</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="debug">
+        <div class="debug-buttons">
+            <button id="show-door" class="text-button">Show door</button>
+            <button id="bombplus" class="text-button">+1 bomb</button>
+            <button id="rangeplus" class="text-button">+1 range</button>
+            <button id="reset-powerups" class="text-button">Reset powerups</button>
+            <button id="kill-enemies" class="text-button">Half the enemies</button>
+            <button id="kill-players" class="text-button">Kill players</button>
+        </div>
+        <div class="debug-buttons">
+            <button id="next-level" class="text-button">Next level</button>
+            <button id="delete-save" class="text-button">Delete save</button>
+            <button id="show-coords" class="text-button">Coordinates</button>
+            <button id="scale50" class="text-button">Scale 50%</button>
+            <button id="scale75" class="text-button">Scale 75%</button>
+            <button id="scale100" class="text-button">Scale 100%</button>
+        </div>
+    </div>
 
-    <div class="debug-buttons">
-        <button id="next-level">Next level</button>
-        <button id="delete-save">Delete save</button>
-        <button id="show-coords">Coordinates</button>
-        <button id="scale50">Scale 50%</button>
-        <button id="scale75">Scale 75%</button>
-        <button id="scale100">Scale 100%</button>
-    </div>
-    <div class="cheat-buttons debug-buttons">
-        <button id="show-door">Show door</button>
-        <button id="bombplus">+1 bomb</button>
-        <button id="rangeplus">+1 range</button>
-        <button id="reset-powerups">Reset powerups</button>
-        <button id="kill-enemies">Half the enemies</button>
-        <button id="kill-players">Kill players</button>
-    </div>
     <!-- For loading the sprite sheet in DOM -->
     <img id="sprite-sheet" src="/assets/spritesheet_64.png">
+
+    <script>
+        const debug = document.querySelector(".debug");
+        function l33t() {
+            debug.style.visibility = "visible";
+        };
+    </script>
 </body>
 </html>
 
