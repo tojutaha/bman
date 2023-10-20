@@ -18,6 +18,11 @@ export function setTextures() {
         floorTexture.src = "./assets/cobblestone_03.png";
         hardWallTexture.src = "./assets/stone_brick_05.png"
         softWallTexture.src = "./assets/stone_brick_03.png"
+    }
+    else if (levelType === "hell") {
+        floorTexture.src = "./assets/lava_01.png";
+        hardWallTexture.src = "./assets/stone_brick_01.png"
+        softWallTexture.src = "./assets/stone_brick_03.png"
     } else {
         floorTexture.src = "./assets/cobblestone_03.png";
         hardWallTexture.src = "./assets/stone_brick_05.png"
