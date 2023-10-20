@@ -6,7 +6,6 @@ import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 import { exitLocation } from "./tile.js";
 
-// TODO: Joskus jää rändöm näkymättömiä pommeja?
 export let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
@@ -22,10 +21,12 @@ export class Bomb {
         this.range = range || 1;
         this.hasExploded = false;
         this.playerId = playerId || 0;
+        this.currentFrame = 0;
 
         this.ticking = setInterval(() => {
             if(globalPause) return;
             this.ticks--;
+            this.currentFrame++;
             if (this.hasExploded) {
                 clearInterval(this.ticking);
             }
@@ -144,9 +145,11 @@ function chainExplosions(tiles) {
 function animateExplosion(tile) {
     tile.isBeingAnimated = true;
     tile.animationTimer = 7;
+    tile.currentFrame = 0;
 
     let interval = setInterval(() => {
         tile.animationTimer--;
+        tile.currentFrame++;
         if (tile.animationTimer <= 0) {
             if (tile.isWalkable) {
                 tile.isDeadly = false;
@@ -203,7 +206,6 @@ function setTilesOnFire(tiles) {
     }
 }
 
-// TODO: mahdollisesti tehdä tämä enemyssä itsessään
 function killEnemies(tile) {
     if (tile.isDeadly) {
         enemies.forEach(enemy => {
@@ -222,19 +224,9 @@ function killEnemies(tile) {
 export function renderBombs() {
     for (let i = 0; i < tilesWithBombs.length; i++) {
         let currentTile = tilesWithBombs[i];
-
-        if (currentTile.bomb.ticks >= 4) {
-            ctx.drawImage(spriteSheet, 0, tileSize, tileSize, tileSize, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
-        }
-        else if (currentTile.bomb.ticks === 3) {
-            ctx.drawImage(spriteSheet, tileSize, tileSize, tileSize, tileSize, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
-        }
-        else if (currentTile.bomb.ticks === 2) {
-            ctx.drawImage(spriteSheet, tileSize*2, tileSize, tileSize, tileSize, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
-        }
-        else if (currentTile.bomb.ticks === 1) {
-            ctx.drawImage(spriteSheet, tileSize*3, tileSize, tileSize, tileSize, currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
-        }
+        ctx.drawImage(spriteSheet, 
+            tileSize*currentTile.bomb.currentFrame, tileSize, 
+            tileSize, tileSize,  currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
     }
 }
 
@@ -242,58 +234,32 @@ const softWallTexture = new Image();
 softWallTexture.src = "./assets/stone_brick_03_alt.png"
 export function renderExplosions() {
     // Walls
-    if (crumblingWalls.length > 0) {
-        crumblingWalls.forEach(tile => {
-            if (tile.animationTimer >= 7) {
-                ctx.drawImage(softWallTexture, tileSize, 0, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-            }
-            else if (tile.animationTimer === 6) {
-                ctx.drawImage(softWallTexture, tileSize*2, 0, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-            }
-            else if (tile.animationTimer === 5) {
-                ctx.drawImage(softWallTexture, tileSize*3, 0, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-            }
-            else if (tile.animationTimer === 4) {
-                ctx.drawImage(softWallTexture, tileSize*4, 0, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-            }
-            else if (tile.animationTimer === 3) {
-                crumblingWalls.splice(0, 1);
-            }
-        })
-    }
-    
+    crumblingWalls.forEach(tile => {
+        ctx.drawImage(softWallTexture, 
+            tileSize*tile.currentFrame, 0, 
+            tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
+
+        if (tile.animationTimer === 3) {
+            crumblingWalls.splice(0, 1);
+        }
+    });
+
     // Floor
-    if (fieryFloors.length > 0) {
-        fieryFloors.forEach(tile => {
-            if (tile.animationTimer >= 7) {
-                ctx.drawImage(spriteSheet, 0, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-            }
-            else if (tile.animationTimer === 6) {
-                ctx.drawImage(spriteSheet, tileSize, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-            }
-            else if (tile.animationTimer === 5) {
-                ctx.drawImage(spriteSheet, tileSize*2, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-            }
-            else if (tile.animationTimer === 4) {
-                ctx.drawImage(spriteSheet, tileSize*3, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-            }
-            else if (tile.animationTimer === 3) {
-                ctx.drawImage(spriteSheet, tileSize*4, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-            }
-            else if (tile.animationTimer === 2) {
-                ctx.drawImage(spriteSheet, tileSize*5, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-                tile.isDeadly = false;
-            }
-            else if (tile.animationTimer === 1) {
-                ctx.drawImage(spriteSheet, tileSize*6, tileSize*6, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-            }
-            else if (tile.animationTimer <= 0) {
-                fieryFloors.splice(0, 1);
-            }
-            
-            killEnemies(tile);
-        })
-    }
+    fieryFloors.forEach(tile => {
+        ctx.drawImage(spriteSheet, 
+            tileSize*tile.currentFrame, tileSize*6, 
+            tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
+
+        if (tile.animationTimer <= 2) {
+            tile.isDeadly = false;
+        }
+
+        if (tile.animationTimer <= 0) {
+            fieryFloors.splice(0, 1);
+        }
+
+        killEnemies(tile);
+    });
 }
 
 // This is called only when changing level and does only what's necessary for that
