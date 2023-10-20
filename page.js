@@ -54,6 +54,7 @@ newGameButton.addEventListener('click', function() {
             game.newGame();
             confirmText.style.visibility = 'hidden';
             mainMenu.style.visibility = 'hidden';
+            newGameButton.innerText = "New Game";
         }
         confirmed = true;
     }
@@ -64,6 +65,8 @@ continueGameButton.addEventListener('click', function() {
     game.continueGame();
     mainMenu.style.visibility = 'hidden';
     confirmText.style.visibility = 'hidden';
+    newGameButton.innerText = "New Game";
+    confirmed = false;
 });
 
 howToPlayButton.addEventListener('click', function() {
