@@ -63,7 +63,7 @@ function createSoftWalls(result, hardWallTotal) {
     
     if (cagePlayer) {
         createCage(result);
-        softWallTotal += 2;
+        softWallTotal += 4;
     }
     if (cageMultiplayer) {
         createMultiplayerCage(result);
@@ -76,16 +76,51 @@ function createSoftWalls(result, hardWallTotal) {
         const tile = result[x][y];
 
         if (tile.type === "Floor"
-            // Leave floor for the corners so the players can move
-            && (x > 2 || y > 2) // top left
-            && (x > 2 || y < levelHeight - 3) // top right
-            && (x < levelWidth - 3 || y > 2) // bottom left
-            && (x < levelWidth - 3 || y < levelHeight - 3)) // bottom right) 
+        // Leave floor for the corners so the players can move
+        && (x > 2 || y > 2) // top left
+        && (x > 2 || y < levelHeight - 3) // top right
+        && (x < levelWidth - 3 || y > 2) // bottom left
+        && (x < levelWidth - 3 || y < levelHeight - 3)) // bottom right
         {
             tile.type = "SoftWall";
             tile.isWalkable = false;
             softWallsLeft--;
             softWallTotal++;
+
+            // If the new wall is in the middle of 4 hard walls, add a soft wall to a random position next to it.
+            if (x % 2 === 1 && y % 2 == 1) {
+                // Get surrounding tiles
+                const surround = [];
+                if (x > 0) {
+                    const left = result[x-1][y];
+                    if (left.type === "Floor") {
+                        surround.push(left);
+                    }
+                }
+                if (y > 0) {
+                    const top = result[x][y-1];
+                    if (top.type === "Floor") {
+                        surround.push(top);
+                    }
+                }
+                if (x < levelWidth - 1) {
+                    const right = result[x+1][y];
+                    if (right.type === "Floor") {
+                        surround.push(right);
+                    }
+                }
+                if (y < levelHeight - 1) {
+                    const bot = result[x][y+1];
+                    if (bot.type === "Floor") {
+                        surround.push(bot);
+                    }
+                }
+                const randomFloor = surround[Math.floor(Math.random() * surround.length)];
+                randomFloor.type = "SoftWall";
+                randomFloor.isWalkable = false;
+                softWallsLeft--;
+                softWallTotal++;
+            }
         }
     }
     return softWallTotal;
@@ -109,9 +144,7 @@ function populateSoftWalls(result, softWallTotal) {
         const y = Math.floor(Math.random() * levelHeight);
         const tile = result[x][y];
 
-        // NOTE: Tää ei koskaan menis läpi z-levelissä ja ois päättymätön luuppi
-        //if (tile.type === "SoftWall" && game.level != "Z") {    // TODO: tilet luodaan ennen kuin level päätetään
-        if (tile.type === "SoftWall") {    // TODO: tilet luodaan ennen kuin level päätetään
+        if (tile.type === "SoftWall") {
             // Create the exit
             if (!exitCreated) {
                 // console.info("The door is in", tile.x, tile.y);
@@ -135,15 +168,34 @@ function populateSoftWalls(result, softWallTotal) {
 }
 
 
-// Creates two soft wall tiles to make the player spawn safe
+// Creates four soft wall tiles to make the player spawn safe
 function createCage(result) {
     // Top right corner
     result[3][1].type = "SoftWall";
     result[3][1].isWalkable = false;
+
     result[1][3].type = "SoftWall";
     result[1][3].isWalkable = false;
+
+    // Create randomly 2 cosmetic softwalls next to each of the walls so it doens't leave a checker pattern
+    if (Math.random() < 0.5) {
+        result[3][2].type = "SoftWall";
+        result[3][2].isWalkable = false;
+    } else {
+        result[4][1].type = "SoftWall";
+        result[4][1].isWalkable = false;
+    }
+
+    if (Math.random() < 0.5) {
+        result[2][3].type = "SoftWall";
+        result[2][3].isWalkable = false;
+    } else {
+        result[1][4].type = "SoftWall";
+        result[1][4].isWalkable = false;
+    }
 }
 
+// Create 8 soft walls (just one on each side) for multiplayer games
 function createMultiplayerCage(result) {
     // Top right corner
     result[3][1].type = "SoftWall";

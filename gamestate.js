@@ -2,7 +2,7 @@ import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, spawnEnemies } from "./enemy.js";
 import { setTextures } from "./level.js";
-import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause } from "./main.js";
+import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, game } from "./main.js";
 import { showGameOverMenu, showMainMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
