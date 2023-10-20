@@ -63,6 +63,7 @@ newGameButton.addEventListener('click', function() {
 continueGameButton.addEventListener('click', function() {
     game.continueGame();
     mainMenu.style.visibility = 'hidden';
+    confirmText.style.visibility = 'hidden';
 });
 
 howToPlayButton.addEventListener('click', function() {
