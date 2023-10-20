@@ -129,6 +129,11 @@ body {
     background: inherit;
 }
 
+#confirmText {
+    visibility: hidden;
+    color: red;
+}
+
 /* Pause menu */
 .pause-menu-container {
     visibility: hidden;

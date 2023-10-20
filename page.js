@@ -24,6 +24,7 @@ export function updateLevelDisplay(level) {
 // Main menu / buttons
 const mainMenu = document.querySelector('.main-menu-container');
 const newGameButton = document.getElementById("newGameButton");
+const confirmText = document.getElementById("confirmText");
 const continueGameButton = document.getElementById("continueGameButton");
 const howToPlayMenu = document.querySelector(".how-to-play-container");
 const howToPlayButton = document.getElementById("howToPlayButton");
@@ -31,19 +32,32 @@ const closeButton = document.getElementById("closeButton");
 
 export function showMainMenu()
 {
+    // No saves were found
     if (localStorage.length === 0) {
         continueGameButton.disabled = true;
-        //console.log("Local storage is empty.");
     } else {
-        //console.log("Local storage is not empty.");
         continueGameButton.disabled = false;
     }
     mainMenu.style.visibility = 'visible';
 }
 
+let confirmed = false;
 newGameButton.addEventListener('click', function() {
-    game.newGame();
-    mainMenu.style.visibility = 'hidden';
+    if (localStorage.length === 0) {
+        game.newGame();
+        mainMenu.style.visibility = 'hidden';
+        confirmed = false;
+    } else {
+        confirmText.style.visibility = 'visible';
+        newGameButton.innerText = "Confirm";
+        if(confirmed) {
+            game.newGame();
+            confirmText.style.visibility = 'hidden';
+            mainMenu.style.visibility = 'hidden';
+        }
+        confirmed = true;
+    }
+
 });
 
 continueGameButton.addEventListener('click', function() {
