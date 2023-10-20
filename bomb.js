@@ -220,7 +220,6 @@ function killEnemies(tile) {
 
 ////////////////////
 // Render
-// TODO: Siivoa animaatiot
 export function renderBombs() {
     for (let i = 0; i < tilesWithBombs.length; i++) {
         let currentTile = tilesWithBombs[i];
