@@ -24,7 +24,6 @@ export class Bomb {
         this.playerId = playerId || 0;
 
         this.ticking = setInterval(() => {
-            // TODO: Näitä pitää tutkia ehkä vähän tarkemmin
             if(globalPause) return;
             this.ticks--;
             if (this.hasExploded) {

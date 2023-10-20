@@ -145,7 +145,6 @@ class Enemy
         let renderIndex = index + 1;
         this.timer = setInterval(() => {
 
-            // TODO: Näitä pitää tutkia ehkä vähän tarkemmin
             if(globalPause) return;
 
             this.isMoving = true;
