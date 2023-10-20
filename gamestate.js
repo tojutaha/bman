@@ -2,7 +2,7 @@ import { PlayAudio } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, spawnEnemies } from "./enemy.js";
 import { setTextures } from "./level.js";
-import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, game } from "./main.js";
+import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, game, powerups } from "./main.js";
 import { showGameOverMenu, showMainMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
@@ -66,6 +66,7 @@ export class Game {
         setGlobalPause(true);
         clearEnemies();
         clearBombs();
+        powerups.isBlinking = false;
  
         const levelData = levels[this.level];
         levelHeight = levelData.height;
@@ -154,7 +155,7 @@ export class Game {
         // console.info("numOfEnemies:", this.numOfEnemies);
     }
     
-    toggleDoor() {  // TODO ehkä: uudemmissa Bombermaneissa powerup-tiili alkaa välkkymään
+    toggleDoor() {
         exitLocation.isOpen = !exitLocation.isOpen;
         
         if (exitLocation.isOpen) {
@@ -165,9 +166,11 @@ export class Game {
     }
 
     checkGameState() {
+        // Open the door
         if (this.numOfEnemies <= 0 && exitLocation.isOpen === false) {
             this.toggleDoor();
             PlayAudio("assets/audio/exitopen01.wav");
+            powerups.startBlinking();
         }
     }
 
@@ -229,5 +232,6 @@ export async function fetchLevels() {
         }
     }
     showMainMenu();
+    // game.newGame();
     console.log("Levels fetched and ready.");
 }

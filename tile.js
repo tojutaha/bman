@@ -3,6 +3,7 @@ import { randomPowerup } from "./powerup.js";
 import { levelHeight, levelPowerup, levelWidth, softwallPercent, powerupCount } from "./gamestate.js";
 
 export let exitLocation = undefined;
+export let powerupLocations = [];
 
 const TileType = {
     FLOOR: "Floor",
@@ -21,6 +22,7 @@ function Tile(x, y, isWalkable, isDeadly, hasPowerup, powerup, type) {
 };
 
 export function createTiles() {
+    powerupLocations = [];
     const result = [];
     let hardWallTotal = 0;
 
@@ -161,10 +163,13 @@ function populateSoftWalls(result, softWallTotal) {
                     tile.powerup = levelPowerup;
                 }
                 tile.hasPowerup = true;
+                powerupLocations.push(tile);
+                console.log("tile", tile);
                 powerupsLeft--;
             }
         }
     }
+    console.log("loc", powerupLocations);
 }
 
 

@@ -2,7 +2,7 @@ import { canvas, ctx, level, tileSize, spriteSheet, deltaTime, game, gameOverTex
 import { levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { PlayAudio } from "./audio.js";
 import { Bomb, clearBombs, tilesWithBombs } from "./bomb.js";
-import { Powerup, powerups } from "./powerup.js";
+import { Powerup } from "./powerup.js";
 import { clamp, colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear, getRandomColor, getTileFromWorldLocationF, getSurroundingTiles } from "./utils.js";
 import { enemies, movementMode } from "./enemy.js";
 import { showGameOverMenu } from "./page.js";
