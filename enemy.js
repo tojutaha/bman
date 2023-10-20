@@ -154,8 +154,9 @@ class Enemy
             // Check if there is a bomb on the path
             const nextInRender = this.currentPath[renderIndex]
             if (nextInRender !== undefined) {
-                const bombCoords = tilesWithBombs.find(bomb => bomb.x === nextInRender.x && bomb.y === nextInRender.y);
-                if (bombCoords) {
+                const bombInNext    = tilesWithBombs.find(bomb => bomb.x === nextInRender.x && bomb.y === nextInRender.y);
+                const bombInCurrent = tilesWithBombs.find(bomb => bomb.x === this.x && bomb.y === this.y);
+                if (bombInNext || bombInCurrent) {
                     this.x = next.x;
                     this.y = next.y;
                     clearInterval(this.timer);
