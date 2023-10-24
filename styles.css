@@ -244,6 +244,7 @@ body {
     height: 832px;
     background: black;
     z-index: 999;
+    font-size: 24px;
 }
 
 .how-to-play-content {
