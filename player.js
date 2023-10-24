@@ -388,7 +388,7 @@ class Player
                         bombTile.isWalkable = false;
                         clearInterval(posCheck);
                     }
-                }, 10);
+                }, 1);
             }
         }
     }
@@ -398,7 +398,7 @@ class Player
         event.preventDefault();
 
         // PlayAudio(step, 0.2)
-        // steps.play();
+        steps.play();
 
         switch(event.code) {
             case this.keybinds.move_up:
