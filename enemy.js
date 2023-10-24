@@ -70,6 +70,8 @@ class Enemy
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
+                this.totalFrames = 4;
+                this.frameWidth = 256/4;
                 this.spriteSheet.src = "./assets/placeholder_zombi.png";
                 this.movementMode = movementMode.PATROL;
                 this.patrol();
