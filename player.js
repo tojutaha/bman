@@ -1,11 +1,9 @@
-import { canvas, ctx, level, tileSize, spriteSheet, deltaTime, game, gameOverText } from "./main.js";
+import { ctx, level, tileSize, deltaTime, game } from "./main.js";
 import { levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { PlayAudio } from "./audio.js";
-import { Bomb, clearBombs, tilesWithBombs } from "./bomb.js";
+import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup } from "./powerup.js";
-import { clamp, colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, isDeadly, isWalkable, hasPowerup, getDistanceTo, isOpenExit, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear, getRandomColor, getTileFromWorldLocationF, getSurroundingTiles } from "./utils.js";
-import { enemies, movementMode } from "./enemy.js";
-import { showGameOverMenu } from "./page.js";
+import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getDistanceTo, getSurroundingTiles } from "./utils.js";
 
 
 const godMode = false;
@@ -25,6 +23,11 @@ export function renderPlayer(timeStamp)
     });
 }
 
+// Audio
+// const steps = ["assets/audio/step01_L.wav", "assets/audio/step01_R.wav"]
+// const step = "assets/audio/steps01.wav";
+const steps = document.getElementById("steps");
+
 ////////////////////////////////////////////////////////////////////////////////
 // Players
 export const players = [];
@@ -32,7 +35,6 @@ export const players = [];
 class Player
 {
     constructor(id, startX, startY, keybinds, sprite) {
-
         // Spawn point
         this.startX = startX || tileSize;
         this.startY = startY || tileSize;
@@ -320,7 +322,6 @@ class Player
     }
 
     drawAnimation() {
-
         switch(this.direction) {
             case Direction.LEFT: {
                 ctx.drawImage(this.spriteSheet,
@@ -359,7 +360,6 @@ class Player
     }
 
     dropBomb() {
-
         if (this.isDead) return;
 
         let bombTile = getTileFromWorldLocation(this);
@@ -396,6 +396,9 @@ class Player
     // Inputs
     handleKeyDown(event) {
         event.preventDefault();
+
+        // PlayAudio(step, 0.2)
+        // steps.play();
 
         switch(event.code) {
             case this.keybinds.move_up:
