@@ -95,6 +95,13 @@ class Player
     update(currentTime) {
         if (this.isDead) return;
 
+        // Play footsteps
+        if (this.dx !== 0.0 || this.dy !== 0.0) {
+            steps.play();
+        } else {
+            steps.pause();
+        }
+
 /// Light
     if (levelType != "forest_day") {
         // Create radial gradient
@@ -396,9 +403,6 @@ class Player
     // Inputs
     handleKeyDown(event) {
         event.preventDefault();
-
-        // PlayAudio(step, 0.2)
-        steps.play();
 
         switch(event.code) {
             case this.keybinds.move_up:
