@@ -63,8 +63,8 @@ class Player
         // Animations
         this.spriteSheet = new Image();
         this.spriteSheet.src = sprite || "./assets/player0.png";
-        this.frameWidth = 128/4;
-        this.frameHeight = 248/4;
+        this.frameWidth = 256/4;
+        this.frameHeight = 256/4;
         this.totalFrames = 4;
         this.currentFrame = 0;
         this.animationSpeed = 150;
@@ -130,7 +130,9 @@ class Player
         const nextY = this.y + this.dy;
 
         const playerTile = getTileFromWorldLocation(this);
-        const playerBox = {x: nextX + 16, y: nextY + 8, w: this.collisionW, h: this.collisionH};
+        const playerBox = {x: nextX + 16, y: nextY, w: this.collisionW, h: this.collisionH+10};
+
+        //ctx.fillStyle = "#00ff00";
         //ctx.fillRect(playerBox.x, playerBox. y, playerBox.w, playerBox.h);
 
         // Animations
@@ -334,7 +336,7 @@ class Player
                 ctx.drawImage(this.spriteSheet,
                     this.currentFrame * this.frameWidth, this.frameHeight*3,
                     this.frameWidth, this.frameHeight,
-                    this.x + tileSize/4, this.y,
+                    this.x, this.y,
                     this.frameWidth, this.frameHeight);
                 break;
             }
@@ -342,7 +344,7 @@ class Player
                 ctx.drawImage(this.spriteSheet,
                     this.currentFrame * this.frameWidth, 0,
                     this.frameWidth, this.frameHeight,
-                    this.x + tileSize/4, this.y,
+                    this.x, this.y,
                     this.frameWidth, this.frameHeight);
                 break;
             }
@@ -350,7 +352,7 @@ class Player
                 ctx.drawImage(this.spriteSheet,
                     this.currentFrame * this.frameWidth, this.frameHeight*2,
                     this.frameWidth, this.frameHeight,
-                    this.x + tileSize/4, this.y,
+                    this.x, this.y,
                     this.frameWidth, this.frameHeight);
                 break;
             }
@@ -359,7 +361,7 @@ class Player
                     ctx.drawImage(this.spriteSheet,
                         this.currentFrame * this.frameWidth, this.frameHeight,
                         this.frameWidth, this.frameHeight,
-                        this.x + tileSize/4, this.y,
+                        this.x, this.y,
                         this.frameWidth, this.frameHeight);
                     break;
                 }
