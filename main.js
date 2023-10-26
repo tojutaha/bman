@@ -13,7 +13,6 @@ import { showDoor, showPauseMenu } from "./page.js";
 // TODO: JOS on aikaa:
 // HP:n tallennus / lataus
 // Vilkkuvat tilet jää päälle levelin vaihdossa
-// Pelaaja voi joskus kävellä vihollisen läpi
 // Enemyt voi mennä pommin läpi
 
 ////////////////////
