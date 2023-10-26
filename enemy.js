@@ -379,11 +379,12 @@ class Enemy
                              tile.bomb.collisionBox.w, tile.bomb.collisionBox.h);
                 */
                 if(aabbCollision(this.collisionBox, tile.bomb.collisionBox)) {
+                    this.isMoving = false;
                     this.collides = true;
                     this.x = this.next.x;
                     this.y = this.next.y;
-                    this.currentPath.length = 0;
                     clearInterval(this.timer);
+                    this.currentPath.length = 0;
                     setTimeout(() => {
                         this.collidedWithBomb();
                     }, 1000);

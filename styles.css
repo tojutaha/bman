@@ -143,6 +143,7 @@ body {
 }
 
 #confirmText {
+    font-size: 24px;
     visibility: hidden;
     color: red;
 }
