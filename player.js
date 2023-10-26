@@ -3,7 +3,7 @@ import { levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { PlayAudio } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup } from "./powerup.js";
-import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getDistanceTo, getSurroundingTiles } from "./utils.js";
+import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getDistanceTo, getSurroundingTiles, getDistanceToEuclidean } from "./utils.js";
 
 
 const godMode = false;
@@ -383,7 +383,11 @@ class Player
                 let posCheck = setInterval(() => {
                     let isPlayerOnBomb = false;
                     for (let i = 0; i < players.length; i++) {
-                        if (getDistanceTo(bombTile, players[i]) <= tileSize+10) {
+                        const distance = getDistanceToEuclidean(bombTile, players[i]);
+                        const threshold = tileSize + 10;
+                        //console.log("dist: ", distance);
+                        //console.log("thre: ", threshold);
+                        if (distance <= threshold) {
                             isPlayerOnBomb = true;
                             break;
                         }

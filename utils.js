@@ -105,6 +105,14 @@ export function getDistanceTo(from, to)
     return Math.abs(from.x - to.x) + Math.abs(from.y - to.y);
 }
 
+// Sama kuin ylempi mutta euclidean distance
+export function getDistanceToEuclidean(from, to)
+{
+    const dx = from.x - to.x;
+    const dy = from.y - to.y;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
 // Palauttaa satunnaisen laatan jossa voi kävellä
 export function getRandomWalkablePointInRadius(center, minRadius, maxRadius)
 {
