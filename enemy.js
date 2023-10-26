@@ -1,7 +1,7 @@
 import { canvas, ctx, deltaTime, game, globalPause, level, tileSize } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 import { Direction, players } from "./player.js";
-import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable } from "./utils.js";
+import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable, getDistanceToEuclidean, aabbCollision } from "./utils.js";
 import { requestPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
 import { PlayAudio } from "./audio.js";
@@ -42,6 +42,11 @@ class Enemy
         this.speed = speed || 500;
         this.direction = Direction.UP;
         this.timer = null;
+
+        // Collision
+        this.collisionW = this.w - 32;
+        this.collisionH = this.h - 12;
+        this.collisionBox = {x: this.x + 16, y: this.y, w: this.collisionW, h: this.collisionH+10};
 
         // Behaviour
         this.enemyType = type || enemyType.ZOMBIE;
@@ -170,16 +175,6 @@ class Enemy
             this.x = next.x;
             this.y = next.y;
             this.t = 0;
-
-            // Check if enemy has reached one of the players
-            players.forEach(player => {
-                if (getDistanceTo(this, player) < tileSize) {
-                    player.onDeath();
-                    this.playerTarget = null;
-                    clearInterval(this.timer);
-                    this.isMoving = false;
-                }
-            });
 
             // Smoother movement for rendering
             if (this.currentPath) {
@@ -337,6 +332,32 @@ class Enemy
                 }
         }
     }
+
+    checkCollisions(x, y) {
+        this.collisionBox = {x: x + 16, y: y, 
+                             w: this.collisionW, h: this.collisionH+10};
+        /*
+        // Draw enemy collision box
+        ctx.fillStyle = "#ff0000";
+        ctx.fillRect(this.collisionBox.x, this.collisionBox.y, 
+                     this.collisionBox.w, this.collisionBox.h);
+        */
+        players.forEach(player => {
+            /*
+            // Draw player collsion box
+            ctx.fillStyle = "#00ff00";
+            ctx.fillRect(player.collisionBox.x, player.collisionBox.y, 
+                         player.collisionBox.w, player.collisionBox.h);
+            */
+            // Check if enemy collides with player
+            if(aabbCollision(this.collisionBox, player.collisionBox)) {
+                player.onDeath();
+                this.playerTarget = null;
+                clearInterval(this.timer);
+                this.isMoving = false;
+            }
+        });
+    }
 };
 
 function getEnemySpeed(enemy)
@@ -438,6 +459,7 @@ export function renderEnemies(timeStamp)
             const y = lerp(enemy.y, enemy.renderY, enemy.t);
 
             enemy.update(timeStamp, x, y);
+            enemy.checkCollisions(x, y);
         }
     });
 }

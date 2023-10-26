@@ -50,12 +50,13 @@ class Player
         this.speed = 150.0; // pixels/s
         this.direction = Direction.RIGHT;
 
-        this.collisionW = this.w - 32;
-        this.collisionH = this.h - 12;
-
         // Key binds
         this.keybinds = keybinds;
 
+        // Collision
+        this.collisionW = this.w - 32;
+        this.collisionH = this.h - 12;
+        this.collisionBox = {x: this.x + 16, y: this.y, w: this.collisionW, h: this.collisionH+10};
         // Powerups
         this.activeBombs = 0;
         this.powerup = new Powerup();
@@ -130,10 +131,7 @@ class Player
         const nextY = this.y + this.dy;
 
         const playerTile = getTileFromWorldLocation(this);
-        const playerBox = {x: nextX + 16, y: nextY, w: this.collisionW, h: this.collisionH+10};
-
-        //ctx.fillStyle = "#00ff00";
-        //ctx.fillRect(playerBox.x, playerBox. y, playerBox.w, playerBox.h);
+        this.collisionBox = {x: nextX + 16, y: nextY, w: this.collisionW, h: this.collisionH+10};
 
         // Animations
         const animDt = currentTime - this.lastTime;
@@ -141,13 +139,13 @@ class Player
 
         this.drawAnimation();
 
-        const tilesToCheck = getSurroundingTiles(playerBox);
+        const tilesToCheck = getSurroundingTiles(this.collisionBox);
 
         let collides = false;
         for (let i = 0; i < tilesToCheck.length; i++) {
             const tileBox = {x: tilesToCheck[i].x , y: tilesToCheck[i].y , w: tileSize, h: tileSize};
 
-            if (!tilesToCheck[i].isWalkable && aabbCollision(playerBox, tileBox)) {
+            if (!tilesToCheck[i].isWalkable && aabbCollision(this.collisionBox, tileBox)) {
 
                 const tile = tilesToCheck[i];
                 collides = true;
