@@ -23,6 +23,13 @@ export class Bomb {
         this.playerId = playerId || 0;
         this.currentFrame = 0;
 
+        // Collision
+        this.w = tileSize;
+        this.h = tileSize;
+        this.collisionW = this.w;
+        this.collisionH = this.h;
+        this.collisionBox = {x: this.x, y: this.y, w: this.collisionW, h: this.collisionH};
+    
         this.ticking = setInterval(() => {
             if(globalPause) return;
             this.ticks--;

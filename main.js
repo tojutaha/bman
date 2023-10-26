@@ -12,7 +12,6 @@ import { showDoor, showPauseMenu } from "./page.js";
 
 // TODO: JOS on aikaa:
 // HP:n tallennus / lataus
-// Enemyt voi mennä pommin läpi
 
 ////////////////////
 // Globals

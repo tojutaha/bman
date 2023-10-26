@@ -42,8 +42,10 @@ class Enemy
         this.speed = speed || 500;
         this.direction = Direction.UP;
         this.timer = null;
+        this.next = [];
 
         // Collision
+        this.collides = false;
         this.collisionW = this.w - 32;
         this.collisionH = this.h - 12;
         this.collisionBox = {x: this.x + 16, y: this.y, w: this.collisionW, h: this.collisionH+10};
@@ -103,6 +105,25 @@ class Enemy
         }
     }
 
+    collidedWithBomb() {
+
+        switch(this.enemyType) {
+            case enemyType.ZOMBIE: {
+                this.patrol();
+                break;
+            }
+            case enemyType.GHOST: {
+                this.roam();
+                break;
+            }
+            case enemyType.SKELETON: {
+                this.followPlayer();
+                break;
+            }
+        }
+        
+    }
+
     getLocation() {
         return {x: this.x, y: this.y};
     }
@@ -152,28 +173,17 @@ class Enemy
         let renderIndex = index + 1;
         this.timer = setInterval(() => {
 
-            if(globalPause) return;
+            if(globalPause || this.collides) {
+                return;
+            }
 
             this.isMoving = true;
 
-            const next = this.currentPath[index];
+            this.next = this.currentPath[index];
 
-            // Check if there is a bomb on the path
-            const nextInRender = this.currentPath[renderIndex]
-            if (nextInRender !== undefined) {
-                const bombInNext    = tilesWithBombs.find(bomb => bomb.x === nextInRender.x && bomb.y === nextInRender.y);
-                const bombInCurrent = tilesWithBombs.find(bomb => bomb.x === this.x && bomb.y === this.y);
-                if (bombInNext || bombInCurrent) {
-                    this.x = next.x;
-                    this.y = next.y;
-                    clearInterval(this.timer);
-                    this.currentPath.length = 0;
-                }
-            }
-            
             // Move enemy
-            this.x = next.x;
-            this.y = next.y;
+            this.x = this.next.x;
+            this.y = this.next.y;
             this.t = 0;
 
             // Smoother movement for rendering
@@ -342,6 +352,7 @@ class Enemy
         ctx.fillRect(this.collisionBox.x, this.collisionBox.y, 
                      this.collisionBox.w, this.collisionBox.h);
         */
+        // Check if enemy collides with player
         players.forEach(player => {
             /*
             // Draw player collsion box
@@ -349,12 +360,36 @@ class Enemy
             ctx.fillRect(player.collisionBox.x, player.collisionBox.y, 
                          player.collisionBox.w, player.collisionBox.h);
             */
-            // Check if enemy collides with player
             if(aabbCollision(this.collisionBox, player.collisionBox)) {
+                this.collides = true;
                 player.onDeath();
                 this.playerTarget = null;
                 clearInterval(this.timer);
                 this.isMoving = false;
+            }
+        });
+
+        // Check if enemy collides with bomb
+        tilesWithBombs.forEach(tile => {
+            if(tile.bomb !== undefined) {
+                /*
+                // Draw bomb collision box
+                ctx.fillStyle = "#0000ff";
+                ctx.fillRect(tile.bomb.collisionBox.x, tile.bomb.collisionBox.y, 
+                             tile.bomb.collisionBox.w, tile.bomb.collisionBox.h);
+                */
+                if(aabbCollision(this.collisionBox, tile.bomb.collisionBox)) {
+                    this.collides = true;
+                    this.x = this.next.x;
+                    this.y = this.next.y;
+                    this.currentPath.length = 0;
+                    clearInterval(this.timer);
+                    setTimeout(() => {
+                        this.collidedWithBomb();
+                    }, 1000);
+                } else {
+                    this.collides = false;
+                }
             }
         });
     }
@@ -437,7 +472,6 @@ export function renderEnemies(timeStamp)
 
     enemies.forEach(enemy => {
         if (enemy) {
-
             // Store movement direction
             if (enemy.renderX < enemy.x) {
                 enemy.direction = Direction.LEFT;
@@ -451,12 +485,20 @@ export function renderEnemies(timeStamp)
                 enemy.direction = Direction.DOWN;
             }
 
-            // Smooth rendering
-            enemy.t += deltaTime * (1 / (enemy.speed / 1000));
-            enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
+            let x = enemy.x;
+            let y = enemy.y;
 
-            const x = lerp(enemy.x, enemy.renderX, enemy.t);
-            const y = lerp(enemy.y, enemy.renderY, enemy.t);
+            if(!enemy.collides) {
+                // Smooth rendering
+                enemy.t += deltaTime * (1 / (enemy.speed / 1000));
+                enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
+
+                x = lerp(enemy.x, enemy.renderX, enemy.t);
+                y = lerp(enemy.y, enemy.renderY, enemy.t);
+            } else {
+                enemy.renderX = enemy.x;
+                enemy.renderY = enemy.y;
+            }
 
             enemy.update(timeStamp, x, y);
             enemy.checkCollisions(x, y);

@@ -380,15 +380,9 @@ class Player
                 // Checks whether any player is still standing on the bomb after it was dropped.
                 let posCheck = setInterval(() => {
                     let isPlayerOnBomb = false;
-                    for (let i = 0; i < players.length; i++) {
-                        const distance = getDistanceToEuclidean(bombTile, players[i]);
-                        const threshold = tileSize + 10;
-                        //console.log("dist: ", distance);
-                        //console.log("thre: ", threshold);
-                        if (distance <= threshold) {
-                            isPlayerOnBomb = true;
-                            break;
-                        }
+                    // NOTE: Ei tarkisteta mahdollisia muita pelaajia!
+                    if(aabbCollision(bombTile.bomb.collisionBox, this.collisionBox)) {
+                        isPlayerOnBomb = true;
                     }
                     if (this.isDead) {
                         bombTile.isWalkable = true;
