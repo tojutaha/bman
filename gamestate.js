@@ -66,6 +66,8 @@ export class Game {
         setGlobalPause(true);
         clearEnemies();
         clearBombs();
+        clearInterval(powerups.blinker);
+        powerups.showLocation = false;
         powerups.isBlinking = false;
  
         const levelData = levels[this.level];
@@ -121,6 +123,10 @@ export class Game {
     }
     
     nextLevel() {
+        clearInterval(powerups.blinker);
+        powerups.showLocation = false;
+        powerups.isBlinking = false;
+
         if (lastLevel) {
             return;
         }

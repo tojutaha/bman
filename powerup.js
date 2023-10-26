@@ -9,6 +9,7 @@ export class Powerup
         this.maxBombs = 1;
         this.maxRange = 1; 
         this.currentTicks = 4;
+        this.blinker = null;
     }
 
     pickup(tile, player) {
@@ -68,7 +69,7 @@ export class powerupAnimation {
     // Blink the location overlays of powerups
     startBlinking() {
         this.isBlinking = true;
-        let blinker = setInterval(() => {
+        this.blinker = setInterval(() => {
             this.showLocation = !this.showLocation;
 
             if (!this.isBlinking) {
