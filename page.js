@@ -26,6 +26,9 @@ export function updateLevelDisplay(level) {
 
 ////////////////////
 // Main menu / buttons
+const playButton = document.getElementById("playGameButton");
+const playContainer = document.querySelector(".play-game-container");
+const infoDisplays = document.querySelector(".info-displays");
 const mainMenu = document.querySelector('.main-menu-container');
 const newGameButton = document.getElementById("newGameButton");
 const confirmText = document.getElementById("confirmText");
@@ -33,8 +36,6 @@ const continueGameButton = document.getElementById("continueGameButton");
 const howToPlayMenu = document.querySelector(".how-to-play-container");
 const howToPlayButton = document.getElementById("howToPlayButton");
 const closeButton = document.getElementById("closeButton");
-const playButton = document.getElementById("playGameButton");
-const playContainer = document.querySelector(".play-game-container");
 
 export function showMainMenu()
 {
@@ -45,6 +46,7 @@ export function showMainMenu()
         continueGameButton.disabled = false;
     }
     mainMenu.style.visibility = 'visible';
+    infoDisplays.style.visibility = 'hidden';
 }
 
 let confirmed = false;
@@ -52,6 +54,7 @@ newGameButton.addEventListener('click', function() {
     if (localStorage.length === 0) {
         game.newGame();
         mainMenu.style.visibility = 'hidden';
+        infoDisplays.style.visibility = 'visible';
         confirmed = false;
     } else {
         confirmText.style.visibility = 'visible';
@@ -60,6 +63,7 @@ newGameButton.addEventListener('click', function() {
             game.newGame();
             confirmText.style.visibility = 'hidden';
             mainMenu.style.visibility = 'hidden';
+            infoDisplays.style.visibility = 'visible';
             newGameButton.innerText = "New Game";
         }
         confirmed = true;
@@ -70,6 +74,7 @@ newGameButton.addEventListener('click', function() {
 continueGameButton.addEventListener('click', function() {
     game.continueGame();
     mainMenu.style.visibility = 'hidden';
+    infoDisplays.style.visibility = 'visible';
     confirmText.style.visibility = 'hidden';
     newGameButton.innerText = "New Game";
     confirmed = false;
