@@ -54,7 +54,7 @@
             "width": 19,
             "height": 13,
             "type": "forest_night",
-            "powerup": "random",
+            "powerup": "speed",
             "powerupCount": 1,
             "softwallPercent": 0.3
         }
@@ -81,7 +81,7 @@
             "Skeleton": 2
         },
         "tiles": {
-            "width": 19,
+            "width": 23,
             "height": 13,
             "type": "forest_night",
             "powerup": "random",
@@ -96,12 +96,12 @@
             "Skeleton": 10
         },
         "tiles": {
-            "width": 13,
+            "width": 25,
             "height": 13,
             "type": "hell",
             "powerup": "random",
             "powerupCount": 10,
-            "softwallPercent": 0.1
+            "softwallPercent": 0.2
         }
     }
 }

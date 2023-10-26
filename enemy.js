@@ -530,6 +530,8 @@ function playSfx(enemy) {
     }
     else if (enemy.enemyType === "Ghost") {
         randomSound = ghostSfx[Math.floor(Math.random() * ghostSfx.length)];
+    } else {
+        return;
     }
 
     PlayAudio(randomSound);
