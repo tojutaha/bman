@@ -64,7 +64,6 @@ export function renderFloor()
     }
 }
 
-
 const doorAnimation = new Image();
 doorAnimation.src = "./assets/door_animation.png";
 export class EntranceAnimation {
@@ -91,7 +90,6 @@ export class EntranceAnimation {
     }
 }
 
-
 export class ExitAnimation {
     constructor() {
         // The spritesheet goes backwards
@@ -109,7 +107,7 @@ export class ExitAnimation {
             if (this.frames <= 6) {
                 clearInterval(this.frameTimer);
             }
-        }, 80);
+        }, 300);
     }
     
     render() {

@@ -16,7 +16,7 @@
     },
     "1": {
         "enemies": {
-            "Zombie": 2,
+            "Zombie": 1,
             "Ghost": 0,
             "Skeleton": 0
         },

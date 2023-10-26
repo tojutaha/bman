@@ -19,6 +19,9 @@
     </div>
     <div class="canvas-container">
         <canvas id="canvas" width="832" height="832"></canvas>
+        <div class="play-game-container">
+            <button id="playGameButton" class="text-button">PRESS TO PLAY</button>
+        </div>
         <div class="main-menu-container">
             <div class="main-menu-content">
                 <h1 class="header">NOT BOMBERMAN</h1>
@@ -126,7 +129,8 @@
 
     <!-- For loading in DOM -->
     <img id="sprite-sheet" src="/assets/spritesheet_64.png">
-    <audio id="steps" src="/assets/audio/steps02.wav" loop></audio>
+    <audio id="steps" src="/assets/sfx/steps.mp3" loop></audio>
+    <audio id="birds" src="/assets/music/dawn-chorus-birdsong.mp3" loop></audio>
 
     <script>
         const debug = document.querySelector(".debug");

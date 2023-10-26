@@ -1,7 +1,11 @@
 import { enemies } from "./enemy.js";
 import { ctx, tileSize, game, setGlobalPause, globalPause } from "./main.js";
-import { lastLevel, levelHeight, levelWidth, levels } from "./gamestate.js";
+import { fetchEverything, lastLevel, levelHeight, levelWidth, levels } from "./gamestate.js";
 import { players } from "./player.js";
+import { PlayAudio } from "./audio.js";
+
+// Settings
+export let restarted = false;
 
 ////////////////////
 // Score and level display
@@ -29,6 +33,8 @@ const continueGameButton = document.getElementById("continueGameButton");
 const howToPlayMenu = document.querySelector(".how-to-play-container");
 const howToPlayButton = document.getElementById("howToPlayButton");
 const closeButton = document.getElementById("closeButton");
+const playButton = document.getElementById("playGameButton");
+const playContainer = document.querySelector(".play-game-container");
 
 export function showMainMenu()
 {
@@ -79,6 +85,11 @@ closeButton.addEventListener('click', function() {
     mainMenu.style.visibility = 'visible';
 });
 
+playButton.addEventListener('click', function() {
+    playContainer.style.visibility = 'hidden';
+    fetchEverything();
+});
+
 
 ////////////////////
 // Game over menu / buttons
@@ -95,6 +106,7 @@ export function showGameOverMenu()
 
 restartButton.addEventListener('click', function() {
     gameOverMenu.style.visibility = 'hidden';
+    restarted = true;
     game.newGame();
 });
 

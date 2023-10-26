@@ -91,6 +91,17 @@ body {
     background-color: white;
 }
 
+/* Play Game */
+.play-game-container {
+    visibility: visible;
+    display: flex;
+    position: absolute;
+    width: 832px;
+    height: 832px;
+    background: black;
+    z-index: 999;
+}
+
 /* Main Menu */
 .main-menu-container {
     visibility: hidden;

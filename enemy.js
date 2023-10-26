@@ -106,6 +106,7 @@ class Enemy
     }
 
     collidedWithBomb() {
+        playSfx(this);
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
@@ -254,6 +255,7 @@ class Enemy
     }
 
     die() {
+        playSfx(this);
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
@@ -515,4 +517,20 @@ export function clearEnemies() {
             enemy[prop] = null;
     });
     enemies.length = 0;
+}
+
+// Audio
+const zombieSfx = ["assets/sfx/zombie01.mp3", "assets/sfx/zombie02.mp3", "assets/sfx/zombie03.mp3", "assets/sfx/zombie04.mp3", "assets/sfx/zombie05.mp3"];
+const ghostSfx = ["assets/sfx/ghost01.mp3", "assets/sfx/ghost02.mp3", "assets/sfx/ghost03.mp3", "assets/sfx/ghost04.mp3", "assets/sfx/ghost05.mp3"];
+
+function playSfx(enemy) {
+    let randomSound = undefined;
+    if (enemy.enemyType === "Zombie") {
+        randomSound = zombieSfx[Math.floor(Math.random() * zombieSfx.length)];
+    }
+    else if (enemy.enemyType === "Ghost") {
+        randomSound = ghostSfx[Math.floor(Math.random() * ghostSfx.length)];
+    }
+
+    PlayAudio(randomSound);
 }

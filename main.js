@@ -6,7 +6,7 @@ import { powerupAnimation, renderPowerups } from "./powerup.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
-import { Game, fetchLevels } from "./gamestate.js";
+import { Game, fetchEverything } from "./gamestate.js";
 import { updateCamera } from "./camera.js";
 import { showDoor, showPauseMenu } from "./page.js";
 
@@ -93,8 +93,6 @@ document.addEventListener("DOMContentLoaded", function ()
     if (canvas) {
         ctx = canvas.getContext("2d");
         if (ctx) {
-                fetchLevels();
-                //game.newGame();
                 Render();
         } else {
             throw new Error("Could not find ctx object.");

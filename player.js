@@ -24,9 +24,8 @@ export function renderPlayer(timeStamp)
 }
 
 // Audio
-// const steps = ["assets/audio/step01_L.wav", "assets/audio/step01_R.wav"]
-// const step = "assets/audio/steps01.wav";
 const steps = document.getElementById("steps");
+const laughs = ["assets/sfx/laugh01.mp3", "assets/sfx/laugh02.mp3", "assets/sfx/laugh03.mp3", "assets/sfx/laugh04.mp3", "assets/sfx/laugh05.mp3",]
 
 ////////////////////////////////////////////////////////////////////////////////
 // Players
@@ -454,9 +453,19 @@ class Player
 
         if (!this.isDead) {
             this.isDead = true;
-            PlayAudio("assets/audio/death01.wav");
             this.healthPoints--;
             this.updateHealthPoints();
+            
+            // Audio
+            steps.pause();
+            PlayAudio("assets/sfx/death01.wav");
+            if (game.level > 1) {
+                setTimeout(() => {
+                    let randomLaugh = laughs[Math.floor(Math.random() * laughs.length)]
+                    PlayAudio(randomLaugh);
+                }, 200);
+            }
+
             if(this.healthPoints <= 0) {
                 game.over();
             } else {

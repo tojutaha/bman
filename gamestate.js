@@ -1,9 +1,9 @@
-import { PlayAudio } from "./audio.js";
+import { PlayAudio, playTrack, loadAudioFiles, tracks } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, spawnEnemies } from "./enemy.js";
 import { setTextures } from "./level.js";
 import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, game, powerups } from "./main.js";
-import { showGameOverMenu, showMainMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
+import { restarted, showGameOverMenu, showMainMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
 
@@ -19,6 +19,8 @@ export let levelPowerup = "random";
 export let softwallPercent = 0.1;
 export let powerupCount = 2;
 
+// Audio
+const birds = document.getElementById("birds");
 
 export class Game {
     constructor() {
@@ -29,6 +31,10 @@ export class Game {
     }
 
     newGame() {
+        if (restarted) {
+            playTrack(tracks['BEAT']);
+        }
+        birds.play();
         setGlobalPause(true);
         localStorage.clear();
         this.level = 1;
@@ -63,6 +69,13 @@ export class Game {
     }
     
     newLevel() {
+        if (this.level > 1) {
+            birds.pause();
+            playTrack(tracks['INT1']);
+        };
+
+        PlayAudio("assets/sfx/door_close.mp3");
+
         setGlobalPause(true);
         clearEnemies();
         clearBombs();
@@ -175,8 +188,22 @@ export class Game {
         // Open the door
         if (this.numOfEnemies <= 0 && exitLocation.isOpen === false) {
             this.toggleDoor();
-            PlayAudio("assets/audio/exitopen01.wav");
+            PlayAudio("assets/sfx/door.mp3");
             powerups.startBlinking();
+
+            if (this.level === 1) {
+                playTrack(tracks['KICK_DRONES']);
+            }
+        }
+
+        if (this.firstBombExploded) {
+            if (this.level >= 2) {
+                playTrack(tracks['INT2']);
+            }
+        }
+
+        if (this.numOfEnemies < 2 && this.level > 1) {
+            playTrack(tracks['INT3']);
         }
     }
 
@@ -222,7 +249,7 @@ function loadPowerups(loadedPlayers) {
 }
 
 // JSON
-export async function fetchLevels() {
+export async function fetchEverything() {
     const response = await fetch("levels.json");
     const data = await response.json();
     
@@ -237,7 +264,10 @@ export async function fetchLevels() {
             levels.push(levelObject);
         }
     }
+    
+    loadAudioFiles();
+    
     showMainMenu();
-    // game.newGame();
-    console.log("Levels fetched and ready.");
+    console.log("Everything fetched and ready.");
+    PlayAudio("assets/sfx/title.mp3");
 }

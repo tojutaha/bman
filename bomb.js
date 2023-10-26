@@ -11,7 +11,7 @@ let crumblingWalls = [];
 let fieryFloors = [];
 
 // Audio
-let booms = ["assets/audio/boom01.wav", "assets/audio/boom03.wav", "assets/audio/boom04.wav"];
+const booms = ["assets/sfx/bomb01.mp3", "assets/sfx/bomb02.mp3", "assets/sfx/bomb03.mp3"];
 
 export class Bomb {
     constructor(x, y, ticks, range, playerId) {
@@ -116,6 +116,7 @@ function getBombSurroundings(bomb) {
 function explode(bomb) {
     if (!game.firstBombExploded) {
         game.firstBombExploded = true;
+        game.checkGameState();
     }
 
     let tiles = getBombSurroundings(bomb);
