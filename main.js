@@ -1,8 +1,8 @@
 ////////////////////
 // Imports
-import { renderWalls, renderFloor, EntranceAnimation, ExitAnimation } from "./level.js";
+import { renderWalls, renderFloor, EntranceAnimation, ExitAnimation, locBlinkingAnimation } from "./level.js";
 import { LevelHeaderAnimation, GameOverAnimation } from "./ui_animations.js";
-import { powerupAnimation, renderPowerups } from "./powerup.js";
+import { renderPowerups } from "./powerup.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
@@ -42,7 +42,7 @@ export const levelHeader = new LevelHeaderAnimation();
 export const gameOverText = new GameOverAnimation();
 export const entrance = new EntranceAnimation();
 export const exit = new ExitAnimation();
-export const powerups = new powerupAnimation();
+export const locBlinkers = new locBlinkingAnimation();
 
 function Render(timeStamp)
 {
@@ -61,15 +61,15 @@ function Render(timeStamp)
         entrance.render();
         if (!showDoor) {
             exit.render();
-            powerups.render();
+            locBlinkers.render();
         }
         renderBombs();
         renderPlayer(timeStamp);
         renderWalls();
-        powerups.renderLocationOverlay();
+        locBlinkers.renderLocationOverlay();
         if (showDoor) {
             exit.render();
-            powerups.render();
+            locBlinkers.render();
         }
         renderEnemies(timeStamp);
         renderExplosions();

@@ -2,7 +2,7 @@ import { PlayAudio, playTrack, loadAudioFiles, tracks } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, spawnEnemies } from "./enemy.js";
 import { setTextures } from "./level.js";
-import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, game, powerups } from "./main.js";
+import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, game, locBlinkers } from "./main.js";
 import { restarted, showGameOverMenu, showMainMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
@@ -31,10 +31,12 @@ export class Game {
     }
 
     newGame() {
-        if (restarted) {
-            playTrack(tracks['BEAT']);
-        }
-        birds.play();
+        // TODO: valitse että laulaako linnut koko lvl1 ajan
+        // if (restarted) {
+        //     playTrack(tracks['BEAT']);
+        // }
+        // birds.play();
+        playTrack(tracks['BIRDS']);
         setGlobalPause(true);
         localStorage.clear();
         this.level = 1;
@@ -74,9 +76,9 @@ export class Game {
         } else lastLevel = false;
         
         if (this.level > 1) {
-            if (this.level === 2) {
-                birds.pause();
-            }
+            // if (this.level === 2) {      // TODO: katso ylempi todo
+            //     birds.pause();
+            // }
             if (lastLevel) {
                 playTrack(tracks['BEAT']);
             } else {
@@ -89,9 +91,9 @@ export class Game {
         setGlobalPause(true);
         clearEnemies();
         clearBombs();
-        clearInterval(powerups.blinker);
-        powerups.showLocation = false;
-        powerups.isBlinking = false;
+        clearInterval(locBlinkers.blinker);
+        locBlinkers.showLocation = false;
+        locBlinkers.isBlinking = false;
  
         const levelData = levels[this.level];
         levelHeight = levelData.height;
@@ -142,9 +144,9 @@ export class Game {
     }
     
     nextLevel() {
-        clearInterval(powerups.blinker);
-        powerups.showLocation = false;
-        powerups.isBlinking = false;
+        clearInterval(locBlinkers.blinker);
+        locBlinkers.showLocation = false;
+        locBlinkers.isBlinking = false;
 
         if (lastLevel) {
             return;
@@ -206,7 +208,7 @@ export class Game {
         // Open the door
         if (this.numOfEnemies <= 0 && exitLocation.isOpen === false) {
             this.toggleDoor();
-            powerups.startBlinking();
+            locBlinkers.startBlinking();
             
             PlayAudio("assets/sfx/door.mp3");
             if (this.level === 1) {
@@ -222,6 +224,7 @@ export class Game {
 
     over() {
         gameOverText.playAnimation().then(() => {
+            playTrack(tracks['BEAT']);
             localStorage.clear();
             showGameOverMenu();
             this.level = 1;

@@ -1,6 +1,6 @@
 import { canvas, ctx, tileSize, level, spriteSheet } from "./main.js";
 import { levelHeight, levelType, levelWidth, levels } from "./gamestate.js";
-import { exitLocation } from "./tile.js";
+import { exitLocation, powerupLocations } from "./tile.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 
 const hardWallTexture = new Image();
@@ -118,3 +118,54 @@ export class ExitAnimation {
     }
 }
 
+
+export class locBlinkingAnimation {
+    constructor() {
+        this.showLocation = false;
+        this.isBlinking = false;
+    }
+
+    // Blink the location overlays of powerups
+    startBlinking() {
+        this.isBlinking = true;
+        this.blinker = setInterval(() => {
+            this.showLocation = !this.showLocation;
+
+            if (!this.isBlinking) {
+                clearInterval(blinker);
+            }
+        }, 700);
+    }
+
+    render() {
+        powerupLocations.forEach(tile => {
+            if (tile.hasPowerup) {
+                if (tile.powerup === "bomb") {
+                    ctx.drawImage(spriteSheet, 0, tileSize*4, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
+                }
+                else if (tile.powerup === "range") {
+                    ctx.drawImage(spriteSheet, tileSize, tileSize*4, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
+                }
+                else if (tile.powerup === "speed") {
+                    ctx.drawImage(spriteSheet, tileSize*2, tileSize*4, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
+                }
+            }
+        });
+    }
+
+    renderLocationOverlay() {
+        if (this.showLocation) {
+            powerupLocations.forEach(tile => {
+                if (tile.type === "SoftWall") {
+                    ctx.fillStyle = "rgba(255, 190, 130, 0.3)";
+                    ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
+                }
+            });
+
+            if (exitLocation.type === "SoftWall") {
+                ctx.fillStyle = "rgba(255, 100, 100, 0.2)";
+                ctx.fillRect(exitLocation.x, exitLocation.y, tileSize, tileSize);
+            }
+        }
+    }
+}

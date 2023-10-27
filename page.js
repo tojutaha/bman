@@ -2,7 +2,7 @@ import { enemies } from "./enemy.js";
 import { ctx, tileSize, game, setGlobalPause, globalPause } from "./main.js";
 import { fetchEverything, lastLevel, levelHeight, levelWidth, levels } from "./gamestate.js";
 import { players } from "./player.js";
-import { PlayAudio } from "./audio.js";
+import { PlayAudio, playTrack, tracks } from "./audio.js";
 
 // Settings
 export let restarted = false;
@@ -139,6 +139,7 @@ pauseMenuContinueButton.addEventListener('click', function() {
 
 pauseMenuExitButton.addEventListener('click', function() {
     pauseMenu.style.visibility = 'hidden';
+    playTrack(tracks['BEAT']);
     showMainMenu();
 });
 
