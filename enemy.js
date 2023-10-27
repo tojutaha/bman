@@ -201,7 +201,12 @@ class Enemy
                     this.y = this.next.y;
                     clearInterval(this.timer);
                     this.currentPath.length = 0;
-                    this.playSfx();
+
+                    if (this.enemyType === "Zombie") {
+                        setTimeout(() => {
+                            this.playSfx();
+                        }, 500);
+                    }
                 }
             }
 
