@@ -311,6 +311,10 @@ class Enemy
 
     update(currentTime, x, y) {
 
+        // Update collision location
+        this.collisionBox = {x: x + 16, y: y, 
+                             w: this.collisionW, h: this.collisionH+10};
+
         // Animations
         const animDt = currentTime - this.lastTime;
         if (animDt >= this.animationSpeed) {
@@ -367,9 +371,7 @@ class Enemy
         }
     }
 
-    checkCollisions(x, y) {
-        this.collisionBox = {x: x + 16, y: y, 
-                             w: this.collisionW, h: this.collisionH+10};
+    checkCollisions() {
         /*
         // Draw enemy collision box
         ctx.fillStyle = "#ff0000";
@@ -397,11 +399,9 @@ class Enemy
                 }
             }
         });
-        /*
-        console.logs("bombs: ", tilesWithBombs.length);
         // Check if enemy collides with bomb
         tilesWithBombs.forEach(tile => {
-            if(tile.bomb !== undefined) {
+            if(tile.bomb && tile.bomb.collisionBox && this.collisionBox) {
                 // Draw bomb collision box
                 //ctx.fillStyle = "#0000ff";
                 //ctx.fillRect(tile.bomb.collisionBox.x, tile.bomb.collisionBox.y, 
@@ -419,7 +419,6 @@ class Enemy
                 }
             }
         });
-        */
     }
 
     playSfx() {
@@ -535,7 +534,7 @@ export function renderEnemies(timeStamp)
             }
 
             enemy.update(timeStamp, x, y);
-            enemy.checkCollisions(x, y);
+            enemy.checkCollisions();
         }
     });
 }
