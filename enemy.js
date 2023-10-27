@@ -434,6 +434,7 @@ class Enemy
                 break;
             }
             case enemyType.SKELETON: {
+                return;
                 break;
             }
         }
