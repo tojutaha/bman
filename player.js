@@ -62,7 +62,9 @@ class Player
 
         // Animations
         this.spriteSheet = new Image();
-        this.spriteSheet.src = sprite || "./assets/player0.png";
+        this.normalSprite = "./assets/player0.png";
+        this.lanternSprite = "./assets/player0.png"; // TODO: Muuta kun sprite on tehty.
+        this.spriteSheet.src = sprite || this.normalSprite;
         this.frameWidth = 256/4;
         this.frameHeight = 256/4;
         this.totalFrames = 4;
@@ -76,9 +78,20 @@ class Player
         this.updateHealthPoints();
 
         // "Light"
+        this.renderLight = false;
         this.rgb = colorTemperatureToRGB(2600);
         this.rgb2 = colorTemperatureToRGB(3000);
         this.radius = 96;
+    }
+
+    onSpawned() {
+        if(levelType == "forest_day" || levelType == "hell") {
+            this.renderLight = false;
+            this.spriteSheet.src = this.normalSprite;
+        } else {
+            this.renderLight = true;
+            this.spriteSheet.src = this.lanternSprite;
+        }
     }
 
     updateHealthPoints() {
@@ -102,30 +115,30 @@ class Player
             steps.pause();
         }
 
-/// Light
-    if (levelType != "forest_day") {
-        // Create radial gradient
-        var radialGradient = ctx.createRadialGradient(this.x + this.w / 2,
-                                                        this.y + this.h / 2,
-                                                        this.radius/4,
-                                                        this.x + this.w / 2,
-                                                        this.y + this.h / 2,
-                                                        this.radius);
+        // Only draw this in darker maps
+        if (this.renderLight) {
+            // Create radial gradient
+            var radialGradient = ctx.createRadialGradient(this.x + this.w / 2,
+                this.y + this.h / 2,
+                this.radius/4,
+                this.x + this.w / 2,
+                this.y + this.h / 2,
+                this.radius);
 
-        radialGradient.addColorStop(0,   'rgba(' + this.rgb.red + ',' + this.rgb.green + ',' + this.rgb.blue + ',0.5)');
-        radialGradient.addColorStop(0.5, 'rgba(' + this.rgb2.red + ',' + this.rgb2.green + ',' + this.rgb2.blue + ',0.35)');
-        radialGradient.addColorStop(1,   'rgba(0,0,0,0)');
+            radialGradient.addColorStop(0,   'rgba(' + this.rgb.red + ',' + this.rgb.green + ',' + this.rgb.blue + ',0.5)');
+            radialGradient.addColorStop(0.5, 'rgba(' + this.rgb2.red + ',' + this.rgb2.green + ',' + this.rgb2.blue + ',0.35)');
+            radialGradient.addColorStop(1,   'rgba(0,0,0,0)');
 
-        // Use the gradient as the fillStyle
-        ctx.globalCompositeOperation = "source-over";
-        ctx.fillStyle = radialGradient;
+            // Use the gradient as the fillStyle
+            ctx.globalCompositeOperation = "source-over";
+            ctx.fillStyle = radialGradient;
 
-        // Draw the circle
-        ctx.beginPath();
-        ctx.arc(this.x + this.w / 2, this.y + this.h / 2, this.radius, 0, Math.PI*2);
-        ctx.fill();
-    }
-///
+            // Draw the circle
+            ctx.beginPath();
+            ctx.arc(this.x + this.w / 2, this.y + this.h / 2, this.radius, 0, Math.PI*2);
+            ctx.fill();
+        }
+
         const nextX = this.x + this.dx;
         const nextY = this.y + this.dy;
 
@@ -504,6 +517,7 @@ export function resetPlayerPositions()
     players.forEach((p) => {
         p.x = p.startX;
         p.y = p.startY;
+        p.onSpawned();
     });
 }
 
@@ -519,6 +533,8 @@ export function spawnPlayers()
         document.addEventListener("keydown", function(event) {
             players[i].handleKeyDown(event);
         });
+
+        players[i].onSpawned();
     }
 };
 
