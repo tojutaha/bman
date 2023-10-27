@@ -63,7 +63,7 @@ class Player
         // Animations
         this.spriteSheet = new Image();
         this.normalSprite = "./assets/player0.png";
-        this.lanternSprite = "./assets/player0.png"; // TODO: Muuta kun sprite on tehty.
+        this.lanternSprite = "./assets/player0_lantern.png";
         this.spriteSheet.src = sprite || this.normalSprite;
         this.frameWidth = 256/4;
         this.frameHeight = 256/4;
