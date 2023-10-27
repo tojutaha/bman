@@ -156,12 +156,13 @@ export class Game {
         updateLevelDisplay(this.level);
         
         if (!lastLevel) {
-            // No saving on level Z
-            this.saveGame();
+            // Fill the healtpoints before saving
             players.forEach(p => {
                 p.healthPoints = 3;
                 p.updateHealthPoints();
             });
+            // No saving on level Z
+            this.saveGame();
         } else {
             players.forEach(p => {
                 p.healthPoints = 1;
@@ -245,18 +246,23 @@ export class Game {
             updateScoreDisplay(this.score);
             
             const loadedPlayers = JSON.parse(localStorage.getItem("players"));
-            loadPowerups(loadedPlayers);
+            loadPlayerAttributes(loadedPlayers);
         }
     }
 }
 
-function loadPowerups(loadedPlayers) {
+function loadPlayerAttributes(loadedPlayers) {
     for (let i = 0; i < players.length; i++) {
         players[i].speed = loadedPlayers[i].speed;
         players[i].powerup.maxBombs = loadedPlayers[i].powerup.maxBombs;
         players[i].powerup.maxRange = loadedPlayers[i].powerup.maxRange;
+        players[i].healthPoints = loadedPlayers[i].healthPoints;
+        players[i].updateHealthPoints();
         
-        console.info("LOADED PLAYER", i+1, "\nSpeed:", players[i].speed, "Bombs:", players[i].powerup.maxBombs, "Range:", players[i].powerup.maxRange)
+        console.info("LOADED PLAYER", i+1, "\nSpeed:", players[i].speed, 
+            "Bombs:", players[i].powerup.maxBombs, 
+            "Range:", players[i].powerup.maxRange,
+            "Healthpoints:", players[i].healthPoints);
     }
 }
 

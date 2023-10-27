@@ -455,6 +455,8 @@ class Player
             this.isDead = true;
             this.healthPoints--;
             this.updateHealthPoints();
+            // Save the game state here, so we can save healthpoints
+            game.saveGame();
             
             // Audio
             steps.pause();

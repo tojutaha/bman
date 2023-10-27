@@ -10,9 +10,6 @@ import { Game, fetchEverything } from "./gamestate.js";
 import { updateCamera } from "./camera.js";
 import { showDoor, showPauseMenu } from "./page.js";
 
-// TODO: JOS on aikaa:
-// HP:n tallennus / lataus
-
 ////////////////////
 // Globals
 export let canvas;
