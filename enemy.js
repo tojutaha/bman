@@ -371,19 +371,22 @@ class Enemy
         */
         // Check if enemy collides with player
         players.forEach(player => {
-            if (player != undefined) {
+            if (player !== undefined) {
                 /*
                 // Draw player collsion box
                 ctx.fillStyle = "#00ff00";
                 ctx.fillRect(player.collisionBox.x, player.collisionBox.y, 
                              player.collisionBox.w, player.collisionBox.h);
                 */
-                if(aabbCollision(this.collisionBox, player.collisionBox)) {
-                    this.collides = true;
-                    player.onDeath();
-                    this.playerTarget = null;
-                    clearInterval(this.timer);
-                    this.isMoving = false;
+                // Dont check if player is dead
+                if(!player.isDead) {
+                    if(aabbCollision(this.collisionBox, player.collisionBox)) {
+                        this.collides = true;
+                        player.onDeath();
+                        this.playerTarget = null;
+                        clearInterval(this.timer);
+                        this.isMoving = false;
+                    }
                 }
             }
         });
