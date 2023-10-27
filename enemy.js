@@ -6,6 +6,10 @@ import { requestPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
 import { PlayAudio } from "./audio.js";
 
+// Audio
+const zombieSfx = ["assets/sfx/zombie01.mp3", "assets/sfx/zombie02.mp3", "assets/sfx/zombie03.mp3", "assets/sfx/zombie04.mp3", "assets/sfx/zombie05.mp3"];
+const ghostSfx = ["assets/sfx/ghost01.mp3", "assets/sfx/ghost02.mp3", "assets/sfx/ghost03.mp3", "assets/sfx/ghost04.mp3", "assets/sfx/ghost05.mp3"];
+
 export const enemyType = {
     ZOMBIE: "Zombie",
     GHOST: "Ghost",
@@ -81,18 +85,21 @@ class Enemy
                 this.frameWidth = 256/4;
                 this.spriteSheet.src = "./assets/placeholder_zombi.png";
                 this.movementMode = movementMode.PATROL;
+                this.speed = 800;
                 this.patrol();
                 break;
             }
             case enemyType.GHOST: {
                 this.spriteSheet.src = "./assets/ghost_01.png";
                 this.movementMode = movementMode.ROAM;
+                this.speed = 500;
                 this.roam();
                 break;
             }
             case enemyType.SKELETON: {
                 this.spriteSheet.src = "./assets/skeleton_01.png";
                 this.movementMode = movementMode.FOLLOW;
+                this.speed = 400;
                 this.followPlayer();
                 break;
             }
@@ -106,7 +113,7 @@ class Enemy
     }
 
     collidedWithBomb() {
-        playSfx(this);
+        this.playSfx();
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
@@ -270,7 +277,7 @@ class Enemy
     }
 
     die() {
-        playSfx(this);
+        this.playSfx();
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
@@ -381,8 +388,8 @@ class Enemy
                 // Dont check if player is dead
                 if(!player.isDead) {
                     if(aabbCollision(this.collisionBox, player.collisionBox)) {
-                        this.collides = true;
                         player.onDeath();
+                        this.collides = true;
                         this.playerTarget = null;
                         clearInterval(this.timer);
                         this.isMoving = false;
@@ -390,46 +397,51 @@ class Enemy
                 }
             }
         });
-
+        /*
+        console.logs("bombs: ", tilesWithBombs.length);
         // Check if enemy collides with bomb
         tilesWithBombs.forEach(tile => {
             if(tile.bomb !== undefined) {
-                /*
                 // Draw bomb collision box
-                ctx.fillStyle = "#0000ff";
-                ctx.fillRect(tile.bomb.collisionBox.x, tile.bomb.collisionBox.y, 
-                             tile.bomb.collisionBox.w, tile.bomb.collisionBox.h);
-                */
+                //ctx.fillStyle = "#0000ff";
+                //ctx.fillRect(tile.bomb.collisionBox.x, tile.bomb.collisionBox.y, 
+                             //tile.bomb.collisionBox.w, tile.bomb.collisionBox.h);
                 if(aabbCollision(this.collisionBox, tile.bomb.collisionBox)) {
-                    this.isMoving = false;
                     this.collides = true;
-                    this.x = this.next.x;
-                    this.y = this.next.y;
                     clearInterval(this.timer);
                     this.currentPath.length = 0;
+                    this.isMoving = false;
+                    this.x = this.next.x;
+                    this.y = this.next.y;
                     setTimeout(() => {
                         this.collidedWithBomb();
                     }, 1000);
-                } else {
-                    this.collides = false;
                 }
             }
         });
+        */
+    }
+
+    playSfx() {
+        let randomSound = undefined;
+
+        switch(this.enemyType) {
+            case enemyType.ZOMBIE: {
+                randomSound = zombieSfx[Math.floor(Math.random() * zombieSfx.length)];
+                break;
+            }
+            case enemyType.GHOST: {
+                randomSound = ghostSfx[Math.floor(Math.random() * ghostSfx.length)];
+                break;
+            }
+            case enemyType.SKELETON: {
+                break;
+            }
+        }
+
+        PlayAudio(randomSound);
     }
 };
-
-function getEnemySpeed(enemy)
-{
-    if (enemy.enemyType === "Zombie") {
-        return 800;
-    }
-    else if (enemy.enemyType === "Ghost") {
-        return 500;
-    }
-    else if (enemy.enemyType === "Skeleton") {
-        return 400;
-    }
-}
 
 function getRandomSpeed()
 {
@@ -456,7 +468,6 @@ export function spawnEnemies(array)
         const enemy = new Enemy(random.x, random.y, tileSize, tileSize);
         let typeIndex = i;
         enemy.enemyType = array[i];
-        enemy.speed = getEnemySpeed(enemy);
         enemy.init();
         enemies.push(enemy);
 
@@ -539,20 +550,3 @@ export function clearEnemies() {
     enemies.length = 0;
 }
 
-// Audio
-const zombieSfx = ["assets/sfx/zombie01.mp3", "assets/sfx/zombie02.mp3", "assets/sfx/zombie03.mp3", "assets/sfx/zombie04.mp3", "assets/sfx/zombie05.mp3"];
-const ghostSfx = ["assets/sfx/ghost01.mp3", "assets/sfx/ghost02.mp3", "assets/sfx/ghost03.mp3", "assets/sfx/ghost04.mp3", "assets/sfx/ghost05.mp3"];
-
-function playSfx(enemy) {
-    let randomSound = undefined;
-    if (enemy.enemyType === "Zombie") {
-        randomSound = zombieSfx[Math.floor(Math.random() * zombieSfx.length)];
-    }
-    else if (enemy.enemyType === "Ghost") {
-        randomSound = ghostSfx[Math.floor(Math.random() * ghostSfx.length)];
-    } else {
-        return;
-    }
-
-    PlayAudio(randomSound);
-}
