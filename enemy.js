@@ -182,6 +182,21 @@ class Enemy
 
             this.next = this.currentPath[index];
 
+            // NOTE: Pidetään tämäkin vielä tuo checkCollisionin lisäksi,
+            // niin animaatiot ei glitchaa joissain tapauksissa.
+            // Check if there is a bomb on the path
+            const nextInRender = this.currentPath[renderIndex]
+            if (nextInRender !== undefined) {
+                const bombInNext    = tilesWithBombs.find(bomb => bomb.x === nextInRender.x && bomb.y === nextInRender.y);
+                const bombInCurrent = tilesWithBombs.find(bomb => bomb.x === this.x && bomb.y === this.y);
+                if (bombInNext || bombInCurrent) {
+                    this.x = this.next.x;
+                    this.y = this.next.y;
+                    clearInterval(this.timer);
+                    this.currentPath.length = 0;
+                }
+            }
+
             // Move enemy
             this.x = this.next.x;
             this.y = this.next.y;
