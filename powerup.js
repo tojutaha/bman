@@ -1,4 +1,4 @@
-import { ctx, spriteSheet, level, tileSize } from "./main.js";
+import { ctx, level, tileSize } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 
 export class Powerup
@@ -32,7 +32,9 @@ export function randomPowerup() {
 }
 
 ////////////////////
-// Render
+// Renders
+const powerupImage = new Image();
+powerupImage.src = "./assets/powerups.png"
 export function renderPowerups()
 {
     for (let x = 0; x < levelWidth; x++) {
@@ -43,13 +45,13 @@ export function renderPowerups()
 
             if (currentTile.hasPowerup) {
                 if (currentTile.powerup === "bomb") {
-                    ctx.drawImage(spriteSheet, 0, tileSize*4, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                    ctx.drawImage(powerupImage, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
                 else if (currentTile.powerup === "range") {
-                    ctx.drawImage(spriteSheet, tileSize, tileSize*4, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                    ctx.drawImage(powerupImage, tileSize, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
                 else if (currentTile.powerup === "speed") {
-                    ctx.drawImage(spriteSheet, tileSize*2, tileSize*4, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                    ctx.drawImage(powerupImage, tileSize*2, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
             }
         }

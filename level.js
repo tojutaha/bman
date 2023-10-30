@@ -1,4 +1,4 @@
-import { canvas, ctx, tileSize, level, spriteSheet } from "./main.js";
+import { canvas, ctx, tileSize, level } from "./main.js";
 import { levelHeight, levelType, levelWidth, levels } from "./gamestate.js";
 import { exitLocation, powerupLocations } from "./tile.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
@@ -176,22 +176,6 @@ export class locBlinkingAnimation {
     }
 
     render() {
-        powerupLocations.forEach(tile => {
-            if (tile.hasPowerup) {
-                if (tile.powerup === "bomb") {
-                    ctx.drawImage(spriteSheet, 0, tileSize*4, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-                }
-                else if (tile.powerup === "range") {
-                    ctx.drawImage(spriteSheet, tileSize, tileSize*4, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-                }
-                else if (tile.powerup === "speed") {
-                    ctx.drawImage(spriteSheet, tileSize*2, tileSize*4, tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
-                }
-            }
-        });
-    }
-
-    renderLocationOverlay() {
         if (this.showLocation) {
             powerupLocations.forEach(tile => {
                 if (tile.type === "SoftWall") {

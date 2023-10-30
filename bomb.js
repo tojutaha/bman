@@ -1,4 +1,4 @@
-import { ctx, level, tileSize, spriteSheet, game, globalPause } from "./main.js";
+import { ctx, level, tileSize, game, globalPause } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 import { playAudio, randomSfx, sfxs } from "./audio.js";
 import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
@@ -237,6 +237,8 @@ export function renderBombs() {
 
 const softWallTexture = new Image();
 softWallTexture.src = "./assets/stone_brick_03_alt.png"
+const explosionImage = new Image();
+explosionImage.src = "./assets/explosion.png"
 export function renderExplosions() {
     // Walls
     crumblingWalls.forEach(tile => {
@@ -251,8 +253,8 @@ export function renderExplosions() {
 
     // Floor
     fieryFloors.forEach(tile => {
-        ctx.drawImage(spriteSheet, 
-            tileSize*tile.currentFrame, tileSize*6, 
+        ctx.drawImage(explosionImage, 
+            tileSize*tile.currentFrame, 0, 
             tileSize, tileSize, tile.x, tile.y, tileSize, tileSize);
 
         if (tile.animationTimer <= 2) {

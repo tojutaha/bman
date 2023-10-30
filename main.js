@@ -61,15 +61,15 @@ function Render(timeStamp)
         entrance.render();
         if (!showDoor) {
             exit.render();
-            locBlinkers.render();
+            renderPowerups();
         }
         renderBombs();
         renderPlayer(timeStamp);
         renderWalls();
-        locBlinkers.renderLocationOverlay();
+        locBlinkers.render();
         if (showDoor) {
             exit.render();
-            locBlinkers.render();
+            renderPowerups();
         }
         renderEnemies(timeStamp);
         renderExplosions();
