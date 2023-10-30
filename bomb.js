@@ -1,3 +1,4 @@
+// TODO:    Bugi jossa kaksi pommia chainaa toisensa vaikka olivat kaukana toisistaan (en muista laitoinko aina samaan kohtaan)
 import { ctx, level, tileSize, game, globalPause } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 import { playAudio, randomSfx, sfxs } from "./audio.js";
@@ -9,7 +10,6 @@ import { exitLocation } from "./tile.js";
 export let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
-
 
 export class Bomb {
     constructor(x, y, range, playerId) {
@@ -139,7 +139,6 @@ function chainExplosions(tiles) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
                 if ("bomb" in currentTile && currentTile.bomb.hasExploded === false) {
-                    // console.info(tiles[0][0].x, tiles[0][0].y, "chained",  currentTile.x, currentTile.y);
                     explode(currentTile.bomb);
                 }
         }
@@ -269,8 +268,7 @@ export function renderExplosions() {
     });
 }
 
-// This is called only when changing level and does only what's necessary for that
-// - it doesn't do the whole exploding process and make the tiles walkable for example.
+// Clears all bombs and fire from the level
 export function clearBombs() {
     tilesWithBombs.forEach(tile => {
         tile.isWalkable = true;
