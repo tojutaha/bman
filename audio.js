@@ -14,6 +14,7 @@ const TrackURLs = {
     INT1: "assets/music/song_intensity01.mp3",
     INT2: "assets/music/song_intensity02.mp3",
     INT3: "assets/music/song_intensity03.mp3",
+    STEPS: "assets/sfx/steps.mp3",
 }
 
 // Loading function for fetching the audio file and decode the data
@@ -34,7 +35,7 @@ export async function loadAudioFiles() {
     if (audioCtx != null) {
         return;
     }
-    audioCtx = new AudioContext();  // TODO: luo tämä vasta kun painettu jotain
+    audioCtx = new AudioContext();
 
     for (const trackName in TrackURLs) {
         const song = await loadFile(TrackURLs[trackName]);
@@ -45,11 +46,10 @@ export async function loadAudioFiles() {
 }
 
 
-
+// TODO: TEMPO
 let startTime = 0;
 let currentTrack = null;
 
-// TODO: TEMPO
 export function playTrack(audioBuffer) {
     const trackSource = new AudioBufferSourceNode(audioCtx, {
         buffer: audioBuffer,
@@ -68,17 +68,40 @@ export function playTrack(audioBuffer) {
 
     currentTrack = trackSource;
     startTime = audioCtx.currentTime - offset; // Update start time considering the offset
-
-    return trackSource;
 }
 
-// https://stackoverflow.com/questions/61453760/how-to-rapidly-play-multiple-copies-of-a-soundfile-in-javascript
-//PlayAudio("assets/sfx/click.mp3", 1);
+// Syncs the footsteps with the track
+let footsteps = null;
+export function playFootsteps(audioBuffer) {
+    const audioSource = new AudioBufferSourceNode(audioCtx, {
+        buffer: audioBuffer,
+    });
+    audioSource.loop = true;
+    audioSource.connect(audioCtx.destination);
+
+    if (footsteps !== null) {
+        footsteps.stop();
+    }
+
+    let elapsedTime = audioCtx.currentTime - startTime;
+    let offset = elapsedTime % audioBuffer.duration;
+
+    audioSource.start(0, offset);
+
+    footsteps = audioSource;
+    startTime = audioCtx.currentTime - offset;
+}
+
+export function stopFootsteps() {
+    if (footsteps !== null) {
+        footsteps.stop();
+        footsteps = null; // Reset footsteps to null
+    }
+}
+
 export const PlayAudio = async (filepath, volume = 0.5) =>  // TODO: tee loadAudioFilessä
 {
-    const response = await fetch(filepath);
-    const arrayBuffer = await response.arrayBuffer();
-    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+    const audioBuffer = await getFile(filepath);
 
     const audioSource = audioCtx.createBufferSource();
     audioSource.buffer = audioBuffer;
