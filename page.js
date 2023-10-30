@@ -95,7 +95,9 @@ closeButton.addEventListener('click', function() {
 playButton.addEventListener('click', async function() {
     loadingText.style.visibility = 'visible';
     playButton.style.visibility = 'hidden';
+    let loadTimer = animateLoadingText();
     await fetchEverything();
+    clearInterval(loadTimer);
     await loadTextures();
     loadingText.style.visibility = 'hidden';
     playContainer.style.visibility = 'hidden';
@@ -103,6 +105,20 @@ playButton.addEventListener('click', async function() {
     playAudio(sfxs['TITLE']);
 });
 
+function animateLoadingText() {
+    let dots = 0;
+    let loadTimer = setInterval(() => {
+        if (dots >= 3) {
+            loadingText.textContent = "Loading";
+            dots = 0;
+        } else {
+            loadingText.textContent += ".";
+            dots++;
+        }
+    }, 600);
+
+    return loadTimer;
+}
 
 ////////////////////
 // Game over menu / buttons
