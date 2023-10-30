@@ -3,31 +3,63 @@ import { levelHeight, levelType, levelWidth, levels } from "./gamestate.js";
 import { exitLocation, powerupLocations } from "./tile.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 
-const hardWallTexture = new Image();
-const softWallTexture = new Image();
-const floorTexture = new Image();
+let hardWallTexture = new Image();
+let softWallTexture = new Image();
+let floorTexture = new Image();
 
+async function preLoadTextures() {
+    const textures = {
+        "forest_day": {
+            floor:    "./assets/grass_01.png",
+            hardWall: "./assets/stone_brick_04.png",
+            softWall: "./assets/stone_brick_02.png"
+        },
+        "forest_night": {
+            floor:    "./assets/cobblestone_03.png",
+            hardWall: "./assets/stone_brick_05.png",
+            softWall: "./assets/stone_brick_03.png"
+        },
+        "hell": {
+            floor:    "./assets/lava_01.png",
+            hardWall: "./assets/stone_brick_01.png",
+            softWall: "./assets/stone_brick_03.png"
+        },
+        "default": {
+            floor:    "./assets/cobblestone_03.png",
+            hardWall: "./assets/stone_brick_05.png",
+            softWall: "./assets/stone_brick_03.png"
+        }
+    };
+
+    let promises = [];
+    for(let levelType in textures) {
+        for(let textureType in textures[levelType]) {
+            promises.push(new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = reject;
+                img.src = textures[levelType][textureType];
+                textures[levelType][textureType] = img;
+            }));
+        }
+    }
+
+    return Promise.all(promises).then(() => textures);
+}
+
+let levelTextures = [];
+export async function loadTextures() {
+    try {
+        levelTextures = await preLoadTextures();
+    } catch(error) {
+        console.error(`Error loading textures: ${error}`);
+    }
+}
 
 export function setTextures() {
-    if (levelType === "forest_day") {
-        floorTexture.src = "./assets/grass_01.png";
-        hardWallTexture.src = "./assets/stone_brick_04.png"
-        softWallTexture.src = "./assets/stone_brick_02.png"
-    } 
-    else if (levelType === "forest_night") {
-        floorTexture.src = "./assets/cobblestone_03.png";
-        hardWallTexture.src = "./assets/stone_brick_05.png"
-        softWallTexture.src = "./assets/stone_brick_03.png"
-    }
-    else if (levelType === "hell") {
-        floorTexture.src = "./assets/lava_01.png";
-        hardWallTexture.src = "./assets/stone_brick_01.png"
-        softWallTexture.src = "./assets/stone_brick_03.png"
-    } else {
-        floorTexture.src = "./assets/cobblestone_03.png";
-        hardWallTexture.src = "./assets/stone_brick_05.png"
-        softWallTexture.src = "./assets/stone_brick_03.png"
-    }
+    floorTexture    = levelTextures[levelType].floor;
+    hardWallTexture = levelTextures[levelType].hardWall;
+    softWallTexture = levelTextures[levelType].softWall;
 }
 
 export function renderWalls()

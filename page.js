@@ -3,6 +3,7 @@ import { ctx, tileSize, game, setGlobalPause, globalPause } from "./main.js";
 import { fetchEverything, lastLevel, levelHeight, levelWidth, levels } from "./gamestate.js";
 import { players } from "./player.js";
 import { PlayAudio, playTrack, tracks } from "./audio.js";
+import { loadTextures } from "./level.js";
 
 // Settings
 export let restarted = false;
@@ -95,6 +96,7 @@ playButton.addEventListener('click', async function() {
     loadingText.style.visibility = 'visible';
     playButton.style.visibility = 'hidden';
     await fetchEverything();
+    await loadTextures();
     playContainer.style.visibility = 'hidden';
     showMainMenu();
     PlayAudio("assets/sfx/title.mp3");
