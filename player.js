@@ -106,7 +106,7 @@ class Player
 
         // Play footsteps
         if (this.dx !== 0.0 || this.dy !== 0.0) {
-            playFootsteps(tracks['STEPS']);
+            playFootsteps();
         } else {
             stopFootsteps();
         }

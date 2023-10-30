@@ -15,7 +15,6 @@ const TrackURLs = {
     INT1: "assets/music/song_intensity01.mp3",
     INT2: "assets/music/song_intensity02.mp3",
     INT3: "assets/music/song_intensity03.mp3",
-    STEPS: "assets/sfx/steps.mp3",
 }
 
 const SfxURLs = {
@@ -27,6 +26,7 @@ const SfxURLs = {
     DOOR_OPEN: "assets/sfx/door_open.mp3",
     DOOR_CLOSE: "assets/sfx/door_close.mp3",
     GAMEOVER: "assets/sfx/gameover.mp3",
+    STEPS: "assets/sfx/steps.mp3",
 }
 
 // Loading function for fetching the audio file and decode the data
@@ -95,7 +95,8 @@ export function playTrack(audioBuffer) {
 
 // Syncs the footsteps with the track
 let footsteps = null;
-export function playFootsteps(audioBuffer) {
+export function playFootsteps() {
+    const audioBuffer = sfxs['STEPS'];
     const audioSource = new AudioBufferSourceNode(audioCtx, {
         buffer: audioBuffer,
     });
@@ -124,9 +125,7 @@ export function stopFootsteps() {
 
 // Pick a random sound from an sfx array
 export function randomSfx(sfxPath) {
-    console.log("path", sfxPath);
     const randomSound = sfxPath[Math.floor(Math.random() * sfxPath.length)];
-    console.log("picked", randomSound);
     return randomSound
 }
 
