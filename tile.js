@@ -117,11 +117,14 @@ function createSoftWalls(result, hardWallTotal) {
                         surround.push(bot);
                     }
                 }
-                const randomFloor = surround[Math.floor(Math.random() * surround.length)];
-                randomFloor.type = "SoftWall";
-                randomFloor.isWalkable = false;
-                softWallsLeft--;
-                softWallTotal++;
+
+                if(surround.length > 0) {
+                    const randomFloor = surround[Math.floor(Math.random() * surround.length)];
+                    randomFloor.type = "SoftWall";
+                    randomFloor.isWalkable = false;
+                    softWallsLeft--;
+                    softWallTotal++;
+                }
             }
         }
     }
@@ -164,12 +167,12 @@ function populateSoftWalls(result, softWallTotal) {
                 }
                 tile.hasPowerup = true;
                 powerupLocations.push(tile);
-                console.log("tile", tile);
+                //console.log("tile", tile);
                 powerupsLeft--;
             }
         }
     }
-    console.log("loc", powerupLocations);
+    //console.log("loc", powerupLocations);
 }
 
 
@@ -226,3 +229,4 @@ function createMultiplayerCage(result) {
     result[levelWidth - 2][levelHeight - 4].type = "SoftWall";
     result[levelWidth - 2][levelHeight - 4].isWalkable = false;
 }
+

@@ -103,7 +103,7 @@ export class Game {
         powerupCount = levelData.powerupCount;
         softwallPercent = levelData.softwallPercent;
         setTextures();
-        console.log("Level", this.level, levelData);
+        //console.log("Level", this.level, levelData);
         
         let newLevel = createTiles();
         level.length = 0;

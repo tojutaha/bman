@@ -207,7 +207,7 @@ let bombButton = document.getElementById("bombplus");
 bombButton.addEventListener("click", function() {
     for (let i = 0; i < players.length; i++) {
         players[i].powerup.maxBombs += 1;
-        console.log("Player", i+1, "bombs:", players[i].powerup.maxBombs);
+        //console.log("Player", i+1, "bombs:", players[i].powerup.maxBombs);
     }
 });
 
@@ -215,7 +215,7 @@ let rangeButton = document.getElementById("rangeplus");
 rangeButton.addEventListener("click", function() {
     for (let i = 0; i < players.length; i++) {
         players[i].powerup.maxRange += 1;
-        console.log("Player", i+1, "range:", players[i].powerup.maxRange);
+        //console.log("Player", i+1, "range:", players[i].powerup.maxRange);
     }
 });
 
@@ -224,7 +224,7 @@ resetPowerupsButton.addEventListener("click", function() {
     for (let i = 0; i < players.length; i++) {
         players[i].powerup.maxBombs = 1;
         players[i].powerup.maxRange = 1;
-        console.log("Player", i+1, "range and bombs resetted");
+        //console.log("Player", i+1, "range and bombs resetted");
     }
 });
 
