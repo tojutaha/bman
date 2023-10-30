@@ -101,6 +101,39 @@ body {
     height: 832px;
     background: black;
     z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
+
+.play-game-content {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.play-game-container img {
+    width: 512px;
+    height: 512px;
+}
+
+.play-game-container button {
+    width: 200px;
+    height: 50px;
+    background: black;
+    color: white;
+}
+
+.play-game-container button:hover {
+    background: grey;
+}
+
+#loading-text {
+    visibility: hidden;
+    font-size: 32px;
+    color: grey;
 }
 
 /* Main Menu */

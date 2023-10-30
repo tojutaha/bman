@@ -27,6 +27,7 @@ export function updateLevelDisplay(level) {
 ////////////////////
 // Main menu / buttons
 const playButton = document.getElementById("playGameButton");
+const loadingText = document.getElementById("loading-text");
 const playContainer = document.querySelector(".play-game-container");
 const infoDisplays = document.querySelector(".info-displays");
 const mainMenu = document.querySelector('.main-menu-container');
@@ -91,6 +92,8 @@ closeButton.addEventListener('click', function() {
 });
 
 playButton.addEventListener('click', async function() {
+    loadingText.style.visibility = 'visible';
+    playButton.style.visibility = 'hidden';
     await fetchEverything();
     playContainer.style.visibility = 'hidden';
     showMainMenu();
