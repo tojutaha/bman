@@ -381,7 +381,7 @@ class Player
 
         if (this.activeBombs < this.powerup.maxBombs) {
             if (!bombTile.bomb || bombTile.bomb.hasExploded) {
-                bombTile.bomb = new Bomb(bombTile.x, bombTile.y, this.powerup.currentTicks, this.powerup.maxRange, this.id);
+                bombTile.bomb = new Bomb(bombTile.x, bombTile.y, this.powerup.maxRange, this.id);
                 this.activeBombs++;
                 tilesWithBombs.push(bombTile);
                 
@@ -469,7 +469,7 @@ class Player
             
             // Audio
             stopFootsteps();
-            playAudio("assets/sfx/death01.wav");
+            playAudio(sfxs['DEATH']);
             if (game.level > 1) {
                 setTimeout(() => {
                     let randomLaugh = randomSfx(sfxs['LAUGHS']);

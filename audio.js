@@ -26,6 +26,7 @@ const SfxURLs = {
     DOOR_OPEN: "assets/sfx/door_open.mp3",
     DOOR_CLOSE: "assets/sfx/door_close.mp3",
     GAMEOVER: "assets/sfx/gameover.mp3",
+    DEATH: "assets/sfx/death01.wav",
     STEPS: "assets/sfx/steps.mp3",
 }
 

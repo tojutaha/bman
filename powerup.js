@@ -6,7 +6,6 @@ export class Powerup
     constructor() {
         this.maxBombs = 1;
         this.maxRange = 1; 
-        this.currentTicks = 4;
         this.blinker = null;
     }
 

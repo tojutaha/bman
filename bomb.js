@@ -12,14 +12,14 @@ let fieryFloors = [];
 
 
 export class Bomb {
-    constructor(x, y, ticks, range, playerId) {
+    constructor(x, y, range, playerId) {
         this.x = x || 0;
         this.y = y || 0,
-        this.ticks = ticks || 4;
         this.range = range || 1;
         this.hasExploded = false;
         this.playerId = playerId || 0;
         this.currentFrame = 0;
+        this.frames = 20;
 
         // Collision
         this.w = tileSize;
@@ -30,18 +30,17 @@ export class Bomb {
     
         this.ticking = setInterval(() => {
             if(globalPause) return;
-            this.ticks--;
             this.currentFrame++;
             if (this.hasExploded) {
                 clearInterval(this.ticking);
             }
-            else if (this.ticks === 0) {
+            else if (this.currentFrame >= this.frames) {
                 const randomBomb = randomSfx(sfxs['BOMBS']);
                 playAudio(randomBomb);
                 explode(this);
                 clearInterval(this.ticking);
             }
-        }, 1000);
+        }, 150);
     }
 }
 
@@ -125,7 +124,6 @@ function explode(bomb) {
     }
 
     bomb.hasExploded = true;
-    bomb.ticks = 0;
     tilesWithBombs.splice(0, 1);
 
     let player = findPlayerById(bomb.playerId);
@@ -226,11 +224,13 @@ function killEnemies(tile) {
 
 ////////////////////
 // Render
+const bombImage = new Image();
+bombImage.src = "./assets/bomb.png"
 export function renderBombs() {
     for (let i = 0; i < tilesWithBombs.length; i++) {
         let currentTile = tilesWithBombs[i];
-        ctx.drawImage(spriteSheet, 
-            tileSize*currentTile.bomb.currentFrame, tileSize, 
+        ctx.drawImage(bombImage, 
+            tileSize*currentTile.bomb.currentFrame, 0, 
             tileSize, tileSize,  currentTile.bomb.x, currentTile.bomb.y, tileSize, tileSize);
     }
 }
