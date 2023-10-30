@@ -1,4 +1,4 @@
-import { playAudio, playTrack, loadAudioFiles, tracks, sfxs } from "./audio.js";
+import { playTrack, loadAudioFiles, tracks } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, spawnEnemies } from "./enemy.js";
 import { setTextures } from "./level.js";
@@ -86,7 +86,6 @@ export class Game {
             }
         };
 
-        playAudio(sfxs['DOOR_CLOSE']);
 
         setGlobalPause(true);
         clearEnemies();
@@ -210,7 +209,6 @@ export class Game {
             this.toggleDoor();
             locBlinkers.startBlinking();
             
-            playAudio(sfxs['DOOR_OPEN']);
             if (this.level === 1) {
                 playTrack(tracks['KICK_DRONES']);
             } else {

@@ -2,6 +2,7 @@ import { canvas, ctx, tileSize, level, spriteSheet } from "./main.js";
 import { levelHeight, levelType, levelWidth, levels } from "./gamestate.js";
 import { exitLocation, powerupLocations } from "./tile.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
+import { playAudio, sfxs } from "./audio.js";
 
 let hardWallTexture = new Image();
 let softWallTexture = new Image();
@@ -105,6 +106,8 @@ export class EntranceAnimation {
     
     playAnimation() {
         this.frames = 0;
+        playAudio(sfxs['DOOR_CLOSE']);
+        
         this.frameTimer = setInterval(() => {
             this.frames++;
 
@@ -133,13 +136,16 @@ export class ExitAnimation {
     }
     
     playAnimation() {
-        this.frameTimer = setInterval(() => {
-            this.frames--;
-
-            if (this.frames <= 6) {
-                clearInterval(this.frameTimer);
-            }
-        }, 300);
+        setTimeout(() => {
+            playAudio(sfxs['DOOR_OPEN']);
+            this.frameTimer = setInterval(() => {
+                this.frames--;
+    
+                if (this.frames <= 6) {
+                    clearInterval(this.frameTimer);
+                }
+            }, 300);
+        }, 1500);
     }
     
     render() {
