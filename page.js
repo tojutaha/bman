@@ -97,6 +97,7 @@ playButton.addEventListener('click', async function() {
     playButton.style.visibility = 'hidden';
     await fetchEverything();
     await loadTextures();
+    loadingText.style.visibility = 'hidden';
     playContainer.style.visibility = 'hidden';
     showMainMenu();
     playAudio(sfxs['TITLE']);
