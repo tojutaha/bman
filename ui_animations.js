@@ -1,4 +1,4 @@
-import { PlayAudio } from "./audio.js";
+import { playAudio, sfxs } from "./audio.js";
 import { lastLevel } from "./gamestate.js";
 import { ctx, game } from "./main.js";
 
@@ -76,7 +76,7 @@ export class GameOverAnimation {
 
             
             setTimeout(() => {
-                PlayAudio("assets/sfx/gameover.mp3")
+                playAudio(sfxs['GAMEOVER']);
                 this.frameTimer = setInterval(() => {
                     this.frames++;
 

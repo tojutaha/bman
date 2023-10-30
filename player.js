@@ -1,6 +1,6 @@
 import { ctx, level, tileSize, deltaTime, game } from "./main.js";
 import { levelHeight, levelType, levelWidth } from "./gamestate.js";
-import { PlayAudio, playFootsteps, stopFootsteps, tracks } from "./audio.js";
+import { playAudio, playFootsteps, randomSfx, sfxs, stopFootsteps, tracks } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup } from "./powerup.js";
 import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getDistanceTo, getSurroundingTiles, getDistanceToEuclidean } from "./utils.js";
@@ -22,9 +22,6 @@ export function renderPlayer(timeStamp)
         p.update(timeStamp);
     });
 }
-
-// Audio
-const laughs = ["assets/sfx/laugh01.mp3", "assets/sfx/laugh02.mp3", "assets/sfx/laugh03.mp3", "assets/sfx/laugh04.mp3", "assets/sfx/laugh05.mp3",]
 
 ////////////////////////////////////////////////////////////////////////////////
 // Players
@@ -472,11 +469,11 @@ class Player
             
             // Audio
             stopFootsteps();
-            PlayAudio("assets/sfx/death01.wav");
+            playAudio("assets/sfx/death01.wav");
             if (game.level > 1) {
                 setTimeout(() => {
-                    let randomLaugh = laughs[Math.floor(Math.random() * laughs.length)]
-                    PlayAudio(randomLaugh);
+                    let randomLaugh = randomSfx(sfxs['LAUGHS']);
+                    playAudio(randomLaugh);
                 }, 200);
             }
 

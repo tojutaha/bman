@@ -4,11 +4,8 @@ import { Direction, players } from "./player.js";
 import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable, getDistanceToEuclidean, aabbCollision } from "./utils.js";
 import { requestPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
-import { PlayAudio } from "./audio.js";
+import { playAudio, randomSfx, sfxs } from "./audio.js";
 
-// Audio
-const zombieSfx = ["assets/sfx/zombie01.mp3", "assets/sfx/zombie02.mp3", "assets/sfx/zombie03.mp3", "assets/sfx/zombie04.mp3", "assets/sfx/zombie05.mp3"];
-const ghostSfx = ["assets/sfx/ghost01.mp3", "assets/sfx/ghost02.mp3", "assets/sfx/ghost03.mp3", "assets/sfx/ghost04.mp3", "assets/sfx/ghost05.mp3"];
 
 export const enemyType = {
     ZOMBIE: "Zombie",
@@ -432,11 +429,11 @@ class Enemy
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
-                randomSound = zombieSfx[Math.floor(Math.random() * zombieSfx.length)];
+                randomSound = randomSfx(sfxs['ZOMBIES']);
                 break;
             }
             case enemyType.GHOST: {
-                randomSound = ghostSfx[Math.floor(Math.random() * ghostSfx.length)];
+                randomSound = randomSfx(sfxs['GHOSTS']);
                 break;
             }
             case enemyType.SKELETON: {
@@ -445,7 +442,7 @@ class Enemy
             }
         }
 
-        PlayAudio(randomSound);
+        playAudio(randomSound);
     }
 };
 

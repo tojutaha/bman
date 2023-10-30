@@ -6,6 +6,7 @@
 let audioCtx = null;
 
 export let tracks = {};
+export let sfxs = {};
 const TrackURLs = {
     BIRDS: "assets/music/dawn-chorus-birdsong.mp3",
     BEAT: "assets/music/song_heartbeat.mp3",
@@ -15,6 +16,17 @@ const TrackURLs = {
     INT2: "assets/music/song_intensity02.mp3",
     INT3: "assets/music/song_intensity03.mp3",
     STEPS: "assets/sfx/steps.mp3",
+}
+
+const SfxURLs = {
+    ZOMBIES: ["assets/sfx/zombie01.mp3", "assets/sfx/zombie02.mp3", "assets/sfx/zombie03.mp3", "assets/sfx/zombie04.mp3", "assets/sfx/zombie05.mp3"],
+    GHOSTS: ["assets/sfx/ghost01.mp3", "assets/sfx/ghost02.mp3", "assets/sfx/ghost03.mp3", "assets/sfx/ghost04.mp3", "assets/sfx/ghost05.mp3"],
+    LAUGHS: ["assets/sfx/laugh01.mp3", "assets/sfx/laugh02.mp3", "assets/sfx/laugh03.mp3", "assets/sfx/laugh04.mp3", "assets/sfx/laugh05.mp3"],
+    BOMBS: ["assets/sfx/bomb01.mp3", "assets/sfx/bomb02.mp3", "assets/sfx/bomb03.mp3"],
+    TITLE: "assets/sfx/title.mp3",
+    DOOR_OPEN: "assets/sfx/door_open.mp3",
+    DOOR_CLOSE: "assets/sfx/door_close.mp3",
+    GAMEOVER: "assets/sfx/gameover.mp3",
 }
 
 // Loading function for fetching the audio file and decode the data
@@ -42,11 +54,22 @@ export async function loadAudioFiles() {
         tracks[trackName] = song; // Store the song with its track name as the key
     }
 
-    return tracks;
+    // Handles arrays and single files.
+    for (const sfxName in SfxURLs) {
+        if (Array.isArray(SfxURLs[sfxName])) {
+            sfxs[sfxName] = [];
+            for (const url of SfxURLs[sfxName]) {
+                const audio = await loadFile(url);
+                sfxs[sfxName].push(audio);
+            }
+        } else {
+            const audio = await loadFile(SfxURLs[sfxName]);
+            sfxs[sfxName] = audio;
+        }
+    }
 }
 
 
-// TODO: TEMPO
 let startTime = 0;
 let currentTrack = null;
 
@@ -99,63 +122,19 @@ export function stopFootsteps() {
     }
 }
 
-export const PlayAudio = async (filepath, volume = 0.5) =>  // TODO: tee loadAudioFilessä
-{
-    const audioBuffer = await getFile(filepath);
+// Pick a random sound from an sfx array
+export function randomSfx(sfxPath) {
+    console.log("path", sfxPath);
+    const randomSound = sfxPath[Math.floor(Math.random() * sfxPath.length)];
+    console.log("picked", randomSound);
+    return randomSound
+}
 
-    const audioSource = audioCtx.createBufferSource();
-    audioSource.buffer = audioBuffer;
-
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.value = volume;
-
-    audioSource.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
+export function playAudio(audioBuffer) {
+    const audioSource = new AudioBufferSourceNode(audioCtx, {
+        buffer: audioBuffer,
+    });
+    audioSource.connect(audioCtx.destination);
 
     audioSource.start();
 }
-
-// DEBUG (index_audiodebug.html)
-// // Provide a start button so demo can load tracks from an event handler for cross-browser compatibility
-// const startButton = document.querySelector("#startbutton");
-
-// // Select all list elements
-// const trackEls = document.querySelectorAll("li");
-// startButton.addEventListener("click", () => {
-//     if (audioCtx != null) {
-//         return;
-//     }
-
-//     audioCtx = new AudioContext();
-
-//     document.querySelector("#startbutton").hidden = true;
-
-//     trackEls.forEach((el) => {
-//         // Get children
-//         const anchor = el.querySelector("a");
-//         const loadText = el.querySelector("p");
-//         const playButton = el.querySelector(".playbutton");
-
-//         // Load file
-//         loadFile(anchor.href).then((track) => {
-//         el.dataset.loading = "false";
-
-//             // Hide loading text
-//             loadText.style.display = "none";
-
-//             // Show button
-//             playButton.style.display = "inline-block";
-
-//             // Allow play on click
-//             playButton.addEventListener("click", () => {
-//                 // check if context is in suspended state (autoplay policy)
-//                 if (audioCtx.state === "suspended") {
-//                 audioCtx.resume();
-//                 }
-
-//                 playTrack(track);
-//                 playButton.dataset.playing = true;
-//                 });
-//         });
-//     });
-// });

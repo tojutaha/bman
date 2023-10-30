@@ -2,7 +2,7 @@ import { enemies } from "./enemy.js";
 import { ctx, tileSize, game, setGlobalPause, globalPause } from "./main.js";
 import { fetchEverything, lastLevel, levelHeight, levelWidth, levels } from "./gamestate.js";
 import { players } from "./player.js";
-import { PlayAudio, playTrack, tracks } from "./audio.js";
+import { playAudio, playTrack, sfxs, tracks } from "./audio.js";
 import { loadTextures } from "./level.js";
 
 // Settings
@@ -99,7 +99,7 @@ playButton.addEventListener('click', async function() {
     await loadTextures();
     playContainer.style.visibility = 'hidden';
     showMainMenu();
-    PlayAudio("assets/sfx/title.mp3");
+    playAudio(sfxs['TITLE']);
 });
 
 

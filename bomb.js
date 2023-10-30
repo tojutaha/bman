@@ -1,6 +1,6 @@
 import { ctx, level, tileSize, spriteSheet, game, globalPause } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
-import { PlayAudio } from "./audio.js";
+import { playAudio, randomSfx, sfxs } from "./audio.js";
 import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
@@ -10,8 +10,6 @@ export let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
 
-// Audio
-const booms = ["assets/sfx/bomb01.mp3", "assets/sfx/bomb02.mp3", "assets/sfx/bomb03.mp3"];
 
 export class Bomb {
     constructor(x, y, ticks, range, playerId) {
@@ -38,8 +36,8 @@ export class Bomb {
                 clearInterval(this.ticking);
             }
             else if (this.ticks === 0) {
-                const randomBoom = booms[Math.floor(Math.random() * booms.length)];
-                PlayAudio(randomBoom, 1);
+                const randomBomb = randomSfx(sfxs['BOMBS']);
+                playAudio(randomBomb);
                 explode(this);
                 clearInterval(this.ticking);
             }
