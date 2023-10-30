@@ -90,9 +90,11 @@ closeButton.addEventListener('click', function() {
     mainMenu.style.visibility = 'visible';
 });
 
-playButton.addEventListener('click', function() {
+playButton.addEventListener('click', async function() {
+    await fetchEverything();
     playContainer.style.visibility = 'hidden';
-    fetchEverything();
+    showMainMenu();
+    PlayAudio("assets/sfx/title.mp3");
 });
 
 

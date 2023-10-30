@@ -287,7 +287,5 @@ export async function fetchEverything() {
         }
     }
     
-    showMainMenu();
-    PlayAudio("assets/sfx/title.mp3");
     console.log("Everything fetched and ready.");
 }
