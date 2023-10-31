@@ -1,4 +1,4 @@
-import { ctx, level, tileSize, deltaTime, game } from "./main.js";
+import { ctx, level, tileSize, deltaTime, game, deathReasonText } from "./main.js";
 import { levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { playAudio, playFootsteps, randomSfx, sfxs, stopFootsteps, tracks } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
@@ -465,13 +465,6 @@ class Player
     onDeath(enemyWhoKilled, wasBomb) {
         if (godMode) return;
 
-        if(enemyWhoKilled) {
-            console.log(`You were killed by ${enemyWhoKilled.enemyType}`);
-            //console.log(enemyWhoKilled);
-        } else if(wasBomb) {
-            console.log("You were killed by bomb");
-        }
-
         if (!this.isDead) {
             this.isDead = true;
             this.healthPoints--;
@@ -492,6 +485,16 @@ class Player
             if(this.healthPoints <= 0) {
                 game.over();
             } else {
+                // Play text animation
+                if(enemyWhoKilled) {
+                    deathReasonText.playAnimation(`Killed by ${enemyWhoKilled.enemyType}`);
+                    //console.log(`You were killed by ${enemyWhoKilled.enemyType}`);
+                    //console.log(enemyWhoKilled);
+                } else if(wasBomb) {
+                    deathReasonText.playAnimation("Killed by bomb");
+                    //console.log("You were killed by bomb");
+                }
+
                 game.restartLevel();
             }
         }
