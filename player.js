@@ -103,6 +103,14 @@ class Player
 
     // Handles movement and collision
     update(currentTime) {
+
+        const nextX = this.x + this.dx;
+        const nextY = this.y + this.dy;
+
+        const playerTile = getTileFromWorldLocation(this);
+        this.collisionBox = {x: nextX + 16, y: nextY, w: this.collisionW, h: this.collisionH+10};
+
+        // If player is dead, dont allow movement
         if (this.isDead) return;
 
         // Play footsteps
@@ -137,12 +145,6 @@ class Player
             ctx.arc(this.x + this.w / 2, this.y + this.h / 2, this.radius, 0, Math.PI*2);
             ctx.fill();
         }
-
-        const nextX = this.x + this.dx;
-        const nextY = this.y + this.dy;
-
-        const playerTile = getTileFromWorldLocation(this);
-        this.collisionBox = {x: nextX + 16, y: nextY, w: this.collisionW, h: this.collisionH+10};
 
         // Animations
         const animDt = currentTime - this.lastTime;
@@ -312,7 +314,7 @@ class Player
 
         if (playerTile.isDeadly) {
             collides = true;
-            this.onDeath();
+            this.onDeath(null, true);
         }
 
         if (!collides) {
@@ -460,12 +462,14 @@ class Player
         }
     }
 
-    onDeath(enemyWhoKilled) {
+    onDeath(enemyWhoKilled, wasBomb) {
         if (godMode) return;
 
         if(enemyWhoKilled) {
             console.log(`You were killed by ${enemyWhoKilled.enemyType}`);
-            console.log(enemyWhoKilled);
+            //console.log(enemyWhoKilled);
+        } else if(wasBomb) {
+            console.log("You were killed by bomb");
         }
 
         if (!this.isDead) {

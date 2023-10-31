@@ -55,8 +55,13 @@ export class Game {
 
     initLevel() {
         const levelEnemies = levels[this.level].enemies;
-        spawnEnemies(levelEnemies);
-        this.numOfEnemies = levelEnemies.length;
+
+        // Add small delay before respawning the enemies, so we 
+        // dont instantly collide them with player
+        setTimeout(() => {
+            spawnEnemies(levelEnemies);
+            this.numOfEnemies = levelEnemies.length;
+        }, 500);
         
         if (exitLocation.isOpen) {
             this.toggleDoor();
