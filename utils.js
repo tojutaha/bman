@@ -213,7 +213,7 @@ export function getSurroundingTiles(loc)
 }
 
 // Palauttaa lineaarisesti walkable tilet 2D taulukkona kunnes vastaan tulee seinä tai pommi.
-export function getLinearUntilObstacle(loc, includeObstacle = false, includeCenter = false) {
+export function getLinearUntilObstacle(loc, range, includeObstacle = false, includeCenter = false) {
     const xIndex = loc.x / tileSize;
     const yIndex = loc.y / tileSize;
 
@@ -228,7 +228,7 @@ export function getLinearUntilObstacle(loc, includeObstacle = false, includeCent
         rightWallReached = false,
         bottomWallReached = false;
     
-    for (let i = 0; i < loc.range; i++) {
+    for (let i = 0; i < range; i++) {
         if (!leftWallReached) {
             const onLeft = xIndex - i - 1;
             if (onLeft >= 0) {
@@ -281,7 +281,7 @@ export function getLinearUntilObstacle(loc, includeObstacle = false, includeCent
             }
         }
     }
-    
+
     if (includeCenter)
     {
         return [centerTile, leftTiles, topTiles, rightTiles, bottomTiles];
