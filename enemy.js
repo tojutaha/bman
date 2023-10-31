@@ -1,6 +1,6 @@
-import { ctx, deltaTime, game, globalPause, tileSize } from "./main.js";
+import { ctx, deltaTime, game, globalPause, level, tileSize } from "./main.js";
 import { Direction, players } from "./player.js";
-import { lerp, getRandomWalkablePointInRadius, getTileFromWorldLocation, aabbCollision } from "./utils.js";
+import { dfs, lerp, getRandomWalkablePointInRadius, getTileFromWorldLocation, aabbCollision, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear } from "./utils.js";
 import { requestPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
 import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
@@ -71,6 +71,8 @@ class Enemy
         this.animationSpeed = 150;
         this.lastTime = 0;
 
+        //TODO: DEBUG ONLY
+        this.debugPath = [];
     }
 
     init() {
@@ -245,6 +247,7 @@ class Enemy
     }
 
     patrol() {
+
         if (!this.currentPath || this.currentPath.length == 0) {
             this.getRandomPath();
             requestPath(this, this.getLocation(), this.targetLocation);
@@ -457,6 +460,10 @@ export function spawnEnemies(array)
         enemy.init();
         enemies.push(enemy);
 
+        // TODO: DEBUG ONLY
+        //enemy.debugPath = dfs(enemies[0], 4);
+        //console.log(enemy.debugPath);
+
         if (typeIndex > typeValues.length) {
             typeIndex = 0;
         }
@@ -512,6 +519,7 @@ export function renderEnemies(timeStamp)
 
     enemies.forEach(enemy => {
         if (enemy) {
+
             // Store movement direction
             if (enemy.renderX < enemy.x) {
                 enemy.direction = Direction.LEFT;
@@ -542,6 +550,15 @@ export function renderEnemies(timeStamp)
 
             enemy.update(timeStamp, x, y);
             enemy.checkCollisions();
+
+            // TODO: Debug only
+            /*
+            enemy.debugPath.forEach(p => {
+                ctx.fillStyle = "#00ff00";
+                ctx.fillRect(p.x, p.y, tileSize, tileSize);
+            });
+            */
+
         }
     });
 }

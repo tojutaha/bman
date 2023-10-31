@@ -299,3 +299,42 @@ export function aabbCollision(rect1, rect2) {
            rect1.y + rect1.h > rect2.y;
 }
 
+// Depth First Search algoritmi.
+// Hakee käveltävän polun rangen pituudelta, tai
+// jos polkua ei löydy, niin pienimmän mahdollisen jossa voi kävellä.
+export function dfs(start, range) {
+    let stack = [[start.x/tileSize, start.y/tileSize, 0, []]];
+    let visited = new Array(level.length).fill(0).map(() => new Array(level[0].length).fill(false));
+    let longestPath = [];
+
+    while (stack.length > 0) {
+        let [x, y, dist, path] = stack.pop();
+
+        if (dist > range) {
+            continue;
+        }
+
+        visited[x][y] = true;
+
+        let newPath = path.concat([{x: x*tileSize, y: y*tileSize}]);
+        if(newPath.length > longestPath.length) {
+            longestPath = newPath;
+        }
+
+        //let neighbours = getNeigbouringTiles_diagonal({x: x*tileSize, y: y*tileSize});
+        let neighbours = getNeigbouringTiles_linear({x: x*tileSize, y: y*tileSize});
+        neighbours.forEach(n => {
+            const coord = {x: n.x/tileSize, y: n.y/tileSize};
+            if(coord.x >= 0 && coord.x <= levelWidth && coord.y >= 0 && coord.y <= levelHeight) {
+                if (level[coord.x][coord.y].isWalkable) {
+                    if(!visited[coord.x][coord.y]) {
+                        stack.push([coord.x, coord.y, dist + 1, newPath]);
+                    }
+                }
+            }
+        });
+    }
+
+    return longestPath;
+}
+
