@@ -46,7 +46,7 @@ export class DeathReasonAnimation {
             ctx.strokeStyle = `rgba(30, 30, 30, ${this.alpha})`;
             
             ctx.lineWidth = 20;
-            ctx.font = "100px Minimal";
+            ctx.font = "80px Minimal";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
