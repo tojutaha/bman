@@ -1,4 +1,4 @@
-import { canvas, ctx, tileSize, level } from "./main.js";
+import { canvas, ctx, tileSize, level, locBlinkers } from "./main.js";
 import { levelHeight, levelType, levelWidth, levels } from "./gamestate.js";
 import { exitLocation, powerupLocations } from "./tile.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
@@ -105,6 +105,7 @@ export class EntranceAnimation {
     }
     
     playAnimation() {
+        locBlinkers.stopBlinking();
         this.frames = 0;
         playAudio(sfxs['DOOR_CLOSE']);
         
@@ -132,10 +133,12 @@ export class ExitAnimation {
     }
 
     init() {
+        locBlinkers.stopBlinking();
         this.frames = 11;
     }
     
     playAnimation() {
+        locBlinkers.startBlinking();
         setTimeout(() => {
             playAudio(sfxs['DOOR_OPEN']);
             this.frameTimer = setInterval(() => {
@@ -173,6 +176,12 @@ export class locBlinkingAnimation {
                 clearInterval(blinker);
             }
         }, 700);
+    }
+
+    stopBlinking() {
+        this.showLocation = false;
+        this.isBlinking = false;
+        clearInterval(this.blinker);
     }
 
     render() {

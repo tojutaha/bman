@@ -2,7 +2,7 @@ import { playTrack, loadAudioFiles, tracks } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, spawnEnemies } from "./enemy.js";
 import { setTextures } from "./level.js";
-import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, game, locBlinkers } from "./main.js";
+import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, game } from "./main.js";
 import { restarted, showGameOverMenu, showMainMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
@@ -85,9 +85,6 @@ export class Game {
         setGlobalPause(true);
         clearEnemies();
         clearBombs();
-        clearInterval(locBlinkers.blinker);
-        locBlinkers.showLocation = false;
-        locBlinkers.isBlinking = false;
  
         const levelData = levels[this.level];
         levelHeight = levelData.height;
@@ -137,10 +134,6 @@ export class Game {
     }
     
     nextLevel() {
-        clearInterval(locBlinkers.blinker);
-        locBlinkers.showLocation = false;
-        locBlinkers.isBlinking = false;
-
         if (lastLevel) {
             return;
         }
@@ -201,8 +194,7 @@ export class Game {
         // Open the door
         if (this.numOfEnemies <= 0 && exitLocation.isOpen === false) {
             this.toggleDoor();
-            locBlinkers.startBlinking();
-            
+
             if (this.level === 1) {
                 playTrack(tracks['KICK_DRONES']);
             } else {
