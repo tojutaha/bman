@@ -111,8 +111,8 @@ export class Game {
 
     restartLevel()
     {
-        resetPlayerPositions();
         clearEnemies();
+        resetPlayerPositions();
 
         setTimeout(() => {
             clearBombs();
