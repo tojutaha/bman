@@ -401,7 +401,7 @@ class Enemy
                     this.y = this.next.y;
                     setTimeout(() => {
                         this.collidedWithBomb();
-                    }, 100); // 1000
+                    }, 1000);
                 }
             }
         });
@@ -460,6 +460,26 @@ export function spawnEnemies(array)
         if (typeIndex > typeValues.length) {
             typeIndex = 0;
         }
+    }
+
+    game.numOfEnemies = enemies.length;
+}
+
+// Spawn enemy with given type in random location
+export function spawnEnemiesByType(type, amount)
+{
+    const maxRadius = 25*tileSize;
+    const minRadius = 2*tileSize;
+
+    const player = players[0];
+    for (let i = 0; i < amount; i++) {
+        const random = getRandomWalkablePointInRadius({x: player.x,
+                                                       y: player.y},
+                                                       minRadius, maxRadius);
+        const enemy = new Enemy(random.x, random.y, tileSize, tileSize);
+        enemy.enemyType = type;
+        enemy.init();
+        enemies.push(enemy);
     }
 
     game.numOfEnemies = enemies.length;
