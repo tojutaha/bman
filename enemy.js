@@ -394,7 +394,7 @@ class Enemy
                 // Dont check if player is dead
                 if(!player.isDead) {
                     if(aabbCollision(this.collisionBox, player.collisionBox)) {
-                        player.onDeath();
+                        player.onDeath(this);
                         this.collides = true;
                         this.playerTarget = null;
                         clearInterval(this.timer);

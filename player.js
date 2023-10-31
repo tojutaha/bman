@@ -3,7 +3,7 @@ import { levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { playAudio, playFootsteps, randomSfx, sfxs, stopFootsteps, tracks } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup } from "./powerup.js";
-import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getDistanceTo, getSurroundingTiles, getDistanceToEuclidean } from "./utils.js";
+import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles } from "./utils.js";
 
 
 const godMode = false;
@@ -460,8 +460,13 @@ class Player
         }
     }
 
-    onDeath() {
+    onDeath(enemyWhoKilled) {
         if (godMode) return;
+
+        if(enemyWhoKilled) {
+            console.log(`You were killed by ${enemyWhoKilled.enemyType}`);
+            console.log(enemyWhoKilled);
+        }
 
         if (!this.isDead) {
             this.isDead = true;
