@@ -1,4 +1,4 @@
-import { enemies } from "./enemy.js";
+import { enemies, enemyType, spawnEnemiesByType } from "./enemy.js";
 import { ctx, tileSize, game, setGlobalPause, globalPause } from "./main.js";
 import { fetchEverything, lastLevel, levelHeight, levelWidth, levels } from "./gamestate.js";
 import { players } from "./player.js";
@@ -272,6 +272,11 @@ healPlayersButton.addEventListener('click', function() {
         p.healthPoints = 3;
         p.updateHealthPoints();
     })
+});
+
+let spawnSkeletonButton = document.getElementById('spawn-skeleton');
+spawnSkeletonButton.addEventListener('click', function() {
+    spawnEnemiesByType(enemyType.SKELETON, 1);
 });
 
 // Next level

@@ -465,6 +465,26 @@ export function spawnEnemies(array)
     game.numOfEnemies = enemies.length;
 }
 
+// Spawn enemy with given type in random location
+export function spawnEnemiesByType(type, amount)
+{
+    const maxRadius = 25*tileSize;
+    const minRadius = 2*tileSize;
+
+    const player = players[0];
+    for (let i = 0; i < amount; i++) {
+        const random = getRandomWalkablePointInRadius({x: player.x,
+                                                       y: player.y},
+                                                       minRadius, maxRadius);
+        const enemy = new Enemy(random.x, random.y, tileSize, tileSize);
+        enemy.enemyType = type;
+        enemy.init();
+        enemies.push(enemy);
+    }
+
+    game.numOfEnemies = enemies.length;
+}
+
 // Spawn enemies at location
 export function spawnEnemiesAtLocation(location, amount = 1)
 {
