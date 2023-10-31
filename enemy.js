@@ -401,7 +401,7 @@ class Enemy
                     this.y = this.next.y;
                     setTimeout(() => {
                         this.collidedWithBomb();
-                    }, 100); // 1000
+                    }, 1000);
                 }
             }
         });
