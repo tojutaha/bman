@@ -11,7 +11,6 @@ export class DeathReasonAnimation {
     }
     
     playAnimation(text) {
-        console.log(this.text);
         this.visible = true;
         this.frames = 0;
         this.alpha = 0.95;
