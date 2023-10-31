@@ -266,6 +266,14 @@ killPlayersButton.addEventListener("click", function() {
     })
 });
 
+let healPlayersButton = document.getElementById('heal-players');
+healPlayersButton.addEventListener('click', function() {
+    players.forEach(p => {
+        p.healthPoints = 3;
+        p.updateHealthPoints();
+    })
+});
+
 // Next level
 let nxtLvlButton = document.getElementById("next-level");
 nxtLvlButton.addEventListener("click", function() {
