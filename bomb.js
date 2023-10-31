@@ -1,7 +1,7 @@
 // TODO:    Bugi jossa kaksi pommia chainaa toisensa vaikka olivat kaukana toisistaan (en muista laitoinko aina samaan kohtaan)
 import { ctx, level, tileSize, game, globalPause } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
-import { playAudio, randomSfx, sfxs } from "./audio.js";
+import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
 import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
@@ -18,8 +18,6 @@ export class Bomb {
         this.range = range || 1;
         this.hasExploded = false;
         this.playerId = playerId || 0;
-        this.currentFrame = 0;
-        this.frames = 20;
 
         // Collision
         this.w = tileSize;
@@ -27,20 +25,30 @@ export class Bomb {
         this.collisionW = this.w;
         this.collisionH = this.h;
         this.collisionBox = {x: this.x, y: this.y, w: this.collisionW, h: this.collisionH};
-    
+        
+        // Animation
+        this.currentFrame = 0;
+        this.frames = 16;
+        
         this.ticking = setInterval(() => {
-            if(globalPause) return;
+            if (globalPause) return;
             this.currentFrame++;
             if (this.hasExploded) {
                 clearInterval(this.ticking);
             }
             else if (this.currentFrame >= this.frames) {
-                const randomBomb = randomSfx(sfxs['BOMBS']);
-                playAudio(randomBomb);
-                explode(this);
+                this.currentFrame = this.frames - 1;
+
+                let delay = getMusicalTimeout(true);
+                setTimeout(() => {
+                    const randomBomb = randomSfx(sfxs['BOMBS']);
+                    playAudio(randomBomb);
+                    explode(this);
+                }, delay);
+
                 clearInterval(this.ticking);
             }
-        }, 150);
+        }, 150 );
     }
 }
 

@@ -4,7 +4,7 @@ import { Direction, players } from "./player.js";
 import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable, getDistanceToEuclidean, aabbCollision } from "./utils.js";
 import { requestPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
-import { playAudio, randomSfx, sfxs } from "./audio.js";
+import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
 
 
 export const enemyType = {
@@ -109,7 +109,7 @@ class Enemy
         }
     }
 
-    collidedWithBomb() {
+    collidedWithBomb() {    // TODO: onko tää funktio käytössä?
         this.playSfx();
 
         switch(this.enemyType) {
@@ -199,10 +199,11 @@ class Enemy
                     clearInterval(this.timer);
                     this.currentPath.length = 0;
 
-                    if (this.enemyType === "Zombie") {
+                    const delay = getMusicalTimeout();  // TODO: ei toimi delay tässä
+                    if (this.enemyType === "Zombie") { 
                         setTimeout(() => {
                             this.playSfx();
-                        }, 500);
+                        }, delay);
                     }
                 }
             }

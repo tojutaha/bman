@@ -44,6 +44,7 @@ class Player
 
         this.speed = 150.0; // pixels/s
         this.direction = Direction.RIGHT;
+        this.isWalking = false;
 
         // Key binds
         this.keybinds = keybinds;
@@ -106,8 +107,10 @@ class Player
 
         // Play footsteps
         if (this.dx !== 0.0 || this.dy !== 0.0) {
-            playFootsteps();
+            playFootsteps(this.isWalking);
+            this.isWalking = true;
         } else {
+            this.isWalking = false;
             stopFootsteps();
         }
 

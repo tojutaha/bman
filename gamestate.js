@@ -19,8 +19,6 @@ export let levelPowerup = "random";
 export let softwallPercent = 0.1;
 export let powerupCount = 2;
 
-// Audio
-const birds = document.getElementById("birds");
 
 export class Game {
     constructor() {
@@ -31,11 +29,6 @@ export class Game {
     }
 
     newGame() {
-        // TODO: valitse että laulaako linnut koko lvl1 ajan
-        // if (restarted) {
-        //     playTrack(tracks['BEAT']);
-        // }
-        // birds.play();
         playTrack(tracks['BIRDS']);
         setGlobalPause(true);
         localStorage.clear();
@@ -76,9 +69,6 @@ export class Game {
         } else lastLevel = false;
         
         if (this.level > 1) {
-            // if (this.level === 2) {      // TODO: katso ylempi todo
-            //     birds.pause();
-            // }
             if (lastLevel) {
                 playTrack(tracks['BEAT']);
             } else {
@@ -102,7 +92,6 @@ export class Game {
         powerupCount = levelData.powerupCount;
         softwallPercent = levelData.softwallPercent;
         setTextures();
-        //console.log("Level", this.level, levelData);
         
         let newLevel = createTiles();
         level.length = 0;
@@ -215,7 +204,7 @@ export class Game {
                 playTrack(tracks['INT1']);                
             }
         }
-        else if (this.numOfEnemies <= 3 && this.level > 1) {
+        else if (this.numOfEnemies <= 3 && this.level > 2) {
             playTrack(tracks['INT3']);
         }
     }

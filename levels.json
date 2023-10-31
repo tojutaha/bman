@@ -69,8 +69,8 @@
             "width": 19,
             "height": 13,
             "type": "forest_night",
-            "powerup": "random",
-            "powerupCount": 1,
+            "powerup": "bomb",
+            "powerupCount": 2,
             "softwallPercent": 0.3
         }
     },
@@ -85,7 +85,7 @@
             "height": 13,
             "type": "forest_night",
             "powerup": "random",
-            "powerupCount": 2,
+            "powerupCount": 4,
             "softwallPercent": 0.3
         }
     },
