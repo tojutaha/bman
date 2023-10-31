@@ -1,11 +1,9 @@
-import { canvas, ctx, deltaTime, game, globalPause, level, tileSize } from "./main.js";
-import { levelHeight, levelWidth } from "./gamestate.js";
+import { ctx, deltaTime, game, globalPause, tileSize } from "./main.js";
 import { Direction, players } from "./player.js";
-import { lerp, getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, isWalkable, getDistanceToEuclidean, aabbCollision } from "./utils.js";
+import { lerp, getRandomWalkablePointInRadius, getTileFromWorldLocation, aabbCollision } from "./utils.js";
 import { requestPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
 import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
-
 
 export const enemyType = {
     ZOMBIE: "Zombie",
@@ -40,6 +38,7 @@ class Enemy
         this.isMoving = false;
         this.useDiagonalMovement = false;
         this.movementMode = newMovementMode || movementMode.ROAM;
+        this.previousMovementMode = this.movementMode;
         this.speed = speed || 500;
         this.direction = Direction.UP;
         this.timer = null;
@@ -109,11 +108,14 @@ class Enemy
         }
     }
 
-    collidedWithBomb() {    // TODO: onko tää funktio käytössä?
-        this.playSfx();
+    collidedWithBomb() {
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
+                const delay = getMusicalTimeout();  // TODO: ei toimi delay tässä
+                setTimeout(() => {
+                    this.playSfx();
+                }, delay);
                 this.patrol();
                 break;
             }
@@ -122,6 +124,8 @@ class Enemy
                 break;
             }
             case enemyType.SKELETON: {
+                //this.movementMode = movementMode.PATROL;
+                //this.patrol();
                 this.followPlayer();
                 break;
             }
@@ -185,28 +189,6 @@ class Enemy
             this.isMoving = true;
 
             this.next = this.currentPath[index];
-
-            // NOTE: Pidetään tämäkin vielä tuo checkCollisionin lisäksi,
-            // niin animaatiot ei glitchaa joissain tapauksissa.
-            // Check if there is a bomb on the path
-            const nextInRender = this.currentPath[renderIndex]
-            if (nextInRender !== undefined) {
-                const bombInNext    = tilesWithBombs.find(bomb => bomb.x === nextInRender.x && bomb.y === nextInRender.y);
-                const bombInCurrent = tilesWithBombs.find(bomb => bomb.x === this.x && bomb.y === this.y);
-                if (bombInNext || bombInCurrent) {
-                    this.x = this.next.x;
-                    this.y = this.next.y;
-                    clearInterval(this.timer);
-                    this.currentPath.length = 0;
-
-                    const delay = getMusicalTimeout();  // TODO: ei toimi delay tässä
-                    if (this.enemyType === "Zombie") { 
-                        setTimeout(() => {
-                            this.playSfx();
-                        }, delay);
-                    }
-                }
-            }
 
             // Move enemy
             this.x = this.next.x;
@@ -419,7 +401,7 @@ class Enemy
                     this.y = this.next.y;
                     setTimeout(() => {
                         this.collidedWithBomb();
-                    }, 1000);
+                    }, 100); // 1000
                 }
             }
         });
