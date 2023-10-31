@@ -3,7 +3,7 @@ import { ctx, level, tileSize, game, globalPause } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
 import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
-import { getDistanceTo } from "./utils.js";
+import { getDistanceTo, getLinearUntilObstacle } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 import { exitLocation } from "./tile.js";
 
@@ -52,71 +52,6 @@ export class Bomb {
     }
 }
 
-// Returns a 2D array of the surrounding tiles within the bomb's range.
-// All directions are in their own arrays for further processing.
-function getBombSurroundings(bomb) {
-    let xIndex = bomb.x / tileSize;
-    let yIndex = bomb.y / tileSize;
-
-    let centerTile = [level[xIndex][yIndex]],
-        topTiles = [],
-        leftTiles = [],
-        rightTiles = [],
-        bottomTiles = [];
-    
-    let leftWallReached = false,
-        topWallReached = false,
-        rightWallReached = false,
-        bottomWallReached = false;
-    
-    for (let i = 0; i < bomb.range; i++) {
-        if (!leftWallReached) {
-            let onLeft = xIndex - i - 1;
-            if (onLeft >= 0) {
-                let currentTile = level[onLeft][yIndex];
-                leftTiles.push(currentTile);
-                if (currentTile.type === "SoftWall" || (currentTile.bomb && !currentTile.bomb.hasExploded)) {
-                    leftWallReached = true;
-                }
-            }
-        }
-
-        if (!topWallReached) {
-            let onTop = yIndex - i - 1;
-            if (onTop >= 0) {
-                let currentTile = level[xIndex][onTop];
-                topTiles.push(currentTile);
-                if (currentTile.type === "SoftWall" || (currentTile.bomb && !currentTile.bomb.hasExploded)) {
-                    topWallReached = true;
-                }
-            }            
-        }
-
-        if (!rightWallReached) {
-            let onRight = xIndex + i + 1;
-            if (onRight < levelWidth) {
-                let currentTile = level[onRight][yIndex];
-                rightTiles.push(currentTile);
-                if (currentTile.type === "SoftWall" || (currentTile.bomb && !currentTile.bomb.hasExploded)) {
-                    rightWallReached = true;
-                }
-            }
-        }
-
-        if (!bottomWallReached) {
-            let onBottom = yIndex + i + 1;
-            if (onBottom < levelHeight) {
-                let currentTile = level[xIndex][onBottom];
-                bottomTiles.push(currentTile);
-                if (currentTile.type === "SoftWall" || (currentTile.bomb && !currentTile.bomb.hasExploded)) {
-                    bottomWallReached = true;
-                }
-            }
-        }
-    }
-
-    return [centerTile, leftTiles, topTiles, rightTiles, bottomTiles];
-}
 
 function explode(bomb) {
     if (!game.firstBombExploded) {
@@ -124,7 +59,7 @@ function explode(bomb) {
         game.checkGameState();
     }
 
-    let tiles = getBombSurroundings(bomb);
+    let tiles = getLinearUntilObstacle(bomb, true);
     let centerTile = tiles[0][0];
     
     if (!centerTile.isWalkable) {

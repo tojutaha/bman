@@ -212,6 +212,79 @@ export function getSurroundingTiles(loc)
     return result;
 }
 
+// Palauttaa lineaarisesti walkable tilet 2D taulukkona kunnes vastaan tulee seinä tai pommi.
+export function getLinearUntilObstacle(loc, includeObstacle = false) {
+    const xIndex = loc.x / tileSize;
+    const yIndex = loc.y / tileSize;
+
+    const centerTile = [level[xIndex][yIndex]],
+        topTiles = [],
+        leftTiles = [],
+        rightTiles = [],
+        bottomTiles = [];
+    
+    let leftWallReached = false,
+        topWallReached = false,
+        rightWallReached = false,
+        bottomWallReached = false;
+    
+    for (let i = 0; i < loc.range; i++) {
+        if (!leftWallReached) {
+            const onLeft = xIndex - i - 1;
+            if (onLeft >= 0) {
+                const currentTile = level[onLeft][yIndex];
+                if (!currentTile.isWalkable) {
+                    leftWallReached = true;
+                }
+                if (!leftWallReached || (leftWallReached && includeObstacle)) {
+                    leftTiles.push(currentTile);
+                }
+            }
+        }
+
+        if (!topWallReached) {
+            const onTop = yIndex - i - 1;
+            if (onTop >= 0) {
+                const currentTile = level[xIndex][onTop];
+                if (!currentTile.isWalkable) {
+                    topWallReached = true;
+                }
+                if (!topWallReached || (topWallReached && includeObstacle)) {
+                    topTiles.push(currentTile);
+                }
+            }            
+        }
+
+        if (!rightWallReached) {
+            const onRight = xIndex + i + 1;
+            if (onRight < levelWidth) {
+                const currentTile = level[onRight][yIndex];
+                if (!currentTile.isWalkable) {
+                    rightWallReached = true;
+                }
+                if (!rightWallReached || (rightWallReached && includeObstacle)) {
+                    rightTiles.push(currentTile);
+                }
+            }
+        }
+
+        if (!bottomWallReached) {
+            const onBottom = yIndex + i + 1;
+            if (onBottom < levelHeight) {
+                const currentTile = level[xIndex][onBottom];
+                if (!currentTile.isWalkable) {
+                    bottomWallReached = true;
+                }
+                if (!bottomWallReached || (bottomWallReached && includeObstacle)) {
+                    bottomTiles.push(currentTile);
+                }
+            }
+        }
+    }
+    return [centerTile, leftTiles, topTiles, rightTiles, bottomTiles];
+}
+
+
 // Axis-Aligned Bounding Box testi, Palauttaa true, jos
 // kaksi suorakulmiota leikkaavat.
 export function aabbCollision(rect1, rect2) {
