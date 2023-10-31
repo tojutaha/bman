@@ -59,7 +59,7 @@ function explode(bomb) {
         game.checkGameState();
     }
 
-    let tiles = getLinearUntilObstacle(bomb, true);
+    let tiles = getLinearUntilObstacle(bomb, true, true);
     let centerTile = tiles[0][0];
     
     if (!centerTile.isWalkable) {
