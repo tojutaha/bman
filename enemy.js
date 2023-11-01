@@ -132,9 +132,9 @@ class Enemy
                 break;
             }
             case enemyType.SKELETON: {
-                //this.movementMode = movementMode.PATROL;
-                //this.patrol();
-                this.followPlayer();
+                this.movementMode = movementMode.PATROL;
+                this.patrol();
+                //this.followPlayer();
                 break;
             }
         }
