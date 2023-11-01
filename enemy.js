@@ -77,9 +77,6 @@ class Enemy
         this.deathFrames = 18;
         this.currentDeathFrame = 0;
         this.deathAnimationMs = 130;
-
-        //TODO: DEBUG ONLY
-        this.debugPath = [];
     }
 
     init() {
@@ -145,12 +142,18 @@ class Enemy
     }
 
     getRandomPath() {
+        /*
+         * Vanha systeemi
         const maxRadius = 25*tileSize;
         const minRadius = 2*tileSize;
         const targetLocation = 
         getRandomWalkablePointInRadius({x: this.x, y: this.y},
                                         minRadius, maxRadius);
         this.targetLocation = {x: targetLocation.x, y: targetLocation.y};
+        */
+        const path = dfs(this, 8); // TODO: Mikä on sopiva range?
+        const target = {x: path[path.length-1].x, y: path[path.length-1].y};
+        this.targetLocation = target;
     }
 
     getRandomPlayer() {
@@ -499,10 +502,6 @@ export function spawnEnemies(array)
         enemy.init();
         enemies.push(enemy);
 
-        // TODO: DEBUG ONLY
-        //enemy.debugPath = dfs(enemies[0], 4);
-        //console.log(enemy.debugPath);
-
         if (typeIndex > typeValues.length) {
             typeIndex = 0;
         }
@@ -589,15 +588,6 @@ export function renderEnemies(timeStamp)
 
             enemy.update(timeStamp, x, y);
             enemy.checkCollisions();
-
-            // TODO: Debug only
-            /*
-            enemy.debugPath.forEach(p => {
-                ctx.fillStyle = "#00ff00";
-                ctx.fillRect(p.x, p.y, tileSize, tileSize);
-            });
-            */
-
         }
     });
 }
