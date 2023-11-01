@@ -41,7 +41,24 @@ export class EnemyDeathAnimation {
                 break;
             }
             case "Skeleton": {
-                this.spriteSheet.src = "./assets/skeleton_death.png";
+                switch(direction) {
+                    case "Up": {
+                        this.spriteSheet.src = "./assets/skeleton_death_back.png";
+                        break;
+                    }
+                    case "Down": {
+                        this.spriteSheet.src = "./assets/skeleton_death_front.png";
+                        break;
+                    }
+                    case "Left": {
+                        this.spriteSheet.src = "./assets/skeleton_death_left.png";
+                        break;
+                    }
+                    case "Right": {
+                        this.spriteSheet.src = "./assets/skeleton_death_right.png";
+                        break;
+                    }
+                }
                 break;
             }
         }

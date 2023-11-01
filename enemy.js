@@ -87,7 +87,7 @@ class Enemy
                 break;
             }
             case enemyType.GHOST: {
-                this.spriteSheet.src = "./assets/ghost_01.png";
+                this.spriteSheet.src = "./assets/ghost_03.png";
                 this.movementMode = movementMode.ROAM;
                 this.speed = 500;
                 this.roam();
