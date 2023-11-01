@@ -228,36 +228,61 @@ export class FadeTransition {
 export class EnemyDeathAnimation {
     constructor() {
         this.isDead = false;
-        this.deathSheet = new Image();
-        this.deathSheet.src = "./assets/zombi_death.png";
-        this.deathFrameSize = 192;
+        this.spriteSheet = new Image();
+        this.frameSize = 192;
         this.deathFrames = 18;
-        this.currentDeathFrame = 0;
+        this.currentFrame = 0;
         this.deathAnimationMs = 130;
 
-        this.deathSheet.src = "./assets/zombi_death.png";
+        this.x = 0;
+        this. y = 0;
+        
+        this.visible = false;
     }
 
-    playAnimation(enemy) {
-        // play
-    }
+    playAnimation(x, y, type) {
+        console.log(x, y, type);
+        switch(type) {
+            case "Zombie": {
+                this.spriteSheet.src = "./assets/zombi_death.png";
+                break;
+            }
+            case "Ghost": {
+                console.log("no death animation for ghost");
+                break;
+            }
+            case "Skeleton": {
+                console.log("no death animation for skeleton");
+                break;
+            }
+        }
 
+        // this.x = x - tileSize;
+        // this.y = y - tileSize;
+        // this.startTimer();
+        // console.log(x, y, type);
+
+    }
+    
     startTimer() {
+        this.visible = true;
         let timer = this.deathFrames;
         let interval = setInterval(() => {
             timer--;
             this.currentDeathFrame++;
             if (timer <= 0) {
+                this.currentFrame = 0;
+                this.visible = false;
                 clearInterval(interval);
             }
         }, this.deathAnimationMs);
     }
 
-    deathAnimationRender(x, y) {
-        const locX = x - tileSize;
-        const locY = y - tileSize;
-        ctx.drawImage(this.deathSheet, 
-            this.deathFrameSize * this.currentDeathFrame, 0, 
-            this.deathFrameSize, this.deathFrameSize, locX, locY, this.deathFrameSize, this.deathFrameSize);
+    render() {
+        if (this.visible) {
+            ctx.drawImage(this.spriteSheet, 
+                this.frameSize * this.currentFrame, 0, 
+                this.frameSize, this.frameSize, locX, locY, this.frameSize, this.frameSize);
+        }
     };
 }

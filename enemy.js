@@ -275,7 +275,7 @@ class Enemy
         this.isDead = true;
 
         this.playSfx();
-        enemyDeath.playAnimation(this);
+        enemyDeath.playAnimation(this.x, this.y, this.enemyType);
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
@@ -333,7 +333,6 @@ class Enemy
 
     drawAnimation(x, y) {
         if (this.isDead) {
-            this.deathAnimation(x, y);
             return;
         }
 
