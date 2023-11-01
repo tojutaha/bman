@@ -70,6 +70,12 @@ class Enemy
         this.currentFrame = 0;
         this.animationSpeed = 150;
         this.lastTime = 0;
+        
+        this.isDead = false;
+        this.deathSheet = new Image();
+        this.deathFrameSize = 192;
+        this.deathFrames = 18;
+        this.currentDeathFrame = 0;
 
         //TODO: DEBUG ONLY
         this.debugPath = [];
@@ -82,6 +88,7 @@ class Enemy
                 this.totalFrames = 4;
                 this.frameWidth = 256/4;
                 this.spriteSheet.src = "./assets/placeholder_zombi.png";
+                this.deathSheet.src = "./assets/zombi_death.png";
                 this.movementMode = movementMode.PATROL;
                 this.speed = 800;
                 this.patrol();
@@ -114,10 +121,7 @@ class Enemy
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
-                const delay = getMusicalTimeout();  // TODO: ei toimi delay tässä
-                setTimeout(() => {
-                    this.playSfx();
-                }, delay);
+                this.playSfx();
                 this.patrol();
                 break;
             }
@@ -265,8 +269,26 @@ class Enemy
         requestPath(this, this.getLocation(), this.targetLocation);
     }
 
+    deathAnimationTimer() {
+        let timer = this.deathFrames;
+        let interval = setInterval(() => {
+            timer--;
+            this.currentDeathFrame++;
+            if (timer <= 0) {
+                clearInterval(interval);
+            }
+        }, 130);
+    }
+
     die() {
+        if (this.isDead) return;
+        this.isDead = true;
+
+        // this.movementMode = movementMode.IDLE;
+        clearInterval(this.timer);
+
         this.playSfx();
+        this.deathAnimationTimer();
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
@@ -285,14 +307,17 @@ class Enemy
 
         let result = findEnemyById(this.id);
         // console.log("ID:", result);
-        enemies.splice(result.index, 1);
 
-        this.movementMode = movementMode.IDLE;
-        clearInterval(this.timer);
-
-        for (let prop in this) {
-            this[prop] = null;
-        }
+        // TODO: timeout väliaikaratkaisu, ilman tätä ei renderöi koska ehtii poistaa vihun.
+        // (koodia ei muutettu, laitettu vaan timeouttiin)
+        // Tän takia joutuu myös tarkastaa pelaajaan törmätessä josko this.isDead,
+        // muuten kuolevan vihun päälle kävely tappaa.
+        setTimeout(() => {
+            enemies.splice(result.index, 1);
+            for (let prop in this) {
+                this[prop] = null;
+            }    
+        }, 130 * this.deathFrames);   // 130ms on sama kun räjähdysanimaatiolla
 
         game.decreaseEnemies();
         game.checkGameState();
@@ -322,7 +347,20 @@ class Enemy
         }
     }
 
+    deathAnimation(x, y) {
+        const locX = x - tileSize;
+        const locY = y - tileSize;
+        ctx.drawImage(this.deathSheet, 
+            this.deathFrameSize * this.currentDeathFrame, 0, 
+            this.deathFrameSize, this.deathFrameSize, locX, locY, this.deathFrameSize, this.deathFrameSize);
+    };
+
     drawAnimation(x, y) {
+        if (this.isDead) {
+            this.deathAnimation(x, y);
+            return;
+        }
+
         switch(this.direction) {
             case Direction.LEFT: {
                 ctx.drawImage(this.spriteSheet,
@@ -378,7 +416,7 @@ class Enemy
                 */
                 // Dont check if player is dead
                 if(!player.isDead) {
-                    if(aabbCollision(this.collisionBox, player.collisionBox)) {
+                    if(aabbCollision(this.collisionBox, player.collisionBox && !this.isDead)) {
                         player.onDeath(this, false);
                         this.collides = true;
                         this.playerTarget = null;
@@ -572,4 +610,3 @@ export function clearEnemies() {
     });
     enemies.length = 0;
 }
-

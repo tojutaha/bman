@@ -72,8 +72,8 @@ function Render(timeStamp)
             exit.render();
             renderPowerups();
         }
-        renderEnemies(timeStamp);
         renderExplosions();
+        renderEnemies(timeStamp);
         levelHeader.render();
         gameOverText.render();
         deathReasonText.render();
