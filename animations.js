@@ -1,7 +1,189 @@
 import { playAudio, sfxs } from "./audio.js";
 import { lastLevel } from "./gamestate.js";
-import { ctx, game } from "./main.js";
+import { ctx, game, locBlinkers, tileSize } from "./main.js";
+import { exitLocation, powerupLocations } from "./tile.js";
 
+////////////////////
+// Character animations
+export let deathRow = [];
+export class EnemyDeathAnimation {
+    constructor(x, y, type, direction) {
+        this.x = x - tileSize || 0;
+        this.y = y - tileSize || 0;
+        this.type = type;
+        this.direction = direction;
+
+        this.spriteSheet = new Image();
+        switch(type) {
+            case "Zombie": {
+                switch(direction) {
+                    case "Up": {
+                        this.spriteSheet.src = "./assets/zombi_death_back.png";
+                        break;
+                    }
+                    case "Down": {
+                        this.spriteSheet.src = "./assets/zombi_death_front.png";
+                        break;
+                    }
+                    case "Left": {
+                        this.spriteSheet.src = "./assets/zombi_death_left.png";
+                        break;
+                    }
+                    case "Right": {
+                        this.spriteSheet.src = "./assets/zombi_death_right.png";
+                        break;
+                    }
+                }
+                break;
+            }
+            case "Ghost": {
+                this.spriteSheet.src = "./assets/ghost_death.png";
+                break;
+            }
+            case "Skeleton": {
+                this.spriteSheet.src = "./assets/skeleton_death.png";
+                break;
+            }
+        }
+        
+        this.frameSize = 192;
+        this.frames = 18;
+        this.currentFrame = 0;
+        this.animationMs = 130;
+    }
+
+    startTimer() {
+        let timer = this.frames;
+        let interval = setInterval(() => {
+            timer--;
+            this.currentFrame++;
+            if (timer <= 0) {
+                this.currentFrame = 0;
+                this.visible = false;
+                clearInterval(interval);
+                deathRow.splice(0, 1);
+            }
+        }, this.animationMs);
+    }
+}
+
+export function renderEnemyDeaths() {
+    deathRow.forEach(animation => {
+        ctx.drawImage(animation.spriteSheet, 
+            animation.frameSize * animation.currentFrame, 0, 
+            animation.frameSize, animation.frameSize, animation.x, animation.y, animation.frameSize, animation.frameSize);
+    });
+}
+
+
+////////////////////
+// World animations
+export class locBlinkingAnimation {
+    constructor() {
+        this.showLocation = false;
+        this.isBlinking = false;
+    }
+
+    // Blink the location overlays of powerups
+    startBlinking() {
+        this.isBlinking = true;
+        this.blinker = setInterval(() => {
+            this.showLocation = !this.showLocation;
+
+            if (!this.isBlinking) {
+                clearInterval(blinker);
+            }
+        }, 700);
+    }
+
+    stopBlinking() {
+        this.showLocation = false;
+        this.isBlinking = false;
+        clearInterval(this.blinker);
+    }
+
+    render() {
+        if (this.showLocation) {
+            powerupLocations.forEach(tile => {
+                if (tile.type === "SoftWall") {
+                    ctx.fillStyle = "rgba(255, 190, 130, 0.3)";
+                    ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
+                }
+            });
+
+            if (exitLocation.type === "SoftWall") {
+                ctx.fillStyle = "rgba(255, 100, 100, 0.2)";
+                ctx.fillRect(exitLocation.x, exitLocation.y, tileSize, tileSize);
+            }
+        }
+    }
+}
+
+const doorAnimation = new Image();
+doorAnimation.src = "./assets/door_animation.png";
+export class EntranceAnimation {
+    constructor() {
+        this.frames = 0;
+    }
+    
+    playAnimation() {
+        locBlinkers.stopBlinking();
+        this.frames = 0;
+        playAudio(sfxs['DOOR_CLOSE']);
+        
+        this.frameTimer = setInterval(() => {
+            this.frames++;
+
+            if (this.frames >= 18) {
+                clearInterval(this.frameTimer);
+            }
+        }, 80);
+    }
+    
+    render() {
+        let frameW = tileSize * 3;
+        let frameH = tileSize;
+        
+        ctx.drawImage(doorAnimation, 0, frameH * this.frames, frameW, frameH, 0, tileSize, frameW, frameH);
+    }
+}
+
+export class ExitAnimation {
+    constructor() {
+        // The spritesheet goes backwards
+        this.frames = 11;
+    }
+
+    init() {
+        locBlinkers.stopBlinking();
+        this.frames = 11;
+    }
+    
+    playAnimation() {
+        locBlinkers.startBlinking();
+        setTimeout(() => {
+            playAudio(sfxs['DOOR_OPEN']);
+            this.frameTimer = setInterval(() => {
+                this.frames--;
+    
+                if (this.frames <= 6) {
+                    clearInterval(this.frameTimer);
+                }
+            }, 300);
+        }, 1500);
+    }
+    
+    render() {
+        let frameW = tileSize * 3;
+        let frameH = tileSize;
+        
+        ctx.drawImage(doorAnimation, 0, frameH * this.frames, frameW, frameH, exitLocation.x - tileSize, exitLocation.y, frameW, frameH);
+    }
+}
+
+
+////////////////////
+// UI Animations
 export class DeathReasonAnimation {
     constructor() {
         this.visible = false;
@@ -181,7 +363,7 @@ export class GameOverAnimation {
     }
 }
 
-export class FadeTransition {
+export class FadeTransition {   // TODO: kesken, poista tai tee loppuun
     constructor() {
         this.visible = false;
         this.frames = 0;
@@ -223,66 +405,4 @@ export class FadeTransition {
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
     }
-}
-
-export class EnemyDeathAnimation {
-    constructor() {
-        this.isDead = false;
-        this.spriteSheet = new Image();
-        this.frameSize = 192;
-        this.deathFrames = 18;
-        this.currentFrame = 0;
-        this.deathAnimationMs = 130;
-
-        this.x = 0;
-        this. y = 0;
-        
-        this.visible = false;
-    }
-
-    playAnimation(x, y, type) {
-        console.log(x, y, type);
-        switch(type) {
-            case "Zombie": {
-                this.spriteSheet.src = "./assets/zombi_death.png";
-                break;
-            }
-            case "Ghost": {
-                console.log("no death animation for ghost");
-                break;
-            }
-            case "Skeleton": {
-                console.log("no death animation for skeleton");
-                break;
-            }
-        }
-
-        // this.x = x - tileSize;
-        // this.y = y - tileSize;
-        // this.startTimer();
-        // console.log(x, y, type);
-
-    }
-    
-    startTimer() {
-        this.visible = true;
-        let timer = this.deathFrames;
-        let interval = setInterval(() => {
-            timer--;
-            this.currentDeathFrame++;
-            if (timer <= 0) {
-                this.currentFrame = 0;
-                this.visible = false;
-                clearInterval(interval);
-            }
-        }, this.deathAnimationMs);
-    }
-
-    render() {
-        if (this.visible) {
-            ctx.drawImage(this.spriteSheet, 
-                this.frameSize * this.currentFrame, 0, 
-                this.frameSize, this.frameSize, locX, locY, this.frameSize, this.frameSize);
-        }
-    };
 }

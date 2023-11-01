@@ -1,8 +1,6 @@
-import { canvas, ctx, tileSize, level, locBlinkers } from "./main.js";
+import { ctx, tileSize, level } from "./main.js";
 import { levelHeight, levelType, levelWidth, levels } from "./gamestate.js";
-import { exitLocation, powerupLocations } from "./tile.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
-import { playAudio, sfxs } from "./audio.js";
 
 let hardWallTexture = new Image();
 let softWallTexture = new Image();
@@ -93,110 +91,6 @@ export function renderFloor()
                           x * floorTextureSize,
                           y * floorTextureSize,
                           floorTextureSize, floorTextureSize);
-        }
-    }
-}
-
-const doorAnimation = new Image();
-doorAnimation.src = "./assets/door_animation.png";
-export class EntranceAnimation {
-    constructor() {
-        this.frames = 0;
-    }
-    
-    playAnimation() {
-        locBlinkers.stopBlinking();
-        this.frames = 0;
-        playAudio(sfxs['DOOR_CLOSE']);
-        
-        this.frameTimer = setInterval(() => {
-            this.frames++;
-
-            if (this.frames >= 18) {
-                clearInterval(this.frameTimer);
-            }
-        }, 80);
-    }
-    
-    render() {
-        let frameW = tileSize * 3;
-        let frameH = tileSize;
-        
-        ctx.drawImage(doorAnimation, 0, frameH * this.frames, frameW, frameH, 0, tileSize, frameW, frameH);
-    }
-}
-
-export class ExitAnimation {
-    constructor() {
-        // The spritesheet goes backwards
-        this.frames = 11;
-    }
-
-    init() {
-        locBlinkers.stopBlinking();
-        this.frames = 11;
-    }
-    
-    playAnimation() {
-        locBlinkers.startBlinking();
-        setTimeout(() => {
-            playAudio(sfxs['DOOR_OPEN']);
-            this.frameTimer = setInterval(() => {
-                this.frames--;
-    
-                if (this.frames <= 6) {
-                    clearInterval(this.frameTimer);
-                }
-            }, 300);
-        }, 1500);
-    }
-    
-    render() {
-        let frameW = tileSize * 3;
-        let frameH = tileSize;
-        
-        ctx.drawImage(doorAnimation, 0, frameH * this.frames, frameW, frameH, exitLocation.x - tileSize, exitLocation.y, frameW, frameH);
-    }
-}
-
-
-export class locBlinkingAnimation {
-    constructor() {
-        this.showLocation = false;
-        this.isBlinking = false;
-    }
-
-    // Blink the location overlays of powerups
-    startBlinking() {
-        this.isBlinking = true;
-        this.blinker = setInterval(() => {
-            this.showLocation = !this.showLocation;
-
-            if (!this.isBlinking) {
-                clearInterval(blinker);
-            }
-        }, 700);
-    }
-
-    stopBlinking() {
-        this.showLocation = false;
-        this.isBlinking = false;
-        clearInterval(this.blinker);
-    }
-
-    render() {
-        if (this.showLocation) {
-            powerupLocations.forEach(tile => {
-                if (tile.type === "SoftWall") {
-                    ctx.fillStyle = "rgba(255, 190, 130, 0.3)";
-                    ctx.fillRect(tile.x, tile.y, tileSize, tileSize);
-                }
-            });
-
-            if (exitLocation.type === "SoftWall") {
-                ctx.fillStyle = "rgba(255, 100, 100, 0.2)";
-                ctx.fillRect(exitLocation.x, exitLocation.y, tileSize, tileSize);
-            }
         }
     }
 }
