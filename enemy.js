@@ -76,6 +76,7 @@ class Enemy
         this.deathFrameSize = 192;
         this.deathFrames = 18;
         this.currentDeathFrame = 0;
+        this.deathAnimationMs = 130;
 
         //TODO: DEBUG ONLY
         this.debugPath = [];
@@ -277,7 +278,7 @@ class Enemy
             if (timer <= 0) {
                 clearInterval(interval);
             }
-        }, 130);
+        }, this.deathAnimationMs);
     }
 
     die() {
@@ -317,7 +318,7 @@ class Enemy
             for (let prop in this) {
                 this[prop] = null;
             }    
-        }, 130 * this.deathFrames);   // 130ms on sama kun räjähdysanimaatiolla
+        }, this.deathAnimationMs * this.deathFrames);
 
         game.decreaseEnemies();
         game.checkGameState();
