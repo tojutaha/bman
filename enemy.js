@@ -117,6 +117,10 @@ class Enemy
 
     collidedWithBomb() {
 
+        // Reset collision here, since we only care about toggling it when it collides with bomb,
+        // otherwise the movement logic wont fire again.
+        this.collides = false;
+
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
                 this.playSfx();
@@ -310,6 +314,7 @@ class Enemy
         }
 
         let result = findEnemyById(this.id);
+        //enemies.splice(result.index, 1);
         // console.log("ID:", result);
 
         // TODO: timeout väliaikaratkaisu, ilman tätä ei renderöi koska ehtii poistaa vihun.
@@ -446,7 +451,7 @@ class Enemy
                     this.y = this.next.y;
                     setTimeout(() => {
                         this.collidedWithBomb();
-                    }, 1000);
+                    }, 500); // Make the enemy wait for a bit before moving away from the bomb
                 }
             }
         });
