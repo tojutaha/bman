@@ -224,3 +224,40 @@ export class FadeTransition {
         }
     }
 }
+
+export class EnemyDeathAnimation {
+    constructor() {
+        this.isDead = false;
+        this.deathSheet = new Image();
+        this.deathSheet.src = "./assets/zombi_death.png";
+        this.deathFrameSize = 192;
+        this.deathFrames = 18;
+        this.currentDeathFrame = 0;
+        this.deathAnimationMs = 130;
+
+        this.deathSheet.src = "./assets/zombi_death.png";
+    }
+
+    playAnimation(enemy) {
+        // play
+    }
+
+    startTimer() {
+        let timer = this.deathFrames;
+        let interval = setInterval(() => {
+            timer--;
+            this.currentDeathFrame++;
+            if (timer <= 0) {
+                clearInterval(interval);
+            }
+        }, this.deathAnimationMs);
+    }
+
+    deathAnimationRender(x, y) {
+        const locX = x - tileSize;
+        const locY = y - tileSize;
+        ctx.drawImage(this.deathSheet, 
+            this.deathFrameSize * this.currentDeathFrame, 0, 
+            this.deathFrameSize, this.deathFrameSize, locX, locY, this.deathFrameSize, this.deathFrameSize);
+    };
+}
