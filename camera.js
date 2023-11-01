@@ -12,9 +12,6 @@ const edgeCameraSpeed = 0.25;
 export function updateCamera()
 {
 
-    if (isNaN(deltaTime))
-        return;
-
     const playerTile = getTileFromWorldLocation(players[0]);
     const playerX = playerTile.x / tileSize;
 

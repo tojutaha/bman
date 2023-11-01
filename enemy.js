@@ -1,9 +1,9 @@
-import { ctx, deltaTime, enemyDeath, game, globalPause, level, tileSize } from "./main.js";
+import { ctx, deltaTime, enemyDeath, game, globalPause, tileSize } from "./main.js";
 import { Direction, players } from "./player.js";
-import { dfs, lerp, getRandomWalkablePointInRadius, getTileFromWorldLocation, aabbCollision, getNeigbouringTiles_diagonal, getNeigbouringTiles_linear } from "./utils.js";
+import { dfs, lerp, getRandomWalkablePointInRadius, getTileFromWorldLocation, aabbCollision, getDistanceToEuclidean } from "./utils.js";
 import { requestPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
-import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
+import { playAudio, randomSfx, sfxs } from "./audio.js";
 
 export const enemyType = {
     ZOMBIE: "Zombie",
@@ -57,6 +57,7 @@ class Enemy
         this.startLocation = {x: this.x, y: this.y};
         this.targetLocation = {x: 0, y: 0};
         this.playerTarget = null;
+        this.isChasingPlayer = false;
 
         // Rendering
         this.renderX = this.x;
@@ -94,9 +95,9 @@ class Enemy
             }
             case enemyType.SKELETON: {
                 this.spriteSheet.src = "./assets/skeleton_01.png";
-                this.movementMode = movementMode.FOLLOW;
+                this.movementMode = movementMode.PATROL;
                 this.speed = 400;
-                this.followPlayer();
+                this.patrol();
                 break;
             }
         }
@@ -113,6 +114,7 @@ class Enemy
         // Reset collision here, since we only care about toggling it when it collides with bomb,
         // otherwise the movement logic wont fire again.
         this.collides = false;
+        this.isChasingPlayer = false;
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
@@ -169,6 +171,14 @@ class Enemy
         }
     }
 
+    stopMove() {
+        clearInterval(this.timer);
+        if(this.currentPath) {
+            this.currentPath.length = 0;
+        }
+        this.isMoving = false;
+    }
+
     startMove() {
         this.timer = null;
 
@@ -197,6 +207,23 @@ class Enemy
 
             this.next = this.currentPath[index];
 
+            // If the type is skeleton, and the distance to the player is 
+            // less than the threshold, then start chasing the player
+            // TODO: Tää glitchaa välillä jostain syystä
+            if(this.enemyType == enemyType.SKELETON) {
+                if(!this.isChasingPlayer) {
+                    this.getPlayerLocation();
+                    const distance = getDistanceToEuclidean(this.getLocation(), this.targetLocation);
+                    const threshold = 128;
+                    if(distance <= threshold) {
+                        this.isChasingPlayer = true;
+                        this.stopMove();
+                        this.movementMode = movementMode.FOLLOW;
+                        this.followPlayer();
+                    }
+                }
+            }
+
             // Move enemy
             this.x = this.next.x;
             this.y = this.next.y;
@@ -216,6 +243,10 @@ class Enemy
 
             //console.log("real location :", this.x, this.y);
             //console.log("render location :", this.renderX, this.renderY);
+
+            if(!this.currentPath) {
+                return;
+            }
 
             if (index >= this.currentPath.length) {
 
@@ -297,7 +328,7 @@ class Enemy
         enemies.splice(result.index, 1);
 
         this.movementMode = movementMode.IDLE;
-        clearInterval(this.timer);
+        this.stopMove();
 
         for (let prop in this) {
             this[prop] = null;
@@ -391,12 +422,11 @@ class Enemy
                 */
                 // Dont check if player is dead
                 if(!player.isDead) {
-                    if(aabbCollision(this.collisionBox, player.collisionBox && !this.isDead)) {
+                    if(aabbCollision(this.collisionBox, player.collisionBox)) {
                         player.onDeath(this, false);
                         this.collides = true;
                         this.playerTarget = null;
-                        clearInterval(this.timer);
-                        this.isMoving = false;
+                        this.stopMove();
                     }
                 }
             }
@@ -410,9 +440,7 @@ class Enemy
                              //tile.bomb.collisionBox.w, tile.bomb.collisionBox.h);
                 if(aabbCollision(this.collisionBox, tile.bomb.collisionBox)) {
                     this.collides = true;
-                    clearInterval(this.timer);
-                    this.currentPath.length = 0;
-                    this.isMoving = false;
+                    this.stopMove();
                     this.x = this.next.x;
                     this.y = this.next.y;
                     setTimeout(() => {
@@ -522,10 +550,6 @@ export function findEnemyById(id) {
 
 export function renderEnemies(timeStamp)
 {
-    if (isNaN(deltaTime)) {
-        return;
-    }
-
     enemies.forEach(enemy => {
         if (enemy) {
 
@@ -566,7 +590,7 @@ export function renderEnemies(timeStamp)
 export function clearEnemies() {
     enemies.forEach(enemy => {
         enemy.movementMode = movementMode.IDLE;
-        clearInterval(enemy.timer);
+        enemy.stopMove();
         for (let prop in enemy)
             enemy[prop] = null;
     });

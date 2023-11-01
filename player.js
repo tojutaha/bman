@@ -1,6 +1,6 @@
 import { ctx, level, tileSize, deltaTime, game, deathReasonText } from "./main.js";
 import { levelHeight, levelType, levelWidth } from "./gamestate.js";
-import { playAudio, playFootsteps, randomSfx, sfxs, stopFootsteps, tracks } from "./audio.js";
+import { playAudio, playFootsteps, randomSfx, sfxs, stopFootsteps } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup } from "./powerup.js";
 import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles } from "./utils.js";
@@ -325,7 +325,6 @@ class Player
     }
 
     updateAnimation(dt, currentTime) {
-        if (isNaN(dt)) return;
 
         if (this.dx === 0 && this.dy === 0) {
             this.currentFrame = 0;
