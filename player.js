@@ -4,6 +4,7 @@ import { playAudio, playFootsteps, randomSfx, sfxs, stopFootsteps } from "./audi
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup } from "./powerup.js";
 import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles } from "./utils.js";
+import { spriteSheets } from "./spritesheets.js";
 
 
 const godMode = false;
@@ -59,8 +60,8 @@ class Player
 
         // Animations
         this.spriteSheet = new Image();
-        this.normalSprite = "./assets/player0.png";
-        this.lanternSprite = "./assets/player0_lantern.png";
+        this.normalSprite = spriteSheets.player_normal;
+        this.lanternSprite = spriteSheets.player_lantern;
         this.spriteSheet.src = sprite || this.normalSprite;
         this.frameWidth = 256/4;
         this.frameHeight = 256/4;

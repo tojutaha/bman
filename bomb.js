@@ -1,6 +1,5 @@
 // TODO:    Bugi jossa kaksi pommia chainaa toisensa vaikka olivat kaukana toisistaan (en muista laitoinko aina samaan kohtaan)
-import { ctx, level, tileSize, game, globalPause } from "./main.js";
-import { levelHeight, levelWidth } from "./gamestate.js";
+import { ctx, tileSize, game, globalPause } from "./main.js";
 import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
 import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo, getLinearUntilObstacle } from "./utils.js";

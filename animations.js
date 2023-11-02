@@ -1,6 +1,7 @@
 import { playAudio, sfxs } from "./audio.js";
 import { lastLevel } from "./gamestate.js";
 import { ctx, game, locBlinkers, tileSize } from "./main.js";
+import { spriteSheets } from "./spritesheets.js";
 import { exitLocation, powerupLocations } from "./tile.js";
 
 ////////////////////
@@ -18,44 +19,44 @@ export class EnemyDeathAnimation {
             case "Zombie": {
                 switch(direction) {
                     case "Up": {
-                        this.spriteSheet.src = "./assets/zombi_death_back.png";
+                        this.spriteSheet.src = spriteSheets.zombie_death_back;
                         break;
                     }
                     case "Down": {
-                        this.spriteSheet.src = "./assets/zombi_death_front.png";
+                        this.spriteSheet.src = spriteSheets.zombie_death_front;
                         break;
                     }
                     case "Left": {
-                        this.spriteSheet.src = "./assets/zombi_death_left.png";
+                        this.spriteSheet.src = spriteSheets.zombie_death_left;
                         break;
                     }
                     case "Right": {
-                        this.spriteSheet.src = "./assets/zombi_death_right.png";
+                        this.spriteSheet.src = spriteSheets.zombie_death_right;
                         break;
                     }
                 }
                 break;
             }
             case "Ghost": {
-                this.spriteSheet.src = "./assets/ghost_death.png";
+                this.spriteSheet.src = spriteSheets.ghost_death;
                 break;
             }
             case "Skeleton": {
                 switch(direction) {
                     case "Up": {
-                        this.spriteSheet.src = "./assets/skeleton_death_back.png";
+                        this.spriteSheet.src = spriteSheets.skeleton_death_back;
                         break;
                     }
                     case "Down": {
-                        this.spriteSheet.src = "./assets/skeleton_death_front.png";
+                        this.spriteSheet.src = spriteSheets.skeleton_death_front;
                         break;
                     }
                     case "Left": {
-                        this.spriteSheet.src = "./assets/skeleton_death_left.png";
+                        this.spriteSheet.src = spriteSheets.skelton_death_left;
                         break;
                     }
                     case "Right": {
-                        this.spriteSheet.src = "./assets/skeleton_death_right.png";
+                        this.spriteSheet.src = spriteSheets.skeleton_death_right;
                         break;
                     }
                 }
