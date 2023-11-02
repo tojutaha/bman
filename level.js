@@ -1,10 +1,11 @@
-import { ctx, tileSize, level, canvas } from "./main.js";
-import { levelHeight, levelType, levelWidth, levels } from "./gamestate.js";
+import { ctx, tileSize, level } from "./main.js";
+import { levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
+import { cameraX } from "./camera.js";
 
 let hardWallTexture = new Image();
 let softWallTexture = new Image();
-let floorTexture = new Image();
+let floor = document.querySelector('.floor');
 
 async function preLoadTextures() {
     const textures = {
@@ -56,7 +57,7 @@ export async function loadTextures() {
 }
 
 export function setTextures() {
-    floorTexture    = levelTextures[levelType].floor;
+    floor.style.backgroundImage = `url(${levelTextures[levelType].floor.src})`;
     hardWallTexture = levelTextures[levelType].hardWall;
     softWallTexture = levelTextures[levelType].softWall;
 }
@@ -64,7 +65,7 @@ export function setTextures() {
 let hardWallsCanvas = document.createElement('canvas');
 let hardWallsCtx = hardWallsCanvas.getContext('2d');
 
-export function updateHardWallsCanvas() {
+export function initHardWallsCanvas() {
 
     hardWallsCtx.clearRect(0, 0, hardWallsCanvas.width, hardWallsCanvas.height);
     hardWallsCanvas.width = levelWidth * tileSize;
@@ -100,44 +101,11 @@ export function renderWalls()
             }
         }
     }
-    /*
-    for (let x = 0; x < levelWidth; x++) {
-        for (let y = 0; y < levelHeight; y++) {
-            const xCoord = x * tileSize;
-            const yCoord = y * tileSize;
-            // Hard tiles
-            if (level[x][y].type === "HardWall") {
-                ctx.drawImage(hardWallTexture, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
-            }
-            // Soft tiles
-            else if (level[x][y].type === "SoftWall") {
-                ctx.drawImage(softWallTexture, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
-            }
-        }
-    }
-    */
 
     drawCoordinates(coordsToggle);
 }
 
-
-const floorTextureSize = 128;
 export function renderFloor()
 {
-    /*
-    const pattern = ctx.createPattern(floorTexture, 'repeat');
-    ctx.fillStyle = pattern;
-    ctx.fillRect(0, 0, 
-        levelWidth*floorTextureSize,
-        levelHeight*floorTextureSize);
-
-    */
-    for (let x = 0; x < levelWidth; x++) {
-        for (let y = 0; y < levelHeight; y++) {
-            ctx.drawImage(floorTexture, 
-                          x * floorTextureSize,
-                          y * floorTextureSize,
-                          floorTextureSize, floorTextureSize);
-        }
-    }
+    floor.style.backgroundPosition = cameraX + 'px ' + 0 + 'px';
 }

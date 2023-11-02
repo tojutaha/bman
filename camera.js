@@ -3,7 +3,7 @@ import { levelHeight, levelWidth } from "./gamestate.js";
 import { players } from "./player.js";
 import { getTileFromWorldLocation, lerp } from "./utils.js";
 
-let cameraX = 0;
+export let cameraX = 0;
 let cameraLt = 0;
 let cameraRt = 0;
 let cameraPt = 0;

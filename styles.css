@@ -334,3 +334,13 @@ body {
 .inner-list {
     margin-left: 20px;
 }
+
+/* Floor */
+.floor {
+    z-index: -1;
+    position: absolute;
+    background-image: url('./assets/grass_01.png');
+    background-repeat: repeat;
+    width: 832px;
+    height: 832px;
+}
