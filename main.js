@@ -1,7 +1,7 @@
 ////////////////////
 // Imports
 import { renderWalls, renderFloor } from "./level.js";
-import { EntranceAnimation, ExitAnimation, locBlinkingAnimation, LevelHeaderAnimation, GameOverAnimation, DeathReasonAnimation, renderEnemyDeaths } from "./animations.js";
+import { EntranceAnimation, ExitAnimation, locBlinkingAnimation, LevelHeaderAnimation, GameOverAnimation, DeathReasonAnimation, renderEnemyDeaths, TutorialAnimations } from "./animations.js";
 import { renderPowerups } from "./powerup.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies } from "./enemy.js";
@@ -44,6 +44,7 @@ export const deathReasonText = new DeathReasonAnimation();
 export const entrance = new EntranceAnimation();
 export const exit = new ExitAnimation();
 export const locBlinkers = new locBlinkingAnimation();
+export const tutorial = new TutorialAnimations();
 
 function Render(timeStamp)
 {
@@ -78,6 +79,7 @@ function Render(timeStamp)
         levelHeader.render();
         gameOverText.render();
         deathReasonText.render();
+        tutorial.render();
     }
 
     lastTimeStamp = timeStamp

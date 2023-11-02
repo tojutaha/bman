@@ -424,3 +424,63 @@ export class FadeTransition {   // TODO: kesken, poista tai tee loppuun
         }
     }
 }
+
+export class TutorialAnimations {
+    constructor() {
+        this.visible = false;
+        this.currentFrame = 0;
+        this.frames = 7;
+        this.keys = new Image();
+        // this.keys.src = spriteSheets.tutorial_keys;
+        this.keys.src = "./assets/tutorial_keys_animation.png";
+        this.keysWidth = 224;
+        this.keysHeight = 320;
+        this.fadeMs = 60;
+    }
+    
+    playAnimation() {
+        // Doesn't show if player drops a bomb early enough.
+        setTimeout(() => {
+            if (game.firstBombDropped) return;
+            
+            this.fadeIn();
+            let checker = setInterval(() => {
+                if (game.firstBombExploded) {
+                    this.fadeOut();
+                    clearInterval(checker);
+                }
+            }, 500);
+        }, 5000);
+    }
+
+    fadeIn() {
+        this.visible = true;
+        this.currentFrame = 0;
+        let fade = setInterval(() => {
+            if (this.currentFrame < this.frames) {
+                this.currentFrame++;
+            } else {
+                clearInterval(fade);
+            }
+        }, this.fadeMs);
+    }
+
+    fadeOut() {
+        let fade = setInterval(() => {
+            if (this.currentFrame > 0) {
+                this.currentFrame--;
+            } else {
+                this.visible = false;
+                clearInterval(fade);
+            }
+        }, this.fadeMs);
+    }
+
+    render() {
+        if (this.visible) {
+            ctx.drawImage(this.keys, 
+                this.keysWidth * this.currentFrame, 0, 
+                this.keysWidth, this.keysHeight, canvas.width - this.keysWidth, 0, this.keysWidth, this.keysHeight);
+        }
+    }
+}

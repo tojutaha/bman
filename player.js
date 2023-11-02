@@ -382,6 +382,11 @@ class Player
     dropBomb() {
         if (this.isDead) return;
 
+        if (game.firstBombDropped === false) {
+            // TODO: tähän playAudio riser
+            game.firstBombDropped = true;
+        }
+
         let bombTile = getTileFromWorldLocation(this);
 
         if (this.activeBombs < this.powerup.maxBombs) {

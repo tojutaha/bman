@@ -2,7 +2,7 @@ import { playTrack, loadAudioFiles, tracks } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, spawnEnemies } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
-import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause } from "./main.js";
+import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial } from "./main.js";
 import { showGameOverMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
@@ -25,10 +25,12 @@ export class Game {
         this.score = 0;
         this.level = 1;
         this.numOfEnemies = 0;
+        this.firstBombDropped = false;
         this.firstBombExploded = false;
     }
 
     newGame() {
+        tutorial.playAnimation();
         playTrack(tracks['BIRDS']);
         setGlobalPause(true);
         localStorage.clear();
@@ -100,6 +102,7 @@ export class Game {
         Array.prototype.push.apply(level, newLevel);
 
         if (level.length > 0) {
+            this.firstBombDropped = false;
             this.firstBombExploded = false;
             levelHeader.playAnimation();
             entrance.playAnimation();
