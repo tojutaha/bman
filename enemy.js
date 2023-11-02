@@ -19,6 +19,10 @@ export const movementMode = {
     FOLLOW: "Follow",
 }
 
+// Määrittelee kuinka monen tilen päästä enemy koettaa
+// hakea polkua maksimissaaan
+const maxPathLength = 16;
+
 class Enemy
 {
     static lastId = 0;
@@ -152,7 +156,7 @@ class Enemy
                 minRadius, maxRadius);
             this.targetLocation = {x: targetLocation.x, y: targetLocation.y};
         } else {
-            const path = dfs(this, 8); // TODO: Mikä on sopiva range?
+            const path = dfs(this, maxPathLength);
             const target = {x: path[path.length-1].x, y: path[path.length-1].y};
             this.targetLocation = target;
         }
