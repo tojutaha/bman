@@ -66,6 +66,7 @@ let hardWallsCtx = hardWallsCanvas.getContext('2d');
 
 export function updateHardWallsCanvas() {
 
+    hardWallsCtx.clearRect(0, 0, hardWallsCanvas.width, hardWallsCanvas.height);
     hardWallsCanvas.width = levelWidth * tileSize;
     hardWallsCanvas.height = levelHeight * tileSize;
 
