@@ -189,14 +189,8 @@ export class Game {
             return;
         }
 
-        if (this.firstBombExploded) {
-            if (this.level >= 2) {
-                playTrack(tracks['INT2']);
-            }
-        }
-        
         // Open the door
-        if (this.numOfEnemies <= 0 && exitLocation.isOpen === false) {
+        if (this.numOfEnemies === 0 && exitLocation.isOpen === false) {
             this.toggleDoor();
 
             if (this.level === 1) {
