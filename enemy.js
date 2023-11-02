@@ -72,6 +72,9 @@ class Enemy
         this.currentFrame = 0;
         this.animationSpeed = 150;
         this.lastTime = 0;
+
+        // Should only be true for enemies that spawn from door!
+        this.spawnedFromDoor = false;
     }
 
     init() {
@@ -141,18 +144,18 @@ class Enemy
     }
 
     getRandomPath() {
-        /*
-         * Vanha systeemi
-        const maxRadius = 25*tileSize;
-        const minRadius = 2*tileSize;
-        const targetLocation = 
-        getRandomWalkablePointInRadius({x: this.x, y: this.y},
-                                        minRadius, maxRadius);
-        this.targetLocation = {x: targetLocation.x, y: targetLocation.y};
-        */
-        const path = dfs(this, 8); // TODO: Mikä on sopiva range?
-        const target = {x: path[path.length-1].x, y: path[path.length-1].y};
-        this.targetLocation = target;
+        if(this.spawnedFromDoor) {
+            const maxRadius = 25*tileSize;
+            const minRadius = 2*tileSize;
+            const targetLocation = 
+            getRandomWalkablePointInRadius({x: this.x, y: this.y},
+                minRadius, maxRadius);
+            this.targetLocation = {x: targetLocation.x, y: targetLocation.y};
+        } else {
+            const path = dfs(this, 8); // TODO: Mikä on sopiva range?
+            const target = {x: path[path.length-1].x, y: path[path.length-1].y};
+            this.targetLocation = target;
+        }
     }
 
     getRandomPlayer() {
@@ -527,6 +530,7 @@ export function spawnEnemiesAtLocation(location, amount = 1)
     for (let i = 0; i < amount; i++) {
         const enemy = new Enemy(location.x, location.y, tileSize, tileSize);
         enemy.speed = getRandomSpeed();
+        enemy.spawnedFromDoor = true;
         enemy.init();
         enemies.push(enemy);
         game.increaseEnemies();
