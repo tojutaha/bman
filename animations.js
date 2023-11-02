@@ -52,7 +52,7 @@ export class EnemyDeathAnimation {
                         break;
                     }
                     case "Left": {
-                        this.spriteSheet.src = spriteSheets.skelton_death_left;
+                        this.spriteSheet.src = spriteSheets.skeleton_death_left;
                         break;
                     }
                     case "Right": {
