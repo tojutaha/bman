@@ -1,7 +1,7 @@
 import { playTrack, loadAudioFiles, tracks } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { clearEnemies, spawnEnemies } from "./enemy.js";
-import { setTextures } from "./level.js";
+import { setTextures, updateHardWallsCanvas } from "./level.js";
 import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, game } from "./main.js";
 import { restarted, showGameOverMenu, showMainMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
@@ -108,6 +108,7 @@ export class Game {
         } else {
             throw new Error("Failed to create level");
         }
+        updateHardWallsCanvas();
         setGlobalPause(false);
     }
 

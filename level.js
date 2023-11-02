@@ -1,4 +1,4 @@
-import { ctx, tileSize, level } from "./main.js";
+import { ctx, tileSize, level, canvas } from "./main.js";
 import { levelHeight, levelType, levelWidth, levels } from "./gamestate.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 
@@ -61,8 +61,47 @@ export function setTextures() {
     softWallTexture = levelTextures[levelType].softWall;
 }
 
+let hardWallsCanvas = document.createElement('canvas');
+let hardWallsCtx = hardWallsCanvas.getContext('2d');
+
+export function updateHardWallsCanvas() {
+
+    //hardWallsCanvas.width = levelWidth * tileSize;
+    //hardWallsCanvas.height = levelHeight * tileSize;
+    hardWallsCanvas.width = canvas.width;
+    hardWallsCanvas.height = canvas.height;
+
+    for(let x = 0; x < levelWidth; x++) {
+        for(let y = 0; y < levelHeight; y++) {
+            const xCoord = x * tileSize;
+            const yCoord = y * tileSize;
+
+            if (level[x][y].type === "HardWall") {
+                hardWallsCtx.drawImage(hardWallTexture, 
+                              0, 0, tileSize, tileSize, 
+                              xCoord, yCoord, tileSize, tileSize);
+            }
+        }
+    }
+}
+
 export function renderWalls()
 {
+    // Hard tiles
+    ctx.drawImage(hardWallsCanvas, 0, 0);
+
+    // Soft tiles
+    for (let x = 0; x < levelWidth; x++) {
+        for (let y = 0; y < levelHeight; y++) {
+            const xCoord = x * tileSize;
+            const yCoord = y * tileSize;
+
+            if (level[x][y].type === "SoftWall") {
+                ctx.drawImage(softWallTexture, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+            }
+        }
+    }
+    /*
     for (let x = 0; x < levelWidth; x++) {
         for (let y = 0; y < levelHeight; y++) {
             const xCoord = x * tileSize;
@@ -77,6 +116,7 @@ export function renderWalls()
             }
         }
     }
+    */
 
     drawCoordinates(coordsToggle);
 }
@@ -85,12 +125,14 @@ export function renderWalls()
 const floorTextureSize = 128;
 export function renderFloor()
 {
+    /*
     const pattern = ctx.createPattern(floorTexture, 'repeat');
     ctx.fillStyle = pattern;
     ctx.fillRect(0, 0, 
         levelWidth*floorTextureSize,
         levelHeight*floorTextureSize);
-    /*
+
+    */
     for (let x = 0; x < levelWidth; x++) {
         for (let y = 0; y < levelHeight; y++) {
             ctx.drawImage(floorTexture, 
@@ -99,5 +141,4 @@ export function renderFloor()
                           floorTextureSize, floorTextureSize);
         }
     }
-    */
 }
