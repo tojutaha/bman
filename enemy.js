@@ -94,7 +94,7 @@ class Enemy
                 break;
             }
             case enemyType.SKELETON: {
-                this.spriteSheet.src = "./assets/skeleton_01.png";
+                this.spriteSheet.src = "./assets/skeleton_02.png";
                 this.movementMode = movementMode.PATROL;
                 this.speed = 400;
                 this.patrol();
