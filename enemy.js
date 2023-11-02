@@ -212,22 +212,6 @@ class Enemy
             this.y = this.next.y;
             this.t = 0;
 
-            // If the type is skeleton, and the distance to the player is 
-            // less than the threshold, then start chasing the player
-            if(this.enemyType == enemyType.SKELETON) {
-                if(!this.isChasingPlayer) {
-                    this.getPlayerLocation();
-                    const distance = getDistanceToEuclidean(this.getLocation(), this.targetLocation);
-                    const threshold = 128;
-                    if(distance <= threshold) {
-                        this.isChasingPlayer = true;
-                        this.stopMove();
-                        this.movementMode = movementMode.FOLLOW;
-                        this.followPlayer();
-                    }
-                }
-            }
-
             // Smoother movement for rendering
             if (this.currentPath) {
                 if (renderIndex < this.currentPath.length) {
@@ -242,6 +226,24 @@ class Enemy
 
             //console.log("real location :", this.x, this.y);
             //console.log("render location :", this.renderX, this.renderY);
+
+            // If the type is skeleton, and the distance to the player is 
+            // less than the threshold, then start chasing the player
+            if(this.enemyType == enemyType.SKELETON) {
+                if(!this.isChasingPlayer) {
+                    this.getPlayerLocation();
+                    const distance = getDistanceToEuclidean(this.getLocation(), this.targetLocation);
+                    const threshold = 128;
+                    if(distance <= threshold) {
+                        this.isChasingPlayer = true;
+                        this.stopMove();
+                        this.renderX = this.x;
+                        this.renderY = this.y;
+                        this.movementMode = movementMode.FOLLOW;
+                        this.followPlayer();
+                    }
+                }
+            }
 
             if(!this.currentPath) {
                 return;
@@ -399,21 +401,9 @@ class Enemy
     }
 
     checkCollisions() {
-        /*
-        // Draw enemy collision box
-        ctx.fillStyle = "#ff0000";
-        ctx.fillRect(this.collisionBox.x, this.collisionBox.y, 
-                     this.collisionBox.w, this.collisionBox.h);
-        */
         // Check if enemy collides with player
         players.forEach(player => {
             if (player !== undefined) {
-                /*
-                // Draw player collsion box
-                ctx.fillStyle = "#00ff00";
-                ctx.fillRect(player.collisionBox.x, player.collisionBox.y, 
-                             player.collisionBox.w, player.collisionBox.h);
-                */
                 // Dont check if player is dead
                 if(!player.isDead) {
                     if(aabbCollision(this.collisionBox, player.collisionBox)) {
@@ -428,10 +418,6 @@ class Enemy
         // Check if enemy collides with bomb
         tilesWithBombs.forEach(tile => {
             if(tile.bomb && tile.bomb.collisionBox && this.collisionBox) {
-                // Draw bomb collision box
-                //ctx.fillStyle = "#0000ff";
-                //ctx.fillRect(tile.bomb.collisionBox.x, tile.bomb.collisionBox.y, 
-                             //tile.bomb.collisionBox.w, tile.bomb.collisionBox.h);
                 if(aabbCollision(this.collisionBox, tile.bomb.collisionBox)) {
                     this.collides = true;
                     this.stopMove();
