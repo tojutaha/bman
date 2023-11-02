@@ -230,10 +230,10 @@ class Enemy
             // If the type is skeleton, and the distance to the player is 
             // less than the threshold, then start chasing the player
             if(this.enemyType == enemyType.SKELETON) {
+                const distance = getDistanceToEuclidean(this.getLocation(), this.targetLocation);
+                const threshold = 128;
                 if(!this.isChasingPlayer) {
                     this.getPlayerLocation();
-                    const distance = getDistanceToEuclidean(this.getLocation(), this.targetLocation);
-                    const threshold = 128;
                     if(distance <= threshold) {
                         this.isChasingPlayer = true;
                         this.stopMove();
@@ -241,6 +241,18 @@ class Enemy
                         this.renderY = this.y;
                         this.movementMode = movementMode.FOLLOW;
                         this.followPlayer();
+                    }
+                } else {
+                    // If distance is greater than giveupThreshold, then give up
+                    // and start patroling again
+                    const giveupThreshold = 256;
+                    if(distance > giveupThreshold) {
+                        this.isChasingPlayer = false;
+                        this.stopMove();
+                        this.renderX = this.x;
+                        this.renderY = this.y;
+                        this.movementMode = movementMode.PATROL;
+                        this.patrol();
                     }
                 }
             }
