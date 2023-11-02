@@ -70,7 +70,9 @@ function explode(bomb) {
     tilesWithBombs.splice(0, 1);
 
     let player = findPlayerById(bomb.playerId);
-    player.activeBombs--;
+    if (player.activeBombs > 0) {
+        player.activeBombs--;
+    }
 
     chainExplosions(tiles);
     setTilesOnFire(tiles);
