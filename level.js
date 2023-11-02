@@ -85,6 +85,12 @@ export function renderWalls()
 const floorTextureSize = 128;
 export function renderFloor()
 {
+    const pattern = ctx.createPattern(floorTexture, 'repeat');
+    ctx.fillStyle = pattern;
+    ctx.fillRect(0, 0, 
+        levelWidth*floorTextureSize,
+        levelHeight*floorTextureSize);
+    /*
     for (let x = 0; x < levelWidth; x++) {
         for (let y = 0; y < levelHeight; y++) {
             ctx.drawImage(floorTexture, 
@@ -93,4 +99,5 @@ export function renderFloor()
                           floorTextureSize, floorTextureSize);
         }
     }
+    */
 }
