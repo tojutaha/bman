@@ -207,9 +207,13 @@ class Enemy
 
             this.next = this.currentPath[index];
 
+            // Move enemy
+            this.x = this.next.x;
+            this.y = this.next.y;
+            this.t = 0;
+
             // If the type is skeleton, and the distance to the player is 
             // less than the threshold, then start chasing the player
-            // TODO: Tää glitchaa välillä jostain syystä
             if(this.enemyType == enemyType.SKELETON) {
                 if(!this.isChasingPlayer) {
                     this.getPlayerLocation();
@@ -223,11 +227,6 @@ class Enemy
                     }
                 }
             }
-
-            // Move enemy
-            this.x = this.next.x;
-            this.y = this.next.y;
-            this.t = 0;
 
             // Smoother movement for rendering
             if (this.currentPath) {
