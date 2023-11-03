@@ -26,6 +26,8 @@ async function preLoadSpriteSheets() {
         bomb: "./assets/bomb.png",
         explosion: "./assets/explosion.png",
         stone_brick_alt: "./assets/stone_brick_03_alt.png",
+        powerups: "./assets/powerups.png",
+        door: "./assets/door_animation.png",
 
         tutorial_keys: "./assets/tutorial_keys_animation.png",
         big_bomb_overlay: "./assets/big_bomb_overlay.png",

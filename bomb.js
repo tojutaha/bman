@@ -5,6 +5,7 @@ import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo, getLinearUntilObstacle } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 import { exitLocation } from "./tile.js";
+import { spriteSheets } from "./spritesheets.js";
 
 export let tilesWithBombs = [];
 let crumblingWalls = [];
@@ -199,8 +200,10 @@ function killEnemies(tile) {
 ////////////////////
 // Render
 const bombImage = new Image();
-bombImage.src = "./assets/bomb.png"
 export function renderBombs() {
+    if (!bombImage.src) {
+        bombImage.src = spriteSheets.bomb;
+    }
     for (let i = 0; i < tilesWithBombs.length; i++) {
         let currentTile = tilesWithBombs[i];
         ctx.drawImage(bombImage, 
@@ -210,10 +213,15 @@ export function renderBombs() {
 }
 
 const softWallTexture = new Image();
-softWallTexture.src = "./assets/stone_brick_03_alt.png"
 const explosionImage = new Image();
-explosionImage.src = "./assets/explosion.png"
 export function renderExplosions() {
+    if (!softWallTexture.src) {
+        softWallTexture.src = spriteSheets.stone_brick_alt;
+    }
+    if (!explosionImage.src) {
+        explosionImage.src = spriteSheets.explosion;
+    }
+    
     // Walls
     crumblingWalls.forEach(tile => {
         ctx.drawImage(softWallTexture, 

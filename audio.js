@@ -24,7 +24,7 @@ const TrackURLs = {
     INT1: "assets/music/song_intensity01.mp3",
     INT2: "assets/music/song_intensity02.mp3",
     INT3: "assets/music/song_intensity03.mp3",
-    BIRDS: "assets/music/dawn-chorus-birdsong.mp3",     // TODO: might wanna move this to sfx
+    BIRDS: "assets/music/dawn-chorus-birdsong.mp3",
 }
 
 const SfxURLs = {

@@ -139,7 +139,6 @@ export class locBlinkingAnimation {
 }
 
 const doorAnimation = new Image();
-doorAnimation.src = "./assets/door_animation.png";
 export class EntranceAnimation {
     constructor() {
         this.frames = 0;
@@ -160,6 +159,9 @@ export class EntranceAnimation {
     }
     
     render() {
+        if (!doorAnimation.src) {
+            doorAnimation.src = spriteSheets.door;
+        }
         let frameW = tileSize * 3;
         let frameH = tileSize;
         
@@ -383,45 +385,65 @@ export class GameOverAnimation {
     }
 }
 
-export class FadeTransition {   // TODO: kesken, poista tai tee loppuun
+export class FadeTransition {
     constructor() {
         this.visible = false;
         this.frames = 0;
         this.alpha = 1.0;
+        this.fadeMs = 15;
     }
     
-    // playAnimation() {
-    //     this.visible = true;
-    //     this.frames = 0;
-    //     this.alpha = 1.0;
+    fadeBoth() {
+        // Out
+        this.alpha = 0.0;
+        this.visible = true;
+        let outTimer = setInterval(() => {
+            this.alpha += 0.05;
+            if (this.alpha >= 1.0) {
+                clearInterval(outTimer);
 
-    //     setTimeout(() => {
-    //         this.frameTimer = setInterval(() => {
-    //             this.frames++;
-    
-    //             if (this.frames >= this.text.length) {
-    //                 setTimeout(() => {
-    //                     this.fadeOut();
-    //                 }, 2000);
-    //                 clearInterval(this.frameTimer);
-    //             }
-    //         }, 100);
-    //     }, 500);
-    // }
+                // In
+                let inTimer = setInterval(() => {
+                    this.alpha -= 0.05;
+                    if (this.alpha <= 0.0) {
+                        this.visible = false;
+                        clearInterval(inTimer);
+                    }
+                }, this.fadeMs);
+            }
+        }, this.fadeMs);
+    }
 
-    // fadeOut() {
-    //     this.fadeOutTimer = setInterval(() => {
-    //         this.alpha -= 0.05;
+    fadeIn() {
+        this.visible = true;
+        let fade = setInterval(() => {
+            this.alpha -= 0.05;
+            if (this.alpha <= 0.0) {
+                this.visible = false;
+                clearInterval(fade);
+            }
+        }, this.fadeMs);
+    }
 
-    //         if (this.alpha <= 0.0) {
-    //             clearInterval(this.fadeOutTimer);
-    //         }
-    //     }, 10);
-    // }
+    fadeOut() {
+        this.alpha = 0.0;
+        this.visible = true;
+        let fade = setInterval(() => {
+            this.alpha += 0.05;
+            if (this.alpha >= 1.0) {
+                clearInterval(fade);
+            }
+        }, this.fadeMs);
+    }
+
+    blackScreen() {
+        this.visible = true;
+        this.alpha = 1.0;
+    }
     
     render() {
         if (this.visible) {
-            ctx.fillStyle = `rgba(0, 0, 0, 0)`;
+            ctx.fillStyle = `rgba(0, 0, 0, ${this.alpha})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
     }
@@ -433,8 +455,6 @@ export class TutorialAnimations {
         this.currentFrame = 0;
         this.frames = 7;
         this.keys = new Image();
-        // this.keys.src = spriteSheets.tutorial_keys;
-        this.keys.src = "./assets/tutorial_keys_animation.png";
         this.keysWidth = 224;
         this.keysHeight = 320;
         this.fadeMs = 60;
@@ -443,6 +463,7 @@ export class TutorialAnimations {
     playAnimation() {
         // Doesn't show if player drops a bomb early enough.
         setTimeout(() => {
+
             if (game.firstBombDropped) return;
             
             this.fadeIn();
@@ -479,6 +500,10 @@ export class TutorialAnimations {
     }
 
     render() {
+        if (!this.keys.src) {
+            this.keys.src = spriteSheets.tutorial_keys;
+        }
+
         if (this.visible) {
             ctx.drawImage(this.keys, 
                 this.keysWidth * this.currentFrame, 0, 
@@ -494,8 +519,6 @@ export class BigBombAnimation {
         this.frames = 45;
         this.firstHalf = 37;    // The shattering animation begins on frame 27
         this.spriteSheet = new Image();
-        this.spriteSheet.src = "./assets/big_bomb_overlay.png";
-        // this.spriteSheet.src = spriteSheets.big_bomb_overlay;
         this.animationMs = 60;
     }
     
@@ -531,6 +554,10 @@ export class BigBombAnimation {
     }
 
     render() {
+        if (!this.spriteSheet.src) {
+            this.spriteSheet.src = spriteSheets.big_bomb_overlay;
+        }
+
         if (this.visible) {
             ctx.drawImage(this.spriteSheet, 
                 canvas.width * this.currentFrame, 0, 

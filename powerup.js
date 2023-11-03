@@ -1,5 +1,6 @@
-import { ctx, level, tileSize } from "./main.js";
+import { ctx, level, spriteSheet, tileSize } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
+import { spriteSheets } from "./spritesheets.js";
 
 export class Powerup
 {
@@ -34,9 +35,12 @@ export function randomPowerup() {
 ////////////////////
 // Renders
 const powerupImage = new Image();
-powerupImage.src = "./assets/powerups.png"
 export function renderPowerups()
 {
+    if (!powerupImage.src) {
+        powerupImage.src = spriteSheets.powerups;
+    }
+
     for (let x = 0; x < levelWidth; x++) {
         for (let y = 0; y < levelHeight; y++) {
             const xCoord = x * tileSize;
