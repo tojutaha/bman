@@ -1,4 +1,4 @@
-import { canvas, ctx, level, tileSize } from "./main.js";
+import { level, tileSize } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 
 

@@ -1,5 +1,5 @@
 import { ctx, tileSize, scale, canvas, deltaTime } from "./main.js";
-import { levelHeight, levelWidth } from "./gamestate.js";
+import { levelWidth } from "./gamestate.js";
 import { players } from "./player.js";
 import { getTileFromWorldLocation, lerp } from "./utils.js";
 

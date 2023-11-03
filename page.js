@@ -1,6 +1,6 @@
 import { enemies, enemyType, spawnEnemiesByType } from "./enemy.js";
 import { ctx, tileSize, game, setGlobalPause, globalPause } from "./main.js";
-import { fetchEverything, lastLevel, levelHeight, levelWidth, levels } from "./gamestate.js";
+import { fetchEverything, lastLevel, levelHeight, levelWidth } from "./gamestate.js";
 import { players } from "./player.js";
 import { playAudio, playTrack, sfxs, tracks } from "./audio.js";
 import { loadTextures } from "./level.js";

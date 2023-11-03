@@ -1,6 +1,4 @@
-import { canvas, ctx, level, tileSize } from "./main.js";
-import { enemies } from "./enemy.js";
-import { getDistanceTo, getRandomWalkablePointInRadius, getTileFromWorldLocation, getNeigbouringTiles_linear, getNeigbouringTiles_diagonal } from "./utils.js";
+import { getDistanceTo, getTileFromWorldLocation, getNeigbouringTiles_linear, getNeigbouringTiles_diagonal } from "./utils.js";
 
 class Queue
 {

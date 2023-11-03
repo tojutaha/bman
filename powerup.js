@@ -1,4 +1,4 @@
-import { ctx, level, spriteSheet, tileSize } from "./main.js";
+import { ctx, level, tileSize } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 import { spriteSheets } from "./spritesheets.js";
 
