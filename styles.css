@@ -60,7 +60,7 @@ body {
 }
 
 .debug {
-    visibility: visible;
+    visibility: false;
 }
 
 .debug-buttons {
