@@ -290,34 +290,55 @@ body {
     height: 832px;
     background: black;
     z-index: 999;
-    font-size: 24px;
 }
 
 .how-to-play-content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     height: 100%;
     color: white;
     align-content: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    overflow-y: auto;
+    font-size: 24px;
 }
 
 .how-to-play-content h1 {
     color: white;
     text-decoration: underline;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .how-to-play-content h3 {
     color: white;
     padding-bottom: 10px;
     text-decoration: underline;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 18px;
+}
+
+.how-to-play-content li {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 16px;
+    list-style: square;
+}
+
+.inner-list {
+    padding-left: 20px;
+    list-style: square;
+}
+
+.how-to-play-text {
+    padding-left: 100px;
 }
 
 .how-to-play-content .how-to-play-button-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .how-to-play-content button {
@@ -331,8 +352,21 @@ body {
     background: grey;
 }
 
-.inner-list {
-    margin-left: 20px;
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: black; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: white; 
+    border: 2px solid black;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
 }
 
 /* Floor */
