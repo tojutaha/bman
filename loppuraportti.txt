@@ -1,0 +1,31 @@
+LOPPURAPORTTI
+
+Projektin tekijät:
+ - Tommi Partanen
+ - Tomi Halko
+
+Työnjako - eli kuka teki projektiin ja mitä:
+ - Yhteiset:
+    - HTML/CSS
+    - Karttojen teko/renderöinti
+    - Gamestate logiikka
+    - Erinäiset jaetut funktiot
+
+ - Tommi:
+    - Audio
+    - Valtaosa grafiikoista
+    - Pommien logiikka/renderöinti
+    - Powerup logiikka/renderöinti
+    - Lisää tänne omat :)
+
+ - Tomi:
+    - Pelaajan logiikka/renderöinti
+    - Vihollisten logiikka/renderointi
+    - Vihollisten pathfinder algorimit
+    - Collision testit pelaajille, vihollisille ja pommeille
+    - Osa grafiikoista
+
+ - Commit historystä näkee tarkemmin
+
+Projektiin käytetty tuntimäärä - on hyvä jos pystytte hiukan erittelemään, että kuinka paljon kukin tiimin jäsen on käyttänyt aikaa projektiin.
+ - Tomi: ~250h
