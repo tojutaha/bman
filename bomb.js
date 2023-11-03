@@ -1,5 +1,5 @@
 import { ctx, tileSize, game, globalPause, bigBomb } from "./main.js";
-import { getMusicalTimeout, msPerBeat, playAudio, playTrack, randomSfx, riserPlaying, sfxs, tracks } from "./audio.js";
+import { getMusicalTimeout, msPerBeat, playAudio, playRiser, playTrack, randomSfx, riserPlaying, sfxs, tracks } from "./audio.js";
 import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo, getLinearUntilObstacle } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
@@ -31,6 +31,9 @@ export class Bomb {
         
         this.ticking = setInterval(() => {
             if (globalPause) return;
+
+            this.checkFirstBomb();
+
             this.currentFrame++;
             if (this.hasExploded) {
                 clearInterval(this.ticking);
@@ -74,6 +77,17 @@ export class Bomb {
             }
         }, 150);
     }
+
+    checkFirstBomb() {
+        if (game.firstBombDropped) return;
+
+        game.firstBombDropped = true;
+        console.log("joo");
+        if (game.level > 1) {
+            bigBomb.playLightUp();
+            playRiser();
+        }
+    }
 }
 
 
@@ -84,7 +98,6 @@ function explode(bomb) {
             bigBomb.playShatter();
         }
     }
-    // game.checkGameState();
 
     const randomBomb = randomSfx(sfxs['BOMBS']);
     playAudio(randomBomb);

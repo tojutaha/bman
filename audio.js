@@ -202,12 +202,9 @@ export function getMusicalTimeout(offbeat = false) {
 export let riserPlaying = false;
 export function playRiser() {
     riserPlaying = true;
-    let delay = getMusicalTimeout();
-    setTimeout(() => {
-        let audio = playAudio(sfxs['RISER']);
-        audio.onended = function() {
-            riserPlaying = false;
-            playTrack(tracks['GHOSTS_HEART']);
-        };
-    }, delay);
+    let audio = playAudio(sfxs['RISER']);
+    audio.onended = function() {
+        riserPlaying = false;
+        playTrack(tracks['GHOSTS_HEART']);
+    };
 }
