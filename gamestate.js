@@ -157,6 +157,7 @@ export class Game {
         if (lastLevel) {
             return;
         }
+        playTrack(tracks['INT1']);
 
         fadeTransition.blackScreen();
         fadeTransition.fadeIn();
