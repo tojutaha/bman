@@ -1,5 +1,5 @@
 // TODO:    Bugi jossa kaksi pommia chainaa toisensa vaikka olivat kaukana toisistaan (en muista laitoinko aina samaan kohtaan)
-import { ctx, tileSize, game, globalPause } from "./main.js";
+import { ctx, tileSize, game, globalPause, bigBomb } from "./main.js";
 import { getMusicalTimeout, msPerBeat, playAudio, playTrack, randomSfx, riserPlaying, sfxs, tracks } from "./audio.js";
 import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo, getLinearUntilObstacle } from "./utils.js";
@@ -61,10 +61,11 @@ export class Bomb {
                         explode(this);
                     }
 
-                    if (game.firstBombExploded && game.level != 1) {
+                    if (!game.beatDropped && game.level != 1) {
                         setTimeout(() => {
                             playTrack(tracks['INT2']);
                         }, msPerBeat);
+                        game.beatDropped = true;
                     }
                 }, delay);
 
@@ -79,8 +80,11 @@ export class Bomb {
 function explode(bomb) {
     if (!game.firstBombExploded) {
         game.firstBombExploded = true;
+        if (game.level > 1) {
+            bigBomb.playShatter();
+        }
     }
-    game.checkGameState();
+    // game.checkGameState();
 
     const randomBomb = randomSfx(sfxs['BOMBS']);
     playAudio(randomBomb);

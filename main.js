@@ -1,7 +1,7 @@
 ////////////////////
 // Imports
 import { renderWalls, renderFloor } from "./level.js";
-import { EntranceAnimation, ExitAnimation, locBlinkingAnimation, LevelHeaderAnimation, GameOverAnimation, DeathReasonAnimation, renderEnemyDeaths, TutorialAnimations } from "./animations.js";
+import { EntranceAnimation, ExitAnimation, locBlinkingAnimation, LevelHeaderAnimation, GameOverAnimation, DeathReasonAnimation, renderEnemyDeaths, TutorialAnimations, BigBombAnimation } from "./animations.js";
 import { renderPowerups } from "./powerup.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies } from "./enemy.js";
@@ -9,6 +9,8 @@ import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game } from "./gamestate.js";
 import { updateCamera } from "./camera.js";
 import { showDoor, showPauseMenu } from "./page.js";
+
+const bigBombOverlay = true;
 
 ////////////////////
 // Globals
@@ -45,6 +47,7 @@ export const entrance = new EntranceAnimation();
 export const exit = new ExitAnimation();
 export const locBlinkers = new locBlinkingAnimation();
 export const tutorial = new TutorialAnimations();
+export const bigBomb = new BigBombAnimation();
 
 function Render(timeStamp)
 {
@@ -72,6 +75,9 @@ function Render(timeStamp)
         if (showDoor) {
             exit.render();
             renderPowerups();
+        }
+        if (bigBombOverlay) {
+            bigBomb.render();
         }
         renderEnemies(timeStamp);
         renderExplosions();

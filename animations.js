@@ -1,6 +1,7 @@
 import { playAudio, sfxs } from "./audio.js";
+import { enemies } from "./enemy.js";
 import { lastLevel } from "./gamestate.js";
-import { ctx, game, locBlinkers, tileSize } from "./main.js";
+import { canvas, ctx, game, locBlinkers, tileSize } from "./main.js";
 import { spriteSheets } from "./spritesheets.js";
 import { exitLocation, powerupLocations } from "./tile.js";
 
@@ -301,7 +302,8 @@ export class LevelHeaderAnimation {
     render() {
         if (this.visible) {
             ctx.fillStyle = `rgba(240, 240, 240, ${this.alpha})`;
-            ctx.strokeStyle = `rgba(30, 30, 30, ${this.alpha})`;
+            // ctx.strokeStyle = `rgba(30, 30, 30, ${this.alpha})`;
+            ctx.strokeStyle = `rgba(0, 0, 0, ${this.alpha})`;
             
             ctx.lineWidth = 20;
             ctx.font = "100px Minimal";
@@ -450,7 +452,7 @@ export class TutorialAnimations {
                     clearInterval(checker);
                 }
             }, 500);
-        }, 5000);
+        }, 6000);
     }
 
     fadeIn() {
@@ -481,6 +483,57 @@ export class TutorialAnimations {
             ctx.drawImage(this.keys, 
                 this.keysWidth * this.currentFrame, 0, 
                 this.keysWidth, this.keysHeight, canvas.width - this.keysWidth, 0, this.keysWidth, this.keysHeight);
+        }
+    }
+}
+
+export class BigBombAnimation {
+    constructor() {
+        this.visible = true;
+        this.currentFrame = 0;
+        this.frames = 45;
+        this.firstHalf = 37;    // The shattering animation begins on frame 27
+        this.spriteSheet = new Image();
+        this.spriteSheet.src = "./assets/big_bomb_overlay.png";
+        this.animationMs = 60;
+    }
+    
+    playLightUp() {
+        this.currentFrame = 0;
+        this.visible = true;
+
+        let lightUp = setInterval(() => {
+            if (this.currentFrame < this.firstHalf) {
+                this.currentFrame++;
+            } else {
+                clearInterval(lightUp);
+            }
+        }, this.animationMs);
+    }
+
+    playShatter() {
+        let shatter = setInterval(() => {
+            if (this.currentFrame < this.frames) {
+                this.currentFrame++;
+            } else {
+                this.visible = false;
+                this.currentFrame = 0;
+                clearInterval(shatter);
+            }
+
+            if (this.currentFrame === 40) {
+                enemies.forEach(enemy => {
+                    enemy.showSprite();
+                });
+            }
+        }, this.animationMs);
+    }
+
+    render() {
+        if (this.visible) {
+            ctx.drawImage(this.spriteSheet, 
+                canvas.width * this.currentFrame, 0, 
+                canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
         }
     }
 }

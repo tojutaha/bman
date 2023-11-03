@@ -117,6 +117,40 @@ class Enemy
         }
     }
 
+    showSprite() {
+        switch(this.enemyType) {
+            case enemyType.ZOMBIE: {
+                this.spriteSheet.src = spriteSheets.zombie;
+                break;
+            }
+            case enemyType.GHOST: {
+                this.spriteSheet.src = spriteSheets.ghost;
+                break;
+            }
+            case enemyType.SKELETON: {
+                this.spriteSheet.src = spriteSheets.skeleton;
+                break;
+            }
+        }
+    }
+
+    showOutline() {
+        switch(this.enemyType) {
+            case enemyType.ZOMBIE: {
+                this.spriteSheet.src = spriteSheets.zombie_outline;
+                break;
+            }
+            case enemyType.GHOST: {
+                this.spriteSheet.src = spriteSheets.ghost_outline;
+                break;
+            }
+            case enemyType.SKELETON: {
+                this.spriteSheet.src = spriteSheets.skeleton_outline;
+                break;
+            }
+        }
+    }
+
     collidedWithBomb() {
 
         // Reset collision here, since we only care about toggling it when it collides with bomb,

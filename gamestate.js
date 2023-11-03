@@ -1,8 +1,8 @@
 import { playTrack, loadAudioFiles, tracks } from "./audio.js";
 import { clearBombs } from "./bomb.js";
-import { clearEnemies, spawnEnemies } from "./enemy.js";
+import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
-import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial } from "./main.js";
+import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial, bigBomb } from "./main.js";
 import { showGameOverMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
@@ -27,17 +27,16 @@ export class Game {
         this.numOfEnemies = 0;
         this.firstBombDropped = false;
         this.firstBombExploded = false;
+        this.beatDropped = false;
     }
 
     newGame() {
-        tutorial.playAnimation();
         playTrack(tracks['BIRDS']);
         setGlobalPause(true);
         localStorage.clear();
         this.level = 1;
         this.score = 0;
         clearPlayers();
-        clearEnemies();
         this.newLevel();
         spawnPlayers();
         this.initLevel();
@@ -63,6 +62,13 @@ export class Game {
         setTimeout(() => {
             spawnEnemies(levelEnemies);
             this.numOfEnemies = levelEnemies.length;
+            
+            // Enemies show only outlines during the big bomb overlay
+            if (this.level > 1 && !this.firstBombExploded) {
+                enemies.forEach(enemy => {
+                    enemy.showOutline();
+                });
+            }
         }, 500);
         
         if (exitLocation.isOpen) {
@@ -71,18 +77,18 @@ export class Game {
     }
     
     newLevel() {
+        this.beatDropped = false;
+
+        if (this.level === 1) {
+            tutorial.playAnimation();
+            bigBomb.visible = false;
+        }
+        if (this.level > 1) {
+            bigBomb.visible = true;         
+        }
         if (this.level >= levels.length - 1) {
             lastLevel = true;
         } else lastLevel = false;
-        
-        if (this.level > 1) {
-            if (lastLevel) {
-                playTrack(tracks['BEAT']);
-            } else {
-                playTrack(tracks['INT1']);
-            }
-        };
-
 
         setGlobalPause(true);
         clearEnemies();

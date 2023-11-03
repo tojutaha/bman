@@ -24,7 +24,7 @@
             "width": 13,
             "height": 13,
             "type": "forest_day",
-            "powerup": "range",
+            "powerup": "bomb",
             "powerupCount": 1,
             "softwallPercent": 0.2
         }
@@ -39,7 +39,7 @@
             "width": 13,
             "height": 13,
             "type": "forest_night",
-            "powerup": "bomb",
+            "powerup": "range",
             "powerupCount": 1,
             "softwallPercent": 0.2
         }
@@ -70,7 +70,7 @@
             "height": 13,
             "type": "forest_night",
             "powerup": "bomb",
-            "powerupCount": 2,
+            "powerupCount": 1,
             "softwallPercent": 0.3
         }
     },
@@ -85,7 +85,7 @@
             "height": 13,
             "type": "forest_night",
             "powerup": "random",
-            "powerupCount": 4,
+            "powerupCount": 3,
             "softwallPercent": 0.3
         }
     },

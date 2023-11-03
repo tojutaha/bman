@@ -7,6 +7,10 @@ async function preLoadSpriteSheets() {
         ghost: "./assets/ghost_03.png",
         skeleton: "./assets/skeleton_02.png",
 
+        zombie_outline: "./assets/zombi_outline.png",
+        ghost_outline: "./assets/ghost_outline.png",
+        skeleton_outline: "./assets/skeleton_outline.png",
+
         zombie_death_back:  "./assets/zombi_death_back.png",
         zombie_death_front: "./assets/zombi_death_front.png",
         zombie_death_left:  "./assets/zombi_death_left.png",
