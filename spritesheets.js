@@ -48,7 +48,6 @@ export let spriteSheets = []
 export async function loadSpriteSheets() {
     try {
     spriteSheets = await preLoadSpriteSheets();
-    console.log(spriteSheets);
     } catch(error) {
         console.error(`Error loading textures: ${error}`);
     }

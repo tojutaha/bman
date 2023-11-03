@@ -98,9 +98,9 @@ playButton.addEventListener('click', async function() {
     playButton.style.visibility = 'hidden';
     let loadTimer = animateLoadingText();
     await fetchEverything();
-    clearInterval(loadTimer);
     await loadTextures();
     await loadSpriteSheets();
+    clearInterval(loadTimer);
     loadingText.style.visibility = 'hidden';
     playContainer.style.visibility = 'hidden';
     showMainMenu();
