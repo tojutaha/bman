@@ -28,6 +28,7 @@ async function preLoadSpriteSheets() {
         stone_brick_alt: "./assets/stone_brick_03_alt.png",
 
         tutorial_keys: "./assets/tutorial_keys_animation.png",
+        big_bomb_overlay: "./assets/big_bomb_overlay.png",
     };
 
     let promises = [];

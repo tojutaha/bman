@@ -495,6 +495,7 @@ export class BigBombAnimation {
         this.firstHalf = 37;    // The shattering animation begins on frame 27
         this.spriteSheet = new Image();
         this.spriteSheet.src = "./assets/big_bomb_overlay.png";
+        // this.spriteSheet.src = spriteSheets.big_bomb_overlay;
         this.animationMs = 60;
     }
     
