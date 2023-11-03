@@ -82,7 +82,6 @@ export class Bomb {
         if (game.firstBombDropped) return;
 
         game.firstBombDropped = true;
-        console.log("joo");
         if (game.level > 1) {
             bigBomb.playLightUp();
             playRiser();
