@@ -130,6 +130,7 @@ const restartButton = document.getElementById("restartButton");
 const exitButton = document.getElementById("exitButton");
 const ggExitButton = document.getElementById("gg-exitButton");
 const gameOverScore = document.getElementById("game-over-score");
+const ggScore = document.getElementById("gg-score");
 
 export function showGameOverMenu()
 {
@@ -157,7 +158,7 @@ ggExitButton.addEventListener('click', function() {
 });
 export function showGGMenu()
 {
-    gameOverScore.innerText = `Score ${game.score}`;
+    ggScore.innerText = `Score ${game.score}`;
     ggMenu.style.visibility = 'visible';
 }
 
