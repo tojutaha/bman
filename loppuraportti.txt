@@ -10,13 +10,13 @@ Työnjako - eli kuka teki projektiin ja mitä:
     - Karttojen teko/renderöinti
     - Gamestate logiikka
     - Erinäiset jaetut funktiot
+    - Animointi
 
  - Tommi:
     - Audio
     - Valtaosa grafiikoista
     - Pommien logiikka/renderöinti
     - Powerup logiikka/renderöinti
-    - Lisää tänne omat :)
 
  - Tomi:
     - Pelaajan logiikka/renderöinti
@@ -29,3 +29,4 @@ Työnjako - eli kuka teki projektiin ja mitä:
 
 Projektiin käytetty tuntimäärä - on hyvä jos pystytte hiukan erittelemään, että kuinka paljon kukin tiimin jäsen on käyttänyt aikaa projektiin.
  - Tomi: ~250h
+ - Tommi: ~230h
