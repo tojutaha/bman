@@ -282,6 +282,53 @@ body {
     background: grey;
 }
 
+/* GG Menu */
+.gg-container {
+    visibility: hidden;
+    position: absolute;
+    width: 832px;
+    height: 832px;
+    background: black;
+    z-index: 999;
+}
+
+.gg-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: white;
+    align-content: center;
+}
+
+.gg-content h1 {
+    color: white;
+}
+
+.gg-content #game-over-score {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.gg-content .game-over-button-container {
+    display: flex;
+    padding-top: 100px;
+    width: 300px;
+    justify-content: space-around;
+}
+
+.gg-content button {
+    width: 100px;
+    height: 50px;
+    background: black;
+    color: white;
+}
+
+.gg-content button:hover {
+    background: grey;
+}
+
 /* How to play */
 .how-to-play-container {
     visibility: hidden;

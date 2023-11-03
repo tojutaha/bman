@@ -125,8 +125,10 @@ function animateLoadingText() {
 ////////////////////
 // Game over menu / buttons
 const gameOverMenu = document.querySelector(".game-over-container");
+const ggMenu = document.querySelector(".gg-container");
 const restartButton = document.getElementById("restartButton");
 const exitButton = document.getElementById("exitButton");
+const ggExitButton = document.getElementById("gg-exitButton");
 const gameOverScore = document.getElementById("game-over-score");
 
 export function showGameOverMenu()
@@ -145,6 +147,18 @@ exitButton.addEventListener('click', function() {
     gameOverMenu.style.visibility = 'hidden';
     showMainMenu();
 });
+
+////////////////////
+// GG menu / buttons
+ggExitButton.addEventListener('click', function() {
+    ggMenu.style.visibility = 'hidden';
+    showMainMenu();
+});
+export function showGGMenu()
+{
+    gameOverScore.innerText = `Score ${game.score}`;
+    ggMenu.style.visibility = 'visible';
+}
 
 ////////////////////
 // Pause menu / buttons

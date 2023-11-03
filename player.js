@@ -1,10 +1,11 @@
-import { ctx, level, tileSize, deltaTime, game, deathReasonText, bigBomb } from "./main.js";
+import { ctx, level, tileSize, deltaTime, game, deathReasonText, bigBomb, setGlobalPause } from "./main.js";
 import { lastLevel, levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { getMusicalTimeout, playAudio, playFootsteps, playRiser, playTrack, randomSfx, sfxs, stopFootsteps } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup } from "./powerup.js";
 import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles } from "./utils.js";
 import { spriteSheets } from "./spritesheets.js";
+import { showGGMenu } from "./page.js";
 
 
 const godMode = false;
@@ -309,7 +310,14 @@ class Player
         if (playerTile.isExit) {
             if (playerTile.isOpen) {
                 collides = true;
-                game.nextLevel();
+
+                if(lastLevel) {
+                    stopFootsteps();
+                    setGlobalPause(true);
+                    showGGMenu();
+                } else {
+                    game.nextLevel();
+                }
             }
         }
 

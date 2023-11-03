@@ -193,11 +193,6 @@ export class Game {
     }
 
     checkGameState() {
-        // TODO: Delete the door and maybe add last level music.
-        if (lastLevel) {
-            return;
-        }
-
         // Open the door
         if (this.numOfEnemies === 0 && exitLocation.isOpen === false) {
             this.toggleDoor();
