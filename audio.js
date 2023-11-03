@@ -24,10 +24,10 @@ const TrackURLs = {
     INT1: "assets/music/song_intensity01.mp3",
     INT2: "assets/music/song_intensity02.mp3",
     INT3: "assets/music/song_intensity03.mp3",
-    BIRDS: "assets/music/dawn-chorus-birdsong.mp3",
 }
 
 const SfxURLs = {
+    BIRDS: "assets/music/dawn-chorus-birdsong.mp3",
     ZOMBIES: ["assets/sfx/zombie01.mp3", "assets/sfx/zombie02.mp3", "assets/sfx/zombie03.mp3", "assets/sfx/zombie04.mp3", "assets/sfx/zombie05.mp3"],
     GHOSTS: ["assets/sfx/ghost01.mp3", "assets/sfx/ghost02.mp3", "assets/sfx/ghost03.mp3", "assets/sfx/ghost04.mp3", "assets/sfx/ghost05.mp3"],
     LAUGHS: ["assets/sfx/laugh01.mp3", "assets/sfx/laugh02.mp3", "assets/sfx/laugh03.mp3", "assets/sfx/laugh04.mp3", "assets/sfx/laugh05.mp3"],
@@ -160,7 +160,36 @@ export function playFootsteps(isWalking) {
 export function stopFootsteps() {
     if (footsteps !== null) {
         footsteps.stop();
-        footsteps = null; // Reset footsteps to null
+        footsteps = null;
+    }
+}
+
+// Play birdsong
+let birdsong = null;
+export function playBirdsong() {
+    const audioBuffer = sfxs['BIRDS'];
+    const audioSource = new AudioBufferSourceNode(audioCtx, {
+        buffer: audioBuffer,
+    });
+    audioSource.loop = true;
+    audioSource.connect(audioCtx.destination);
+    
+    if (birdsong !== null) {
+        birdsong.stop();
+    }
+
+    let offset = getOffset();
+    
+    audioSource.start(0, offset);
+
+    birdsong = audioSource;
+    startTime = audioCtx.currentTime - offset;
+}
+
+export function stopBirdsong() {
+    if (birdsong !== null) {
+        birdsong.stop();
+        birdsong = null;
     }
 }
 

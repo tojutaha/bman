@@ -10,7 +10,6 @@ import { lastLevel } from "./gamestate.js";
 export let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
-let bombAudioPlaying = false;
 
 export class Bomb {
     constructor(x, y, range, playerId) {
@@ -107,13 +106,7 @@ function explode(bomb) {
     }
 
     const randomBomb = randomSfx(sfxs['BOMBS']);
-    if (!bombAudioPlaying) {
-        let audio = playAudio(randomBomb);
-        bombAudioPlaying = true;
-        audio.onended = function() {
-            bombAudioPlaying = false;
-        }
-    }
+    playAudio(randomBomb);
 
     let tiles = getLinearUntilObstacle(bomb, bomb.range, true, true);
     let centerTile = tiles[0][0];

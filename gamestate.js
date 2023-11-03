@@ -1,4 +1,4 @@
-import { playTrack, loadAudioFiles, tracks, changeTrack } from "./audio.js";
+import { playTrack, loadAudioFiles, tracks, changeTrack, playBirdsong, stopBirdsong } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
@@ -100,7 +100,7 @@ export class Game {
         // Set the music
         this.beatDropped = false;
         if (this.level === 1) {
-            playTrack(tracks['BIRDS']);
+            playBirdsong();
         }
         else if (lastLevel) {
             playTrack(tracks['BEAT']);
@@ -170,6 +170,10 @@ export class Game {
         fadeTransition.fadeIn();
         
         this.level++;
+        if (this.level === 2) {
+            stopBirdsong();
+        }
+
         this.newLevel();
         this.initLevel();
         updateLevelDisplay(this.level);
