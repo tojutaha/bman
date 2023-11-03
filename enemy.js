@@ -225,7 +225,6 @@ class Enemy
         this.timer = null;
 
         if (!this.currentPath) {
-            // console.log("Trying again..");
             if (this.timer) {
                 clearInterval(this.timer);
                 this.timer = null;
@@ -265,9 +264,6 @@ class Enemy
             } else return;
 
             index++;
-
-            //console.log("real location :", this.x, this.y);
-            //console.log("render location :", this.renderX, this.renderY);
 
             // If the type is skeleton, and the distance to the player is 
             // less than the threshold, then start chasing the player
@@ -378,7 +374,6 @@ class Enemy
         }
 
         let result = findEnemyById(this.id);
-        // console.log("ID:", result);
         enemies.splice(result.index, 1);
 
         this.movementMode = movementMode.IDLE;

@@ -185,12 +185,10 @@ export class Game {
     
     increaseEnemies() {
         this.numOfEnemies++;
-        // console.info("numOfEnemies:", this.numOfEnemies);
     }
     
     decreaseEnemies() {
         this.numOfEnemies--;
-        // console.info("numOfEnemies:", this.numOfEnemies);
     }
     
     toggleDoor() {
@@ -258,11 +256,6 @@ function loadPlayerAttributes(loadedPlayers) {
         players[i].powerup.maxRange = loadedPlayers[i].powerup.maxRange;
         players[i].healthPoints = loadedPlayers[i].healthPoints;
         players[i].updateHealthPoints();
-        
-        console.info("LOADED PLAYER", i+1, "\nSpeed:", players[i].speed, 
-            "Bombs:", players[i].powerup.maxBombs, 
-            "Range:", players[i].powerup.maxRange,
-            "Healthpoints:", players[i].healthPoints);
     }
 }
 
@@ -274,7 +267,6 @@ export async function fetchEverything() {
     
     for (const key in data) {
         if (data.hasOwnProperty(key)) {
-            // console.log(`Level ${key}:`, data[key]);
             const enemyObject = data[key].enemies;
             const enemyArray = Object.entries(enemyObject).flatMap(([key, value]) => Array(value).fill(key));
             const levelObject = data[key].tiles;
@@ -283,6 +275,4 @@ export async function fetchEverything() {
             levels.push(levelObject);
         }
     }
-    
-    console.log("Everything fetched and ready.");
 }

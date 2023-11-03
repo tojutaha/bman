@@ -510,11 +510,8 @@ class Player
                 // Play text animation
                 if(enemyWhoKilled) {
                     deathReasonText.playAnimation(`Killed by ${enemyWhoKilled.enemyType}`);
-                    //console.log(`You were killed by ${enemyWhoKilled.enemyType}`);
-                    //console.log(enemyWhoKilled);
                 } else if(wasBomb) {
                     deathReasonText.playAnimation("Killed by bomb");
-                    //console.log("You were killed by bomb");
                 }
 
                 game.restartLevel();

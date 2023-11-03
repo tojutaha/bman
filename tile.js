@@ -152,7 +152,6 @@ function populateSoftWalls(result, softWallTotal) {
         if (tile.type === "SoftWall") {
             // Create the exit
             if (!exitCreated) {
-                // console.info("The door is in", tile.x, tile.y);
                 tile.isExit = true;
                 tile.isOpen = false;
                 exitCreated = true;
@@ -167,12 +166,10 @@ function populateSoftWalls(result, softWallTotal) {
                 }
                 tile.hasPowerup = true;
                 powerupLocations.push(tile);
-                //console.log("tile", tile);
                 powerupsLeft--;
             }
         }
     }
-    //console.log("loc", powerupLocations);
 }
 
 
