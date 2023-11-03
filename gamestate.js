@@ -1,4 +1,4 @@
-import { playTrack, loadAudioFiles, tracks } from "./audio.js";
+import { playTrack, loadAudioFiles, tracks, changeTrack } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
@@ -29,11 +29,11 @@ export class Game {
         this.firstBombDropped = false;
         this.firstBombExploded = false;
         this.beatDropped = false;
+        this.trackPlaying;
     }
 
     newGame() {
         fadeTransition.fadeIn();
-        playTrack(tracks['BIRDS']);
         setGlobalPause(true);
         localStorage.clear();
         this.level = 1;
@@ -55,7 +55,6 @@ export class Game {
         this.loadGame();
         this.newLevel();
         this.initLevel();
-        playTrack(tracks['INT1']);
     }
 
     initLevel() {
@@ -84,8 +83,6 @@ export class Game {
     }
     
     newLevel() {
-        this.beatDropped = false;
-
         if (this.level === 1) {
             tutorial.playAnimation();
             bigBomb.visible = false;
@@ -99,6 +96,17 @@ export class Game {
         if (this.level >= levels.length - 1) {
             lastLevel = true;
         } else lastLevel = false;
+        
+        // Set the music
+        this.beatDropped = false;
+        if (this.level === 1) {
+            playTrack(tracks['BIRDS']);
+        }
+        else if (lastLevel) {
+            playTrack(tracks['BEAT']);
+        } else {
+            playTrack(tracks['INT1']);
+        }
 
         setGlobalPause(true);
         clearEnemies();
@@ -157,7 +165,6 @@ export class Game {
         if (lastLevel) {
             return;
         }
-        playTrack(tracks['INT1']);
 
         fadeTransition.blackScreen();
         fadeTransition.fadeIn();

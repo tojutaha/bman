@@ -3,7 +3,7 @@ import { Direction, players } from "./player.js";
 import { dfs, lerp, getRandomWalkablePointInRadius, getTileFromWorldLocation, aabbCollision, getDistanceToEuclidean } from "./utils.js";
 import { requestPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
-import { playAudio, randomSfx, sfxs } from "./audio.js";
+import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
 import { EnemyDeathAnimation, deathRow } from "./animations.js";
 import { spriteSheets } from "./spritesheets.js";
 
@@ -77,6 +77,8 @@ class Enemy
         this.currentFrame = 0;
         this.animationSpeed = 150;
         this.lastTime = 0;
+
+        this.audioPlaying = false;
 
         // Should only be true for enemies that spawn from door!
         this.spawnedFromDoor = false;
@@ -160,7 +162,7 @@ class Enemy
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
-                this.playSfx();
+                this.playSfx(true);
                 this.patrol();
                 break;
             }
@@ -480,9 +482,10 @@ class Enemy
         });
     }
 
-    playSfx() {
-        let randomSound = undefined;
+    playSfx(withTimeout) {
+        if (this.audioPlaying) return;
 
+        let randomSound = undefined;
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
                 randomSound = randomSfx(sfxs['ZOMBIES']);
@@ -494,11 +497,24 @@ class Enemy
             }
             case enemyType.SKELETON: {
                 return;
-                break;
             }
         }
+        
+        this.audioPlaying = true;
+        let audio;
+        if (withTimeout) {
+            let delay = getMusicalTimeout();
+            setTimeout(() => {
+                audio = playAudio(randomSound);
+            }, delay);
+        } else {
+            audio = playAudio(randomSound);
+        }
 
-        playAudio(randomSound);
+        audio.onended = function() {
+            console.log(this.enemyType, "stopped audio");
+            this.audioPlaying = false;
+        }
     }
 };
 

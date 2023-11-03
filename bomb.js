@@ -5,10 +5,12 @@ import { getDistanceTo, getLinearUntilObstacle } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 import { exitLocation } from "./tile.js";
 import { spriteSheets } from "./spritesheets.js";
+import { lastLevel } from "./gamestate.js";
 
 export let tilesWithBombs = [];
 let crumblingWalls = [];
 let fieryFloors = [];
+let bombAudioPlaying = false;
 
 export class Bomb {
     constructor(x, y, range, playerId) {
@@ -49,9 +51,15 @@ export class Bomb {
                 } else {
                     delay = getMusicalTimeout();
                     // The extra delay is for more dramatic drop.
-                    // TODO: selvitä milloin *2 ja milloin *4, varmaan jos delay yli/ali jonkun?
-                    // koita saada aina samaksi.
-                    delay += msPerBeat * 2;
+                    if (delay < msPerBeat) {
+                        delay += msPerBeat * 4;
+                    } else {
+                        delay += msPerBeat * 2;
+                    }
+                }
+                
+                if (game.level != 1 && !game.beatDropped && !lastLevel) {
+                    playTrack(tracks['GHOSTS_HEART']);
                 }
 
                 setTimeout(() => {
@@ -99,7 +107,13 @@ function explode(bomb) {
     }
 
     const randomBomb = randomSfx(sfxs['BOMBS']);
-    playAudio(randomBomb);
+    if (!bombAudioPlaying) {
+        let audio = playAudio(randomBomb);
+        bombAudioPlaying = true;
+        audio.onended = function() {
+            bombAudioPlaying = false;
+        }
+    }
 
     let tiles = getLinearUntilObstacle(bomb, bomb.range, true, true);
     let centerTile = tiles[0][0];

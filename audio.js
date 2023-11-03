@@ -101,7 +101,6 @@ export function getOffset() {
 
 let startTime = 0;
 let currentTrack = null;
-
 export function playTrack(audioBuffer) {
     const trackSource = new AudioBufferSourceNode(audioCtx, {
         buffer: audioBuffer,
@@ -122,6 +121,16 @@ export function playTrack(audioBuffer) {
     startTime = audioCtx.currentTime - offset;
 
     return trackSource;
+}
+
+// TODO: ei ehkä
+let trackPlaying;
+export function changeTrack(newTrack) {
+    trackPlaying.ontimeupdate = function() {
+        if (this.currentTime >= this.duration - 0.2) { // 0.2 is a buffer to account for rounding errors
+            playTrack(tracks[newTrack]);
+        }
+    };
 }
 
 // Syncs the footsteps with the track
@@ -205,6 +214,5 @@ export function playRiser() {
     let audio = playAudio(sfxs['RISER']);
     audio.onended = function() {
         riserPlaying = false;
-        playTrack(tracks['GHOSTS_HEART']);
     };
 }

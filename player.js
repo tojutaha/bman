@@ -1,6 +1,6 @@
 import { ctx, level, tileSize, deltaTime, game, deathReasonText, bigBomb, setGlobalPause } from "./main.js";
 import { lastLevel, levelHeight, levelType, levelWidth } from "./gamestate.js";
-import { getMusicalTimeout, playAudio, playFootsteps, randomSfx, sfxs, stopFootsteps } from "./audio.js";
+import { getMusicalTimeout, msPerBeat, playAudio, playFootsteps, randomSfx, sfxs, stopFootsteps } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup } from "./powerup.js";
 import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles } from "./utils.js";
@@ -487,11 +487,7 @@ class Player
                 let delay = getMusicalTimeout();
                 setTimeout(() => {
                     let randomLaugh;
-                    if (game.level === 1) {
-                        randomLaugh = randomSfx(sfxs['LAUGHS']);
-                    } else {
-                        randomLaugh = randomSfx(sfxs['SYNCED_LAUGHS']);
-                    }
+                    randomLaugh = randomSfx(sfxs['LAUGHS']);
                     playAudio(randomLaugh);
                 }, delay);
             }
