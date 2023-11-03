@@ -28,7 +28,7 @@ export function setGlobalPause(value) {
 export const tileSize = 64;
 export const cagePlayer = true;
 export const cageMultiplayer = false;
-const bigBombOverlay = true;
+export const bigBombOverlay = true;
 const fadeTransitions = true;
 
 ////////////////////

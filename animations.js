@@ -390,34 +390,14 @@ export class FadeTransition {
         this.visible = false;
         this.frames = 0;
         this.alpha = 1.0;
-        this.fadeMs = 15;
+        this.fadeMs = 3;
+        this.fadeAmount = 0.02;
     }
     
-    fadeBoth() {
-        // Out
-        this.alpha = 0.0;
-        this.visible = true;
-        let outTimer = setInterval(() => {
-            this.alpha += 0.05;
-            if (this.alpha >= 1.0) {
-                clearInterval(outTimer);
-
-                // In
-                let inTimer = setInterval(() => {
-                    this.alpha -= 0.05;
-                    if (this.alpha <= 0.0) {
-                        this.visible = false;
-                        clearInterval(inTimer);
-                    }
-                }, this.fadeMs);
-            }
-        }, this.fadeMs);
-    }
-
     fadeIn() {
         this.visible = true;
         let fade = setInterval(() => {
-            this.alpha -= 0.05;
+            this.alpha -= this.fadeAmount;
             if (this.alpha <= 0.0) {
                 this.visible = false;
                 clearInterval(fade);
@@ -429,7 +409,7 @@ export class FadeTransition {
         this.alpha = 0.0;
         this.visible = true;
         let fade = setInterval(() => {
-            this.alpha += 0.05;
+            this.alpha += this.fadeAmount;
             if (this.alpha >= 1.0) {
                 clearInterval(fade);
             }

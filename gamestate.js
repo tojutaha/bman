@@ -3,7 +3,7 @@ import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
-import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial, bigBomb, fadeTransition } from "./main.js";
+import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial, bigBomb, fadeTransition, bigBombOverlay } from "./main.js";
 import { showGameOverMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
@@ -68,7 +68,7 @@ export class Game {
             this.numOfEnemies = levelEnemies.length;
             
             // Enemies show only outlines during the big bomb overlay
-            if (this.level > 1 && !this.firstBombExploded) {
+            if (bigBombOverlay && this.level > 1 && !this.firstBombExploded) {
                 enemies.forEach(enemy => {
                     enemy.showOutline();
                 });
