@@ -84,6 +84,9 @@ export class Game {
             bigBomb.visible = false;
         }
         if (this.level > 1) {
+            if (tutorial.visible) {
+                tutorial.visible = false;
+            }
             bigBomb.visible = true;         
         }
         if (this.level >= levels.length - 1) {
