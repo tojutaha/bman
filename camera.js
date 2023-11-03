@@ -4,6 +4,9 @@ import { players } from "./player.js";
 import { getTileFromWorldLocation, lerp } from "./utils.js";
 
 export let cameraX = 0;
+export function setCameraX(value) {
+    cameraX = value;
+}
 let cameraLt = 0;
 let cameraRt = 0;
 let cameraPt = 0;
