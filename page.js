@@ -152,6 +152,7 @@ exitButton.addEventListener('click', function() {
 // GG menu / buttons
 ggExitButton.addEventListener('click', function() {
     ggMenu.style.visibility = 'hidden';
+    localStorage.clear();
     showMainMenu();
 });
 export function showGGMenu()
