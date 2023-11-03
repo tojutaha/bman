@@ -10,7 +10,6 @@ import { Game } from "./gamestate.js";
 import { updateCamera } from "./camera.js";
 import { showDoor, showPauseMenu } from "./page.js";
 
-const bigBombOverlay = true;
 
 ////////////////////
 // Globals
@@ -29,6 +28,8 @@ export function setGlobalPause(value) {
 export const tileSize = 64;
 export const cagePlayer = true;
 export const cageMultiplayer = false;
+const bigBombOverlay = true;
+const fadeTransitions = true;
 
 ////////////////////
 // Assets
@@ -81,7 +82,9 @@ function Render(timeStamp)
             bigBomb.render();
         }
         renderEnemies(timeStamp);
-        fadeTransition.render();
+        if (fadeTransitions) {
+            fadeTransition.render();
+        }
         renderExplosions();
         renderEnemyDeaths();
         levelHeader.render();
