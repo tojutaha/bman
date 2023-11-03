@@ -21,7 +21,7 @@ Työnjako - eli kuka teki projektiin ja mitä:
  - Tomi:
     - Pelaajan logiikka/renderöinti
     - Vihollisten logiikka/renderointi
-    - Vihollisten pathfinder algorimit
+    - Vihollisten pathfinder algoritmit
     - Collision testit pelaajille, vihollisille ja pommeille
     - Osa grafiikoista
 
