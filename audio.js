@@ -15,10 +15,11 @@ let beatsInSong = undefined;
 export let tracks = {};
 export let sfxs = {};
 const TrackURLs = {
-    BEAT: "assets/music/song_heartbeat.mp3",
+    HEART: "assets/music/song_heartbeat.mp3",
+    HEART_DRONES: "assets/music/song_beat_drones.mp3",
     KICK: "assets/music/song_kick.mp3",
-    KICK_DRONES: "assets/music/song_kick_drones.mp3",
     DOUBLEKICKS: "assets/music/song_doublekicks.mp3",
+    KICK_DRONES: "assets/music/song_kick_drones.mp3",
     GHOSTS: "assets/music/song_ghosts.mp3",
     GHOSTS_HEART: "assets/music/song_ghosts_heart.mp3",
     INT1: "assets/music/song_intensity01.mp3",
@@ -108,13 +109,14 @@ export function playTrack(audioBuffer) {
     trackSource.loop = true;
     trackSource.connect(audioCtx.destination);
 
+    let offset = getOffset();
+
     if (currentTrack !== null) {
         currentTrack.stop();
     }
 
-    let offset = getOffset();
-
-    trackSource.start(0, offset);
+    // Start the new track from the same position as the old track
+    trackSource.start(0, offset % audioBuffer.duration);
 
     currentTrack = trackSource;
     // Update start time considering the offset
@@ -123,15 +125,7 @@ export function playTrack(audioBuffer) {
     return trackSource;
 }
 
-// TODO: ei ehkä
-let trackPlaying;
-export function changeTrack(newTrack) {
-    trackPlaying.ontimeupdate = function() {
-        if (this.currentTime >= this.duration - 0.2) { // 0.2 is a buffer to account for rounding errors
-            playTrack(tracks[newTrack]);
-        }
-    };
-}
+
 
 // Syncs the footsteps with the track
 let footsteps = null;

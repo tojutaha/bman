@@ -103,7 +103,7 @@ export class Game {
             playBirdsong();
         }
         else if (lastLevel) {
-            playTrack(tracks['BEAT']);
+            playTrack(tracks['HEART']);
         } else {
             playTrack(tracks['INT1']);
         }
@@ -216,12 +216,13 @@ export class Game {
         // Open the door
         if (this.numOfEnemies === 0 && exitLocation.isOpen === false) {
             this.toggleDoor();
-
-            if (this.level === 1) {
-                playTrack(tracks['KICK_DRONES']);
+        
+            if (this.level != 1) {
+                playTrack(tracks['INT1']);             
             } else {
-                playTrack(tracks['INT1']);                
+                playTrack(tracks['KICK_DRONES']);
             }
+
         }
         else if (this.numOfEnemies <= 3 && this.level > 2) {
             playTrack(tracks['INT3']);
@@ -230,7 +231,7 @@ export class Game {
 
     over() {
         gameOverText.playAnimation().then(() => {
-            playTrack(tracks['BEAT']);
+            playTrack(tracks['HEART']);
             localStorage.clear();
             showGameOverMenu();
             this.level = 1;

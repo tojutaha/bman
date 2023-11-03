@@ -512,7 +512,6 @@ class Enemy
         }
 
         audio.onended = function() {
-            console.log(this.enemyType, "stopped audio");
             this.audioPlaying = false;
         }
     }
