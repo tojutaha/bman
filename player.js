@@ -1,6 +1,6 @@
 import { ctx, level, tileSize, deltaTime, game, deathReasonText, bigBomb, setGlobalPause } from "./main.js";
 import { lastLevel, levelHeight, levelType, levelWidth } from "./gamestate.js";
-import { getMusicalTimeout, playAudio, playFootsteps, playRiser, playTrack, randomSfx, sfxs, stopFootsteps } from "./audio.js";
+import { getMusicalTimeout, playAudio, playFootsteps, playRiser, randomSfx, sfxs, stopFootsteps } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup } from "./powerup.js";
 import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles } from "./utils.js";
@@ -392,7 +392,7 @@ class Player
 
         if (game.firstBombDropped === false) {
             game.firstBombDropped = true;
-            if (game.level > 1 && !lastLevel) {
+            if (game.level > 1) {
                 bigBomb.playLightUp();
                 playRiser();
             }

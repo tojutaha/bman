@@ -96,7 +96,7 @@
             "Skeleton": 10
         },
         "tiles": {
-            "width": 25,
+            "width": 30,
             "height": 13,
             "type": "hell",
             "powerup": "random",
