@@ -16,6 +16,7 @@ export let tracks = {};
 export let sfxs = {};
 const TrackURLs = {
     HEART: "assets/music/song_heartbeat.mp3",
+    SLOWHEART: "assets/music/song_heartbeat_slow.mp3",
     HEART_DRONES: "assets/music/song_beat_drones.mp3",
     KICK: "assets/music/song_kick.mp3",
     DOUBLEKICKS: "assets/music/song_doublekicks.mp3",
@@ -94,14 +95,15 @@ export async function loadAudioFiles() {
 }
 
 
+let startTime = 0;
+let currentTrack = null;
+
 export function getOffset() {
-    let elapsedTime = audioCtx.currentTime - startTime;
+    let elapsedTime = audioCtx.currentTime;
     let offset = elapsedTime % songDuration;
     return offset;
 }
 
-let startTime = 0;
-let currentTrack = null;
 export function playTrack(audioBuffer) {
     const trackSource = new AudioBufferSourceNode(audioCtx, {
         buffer: audioBuffer,
@@ -112,6 +114,7 @@ export function playTrack(audioBuffer) {
     let offset = getOffset();
 
     if (currentTrack !== null) {
+        currentTrack.disconnect();
         currentTrack.stop();
     }
 
@@ -119,10 +122,19 @@ export function playTrack(audioBuffer) {
     trackSource.start(0, offset % audioBuffer.duration);
 
     currentTrack = trackSource;
-    // Update start time considering the offset
-    startTime = audioCtx.currentTime - offset;
+    // Update start time
+    startTime = audioCtx.currentTime;
 
     return trackSource;
+}
+
+
+export function stopCurrentTrack() {
+    if (currentTrack !== null) {
+        currentTrack.disconnect();
+        currentTrack.stop();
+        currentTrack = null;
+    }
 }
 
 

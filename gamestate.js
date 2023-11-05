@@ -218,7 +218,7 @@ export class Game {
             this.toggleDoor();
         
             if (this.level != 1) {
-                playTrack(tracks['INT1']);             
+                playTrack(tracks['INT1']);            
             } else {
                 playTrack(tracks['KICK_DRONES']);
             }

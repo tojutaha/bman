@@ -229,8 +229,8 @@ export class DeathReasonAnimation {
                     }, 2100);
                     clearInterval(this.frameTimer);
                 }
-            }, 100);
-        }, 1000);
+            }, 50);
+        }, 300);
     }
 
     fadeOut() {
@@ -248,8 +248,8 @@ export class DeathReasonAnimation {
             ctx.fillStyle = `rgba(240, 240, 240, ${this.alpha})`;
             ctx.strokeStyle = `rgba(30, 30, 30, ${this.alpha})`;
             
-            ctx.lineWidth = 20;
-            ctx.font = "80px Minimal";
+            ctx.lineWidth = 10;
+            ctx.font = "50px Minimal";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 

@@ -71,9 +71,13 @@ export class Bomb {
                         explode(this);
                     }
 
-                    if (!game.beatDropped && game.level != 1) {
+                    if (!game.beatDropped) {
                         setTimeout(() => {
-                            playTrack(tracks['INT2']);
+                            if (game.level === 1) {
+                                playTrack(tracks['SLOWHEART']);
+                            } else {
+                                playTrack(tracks['INT2']);
+                            }
                         }, msPerBeat);
                         game.beatDropped = true;
                     }

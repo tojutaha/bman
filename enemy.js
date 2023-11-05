@@ -78,8 +78,6 @@ class Enemy
         this.animationSpeed = 150;
         this.lastTime = 0;
 
-        this.audioPlaying = false;
-
         // Should only be true for enemies that spawn from door!
         this.spawnedFromDoor = false;
     }
@@ -483,8 +481,6 @@ class Enemy
     }
 
     playSfx(withTimeout) {
-        if (this.audioPlaying) return;
-
         let randomSound = undefined;
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
@@ -500,19 +496,13 @@ class Enemy
             }
         }
         
-        this.audioPlaying = true;
-        let audio;
         if (withTimeout) {
             let delay = getMusicalTimeout();
             setTimeout(() => {
-                audio = playAudio(randomSound);
+                playAudio(randomSound);
             }, delay);
         } else {
-            audio = playAudio(randomSound);
-        }
-
-        audio.onended = function() {
-            this.audioPlaying = false;
+            playAudio(randomSound);
         }
     }
 };
