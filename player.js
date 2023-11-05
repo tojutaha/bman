@@ -1,6 +1,6 @@
 import { ctx, level, tileSize, deltaTime, game, deathReasonText, bigBomb, setGlobalPause } from "./main.js";
 import { lastLevel, levelHeight, levelType, levelWidth } from "./gamestate.js";
-import { getMusicalTimeout, msPerBeat, playAudio, playFootsteps, randomSfx, sfxs, stopFootsteps } from "./audio.js";
+import { getMusicalTimeout, msPerBeat, playAudio, playFootsteps, playTrack, randomSfx, sfxs, stopFootsteps, tracks } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup } from "./powerup.js";
 import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles } from "./utils.js";
@@ -313,6 +313,8 @@ class Player
 
                 if(lastLevel) {
                     stopFootsteps();
+                    playTrack(tracks['SLOWHEART']);
+                    playAudio(sfxs['VICTORY']);
                     setGlobalPause(true);
                     showGGMenu();
                 } else {

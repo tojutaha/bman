@@ -18,11 +18,8 @@ const TrackURLs = {
     HEART: "assets/music/song_heartbeat.mp3",
     SLOWHEART: "assets/music/song_heartbeat_slow.mp3",
     HEART_DRONES: "assets/music/song_beat_drones.mp3",
-    KICK: "assets/music/song_kick.mp3",
-    DOUBLEKICKS: "assets/music/song_doublekicks.mp3",
+    HEART_DRONES_BELL: "assets/music/song_beat_drones_cowbell.mp3",
     KICK_DRONES: "assets/music/song_kick_drones.mp3",
-    GHOSTS: "assets/music/song_ghosts.mp3",
-    GHOSTS_HEART: "assets/music/song_ghosts_heart.mp3",
     INT1: "assets/music/song_intensity01.mp3",
     INT2: "assets/music/song_intensity02.mp3",
     INT3: "assets/music/song_intensity03.mp3",
@@ -33,15 +30,15 @@ const SfxURLs = {
     ZOMBIES: ["assets/sfx/zombie01.mp3", "assets/sfx/zombie02.mp3", "assets/sfx/zombie03.mp3", "assets/sfx/zombie04.mp3", "assets/sfx/zombie05.mp3"],
     GHOSTS: ["assets/sfx/ghost01.mp3", "assets/sfx/ghost02.mp3", "assets/sfx/ghost03.mp3", "assets/sfx/ghost04.mp3", "assets/sfx/ghost05.mp3"],
     LAUGHS: ["assets/sfx/laugh01.mp3", "assets/sfx/laugh02.mp3", "assets/sfx/laugh03.mp3", "assets/sfx/laugh04.mp3", "assets/sfx/laugh05.mp3"],
-    SYNCED_LAUGHS: ["assets/sfx/laugh_sync01.mp3", "assets/sfx/laugh_sync02.mp3", "assets/sfx/laugh_sync03.mp3", "assets/sfx/laugh_sync04.mp3", "assets/sfx/laugh_sync05.mp3"],
     BOMBS: ["assets/sfx/bomb01.mp3", "assets/sfx/bomb02.mp3", "assets/sfx/bomb03.mp3"],
     TITLE: "assets/sfx/title.mp3",
     DOOR_OPEN: "assets/sfx/door_open.mp3",
     DOOR_CLOSE: "assets/sfx/door_close.mp3",
     GAMEOVER: "assets/sfx/gameover.mp3",
-    DEATH: "assets/sfx/death01.wav",
+    DEATH: "assets/sfx/death.wav",
     STEPS: "assets/sfx/steps.mp3",
     RISER: "assets/sfx/riser.mp3",
+    VICTORY: "assets/sfx/victory.mp3",
 }
 
 // Loading function for fetching the audio file and decode the data
@@ -249,6 +246,5 @@ export function playRiser() {
     let audio = playAudio(sfxs['RISER']);
     audio.onended = function() {
         riserPlaying = false;
-        playTrack(tracks['GHOSTS_HEART']);
     };
 }

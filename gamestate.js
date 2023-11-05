@@ -54,6 +54,7 @@ export class Game {
         spawnPlayers();
         this.loadGame();
         this.newLevel();
+        updateLevelDisplay(this.level);
         this.initLevel();
     }
 
@@ -67,7 +68,7 @@ export class Game {
             this.numOfEnemies = levelEnemies.length;
             
             // Enemies show only outlines during the big bomb overlay
-            if (bigBombOverlay && this.level > 1 && !this.firstBombExploded) {
+            if (bigBombOverlay && this.level === 1 && !this.firstBombExploded) {
                 enemies.forEach(enemy => {
                     enemy.showOutline();
                 });
@@ -85,13 +86,13 @@ export class Game {
     newLevel() {
         if (this.level === 1) {
             tutorial.playAnimation();
-            bigBomb.visible = false;
+            bigBomb.visible = true;
             playBirdsong();
         } else {
             if (tutorial.visible) {
                 tutorial.visible = false;
             }
-            bigBomb.visible = true;         
+            bigBomb.visible = false;         
         }
 
         if (this.level >= levels.length - 1) {
@@ -100,14 +101,11 @@ export class Game {
         
         // Set the music
         this.beatDropped = false;
-        const previousLevel = this.level - 1;
         
         if (lastLevel) {
             playTrack(tracks['HEART']);
         } 
-        else if (this.level === 1 || previousLevel === 1) {
-            // Do nothing
-        } else {
+        else if (this.level > 1) {
             playTrack(tracks['INT1']);
         }
 
@@ -187,14 +185,13 @@ export class Game {
                 p.healthPoints = 3;
                 p.updateHealthPoints();
             });
-            // No saving on level Z
-            this.saveGame();
         } else {
             players.forEach(p => {
                 p.healthPoints = 1;
                 p.updateHealthPoints();
             });
         }
+        this.saveGame();
     }
     
     increaseEnemies() {
@@ -220,15 +217,20 @@ export class Game {
         if (this.numOfEnemies === 0 && exitLocation.isOpen === false) {
             this.toggleDoor();
         
-            if (this.level != 1) {
-                playTrack(tracks['INT1']);            
-            } else {
+            if (this.level === 1) {
                 playTrack(tracks['KICK_DRONES']);
+            }
+            else if (!lastLevel) {
+                playTrack(tracks['INT1']);            
             }
 
         }
         else if (this.numOfEnemies <= 3 && this.level > 2) {
-            playTrack(tracks['INT3']);
+            if (!lastLevel) {
+                playTrack(tracks['INT3']);
+            } else {
+                playTrack(tracks['HEART_DRONES_BELL']);
+            }
         }
     }
 
@@ -255,7 +257,6 @@ export class Game {
             // Load the display
             this.level = parseInt(localStorage.getItem("level-number"));
             this.score = parseInt(localStorage.getItem("score"));
-            updateLevelDisplay(this.level);
             updateScoreDisplay(this.score);
             
             const loadedPlayers = JSON.parse(localStorage.getItem("players"));

@@ -7,7 +7,7 @@ import { loadTextures } from "./level.js";
 import { loadSpriteSheets } from "./spritesheets.js";
 
 // Settings
-export let restarted = false;
+export let wonGame = false;
 
 ////////////////////
 // Score and level display
@@ -18,11 +18,13 @@ export function updateScoreDisplay(score) {
 
 let levelDisplay = document.getElementById("level");
 export function updateLevelDisplay(level) {
-    if (!lastLevel)
-    {
+    if (!lastLevel) {
         levelDisplay.textContent = `LEVEL ${level}`;
+    }
+    else if (lastLevel && !wonGame) {
+        levelDisplay.textContent = "YOU'RE GONNA DIE";
     } else {
-        levelDisplay.textContent = "HAHAHA YOU'RE GONNA DIE";
+        levelDisplay.textContent = "YOU WIN";
     }
 }
 
@@ -140,15 +142,12 @@ export function showGameOverMenu()
 
 restartButton.addEventListener('click', function() {
     gameOverMenu.style.visibility = 'hidden';
-    restarted = true;
-    playTrack(tracks['SLOWHEART']);
     game.newGame();
 });
 
 exitButton.addEventListener('click', function() {
     gameOverMenu.style.visibility = 'hidden';
     showMainMenu();
-    playTrack(tracks['SLOWHEART']);
 });
 
 ////////////////////
@@ -160,6 +159,8 @@ ggExitButton.addEventListener('click', function() {
 });
 export function showGGMenu()
 {
+    wonGame = true;
+    updateLevelDisplay();
     ggScore.innerText = `Score ${game.score}`;
     ggMenu.style.visibility = 'visible';
 }
@@ -183,7 +184,6 @@ pauseMenuContinueButton.addEventListener('click', function() {
 
 pauseMenuExitButton.addEventListener('click', function() {
     pauseMenu.style.visibility = 'hidden';
-    playTrack(tracks['BEAT']);
     showMainMenu();
 });
 

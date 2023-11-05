@@ -16,7 +16,6 @@
     /* src: url('assets/fonts/Minimal3x5.ttf') format('truetype'); */
     /* src: url('assets/fonts/Minimal5x5Monospaced.ttf') format('truetype'); */
     src: url('assets/fonts/Minimal5x7.ttf') format('truetype');
-    /* src: url('assets/fonts/red_alert.ttf') format('truetype'); */
 }
 
 body {
@@ -132,7 +131,7 @@ body {
 
 #loading-text {
     visibility: hidden;
-    font-size: 32px;
+    font-size: 2rem;
     color: grey;
 }
 
@@ -188,7 +187,7 @@ body {
 }
 
 #confirmText {
-    font-size: 24px;
+    font-size: 1.4rem;
     visibility: hidden;
     color: red;
 }
@@ -348,26 +347,26 @@ body {
     padding-top: 20px;
     padding-bottom: 20px;
     overflow-y: auto;
-    font-size: 24px;
+    font-size: 1.4rem;
 }
 
 .how-to-play-content h1 {
     color: white;
     text-decoration: underline;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Minimal', 'Courier New', Courier, monospace;
 }
 
 .how-to-play-content h3 {
     color: white;
     padding-bottom: 10px;
     text-decoration: underline;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 18px;
+    font-family: 'Minimal', 'Courier New', Courier, monospace;
+    font-size: 1.5rem;
 }
 
 .how-to-play-content li {
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 16px;
+    font-family: 'Minimal', 'Courier New', Courier, monospace;
+    font-size: 1.4rem;
     list-style: square;
 }
 

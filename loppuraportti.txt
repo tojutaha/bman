@@ -29,4 +29,4 @@ Työnjako - eli kuka teki projektiin ja mitä:
 
 Projektiin käytetty tuntimäärä - on hyvä jos pystytte hiukan erittelemään, että kuinka paljon kukin tiimin jäsen on käyttänyt aikaa projektiin.
  - Tomi: ~250h
- - Tommi: ~230h
+ - Tommi: ~240h

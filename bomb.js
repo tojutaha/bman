@@ -5,6 +5,7 @@ import { getDistanceTo, getLinearUntilObstacle } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 import { exitLocation } from "./tile.js";
 import { spriteSheets } from "./spritesheets.js";
+import { lastLevel } from "./gamestate.js";
 
 export let tilesWithBombs = [];
 let crumblingWalls = [];
@@ -69,8 +70,14 @@ export class Bomb {
 
                     if (!game.beatDropped) {
                         setTimeout(() => {
-                            if (game.level !== 1) {
+                            if (game.level === 1) {
+                                playTrack(tracks['SLOWHEART']);
+                            }
+                            else if (lastLevel) {
+                                playTrack(tracks['HEART_DRONES']);
+                            } else {
                                 playTrack(tracks['INT2']);
+
                             }
                         }, msPerBeat);
                         game.beatDropped = true;
@@ -87,7 +94,7 @@ export class Bomb {
         if (game.firstBombDropped) return;
 
         game.firstBombDropped = true;
-        if (game.level > 1) {
+        if (game.level === 1) {
             bigBomb.playLightUp();
             playRiser();
         }
@@ -98,7 +105,7 @@ export class Bomb {
 function explode(bomb) {
     if (!game.firstBombExploded) {
         game.firstBombExploded = true;
-        if (game.level > 1) {
+        if (game.level === 1) {
             bigBomb.playShatter();
         }
     }
@@ -232,7 +239,7 @@ const softWallTexture = new Image();
 const explosionImage = new Image();
 export function renderExplosions() {
     if (!softWallTexture.src) {
-        softWallTexture.src = spriteSheets.stone_brick_alt;
+        softWallTexture.src = spriteSheets.wall_animation;
     }
     if (!explosionImage.src) {
         explosionImage.src = spriteSheets.explosion;
