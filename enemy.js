@@ -8,9 +8,9 @@ import { EnemyDeathAnimation, deathRow } from "./animations.js";
 import { spriteSheets } from "./spritesheets.js";
 
 export const enemyType = {
-    ZOMBIE: "Zombie",
-    GHOST: "Ghost",
-    SKELETON: "Skeleton",
+    ZOMBIE: "zombie",
+    GHOST: "ghost",
+    SKELETON: "skeleton",
 }
 
 export const movementMode = {

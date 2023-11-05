@@ -499,9 +499,9 @@ class Player
             } else {
                 // Play text animation
                 if(enemyWhoKilled) {
-                    deathReasonText.playAnimation(`Killed by ${enemyWhoKilled.enemyType}`);
+                    deathReasonText.playAnimation(`Killed by a ${enemyWhoKilled.enemyType}`);
                 } else if(wasBomb) {
-                    deathReasonText.playAnimation("Killed by bomb");
+                    deathReasonText.playAnimation("Killed by a bomb");
                 }
 
                 game.restartLevel();

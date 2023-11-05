@@ -17,7 +17,7 @@ export class EnemyDeathAnimation {
 
         this.spriteSheet = new Image();
         switch(type) {
-            case "Zombie": {
+            case "zombie": {
                 switch(direction) {
                     case "Up": {
                         this.spriteSheet.src = spriteSheets.zombie_death_back;
@@ -38,11 +38,11 @@ export class EnemyDeathAnimation {
                 }
                 break;
             }
-            case "Ghost": {
+            case "ghost": {
                 this.spriteSheet.src = spriteSheets.ghost_death;
                 break;
             }
-            case "Skeleton": {
+            case "skeleton": {
                 switch(direction) {
                     case "Up": {
                         this.spriteSheet.src = spriteSheets.skeleton_death_back;
@@ -215,22 +215,23 @@ export class DeathReasonAnimation {
     
     playAnimation(text) {
         this.visible = true;
-        this.frames = 0;
-        this.alpha = 0.95;
         this.text = text;
 
+        this.fadeIn();
         setTimeout(() => {
-            this.frameTimer = setInterval(() => {
-                this.frames++;
-    
-                if (this.frames >= this.text.length) {
-                    setTimeout(() => {
-                        this.fadeOut();
-                    }, 2100);
-                    clearInterval(this.frameTimer);
-                }
-            }, 50);
-        }, 300);
+            this.fadeOut();
+        }, 3000);
+    }
+
+    fadeIn() {
+        this.alpha = 0.0;
+        this.fadeInTimer = setInterval(() => {
+            this.alpha += 0.05;
+
+            if (this.alpha >= 1.0) {
+                clearInterval(this.fadeInTimer);
+            }
+        }, 10);
     }
 
     fadeOut() {
@@ -238,6 +239,7 @@ export class DeathReasonAnimation {
             this.alpha -= 0.05;
 
             if (this.alpha <= 0.0) {
+                this.visible = false;
                 clearInterval(this.fadeOutTimer);
             }
         }, 10);
@@ -253,9 +255,8 @@ export class DeathReasonAnimation {
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
-            const substring = this.text.substring(0, this.frames);
-            ctx.strokeText(substring, canvas.width / 2, canvas.width / 2);
-            ctx.fillText(substring, canvas.width / 2, canvas.width / 2);
+            ctx.strokeText(this.text, canvas.width / 2, canvas.width / 2);
+            ctx.fillText(this.text, canvas.width / 2, canvas.width / 2);
         }
     }
 }
@@ -453,7 +454,7 @@ export class TutorialAnimations {
                     clearInterval(checker);
                 }
             }, 500);
-        }, 6000);
+        }, 7000);
     }
 
     fadeIn() {

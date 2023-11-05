@@ -44,29 +44,18 @@ export class Bomb {
 
                 // Bombs explode in time with the music
                 let delay;
-                if (game.firstBombExploded) {
-                    // First bomb explodes onbeat, the rest offbeat
-                    delay = getMusicalTimeout(true);
-                } else {
+                if (!game.firstBombExploded) {
+                    // First bomb explodes onbeat
                     delay = getMusicalTimeout();
-                    // The extra delay is for more dramatic drop.
-                    if (delay < msPerBeat) {
-                        delay += msPerBeat * 4;
-                    } else {
-                        delay += msPerBeat * 2;
-                    }
+                    // Extra delay for drama.
+                    delay += msPerBeat * 2;
+                } else {
+                    // Rest of the bombs explode offbeat
+                    delay = getMusicalTimeout(true);
                 }
                 
-
                 setTimeout(() => {
-                    // The riser will be playing when waiting for the first bomb.
-                    if (riserPlaying) {
-                        setTimeout(() => {
-                            explode(this);
-                        }, msPerBeat * 2);
-                    } else {
-                        explode(this);
-                    }
+                    explode(this);
 
                     if (!game.beatDropped) {
                         setTimeout(() => {
@@ -83,7 +72,6 @@ export class Bomb {
                         game.beatDropped = true;
                     }
                 }, delay);
-
 
                 clearInterval(this.ticking);
             }

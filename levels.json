@@ -1,9 +1,9 @@
 {
     "0": {
         "enemies": {
-            "Zombie": 0,
-            "Ghost": 0,
-            "Skeleton": 0
+            "zombie": 0,
+            "ghost": 0,
+            "skeleton": 0
         },
         "tiles": {
             "width": 0,
@@ -16,9 +16,9 @@
     },
     "1": {
         "enemies": {
-            "Zombie": 1,
-            "Ghost": 0,
-            "Skeleton": 0
+            "zombie": 1,
+            "ghost": 0,
+            "skeleton": 0
         },
         "tiles": {
             "width": 13,
@@ -31,9 +31,9 @@
     },
     "2": {
         "enemies": {
-            "Zombie": 3,
-            "Ghost": 1,
-            "Skeleton": 0
+            "zombie": 3,
+            "ghost": 1,
+            "skeleton": 0
         },
         "tiles": {
             "width": 13,
@@ -46,9 +46,9 @@
     },
     "3": {
         "enemies": {
-            "Zombie": 4,
-            "Ghost": 2,
-            "Skeleton": 0
+            "zombie": 4,
+            "ghost": 2,
+            "skeleton": 0
         },
         "tiles": {
             "width": 19,
@@ -61,9 +61,9 @@
     },
     "4": {
         "enemies": {
-            "Zombie": 4,
-            "Ghost": 2,
-            "Skeleton": 1
+            "zombie": 4,
+            "ghost": 2,
+            "skeleton": 1
         },
         "tiles": {
             "width": 19,
@@ -76,9 +76,9 @@
     },
     "5": {
         "enemies": {
-            "Zombie": 4,
-            "Ghost": 3,
-            "Skeleton": 2
+            "zombie": 4,
+            "ghost": 3,
+            "skeleton": 2
         },
         "tiles": {
             "width": 23,
@@ -91,9 +91,9 @@
     },
     "Z": {
         "enemies": {
-            "Zombie": 15,
-            "Ghost": 10,
-            "Skeleton": 10
+            "zombie": 15,
+            "ghost": 10,
+            "skeleton": 10
         },
         "tiles": {
             "width": 29,
