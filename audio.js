@@ -249,5 +249,6 @@ export function playRiser() {
     let audio = playAudio(sfxs['RISER']);
     audio.onended = function() {
         riserPlaying = false;
+        playTrack(tracks['GHOSTS_HEART']);
     };
 }

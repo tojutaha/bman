@@ -86,24 +86,27 @@ export class Game {
         if (this.level === 1) {
             tutorial.playAnimation();
             bigBomb.visible = false;
-        }
-        if (this.level > 1) {
+            playBirdsong();
+        } else {
             if (tutorial.visible) {
                 tutorial.visible = false;
             }
             bigBomb.visible = true;         
         }
+
         if (this.level >= levels.length - 1) {
             lastLevel = true;
         } else lastLevel = false;
         
         // Set the music
         this.beatDropped = false;
-        if (this.level === 1) {
-            playBirdsong();
-        }
-        else if (lastLevel) {
+        const previousLevel = this.level - 1;
+        
+        if (lastLevel) {
             playTrack(tracks['HEART']);
+        } 
+        else if (this.level === 1 || previousLevel === 1) {
+            // Do nothing
         } else {
             playTrack(tracks['INT1']);
         }

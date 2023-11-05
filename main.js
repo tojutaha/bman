@@ -65,11 +65,11 @@ function Render(timeStamp)
 
         updateCamera();
         renderFloor();
-        entrance.render();
         if (!showDoor) {
             exit.render();
             renderPowerups();
         }
+        entrance.render();
         renderBombs();
         renderPlayer(timeStamp);
         renderWalls();

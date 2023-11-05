@@ -141,12 +141,14 @@ export function showGameOverMenu()
 restartButton.addEventListener('click', function() {
     gameOverMenu.style.visibility = 'hidden';
     restarted = true;
+    playTrack(tracks['SLOWHEART']);
     game.newGame();
 });
 
 exitButton.addEventListener('click', function() {
     gameOverMenu.style.visibility = 'hidden';
     showMainMenu();
+    playTrack(tracks['SLOWHEART']);
 });
 
 ////////////////////

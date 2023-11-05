@@ -391,7 +391,7 @@ export class FadeTransition {
         this.frames = 0;
         this.alpha = 1.0;
         this.fadeMs = 3;
-        this.fadeAmount = 0.02;
+        this.fadeAmount = 0.015;
     }
     
     fadeIn() {

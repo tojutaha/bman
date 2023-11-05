@@ -5,7 +5,6 @@ import { getDistanceTo, getLinearUntilObstacle } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
 import { exitLocation } from "./tile.js";
 import { spriteSheets } from "./spritesheets.js";
-import { lastLevel } from "./gamestate.js";
 
 export let tilesWithBombs = [];
 let crumblingWalls = [];
@@ -57,9 +56,6 @@ export class Bomb {
                     }
                 }
                 
-                if (game.level != 1 && !game.beatDropped && !lastLevel) {
-                    playTrack(tracks['GHOSTS_HEART']);
-                }
 
                 setTimeout(() => {
                     // The riser will be playing when waiting for the first bomb.
@@ -73,9 +69,7 @@ export class Bomb {
 
                     if (!game.beatDropped) {
                         setTimeout(() => {
-                            if (game.level === 1) {
-                                playTrack(tracks['SLOWHEART']);
-                            } else {
+                            if (game.level !== 1) {
                                 playTrack(tracks['INT2']);
                             }
                         }, msPerBeat);
