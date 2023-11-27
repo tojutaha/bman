@@ -437,13 +437,13 @@ body {
 }
 
 /* Mobile */
-@media only screen and (max-width: 769px) {
-    body {
-        background-color: var(--bg);
-    }
+#portrait-prompt {
+    visibility: hidden;
 }
 
+/* Portrait mode prompt */
 @media only screen and (orientation: portrait) {
+    /* TODO: make sure that not scrollable */
     html, body {
         overflow: hidden;
         height: auto;
@@ -477,8 +477,47 @@ body {
     }
 }
 
-/* @media only screen and (orientation: landscape) {
-    body {
-        background-color: darkslategrey;
+/* Mobile controls */
+.mobile-controller {
+    visibility: hidden;
+}
+
+#mobile-buttons-left {
+    z-index: 9999;
+}
+
+#mobile-buttons-right {
+    z-index: 9999;
+}
+
+/* TODO: tablet mode separately */
+/* Widest screen emulations on firefox: */
+/* iPadOS 14.7.1: 810px */
+/* iPhone 12/13 Pro Max iOS 14.6: 428px */
+@media only screen and (orientation: landscape) and (max-height: 428px) {
+    html, body {
+        overflow: hidden;
+        height: auto;
     }
-} */
+    
+    body {
+        background-color: black;
+    }
+    
+    .mobile-controller {
+        visibility: visible;
+    }
+
+    .canvas-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+    }
+
+    .debug-buttons {
+        visibility: hidden;
+    }
+}
