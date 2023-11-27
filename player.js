@@ -8,7 +8,7 @@ import { spriteSheets } from "./spritesheets.js";
 import { showGGMenu } from "./page.js";
 
 
-const godMode = false;
+const godMode = true;
 
 export const Direction = {
     UP: "Up",

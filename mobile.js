@@ -1,19 +1,22 @@
+import { setCameraOffsets } from "./camera.js";
 import { globalPause, setGlobalPause } from "./main.js";
 
+export let isMobile = false;
+
 export function responsivityCheck() {
+    setCameraOffsets();
+    // Bools
     const isPortrait = window.matchMedia('(orientation: portrait)').matches;
     const isLandscape = window.matchMedia('(orientation: landscape)').matches;
-    
-    if (isPortrait) {
-        // console.log("Portrait");
-        // setGlobalPause(!globalPause);    // TODO: ei toimi debuglatauksessa
-    } else {
-        // console.log("Not portrait");
-        resizeCanvas();
-    }
 
-    if (isLandscape) {
-        // console.log("landscape");
+    if (window.innerHeight < 400) {
+        isMobile = true;
+        resizeCanvas();
+        return true;
+    } else {
+        isMobile = false;
+        fullsizeCanvas();
+        return false;
     }
 }
 
@@ -21,6 +24,16 @@ export function responsivityCheck() {
 // Resize canvas
 let canvas = document.getElementById('canvas');
 let floor = document.querySelector('.floor');
+
+function fullsizeCanvas() {
+    let size = 832;
+
+    canvas.width = size;
+    canvas.height = size;
+
+    floor.style.width = `${size}px`;
+    floor.style.height = `${size}px`;
+}
 
 function resizeCanvas() {
     const windowHeight = window.innerHeight;

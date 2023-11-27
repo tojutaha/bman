@@ -442,7 +442,8 @@ body {
 }
 
 /* Portrait mode prompt */
-@media only screen and (orientation: portrait) {
+/* TODO: 700px on vaan ikkunan koon testailuun (vähän pienempi kuin labyrintti) */
+@media only screen and (orientation: portrait) and (max-width: 700px) {
     /* TODO: make sure that not scrollable */
     html, body {
         overflow: hidden;

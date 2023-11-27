@@ -2,6 +2,7 @@ import { ctx, tileSize, scale, canvas, deltaTime } from "./main.js";
 import { levelWidth } from "./gamestate.js";
 import { players } from "./player.js";
 import { getTileFromWorldLocation, lerp } from "./utils.js";
+import { isMobile } from "./mobile.js";
 
 export let cameraX = 0;
 export function setCameraX(value) {
@@ -12,6 +13,10 @@ let cameraRt = 0;
 let cameraPt = 0;
 const followCameraSpeed = 0.05;
 const edgeCameraSpeed = 0.25;
+
+let targetOffset;
+let edgeOffset;
+
 export function updateCamera()
 {
 
@@ -19,7 +24,7 @@ export function updateCamera()
     const playerX = playerTile.x / tileSize;
 
     // Left edge
-    if (playerX <= 6) {
+    if (playerX <= edgeOffset) {
         cameraPt = 0;
 
         cameraLt += deltaTime * edgeCameraSpeed;
@@ -30,13 +35,13 @@ export function updateCamera()
         ctx.setTransform(scale, 0, 0, scale, cameraX, 0);
 
     // Right edge
-    } else if (playerX >= levelWidth - 6) {
+    } else if (playerX >= levelWidth - edgeOffset) {
         cameraPt = 0;
 
         cameraRt += deltaTime * edgeCameraSpeed;
         cameraRt = Math.min(cameraRt, 1);
 
-        const targetX = canvas.width / 2 - scale * (levelWidth - 6.5) * tileSize;
+        const targetX = canvas.width / 2 - scale * (levelWidth - targetOffset) * tileSize;
         cameraX = lerp(cameraX, targetX, cameraRt);
 
         ctx.setTransform(scale, 0, 0, scale, cameraX, 0);
@@ -58,3 +63,15 @@ export function updateCamera()
     //ctx.setTransform(scale, 0, 0, scale, canvas.width/2 - scale * players[0].x, canvas.height/2 - scale * players[0].y);
 }
 
+// TODO: isMobile ei asetu mobile.js:sä ennen kuin kutsutaan
+export function setCameraOffsets() {
+    if (isMobile) {
+        console.info("camera: mobile offsets");
+        targetOffset = 3;
+        edgeOffset = 2;
+    } else {
+        console.info("camera: normal offsets");
+        targetOffset = 6.5;
+        edgeOffset = 6;
+    }
+}
