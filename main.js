@@ -9,6 +9,10 @@ import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game } from "./gamestate.js";
 import { updateCamera } from "./camera.js";
 import { showDoor, showPauseMenu } from "./page.js";
+// TODO: Nämä importit voi ottaa myöhemmin pois
+import { fetchEverything } from "./gamestate.js";
+import { loadTextures } from "./level.js";
+import { loadSpriteSheets } from "./spritesheets.js";
 
 
 ////////////////////
@@ -102,6 +106,16 @@ function Render(timeStamp)
     requestAnimationFrame(Render);
 }
 
+// TODO: Tämä pois kun ei tartteta enää debuggailla
+async function debugLoad()
+{
+    await fetchEverything();
+    await loadTextures();
+    await loadSpriteSheets();
+    
+    game.newGame();
+}
+
 ////////////////////
 // DOM
 document.addEventListener("DOMContentLoaded", function ()
@@ -110,7 +124,10 @@ document.addEventListener("DOMContentLoaded", function ()
     if (canvas) {
         ctx = canvas.getContext("2d");
         if (ctx) {
-                Render();
+            // TODO: Tämä pois kun ei tartteta enää debuggailla
+            debugLoad();
+            
+            Render();
         } else {
             throw new Error("Could not find ctx object.");
         }
