@@ -20,6 +20,35 @@ export let levelPowerup = "random";
 export let softwallPercent = 0.1;
 export let powerupCount = 2;
 
+// Setters for MultiplayerGame
+export function setLastLevel(value) {
+    lastLevel = value;
+}
+
+export function setLevelWidth(width) {
+    levelWidth = width;
+}
+
+export function setLevelHeight(height) {
+    levelHeight = height;
+}
+
+export function setLevelType(type) {
+    levelType = type;
+}
+
+export function setLevelPowerup(powerup) {
+    levelPowerup = powerup;
+}
+
+export function setSoftwallPercent(percent) {
+    softwallPercent = percent;
+}
+
+export function setPowerupCount(count) {
+    powerupCount = count;
+}
+
 
 export class Game {
     constructor() {
