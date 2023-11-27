@@ -7,6 +7,7 @@ import { renderPlayer } from "./player.js";
 import { renderEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game } from "./gamestate.js";
+import { MultiplayerGame } from "./multiplayergamestate.js";
 import { updateCamera } from "./camera.js";
 import { showDoor, showPauseMenu } from "./page.js";
 // TODO: Nämä importit voi ottaa myöhemmin pois
@@ -29,6 +30,12 @@ export let game = new Game();
 export let numOfPlayers = 1;
 export function setNumOfPlayers(value) {
     numOfPlayers = value;
+
+    if(value == 1) {
+        game = new Game();
+    } else if(value == 2) {
+        game = new MultiplayerGame();
+    }
 }
 
 ////////////////////
