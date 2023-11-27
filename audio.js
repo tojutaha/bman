@@ -135,7 +135,9 @@ export function stopCurrentTrack() {
 }
 
 
-
+// TODO: kaksinpelissä äänet häviää.
+//     - laita ensimmäinen kävelijä triggaamaan loop
+//     - lopeta kun molemmat pysähtyy
 // Syncs the footsteps with the track
 let footsteps = null;
 export function playFootsteps(isWalking) {

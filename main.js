@@ -36,8 +36,9 @@ export function setNumOfPlayers(value) {
 export const tileSize = 64;
 export const cagePlayer = true;
 export const cageMultiplayer = false;
-export const bigBombOverlay = true;
-const fadeTransitions = true;
+export const bigBombOverlay = false;
+const showTutorial = false;
+const fadeTransitions = false;
 
 ////////////////////
 // Assets
@@ -98,7 +99,9 @@ function Render(timeStamp)
         levelHeader.render();
         gameOverText.render();
         deathReasonText.render();
-        tutorial.render();
+        if (showTutorial) {
+            tutorial.render();
+        }
     }
 
     lastTimeStamp = timeStamp
