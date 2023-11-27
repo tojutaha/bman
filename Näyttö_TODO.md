@@ -6,9 +6,13 @@
 - ...
 
 ###Paikallinen kaksinpeli-mode(Tomi?)
-- Valikkojen muokkaus
+- GameStateen säännöt miten peli etenee jos toinen pelaajista kuolee jne.
+  - Gamemode joka määrittelee säännöt?
 - Kameran vaihto stattiseksi(?)
   - Oma leveli?
+- Valikkojen muokkaus
+  - Valintapainike yksin- tai kaksinpelille
+- Healthpointtien näyttö molemmille pelaajille
 - ...
 
 ###Optimointi
