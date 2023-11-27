@@ -14,6 +14,7 @@ import { showDoor, showPauseMenu } from "./page.js";
 import { fetchEverything } from "./gamestate.js";
 import { loadTextures } from "./level.js";
 import { loadSpriteSheets } from "./spritesheets.js";
+import { responsivityCheck } from "./mobile.js";
 
 
 ////////////////////
@@ -138,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function ()
             debugLoad();
             
             Render();
+            responsivityCheck();
         } else {
             throw new Error("Could not find ctx object.");
         }
