@@ -546,6 +546,7 @@ export function spawnPlayers()
     // NOTE: startX, startY = null menee aina vasempaan yläkulmaan tileSizen mukaan
     players.push(new Player(0, null, null, keybinds1, "./assets/player0.png"));
     // players.push(new Player(1, (levelWidth-2)*tileSize, (levelHeight-2)*tileSize, keybinds2));
+    players.push(new Player(1, null, null, keybinds2, "./assets/player0.png"));
     for (let i = 0; i < players.length; i++) {
         document.addEventListener("keyup", function(event) {
             players[i].handleKeyUp(event);

@@ -15,12 +15,16 @@ import { showDoor, showPauseMenu } from "./page.js";
 // Globals
 export let canvas;
 export let ctx;
-export let game = new Game();
 export let level = [];
 export let globalPause = true;
-// Tarttee setterin koska JS..
 export function setGlobalPause(value) {
     globalPause = value;
+}
+
+export let game = new Game();
+export let numOfPlayers = 1;
+export function setNumOfPlayers(value) {
+    numOfPlayers = value;
 }
 
 ////////////////////

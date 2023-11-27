@@ -1,5 +1,5 @@
 import { enemies, enemyType, spawnEnemiesByType } from "./enemy.js";
-import { ctx, tileSize, game, setGlobalPause, globalPause } from "./main.js";
+import { ctx, tileSize, game, setGlobalPause, globalPause, setNumOfPlayers } from "./main.js";
 import { fetchEverything, lastLevel, levelHeight, levelWidth } from "./gamestate.js";
 import { players } from "./player.js";
 import { playAudio, playTrack, sfxs, tracks } from "./audio.js";
@@ -41,6 +41,7 @@ const continueGameButton = document.getElementById("continueGameButton");
 const howToPlayMenu = document.querySelector(".how-to-play-container");
 const howToPlayButton = document.getElementById("howToPlayButton");
 const closeButton = document.getElementById("closeButton");
+const numPlayersOption = document.getElementById("numPlayers");
 
 export function showMainMenu()
 {
@@ -53,6 +54,10 @@ export function showMainMenu()
     mainMenu.style.visibility = 'visible';
     infoDisplays.style.visibility = 'hidden';
 }
+
+numPlayersOption.addEventListener('change', function() {
+    setNumOfPlayers(parseInt(numPlayersOption.value));
+});
 
 let confirmed = false;
 newGameButton.addEventListener('click', function() {

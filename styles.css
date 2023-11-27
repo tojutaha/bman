@@ -59,7 +59,7 @@ body {
 }
 
 .debug {
-    visibility: hidden;
+    visibility: visible;
 }
 
 .debug-buttons {
@@ -190,6 +190,21 @@ body {
     font-size: 1.4rem;
     visibility: hidden;
     color: red;
+}
+
+.multiplayer-settings {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding-top: 20px;
+}
+
+#numPlayers {
+    font-size: 20px;
+    width: 50px;
+    height: 22px;
 }
 
 /* Pause menu */
