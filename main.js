@@ -85,16 +85,18 @@ function Render(timeStamp)
 
         updateCamera();
         renderFloor();
-        if (!showDoor) {
+        if (!showDoor && !isMultiplayer) {
             exit.render();
             renderPowerups();
         }
-        entrance.render();
+        if(!isMultiplayer){
+            entrance.render();
+        }
         renderBombs();
         renderPlayer(timeStamp);
         renderWalls();
         locBlinkers.render();
-        if (showDoor) {
+        if (showDoor && !isMultiplayer) {
             exit.render();
             renderPowerups();
         }
@@ -140,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function ()
         ctx = canvas.getContext("2d");
         if (ctx) {
             // TODO: Tämä pois kun ei tartteta enää debuggailla
-            debugLoad();
+            //debugLoad();
             
             Render();
         } else {

@@ -1,4 +1,4 @@
-import { tileSize, cagePlayer, cageMultiplayer } from "./main.js";
+import { tileSize, cagePlayer, cageMultiplayer, isMultiplayer } from "./main.js";
 import { randomPowerup } from "./powerup.js";
 import { levelHeight, levelPowerup, levelWidth, softwallPercent, powerupCount } from "./gamestate.js";
 
@@ -135,6 +135,7 @@ function createSoftWalls(result, hardWallTotal) {
 function populateSoftWalls(result, softWallTotal) {
     let powerupsLeft = 0;
     let exitCreated = false;
+    const createExit = !isMultiplayer;
 
     // If settings have more powerups than softwalls generated,
     // the amount of powerups is the amount of softwalls -1 for exit.
@@ -151,14 +152,16 @@ function populateSoftWalls(result, softWallTotal) {
 
         if (tile.type === "SoftWall") {
             // Create the exit
-            if (!exitCreated) {
-                tile.isExit = true;
-                tile.isOpen = false;
-                exitCreated = true;
-                exitLocation = tile;
+            if(createExit) {
+                if (!exitCreated) {
+                    tile.isExit = true;
+                    tile.isOpen = false;
+                    exitCreated = true;
+                    exitLocation = tile;
+                }
             }
             // Create powerups
-            else if (!tile.hasPowerup && !tile.isExit) {
+            if (!tile.hasPowerup && !tile.isExit) {
                 if (levelPowerup === "random") {
                     tile.powerup = randomPowerup();
                 } else {
