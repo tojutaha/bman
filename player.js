@@ -51,6 +51,10 @@ class Player
         // Key binds
         this.keybinds = keybinds;
 
+        // Event listener handles
+        this.keyUpHandler = null;
+        this.keyDownHandler = null;
+
         // Collision
         this.collisionW = this.w - 32;
         this.collisionH = this.h - 12;
@@ -561,12 +565,16 @@ export function spawnPlayers(amount = 1)
     }
 
     for (let i = 0; i < players.length; i++) {
-        document.addEventListener("keyup", function(event) {
+        players[i].keyUpHandler = function(event) {
             players[i].handleKeyUp(event);
-        });
-        document.addEventListener("keydown", function(event) {
+        };
+
+        players[i].keyDownHandler = function(event) {
             players[i].handleKeyDown(event);
-        });
+        };
+
+        document.addEventListener("keyup", players[i].keyUpHandler);
+        document.addEventListener("keydown", players[i].keyDownHandler);
 
         players[i].onSpawned();
     }
@@ -574,6 +582,8 @@ export function spawnPlayers(amount = 1)
 
 export function clearPlayers() {
     players.forEach(p => {
+        document.removeEventListener("keyup", p.keyUpHandler);
+        document.removeEventListener("keydown", p.keyDownHandler);
         for(let prop in p) {
             p[prop] = null;
         }
