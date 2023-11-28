@@ -1,6 +1,6 @@
 import { playTrack, loadAudioFiles, tracks, playBirdsong, stopBirdsong } from "./audio.js";
 import { clearBombs } from "./bomb.js";
-import { setCameraX } from "./camera.js";
+import { setCameraX, setCameraY } from "./camera.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
 import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial, bigBomb, fadeTransition, bigBombOverlay } from "./main.js";
@@ -110,6 +110,7 @@ export class Game {
 
         // Reset camera position
         setCameraX(0);
+        setCameraY(0);
     }
     
     newLevel() {
