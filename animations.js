@@ -2,6 +2,7 @@ import { playAudio, sfxs } from "./audio.js";
 import { enemies } from "./enemy.js";
 import { lastLevel } from "./gamestate.js";
 import { canvas, ctx, game, locBlinkers, tileSize } from "./main.js";
+import { isMobile } from "./mobile.js";
 import { spriteSheets } from "./spritesheets.js";
 import { exitLocation, powerupLocations } from "./tile.js";
 
@@ -205,11 +206,17 @@ export class ExitAnimation {
 
 ////////////////////
 // UI Animations
+
+const normalLineWidth = 20;
+const normalFont = "100px Minimal";
+const mobileLineWidth = 15;
+const mobileFont = "70px Minimal";
+
 export class DeathReasonAnimation {
     constructor() {
         this.visible = false;
         this.frames = 0;
-        this.alpha = 0.95;
+        this.alpha = 0.80;
         this.text = "";
     }
     
@@ -271,7 +278,7 @@ export class LevelHeaderAnimation {
     
     playAnimation() {
         this.frames = 0;
-        this.alpha = 0.95;
+        this.alpha = 0.80;
         if (!lastLevel) {
             this.text = ` LEVEL ${game.level}`;
         } else {
@@ -308,8 +315,13 @@ export class LevelHeaderAnimation {
             // ctx.strokeStyle = `rgba(30, 30, 30, ${this.alpha})`;
             ctx.strokeStyle = `rgba(0, 0, 0, ${this.alpha})`;
             
-            ctx.lineWidth = 20;
-            ctx.font = "100px Minimal";
+            if (isMobile) {
+                ctx.lineWidth = mobileLineWidth;
+                ctx.font = mobileFont;
+            } else {
+                ctx.lineWidth = normalLineWidth;
+                ctx.font = normalFont;
+            }
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
@@ -324,7 +336,7 @@ export class GameOverAnimation {
     constructor() {
         this.visible = false;
         this.frames = 0;
-        this.alpha = 0.95;
+        this.alpha = 0.80;
         this.text = " GAME OVER";
     }
         
@@ -367,8 +379,14 @@ export class GameOverAnimation {
             ctx.fillStyle = `rgba(240, 240, 240, ${this.alpha})`;
             ctx.strokeStyle = `rgba(30, 30, 30, ${this.alpha})`;
 
-            ctx.lineWidth = 20;
-            ctx.font = "100px Minimal";
+            if (isMobile) {
+                ctx.lineWidth = mobileLineWidth;
+                ctx.font = mobileFont;
+            } else {
+                ctx.lineWidth = normalLineWidth;
+                ctx.font = normalFont;
+            }
+
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
