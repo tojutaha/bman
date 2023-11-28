@@ -71,6 +71,7 @@ export class MultiplayerGame extends Game
         */
 
         setGlobalPause(true);
+        clearEnemies(); // Varmuuden vuoksi..
         clearBombs();
  
         const levelData = levels[this.level];

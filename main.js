@@ -28,13 +28,16 @@ export function setGlobalPause(value) {
 }
 
 export let game = new Game();
+export let isMultiplayer = false;
 export let numOfPlayers = 1;
 export function setNumOfPlayers(value) {
     numOfPlayers = value;
 
     if(value == 1) {
+        isMultiplayer = false;
         game = new Game();
     } else if(value == 2) {
+        isMultiplayer = true;
         game = new MultiplayerGame();
     }
 }
