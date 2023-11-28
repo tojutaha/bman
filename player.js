@@ -1,4 +1,4 @@
-import { ctx, level, tileSize, deltaTime, game, deathReasonText, bigBomb, setGlobalPause } from "./main.js";
+import { ctx, level, tileSize, deltaTime, game, deathReasonText, bigBomb, setGlobalPause, isMultiplayer } from "./main.js";
 import { lastLevel, levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { getMusicalTimeout, msPerBeat, playAudio, playFootsteps, playTrack, randomSfx, sfxs, stopFootsteps, tracks } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
@@ -8,7 +8,7 @@ import { spriteSheets } from "./spritesheets.js";
 import { showGGMenu } from "./page.js";
 
 
-const godMode = true;
+const godMode = false;
 
 export const Direction = {
     UP: "Up",
@@ -475,36 +475,45 @@ class Player
     onDeath(enemyWhoKilled, wasBomb) {
         if (godMode) return;
 
-        if (!this.isDead) {
-            this.isDead = true;
-            this.healthPoints--;
-            this.updateHealthPoints();
-            // Save the game state here, so we can save healthpoints
-            game.saveGame();
-            
-            // Audio
-            stopFootsteps();
-            playAudio(sfxs['DEATH']);
-            if (game.level > 1) {
-                let delay = getMusicalTimeout();
-                setTimeout(() => {
-                    let randomLaugh;
-                    randomLaugh = randomSfx(sfxs['LAUGHS']);
-                    playAudio(randomLaugh);
-                }, delay);
+        if(isMultiplayer) {
+            if (!this.isDead) {
+                this.isDead = true;
+                //this.healthPoints--;
+                //this.updateHealthPoints();
+                game.restartLevel();
             }
+        } else {
+            if (!this.isDead) {
+                this.isDead = true;
+                this.healthPoints--;
+                this.updateHealthPoints();
+                // Save the game state here, so we can save healthpoints
+                game.saveGame();
 
-            if(this.healthPoints <= 0) {
-                game.over();
-            } else {
-                // Play text animation
-                if(enemyWhoKilled) {
-                    deathReasonText.playAnimation(`Killed by a ${enemyWhoKilled.enemyType}`);
-                } else if(wasBomb) {
-                    deathReasonText.playAnimation("Killed by a bomb");
+                // Audio
+                stopFootsteps();
+                playAudio(sfxs['DEATH']);
+                if (game.level > 1) {
+                    let delay = getMusicalTimeout();
+                    setTimeout(() => {
+                        let randomLaugh;
+                        randomLaugh = randomSfx(sfxs['LAUGHS']);
+                        playAudio(randomLaugh);
+                    }, delay);
                 }
 
-                game.restartLevel();
+                if (this.healthPoints <= 0) {
+                    game.over();
+                } else {
+                    // Play text animation
+                    if (enemyWhoKilled) {
+                        deathReasonText.playAnimation(`Killed by a ${enemyWhoKilled.enemyType}`);
+                    } else if (wasBomb) {
+                        deathReasonText.playAnimation("Killed by a bomb");
+                    }
+
+                    game.restartLevel();
+                }
             }
         }
     }
