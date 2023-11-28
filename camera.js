@@ -63,7 +63,6 @@ export function updateCamera()
     //ctx.setTransform(scale, 0, 0, scale, canvas.width/2 - scale * players[0].x, canvas.height/2 - scale * players[0].y);
 }
 
-// TODO: isMobile ei asetu mobile.js:sä ennen kuin kutsutaan
 export function setCameraOffsets() {
     if (isMobile) {
         console.info("camera: mobile offsets");

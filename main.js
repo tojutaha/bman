@@ -49,7 +49,7 @@ export const cagePlayer = false;
 export const cageMultiplayer = false;
 export const bigBombOverlay = false;
 const showTutorial = false;
-const fadeTransitions = false;
+const fadeTransitions = true;
 
 ////////////////////
 // Assets
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function ()
         ctx = canvas.getContext("2d");
         if (ctx) {
             // TODO: Tämä pois kun ei tartteta enää debuggailla
-            //debugLoad();
+            debugLoad();
             
             Render();
         } else {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" href="assets/favicon/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script type="module" src="main.js"></script>
@@ -10,6 +10,7 @@
     <title>Not Bomberman</title>
 </head>
 <body>
+    <!-- Info displays -->
     <div class="info-displays text-display">
         <div class="health-points" id="healthPointsContainer"></div>
         <!-- <p id="level_header" class="display" style="color: white">LEVEL</p> -->
@@ -17,6 +18,39 @@
         <p id="score-header" style="color: white">SCORE</p>
         <p id="score" style="color: white">0</p>
     </div>
+
+    <!-- Mobile: controls -->
+    <div class="mobile-controller">
+        <div class="mobile-buttons-left">
+            <div>
+                <button id="fullscreen-button">🖵</button>
+            </div>
+            <div class="d-pad">
+                <div>
+                    <button id="mob-dir-up">↑</button>
+                </div>
+                <div>
+                    <button id="mob-dir-left">←</button>
+                    <button id="mob-dir-right">→</button>
+                </div>
+                <div>
+                    <button id="mob-dir-down">↓</button>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-buttons-right">
+            <div>
+                <button id="mob-bomb">💣</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile: portrait prompt -->
+    <div id="portrait-prompt-container">
+        <div id="portrait-prompt">Please turn your device to landscape mode</div>
+    </div>
+
+    <!-- Canvas -->
     <div class="canvas-container">
         <canvas id="canvas" width="832" height="832"></canvas>
         <div class="floor"></div>
@@ -27,6 +61,8 @@
                 <button id="playGameButton" class="text-button">PRESS TO PLAY</button>
             </div>
         </div>
+
+        <!-- Menus and containers -->
         <div class="main-menu-container">
             <div class="main-menu-content">
                 <h1 class="header">NOT BOMBERMAN</h1>
@@ -131,6 +167,7 @@
         </div>
     </div>
 
+    <!-- Debug buttons -->
     <div class="debug">
         <div class="debug-buttons">
             <button id="show-door" class="text-button">Show door</button>
@@ -150,17 +187,6 @@
             <button id="scale75" class="text-button">Scale 75%</button>
             <button id="scale100" class="text-button">Scale 100%</button>
         </div>
-    </div>
-
-    <!-- Mobile: portrait prompt -->
-    <div id="portrait-prompt-container">
-        <div id="portrait-prompt">Please turn your device to landscape mode</div>
-    </div>
-
-    <!-- Mobile: controls -->
-    <div class="mobile-controller">
-        <div id="mobile-buttons-left"></div>
-        <div id="mobile-buttons-right"></div>
     </div>
 
     <script>

@@ -4,17 +4,18 @@ import { globalPause, setGlobalPause } from "./main.js";
 export let isMobile = false;
 
 export function responsivityCheck() {
-    setCameraOffsets();
     // Bools
     const isPortrait = window.matchMedia('(orientation: portrait)').matches;
     const isLandscape = window.matchMedia('(orientation: landscape)').matches;
 
     if (window.innerHeight < 400) {
         isMobile = true;
+        setCameraOffsets();
         resizeCanvas();
         return true;
     } else {
         isMobile = false;
+        setCameraOffsets();
         fullsizeCanvas();
         return false;
     }
@@ -46,3 +47,14 @@ function resizeCanvas() {
 }
 
 window.addEventListener('resize', responsivityCheck);
+
+//////////////////////
+// Full screen button
+const fsBtn = document.getElementById('fullscreen-button');
+fsBtn.addEventListener('click', () => {
+    if (document.fullscreenElement) {
+        document.exitFullscreen();
+    } else {
+        document.documentElement.requestFullscreen();
+    }
+})

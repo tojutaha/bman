@@ -425,33 +425,50 @@ class Player
         }
     }
 
+    // Movement
+    moveUp() {
+        this.dy = -this.speed * deltaTime;
+        this.dx = 0;
+        this.direction = Direction.UP;
+    }
+
+    moveLeft() {
+        this.dx = -this.speed * deltaTime;
+        this.dy = 0;
+        this.direction = Direction.LEFT;
+    }
+
+    moveDown() {
+        this.dy = this.speed * deltaTime;
+        this.dx = 0;
+        this.direction = Direction.DOWN;
+    }
+
+    moveRight() {
+        this.dx = this.speed * deltaTime;
+        this.dy = 0;
+        this.direction = Direction.RIGHT;
+    }
+
     // Inputs
     handleKeyDown(event) {
         event.preventDefault();
 
         switch(event.code) {
             case this.keybinds.move_up:
-                this.dy = -this.speed * deltaTime;
-                this.dx = 0;
-                this.direction = Direction.UP;
+                this.moveUp();
                 break;
 
             case this.keybinds.move_left:
-                this.dx = -this.speed * deltaTime;
-                this.dy = 0;
-                this.direction = Direction.LEFT;
+                this.moveLeft();
                 break;
 
             case this.keybinds.move_down:
-                this.dy = this.speed * deltaTime;
-                this.dx = 0;
-                this.direction = Direction.DOWN;
+                this.moveDown();
                 break;
 
             case this.keybinds.move_right:
-                this.dx = this.speed * deltaTime;
-                this.dy = 0;
-                this.direction = Direction.RIGHT;
+                this.moveRight();
                 break;
 
             case this.keybinds.drop_bomb:
@@ -474,6 +491,19 @@ class Player
                 this.dx = 0;
                 break;
         }
+    }
+
+    // Mobile controls
+    bindMobile() {
+        document.getElementById("mob-dir-up").addEventListener("touchstart", () => { this.moveUp() });
+        document.getElementById("mob-dir-up").addEventListener("touchend", () => { this.dy = 0; });
+        document.getElementById("mob-dir-down").addEventListener("touchstart", () => { this.moveDown() });
+        document.getElementById("mob-dir-down").addEventListener("touchend", () => { this.dy = 0; });
+        document.getElementById("mob-dir-right").addEventListener("touchstart", () => { this.moveRight() });
+        document.getElementById("mob-dir-right").addEventListener("touchend", () => { this.dx = 0; });
+        document.getElementById("mob-dir-left").addEventListener("touchstart", () => { this.moveLeft() });
+        document.getElementById("mob-dir-left").addEventListener("touchend", () => { this.dx = 0; });
+        document.getElementById("mob-bomb").addEventListener("touchstart", () => { this.dropBomb(); });
     }
 
     onDeath(enemyWhoKilled, wasBomb) {
@@ -559,6 +589,7 @@ export function spawnPlayers(amount = 1)
     if(amount == 1) {
         // NOTE: startX, startY = null menee aina vasempaan yläkulmaan tileSizen mukaan
         players.push(new Player(0, null, null, keybinds1, "./assets/player0.png"));
+        players[0].bindMobile();
     } else {
         players.push(new Player(0, null, null, keybinds1, "./assets/player0.png"));
         players.push(new Player(1, (levelWidth - 2) * tileSize, (levelHeight - 2) * tileSize, keybinds2, "./assets/player0.png"));
