@@ -20,49 +20,68 @@ let cameraRt = 0;
 let cameraPt = 0;
 let cameraTt = 0;
 let cameraBt = 0;
-const followCameraSpeed = 0.05;
+let cameraT = 0;
+const followCameraSpeed = 0.5;
 const edgeCameraSpeed = 0.25;
 
 let targetOffset;
 let edgeOffset;
 
-export function updateCamera() {
+export function updateCamera() {    // TODO: välillä napsahtelee kun kävelee kulmissa
     const playerTile = getTileFromWorldLocation(players[0]);
     const playerX = playerTile.x / tileSize;
     const playerY = playerTile.y / tileSize;
+    let targetX;
+    let targetY;
 
     // Left edge
     if (playerX <= edgeOffset) {
+        // console.log('left');
         cameraPt = 0;
 
-        cameraLt += deltaTime * edgeCameraSpeed;
-        cameraLt = Math.min(cameraLt, 1);
+        cameraLt = getEdgeCameraT(cameraLt);
+        cameraT = cameraLt;
 
-        const targetX = 0;
-        cameraX = lerp(cameraX, targetX, cameraLt);
-        const targetY = getTargetY(playerY);
-        cameraY = lerp(cameraY, targetY, cameraLt);
-
-        ctx.setTransform(scale, 0, 0, scale, cameraX, cameraY);
+        targetX = 0;
+        targetY = getTargetY(playerY);
 
     // Right edge
     } else if (playerX >= levelWidth - edgeOffset) {
+        // console.log('right');
         cameraPt = 0;
 
-        cameraRt += deltaTime * edgeCameraSpeed;
-        cameraRt = Math.min(cameraRt, 1);
+        cameraRt = getEdgeCameraT(cameraRt);
+        cameraT = cameraRt;
 
-        const targetX = canvas.width / 2 - scale * (levelWidth - targetOffset) * tileSize;
-        cameraX = lerp(cameraX, targetX, cameraRt);
-        const targetY = getTargetY(playerY);
-        cameraY = lerp(cameraY, targetY, cameraRt);
+        targetX = canvas.width / 2 - scale * (levelWidth - targetOffset) * tileSize;
+        targetY = getTargetY(playerY);
 
-        ctx.setTransform(scale, 0, 0, scale, cameraX, cameraY);
-    
-    // TODO: lerp top bot
+    // Top edge
+    } else if (playerY <= edgeOffset) {
+        // console.log('top');
+        cameraPt = 0;
+
+        cameraTt += deltaTime * edgeCameraSpeed;
+        cameraTt = Math.min(cameraTt, 1);
+        cameraT = cameraTt;
+
+        targetX = canvas.width / 2 - scale * players[0].x;
+        targetY = 0;
+
+    // Bottom edge
+    } else if (playerY >= levelHeight - edgeOffset) {
+        // console.log('bot');
+        cameraPt = 0;
+
+        cameraBt = getEdgeCameraT(cameraBt);
+        cameraT = cameraBt;
+
+        targetX = canvas.width / 2 - scale * players[0].x;
+        targetY = getTargetY(playerY);
     
     // Follow camera
     } else {
+        // console.log('follow');
         cameraLt = 0;
         cameraRt = 0;
         cameraTt = 0;
@@ -70,19 +89,21 @@ export function updateCamera() {
 
         cameraPt += deltaTime * followCameraSpeed;
         cameraPt = Math.min(cameraPt, 1);
+        cameraT = cameraPt;
 
-        const targetX = canvas.width / 2 - scale * players[0].x;
-        const targetY = getTargetY(playerY);
-        
-        if (playerX >= targetOffset) {
-            cameraX = lerp(cameraX, targetX, cameraPt);
-        }
-        if (playerY >= targetOffset) {
-            cameraY = lerp(cameraY, targetY, cameraPt);
-        }
-
-        ctx.setTransform(scale, 0, 0, scale, cameraX, cameraY);
+        targetX = canvas.width / 2 - scale * players[0].x;
+        targetY = getTargetY(playerY);
     }
+
+    // Lerp and transform
+    cameraX = lerp(cameraX, targetX, cameraT);
+    cameraY = lerp(cameraY, targetY, cameraT);
+    ctx.setTransform(scale, 0, 0, scale, cameraX, cameraY);
+}
+
+function getEdgeCameraT(t) {
+    t += deltaTime * edgeCameraSpeed;
+    return Math.min(t, 1);
 }
 
 function getTargetY(playerY) {
