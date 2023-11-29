@@ -1,4 +1,4 @@
-import { ctx, level, tileSize, deltaTime, game, deathReasonText, bigBomb, setGlobalPause, isMultiplayer } from "./main.js";
+import { ctx, level, tileSize, deltaTime, game, deathReasonText, bigBomb, setGlobalPause, isMultiplayer, spriteSheet } from "./main.js";
 import { lastLevel, levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { getMusicalTimeout, msPerBeat, playAudio, playFootsteps, playTrack, randomSfx, sfxs, stopFootsteps, tracks } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
@@ -31,7 +31,7 @@ export const players = [];
 
 class Player
 {
-    constructor(id, startX, startY, keybinds, sprite) {
+    constructor(id, startX, startY, keybinds, normalSprite, lanternSprite) {
         // Spawn point
         this.startX = startX || tileSize;
         this.startY = startY || tileSize;
@@ -65,9 +65,9 @@ class Player
 
         // Animations
         this.spriteSheet = new Image();
-        this.normalSprite = spriteSheets.player_normal;
-        this.lanternSprite = spriteSheets.player_lantern;
-        this.spriteSheet.src = sprite || this.normalSprite;
+        this.normalSprite = normalSprite;
+        this.lanternSprite = lanternSprite;
+        this.spriteSheet.src = this.normalSprite;
         this.frameWidth = 256/4;
         this.frameHeight = 256/4;
         this.totalFrames = 4;
@@ -588,11 +588,11 @@ export function spawnPlayers(amount = 1)
 {
     if(amount == 1) {
         // NOTE: startX, startY = null menee aina vasempaan yläkulmaan tileSizen mukaan
-        players.push(new Player(0, null, null, keybinds1, "./assets/player0.png"));
+        players.push(new Player(0, null, null, keybinds1, spriteSheets.player1_normal, spriteSheets.player1_lantern));
         players[0].bindMobile();
     } else {
-        players.push(new Player(0, null, null, keybinds1, "./assets/player0.png"));
-        players.push(new Player(1, (levelWidth - 2) * tileSize, (levelHeight - 2) * tileSize, keybinds2, "./assets/player0.png"));
+        players.push(new Player(0, null, null, keybinds1, spriteSheets.player1_normal, spriteSheets.player1_lantern));
+        players.push(new Player(1, (levelWidth - 2) * tileSize, (levelHeight - 2) * tileSize, keybinds2, spriteSheets.player2_normal, spriteSheets.player2_lantern));
     }
 
     for (let i = 0; i < players.length; i++) {

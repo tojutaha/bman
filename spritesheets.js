@@ -1,7 +1,10 @@
 async function preLoadSpriteSheets() {
     const spritesheets = {
-        player_normal: "./assets/player.png",
-        player_lantern: "./assets/player_lantern.png",
+        player1_normal: "./assets/player.png",
+        player1_lantern: "./assets/player_lantern.png",
+
+        player2_normal: "./assets/player2.png",
+        player2_lantern: "./assets/player2_lantern.png",
 
         zombie: "./assets/zombie.png",
         ghost: "./assets/ghost.png",
