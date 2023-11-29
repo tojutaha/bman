@@ -43,6 +43,8 @@ export class MultiplayerGame extends Game
     }
 
     initLevel() {
+        // Heartbeatit pois
+        this.beatDropped = true;
         // Reset camera position
         setCameraX(0);
     }

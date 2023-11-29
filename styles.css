@@ -188,21 +188,6 @@ body {
     color: red;
 }
 
-.multiplayer-settings {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    padding-top: 20px;
-}
-
-#numPlayers {
-    font-size: 20px;
-    width: 50px;
-    height: 22px;
-}
-
 /* Pause menu */
 .pause-menu-container {
     visibility: hidden;

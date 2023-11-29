@@ -38,10 +38,10 @@ const mainMenu = document.querySelector('.main-menu-container');
 const newGameButton = document.getElementById("newGameButton");
 const confirmText = document.getElementById("confirmText");
 const continueGameButton = document.getElementById("continueGameButton");
+const pvpGameButton = document.getElementById("PVPGameButton")
 const howToPlayMenu = document.querySelector(".how-to-play-container");
 const howToPlayButton = document.getElementById("howToPlayButton");
 const closeButton = document.getElementById("closeButton");
-const numPlayersOption = document.getElementById("numPlayers");
 
 export function showMainMenu()
 {
@@ -55,12 +55,9 @@ export function showMainMenu()
     infoDisplays.style.visibility = 'hidden';
 }
 
-numPlayersOption.addEventListener('change', function() {
-    setNumOfPlayers(parseInt(numPlayersOption.value));
-});
-
 let confirmed = false;
 newGameButton.addEventListener('click', function() {
+    setNumOfPlayers(1);
     if (localStorage.length === 0) {
         game.newGame();
         mainMenu.style.visibility = 'hidden';
@@ -79,6 +76,13 @@ newGameButton.addEventListener('click', function() {
         confirmed = true;
     }
 
+});
+
+pvpGameButton.addEventListener('click', function() {
+    setNumOfPlayers(2);
+    game.newGame();
+    mainMenu.style.visibility = 'hidden';
+    infoDisplays.style.visibility = 'visible';
 });
 
 continueGameButton.addEventListener('click', function() {
