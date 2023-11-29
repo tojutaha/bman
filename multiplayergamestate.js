@@ -80,17 +80,38 @@ export class MultiplayerGame extends Game
 
     restartLevel()
     {
-        resetPlayerPositions();
-
         setTimeout(() => {
+            setGlobalPause(true);
             clearBombs();
-        }, 1000);
 
-        setTimeout(() => {
+            setLevelHeight(PVPlevelData.height);
+            setLevelWidth(PVPlevelData.width);
+            setLevelType(PVPlevelData.type);
+            setLevelPowerup(PVPlevelData.powerup);
+            setPowerupCount(PVPlevelData.powerupCount);
+            setSoftwallPercent(PVPlevelData.softwallPercent);
+            setTextures();
+
+            let newLevel = createTiles();
+            level.length = 0;
+            Array.prototype.push.apply(level, newLevel);
+
+            if (level.length > 0) {
+                this.firstBombDropped = true;
+                this.firstBombExploded = true;
+                //levelHeader.playAnimation(); TODO
+                //resetPlayerPositions();
+            } else {
+                throw new Error("Failed to create level");
+            }
+            initHardWallsCanvas();
+            setGlobalPause(false);
+        
             this.initLevel();
             players.forEach(p => {
                 p.isDead = false;
             });
+            resetPlayerPositions();
         }, 2000);
     }
     
