@@ -479,6 +479,7 @@ body {
     color: white;
     border-color: #303030;
     border-radius: 10%;
+    box-shadow: 2px 2px 4px rgba(200, 200, 200, 0.1);
 }
 
 .d-pad {
