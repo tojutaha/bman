@@ -15,7 +15,6 @@ export function setCameraY(value) {
     cameraY = value;
 }
 
-
 let cameraLt = 0;
 let cameraRt = 0;
 let cameraPt = 0;
@@ -33,7 +32,7 @@ export function updateCamera() {
     const playerY = playerTile.y / tileSize;
 
     // Left edge
-    if (playerX <= edgeOffset && playerY <= edgeOffset) {
+    if (playerX <= edgeOffset) {
         cameraPt = 0;
 
         cameraLt += deltaTime * edgeCameraSpeed;
@@ -41,8 +40,10 @@ export function updateCamera() {
 
         const targetX = 0;
         cameraX = lerp(cameraX, targetX, cameraLt);
+        const targetY = getTargetY(playerY);
+        cameraY = lerp(cameraY, targetY, cameraLt);
 
-        ctx.setTransform(scale, 0, 0, scale, cameraX, 0);
+        ctx.setTransform(scale, 0, 0, scale, cameraX, cameraY);
 
     // Right edge
     } else if (playerX >= levelWidth - edgeOffset) {
@@ -53,33 +54,13 @@ export function updateCamera() {
 
         const targetX = canvas.width / 2 - scale * (levelWidth - targetOffset) * tileSize;
         cameraX = lerp(cameraX, targetX, cameraRt);
+        const targetY = getTargetY(playerY);
+        cameraY = lerp(cameraY, targetY, cameraRt);
 
-        ctx.setTransform(scale, 0, 0, scale, cameraX, playerY);
-
-    // // Top edge
-    // } else if (playerY <= edgeOffset) {
-    //     cameraPt = 0;
-
-    //     cameraTt += deltaTime * edgeCameraSpeed;
-    //     cameraTt = Math.min(cameraTt, 1);
-
-    //     const targetY = 0;
-    //     cameraY = lerp(cameraY, targetY, cameraTt);
-
-    //     ctx.setTransform(scale, 0, 0, scale, cameraX, cameraY);
-
-    // // Bottom edge
-    // } else if (playerY >= levelHeight - edgeOffset) {
-    //     cameraPt = 0;
-
-    //     cameraBt += deltaTime * edgeCameraSpeed;
-    //     cameraBt = Math.min(cameraBt, 1);
-
-    //     const targetY = canvas.height - scale * tileSize * (levelHeight + 1) - edgeOffset * scale * tileSize;
-    //     cameraY = lerp(cameraY, targetY, cameraBt);
-
-    //     ctx.setTransform(scale, 0, 0, scale, cameraX, cameraY);
-
+        ctx.setTransform(scale, 0, 0, scale, cameraX, cameraY);
+    
+    // TODO: lerp top bot
+    
     // Follow camera
     } else {
         cameraLt = 0;
@@ -91,25 +72,40 @@ export function updateCamera() {
         cameraPt = Math.min(cameraPt, 1);
 
         const targetX = canvas.width / 2 - scale * players[0].x;
-        const targetY = canvas.height / 2 - scale * players[0].y;
+        const targetY = getTargetY(playerY);
         
-        // TODO: näiden säätöä
         if (playerX >= targetOffset) {
             cameraX = lerp(cameraX, targetX, cameraPt);
         }
-        if (playerY >= targetOffset && isMobile) {  //isMobile pois
+        if (playerY >= targetOffset) {
             cameraY = lerp(cameraY, targetY, cameraPt);
         }
 
-        ctx.setTransform(scale, 0, 0, scale, cameraX, 0);
+        ctx.setTransform(scale, 0, 0, scale, cameraX, cameraY);
     }
+}
+
+function getTargetY(playerY) {
+    let targetY;
+    // Top edge
+    if (playerY <= edgeOffset) { 
+        targetY = 0;
+    } 
+    // Bottom edge
+    else if (playerY >= levelHeight - edgeOffset) { 
+        targetY = canvas.width / 2 - scale * (levelHeight - targetOffset) * tileSize;
+    } else {
+        targetY = canvas.height / 2 - scale * players[0].y;
+    }
+
+    return targetY;
 }
 
 export function setCameraOffsets() {
     if (isMobile) {
         console.info("camera: mobile offsets");
-        targetOffset = 3.5;
-        edgeOffset = 2;
+        targetOffset = 3;
+        edgeOffset = 3;
     } else {
         console.info("camera: normal offsets");
         targetOffset = 6.5;
