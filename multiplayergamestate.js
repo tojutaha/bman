@@ -65,16 +65,55 @@ export class MultiplayerGame extends Game
         Array.prototype.push.apply(level, newLevel);
 
         if (level.length > 0) {
-            this.firstBombDropped = false;
-            this.firstBombExploded = false;
-            levelHeader.playAnimation();
-            //entrance.playAnimation();
-            //exit.init();
+            this.firstBombDropped = true;
+            this.firstBombExploded = true;
+            //levelHeader.playAnimation(); TODO
             resetPlayerPositions();
         } else {
             throw new Error("Failed to create level");
         }
         initHardWallsCanvas();
         setGlobalPause(false);
+    }
+
+    restartLevel()
+    {
+        resetPlayerPositions();
+
+        setTimeout(() => {
+            clearBombs();
+        }, 1000);
+
+        setTimeout(() => {
+            this.initLevel();
+            players.forEach(p => {
+                p.isDead = false;
+            });
+        }, 2000);
+    }
+    
+    increaseScore(points) {
+        // TODO
+    }
+
+    nextLevel() {
+        // Only one level
+    }
+    
+    checkGameState() {
+        // TODO
+    }
+
+    over() {
+    // TODO
+    }
+
+    // Saving & loading
+    saveGame() {
+        // No saving
+    }
+    
+    loadGame() {
+        // No loading
     }
 }
