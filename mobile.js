@@ -8,7 +8,7 @@ export function responsivityCheck() {
     const isPortrait = window.matchMedia('(orientation: portrait)').matches;
     const isLandscape = window.matchMedia('(orientation: landscape)').matches;
 
-    if (window.innerHeight < 400) {
+    if (window.innerHeight <= 428) {
         isMobile = true;
         setCameraOffsets();
         resizeCanvas();

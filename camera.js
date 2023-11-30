@@ -27,7 +27,7 @@ const edgeCameraSpeed = 0.25;
 let targetOffset;
 let edgeOffset;
 
-export function updateCamera() {    // TODO: välillä napsahtelee kun kävelee kulmissa
+export function updateCamera() {
     const playerTile = getTileFromWorldLocation(players[0]);
     const playerX = playerTile.x / tileSize;
     const playerY = playerTile.y / tileSize;
@@ -37,8 +37,7 @@ export function updateCamera() {    // TODO: välillä napsahtelee kun kävelee 
     // Left edge
     if (playerX <= edgeOffset) {
         // console.log('left');
-        cameraPt = 0;
-
+        resetOtherTs('Lt');
         cameraLt = getEdgeCameraT(cameraLt);
         cameraT = cameraLt;
 
@@ -48,8 +47,7 @@ export function updateCamera() {    // TODO: välillä napsahtelee kun kävelee 
     // Right edge
     } else if (playerX >= levelWidth - edgeOffset) {
         // console.log('right');
-        cameraPt = 0;
-
+        resetOtherTs('Rt');
         cameraRt = getEdgeCameraT(cameraRt);
         cameraT = cameraRt;
 
@@ -59,10 +57,8 @@ export function updateCamera() {    // TODO: välillä napsahtelee kun kävelee 
     // Top edge
     } else if (playerY <= edgeOffset) {
         // console.log('top');
-        cameraPt = 0;
-
-        cameraTt += deltaTime * edgeCameraSpeed;
-        cameraTt = Math.min(cameraTt, 1);
+        resetOtherTs('Tt');
+        cameraTt = getEdgeCameraT(cameraTt);
         cameraT = cameraTt;
 
         targetX = canvas.width / 2 - scale * players[0].x;
@@ -71,21 +67,17 @@ export function updateCamera() {    // TODO: välillä napsahtelee kun kävelee 
     // Bottom edge
     } else if (playerY >= levelHeight - edgeOffset) {
         // console.log('bot');
-        cameraPt = 0;
-
+        resetOtherTs('Bt');
         cameraBt = getEdgeCameraT(cameraBt);
         cameraT = cameraBt;
 
         targetX = canvas.width / 2 - scale * players[0].x;
         targetY = getTargetY(playerY);
     
-    // // Follow camera
+    // Follow camera
     } else {
         // console.log('follow');
-        cameraLt = 0;
-        cameraRt = 0;
-        cameraTt = 0;
-        cameraBt = 0;
+        resetOtherTs('Pt');
 
         cameraPt += deltaTime * followCameraSpeed;
         cameraPt = Math.min(cameraPt, 1);
@@ -101,11 +93,21 @@ export function updateCamera() {    // TODO: välillä napsahtelee kun kävelee 
     ctx.setTransform(scale, 0, 0, scale, cameraX, cameraY);
 }
 
+// Reset all other t's to 0 except the one given as parameter
+function resetOtherTs(t) {
+    cameraLt = t === 'Lt' ? cameraLt : 0;
+    cameraRt = t === 'Rt' ? cameraRt : 0;
+    cameraPt = t === 'Pt' ? cameraPt : 0;
+    cameraTt = t === 'Tt' ? cameraTt : 0;
+    cameraBt = t === 'Bt' ? cameraBt : 0;
+}
+
 function getEdgeCameraT(t) {
     t += deltaTime * edgeCameraSpeed;
     return Math.min(t, 1);
 }
 
+// TODO: enää napsahtaa sivuedge -> Y suunnassa
 function getTargetY(playerY) {
     let targetY;
     // Top edge
