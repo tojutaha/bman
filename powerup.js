@@ -1,6 +1,7 @@
 import { ctx, level, tileSize } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 import { spriteSheets } from "./spritesheets.js";
+import { clamp } from "./utils.js";
 
 export class Powerup
 {
@@ -21,7 +22,8 @@ export class Powerup
         }
 
         else if (tile.powerup === "speed") {
-            player.speed += 40;
+            // TODO: Mikä on sopiva max speed?
+            player.speed = clamp(player.speed += 40, 0, 250);
         }
     }
 }
