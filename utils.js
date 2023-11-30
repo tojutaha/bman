@@ -132,6 +132,22 @@ export function getRandomWalkablePointInRadius(center, minRadius, maxRadius)
     return walkableTiles[randomIndex];
 }
 
+// Same kuin ylempi, mutta ilman radiusta
+export function getRandomWalkablePoint()
+{
+    const walkableTiles = [];
+    for (let y = 0; y < levelHeight; y++) {
+        for (let x = 0; x < levelWidth; x++) {
+            if (isWalkable(x, y)) {
+                walkableTiles.push(level[x][y]);
+            }
+        }
+    }
+
+    const randomIndex = Math.floor(Math.random() * walkableTiles.length);
+    return walkableTiles[randomIndex];
+}
+
 // Palauttaa laatan parametrin koordinaateista
 export function getTileFromWorldLocation(loc)
 {
