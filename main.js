@@ -10,11 +10,11 @@ import { Game } from "./gamestate.js";
 import { MultiplayerGame } from "./multiplayergamestate.js";
 import { updateCamera } from "./camera.js";
 import { showDoor, showPauseMenu } from "./page.js";
+import { isMobile, responsivityCheck } from "./mobile.js";
 // TODO: Nämä importit voi ottaa myöhemmin pois
 import { fetchEverything } from "./gamestate.js";
 import { loadTextures } from "./level.js";
 import { loadSpriteSheets } from "./spritesheets.js";
-import { responsivityCheck } from "./mobile.js";
 
 
 ////////////////////
@@ -59,7 +59,7 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 // Render
 let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
-export const scale = 1;
+export let scale = 1;
 
 export const levelHeader = new LevelHeaderAnimation();
 export const gameOverText = new GameOverAnimation();
@@ -73,6 +73,8 @@ export const fadeTransition = new FadeTransition();
 
 function Render(timeStamp)
 {
+    scale = isMobile ? 0.75 : 1;
+
     deltaTime = (timeStamp - lastTimeStamp) / 1000;
     ctx.save();
 

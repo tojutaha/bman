@@ -79,7 +79,7 @@ export function updateCamera() {    // TODO: välillä napsahtelee kun kävelee 
         targetX = canvas.width / 2 - scale * players[0].x;
         targetY = getTargetY(playerY);
     
-    // Follow camera
+    // // Follow camera
     } else {
         // console.log('follow');
         cameraLt = 0;
@@ -118,15 +118,14 @@ function getTargetY(playerY) {
     } else {
         targetY = canvas.height / 2 - scale * players[0].y;
     }
-
     return targetY;
 }
 
 export function setCameraOffsets() {
     if (isMobile) {
         console.info("camera: mobile offsets");
-        targetOffset = 3;
-        edgeOffset = 3;
+        targetOffset = 4;
+        edgeOffset = 4;
     } else {
         console.info("camera: normal offsets");
         targetOffset = 6.5;
