@@ -92,6 +92,9 @@ function Render(timeStamp)
         if(!isMultiplayer){
             entrance.render();
         }
+        if(isMultiplayer) {
+            renderPowerups();
+        }
         renderBombs();
         renderPlayer(timeStamp);
         renderWalls();

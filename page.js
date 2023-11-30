@@ -1,5 +1,5 @@
 import { enemies, enemyType, spawnEnemiesByType } from "./enemy.js";
-import { ctx, tileSize, game, setGlobalPause, globalPause, setNumOfPlayers } from "./main.js";
+import { ctx, tileSize, game, setGlobalPause, globalPause, setNumOfPlayers, isMultiplayer } from "./main.js";
 import { fetchEverything, lastLevel, levelHeight, levelWidth } from "./gamestate.js";
 import { players } from "./player.js";
 import { playAudio, playTrack, sfxs, tracks } from "./audio.js";
@@ -213,6 +213,10 @@ pauseMenuContinueButton.addEventListener('click', function() {
 pauseMenuExitButton.addEventListener('click', function() {
     pauseMenu.style.visibility = 'hidden';
     showMainMenu();
+
+    if(isMultiplayer) {
+        game.over(); // Clears timer handles etc.
+    }
 });
 
 
