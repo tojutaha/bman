@@ -38,8 +38,9 @@ export class MultiplayerGame extends Game
         this.newLevel();
         spawnPlayers(2);
         this.initLevel();
-        updateLevelDisplay(this.level);
-        updateScoreDisplay(this.score);
+        // TODO: Oma score display
+        //updateLevelDisplay(this.level);
+        //updateScoreDisplay(this.score);
     }
 
     initLevel() {

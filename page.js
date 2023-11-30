@@ -11,6 +11,8 @@ export let wonGame = false;
 
 ////////////////////
 // Score and level display
+
+// Solo
 let scoreDisplay = document.getElementById("score");
 export function updateScoreDisplay(score) {
     scoreDisplay.textContent = score;
@@ -27,6 +29,19 @@ export function updateLevelDisplay(level) {
         levelDisplay.textContent = "YOU WIN";
     }
 }
+// PVP
+let p1ScoreDisplay = document.getElementById("p1-score");
+export function updateP1Score(value) {
+    p1ScoreDisplay.textContent = value;
+}
+let p2ScoreDisplay = document.getElementById("p2-score");
+export function updateP2Score(value) {
+    p2ScoreDisplay.textContent = value;
+}
+let pvpTimerDisplay = document.getElementById("pvp-timer");
+export function updatePVPTimerDisplay(value) {
+    pvpTimerDisplay.textContent = value;
+}
 
 ////////////////////
 // Main menu / buttons
@@ -34,6 +49,7 @@ const playButton = document.getElementById("playGameButton");
 const loadingText = document.getElementById("loading-text");
 const playContainer = document.querySelector(".play-game-container");
 const infoDisplays = document.querySelector(".info-displays");
+const pvpInfoDisplays = document.querySelector(".pvp-info-displays");
 const mainMenu = document.querySelector('.main-menu-container');
 const newGameButton = document.getElementById("newGameButton");
 const confirmText = document.getElementById("confirmText");
@@ -62,6 +78,7 @@ newGameButton.addEventListener('click', function() {
         game.newGame();
         mainMenu.style.visibility = 'hidden';
         infoDisplays.style.visibility = 'visible';
+        pvpInfoDisplays.style.visibility = 'hidden';
         confirmed = false;
     } else {
         confirmText.style.visibility = 'visible';
@@ -71,6 +88,7 @@ newGameButton.addEventListener('click', function() {
             confirmText.style.visibility = 'hidden';
             mainMenu.style.visibility = 'hidden';
             infoDisplays.style.visibility = 'visible';
+            pvpInfoDisplays.style.visibility = 'hidden';
             newGameButton.innerText = "New Game";
         }
         confirmed = true;
@@ -82,7 +100,8 @@ pvpGameButton.addEventListener('click', function() {
     setNumOfPlayers(2);
     game.newGame();
     mainMenu.style.visibility = 'hidden';
-    infoDisplays.style.visibility = 'visible';
+    infoDisplays.style.visibility = 'hidden';
+    pvpInfoDisplays.style.visibility = 'visible';
 });
 
 continueGameButton.addEventListener('click', function() {

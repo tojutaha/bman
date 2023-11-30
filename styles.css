@@ -47,6 +47,29 @@ body {
     position: relative;
 }
 
+.pvp-info-displays {
+    visibility: hidden;
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    padding: 0.2em;
+    max-width: 832px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    gap: 10px;
+}
+
+.pvp-spacer {
+    padding-left: 125px;
+    padding-right: 125px;
+}
+
+.pvp-text-display {
+    font-size: 1.8rem;
+}
+
 #canvas {
     border-color: var(--lightgrey);
     border-style: solid;
