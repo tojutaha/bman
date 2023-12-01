@@ -328,6 +328,11 @@ spawnSkeletonButton.addEventListener('click', function() {
     spawnEnemiesByType(enemyType.SKELETON, 1);
 });
 
+let spawnZombieButton = document.getElementById('spawn-zombie');
+spawnZombieButton.addEventListener('click', function() {
+    spawnEnemiesByType(enemyType.ZOMBIE, 1);
+});
+
 // Next level
 let nxtLvlButton = document.getElementById("next-level");
 nxtLvlButton.addEventListener("click", function() {
