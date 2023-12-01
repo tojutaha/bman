@@ -334,8 +334,10 @@ class Player
         }
 
         if (!collides) {
-            this.x = nextX;
-            this.y = nextY;
+            //this.x = nextX;
+            //this.y = nextY;
+            this.x += this.dx;
+            this.y += this.dy;
         }
 
     }
