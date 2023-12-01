@@ -514,9 +514,7 @@ class Player
         if(isMultiplayer) {
             if (!this.isDead) {
                 this.isDead = true;
-                if(wasBomb) {
-                    game.updateScore(this.id, instigator);
-                }
+                game.updateScore(this.id, instigator, enemyWhoKilled);
                 game.restartLevel();
             }
         } else {

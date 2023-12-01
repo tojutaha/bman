@@ -2,7 +2,7 @@ import { Game, setLevelHeight, setLevelPowerup, setLevelType, setLevelWidth, set
 import { playTrack, loadAudioFiles, tracks, playBirdsong, stopBirdsong, stopCurrentTrack } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
-import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
+import { clearEnemies, enemies, enemyType, spawnEnemies, spawnEnemiesByType } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
 import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial, bigBomb, fadeTransition, bigBombOverlay } from "./main.js";
 import { showGameOverMenu, updateLevelDisplay, updateP1Score, updateP2Score, updatePVPTimerDisplay, updateScoreDisplay } from "./page.js";
@@ -39,6 +39,9 @@ export class MultiplayerGame extends Game
             if(++this.seconds % 60 == 0) {
                 ++this.minutes;
                 this.seconds = 0;
+
+                // Spawnaa zombeja minuutin välein
+                spawnEnemiesByType(enemyType.ZOMBIE, 1);
             }
             updatePVPTimerDisplay(`${this.minutes.toString().padStart(2, '0')}:
                                   ${this.seconds.toString().padStart(2, '0')}`);
@@ -93,7 +96,7 @@ export class MultiplayerGame extends Game
 
     newLevel() {
         setGlobalPause(true);
-        clearEnemies(); // Varmuuden vuoksi..
+        clearEnemies();
         clearBombs();
  
         setLevelHeight(PVPlevelData.height);
@@ -153,29 +156,34 @@ export class MultiplayerGame extends Game
                 p.isDead = false;
             });
             resetPlayerPositions();
+            clearEnemies();
         }, 2000);
     }
     
-    updateScore(playerWhoDied, playerWhoKilled) {
+    updateScore(playerWhoDied, playerWhoKilled, enemyWhoKilled) {
         console.log("rip player:", playerWhoDied);
-        console.log("instigator:", playerWhoKilled);
-
-        if(playerWhoDied === playerWhoKilled) {
-            console.log("Oops, nuked themselves..")
-            if(playerWhoDied === 0) {
-                --this.player1Score;
-                updateP1Score(this.player1Score);
+        if(playerWhoKilled)
+            console.log("instigator:", playerWhoKilled);
+        if(enemyWhoKilled)
+            console.log("enemy:", enemyWhoKilled);
+        if(playerWhoKilled) {
+            if (playerWhoDied === playerWhoKilled) {
+                console.log("Oops, nuked themselves..")
+                if (playerWhoDied === 0) {
+                    --this.player1Score;
+                    updateP1Score(this.player1Score);
+                } else {
+                    --this.player2Score;
+                    updateP2Score(this.player2Score);
+                }
             } else {
-                --this.player2Score;
-                updateP2Score(this.player2Score);
-            }
-        } else {
-            if(playerWhoKilled === 0) {
-                ++this.player1Score;
-                updateP1Score(this.player1Score);
-            } else {
-                ++this.player2Score;
-                updateP2Score(this.player2Score);
+                if (playerWhoKilled === 0) {
+                    ++this.player1Score;
+                    updateP1Score(this.player1Score);
+                } else {
+                    ++this.player2Score;
+                    updateP2Score(this.player2Score);
+                }
             }
         }
     }
