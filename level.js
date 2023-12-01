@@ -1,7 +1,8 @@
 import { ctx, tileSize, level } from "./main.js";
 import { levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
-import { cameraX } from "./camera.js";
+import { cameraX, cameraY } from "./camera.js";
+import { players } from "./player.js";
 
 let hardWallTexture = new Image();
 let softWallTexture = new Image();
@@ -107,5 +108,5 @@ export function renderWalls()
 
 export function renderFloor()
 {
-    floor.style.backgroundPosition = cameraX + 'px ' + 0 + 'px';
+    floor.style.backgroundPosition = cameraX + 'px ' + cameraY + 'px';
 }
