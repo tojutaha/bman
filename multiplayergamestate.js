@@ -29,6 +29,7 @@ export class MultiplayerGame extends Game
         this.player1Score = 0;
         this.player2Score = 0;
         this.timerHandle = null;
+        this.powerupSpawnrate = 30;
         this.seconds = 0;
         this.minutes = 0;
     }
@@ -42,10 +43,9 @@ export class MultiplayerGame extends Game
             updatePVPTimerDisplay(`${this.minutes.toString().padStart(2, '0')}:
                                   ${this.seconds.toString().padStart(2, '0')}`);
 
-            // TODO: 10 sekkaa on vähän liian useasti.. 
-            // TODO: Spawnataan mieluummin jotain muuta kun speediä
+            // TODO: Spawnataan mieluummin jotain muuta kun speediä?
             // Spawnaa random poweruppeja tietyn ajan välein
-            if(this.seconds % 10 == 0) {
+            if(this.seconds % this.powerupSpawnrate == 0) {
                 const tile = getRandomWalkablePoint();
                 tile.powerup = randomPowerup();
                 tile.hasPowerup = true;
@@ -82,9 +82,6 @@ export class MultiplayerGame extends Game
         this.newLevel();
         spawnPlayers(2);
         this.initLevel();
-        // TODO: Oma score display
-        //updateLevelDisplay(this.level);
-        //updateScoreDisplay(this.score);
     }
 
     initLevel() {
@@ -114,7 +111,7 @@ export class MultiplayerGame extends Game
         if (level.length > 0) {
             this.firstBombDropped = true;
             this.firstBombExploded = true;
-            //levelHeader.playAnimation(); TODO
+            //levelHeader.playAnimation();
             resetPlayerPositions();
         } else {
             throw new Error("Failed to create level");
@@ -144,8 +141,7 @@ export class MultiplayerGame extends Game
             if (level.length > 0) {
                 this.firstBombDropped = true;
                 this.firstBombExploded = true;
-                //levelHeader.playAnimation(); TODO
-                //resetPlayerPositions();
+                //levelHeader.playAnimation();
             } else {
                 throw new Error("Failed to create level");
             }
@@ -164,8 +160,6 @@ export class MultiplayerGame extends Game
         console.log("rip player:", playerWhoDied);
         console.log("instigator:", playerWhoKilled);
 
-        // TODO: Jos molemmat pamahtaa samaan aikaan,
-        // kumpikaan ei saa pisteitä?
         if(playerWhoDied === playerWhoKilled) {
             console.log("Oops, nuked themselves..")
             if(playerWhoDied === 0) {
