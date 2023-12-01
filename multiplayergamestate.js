@@ -5,7 +5,7 @@ import { setCameraX } from "./camera.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
 import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial, bigBomb, fadeTransition, bigBombOverlay } from "./main.js";
-import { showGameOverMenu, updateLevelDisplay, updateP1Score, updatePVPTimerDisplay, updateScoreDisplay } from "./page.js";
+import { showGameOverMenu, updateLevelDisplay, updateP1Score, updateP2Score, updatePVPTimerDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation, powerupLocations} from "./tile.js";
 import { levels, levelWidth, levelHeight, levelType, levelPowerup, softwallPercent, powerupCount } from "./gamestate.js";
@@ -26,6 +26,8 @@ export class MultiplayerGame extends Game
     constructor() {
         super();
         this.numPlayers = 2;
+        this.player1Score = 0;
+        this.player2Score = 0;
         this.timerHandle = null;
         this.seconds = 0;
         this.minutes = 0;
@@ -66,6 +68,8 @@ export class MultiplayerGame extends Game
     }
 
     newGame() {
+        this.player1Score = 0;
+        this.player2Score = 0;
         this.startTimer();
         stopBirdsong(); // TODO: Halutaanko jotain audiota tänne?
         stopCurrentTrack();
@@ -159,6 +163,27 @@ export class MultiplayerGame extends Game
     updateScore(playerWhoDied, playerWhoKilled) {
         console.log("rip player:", playerWhoDied);
         console.log("instigator:", playerWhoKilled);
+
+        // TODO: Jos molemmat pamahtaa samaan aikaan,
+        // kumpikaan ei saa pisteitä?
+        if(playerWhoDied === playerWhoKilled) {
+            console.log("Oops, nuked themselves..")
+            if(playerWhoDied === 0) {
+                --this.player1Score;
+                updateP1Score(this.player1Score);
+            } else {
+                --this.player2Score;
+                updateP2Score(this.player2Score);
+            }
+        } else {
+            if(playerWhoKilled === 0) {
+                ++this.player1Score;
+                updateP1Score(this.player1Score);
+            } else {
+                ++this.player2Score;
+                updateP2Score(this.player2Score);
+            }
+        }
     }
 
     increaseScore(points) {
