@@ -426,6 +426,18 @@ class Player
         }
     }
 
+    buildWall() {
+        if(this.isDead) return;
+
+        if(isMultiplayer) {
+            // TODO: Collision ja powerupiks?
+            let tile = getTileFromWorldLocation(this);
+            const x = tile.x / tileSize;
+            const y = tile.y / tileSize;
+            level[x][y].type = "SoftWall";
+        }
+    }
+
     // Movement
     moveUp() {
         this.dy = -this.speed * deltaTime;
@@ -474,6 +486,10 @@ class Player
 
             case this.keybinds.drop_bomb:
                 this.dropBomb();
+                break;
+
+            case this.keybinds.build:
+                this.buildWall();
                 break;
         }
     }
@@ -560,6 +576,7 @@ export const keybinds1 = {
     move_left: "KeyA",
     move_right: "KeyD",
     drop_bomb: "Space",
+    build: "KeyE",
 };
 
 export const keybinds2 = {
@@ -568,6 +585,7 @@ export const keybinds2 = {
     move_left: "ArrowLeft",
     move_right: "ArrowRight",
     drop_bomb: "Enter",
+    //TODO: build: ""
 };
 
 // Finds a player with given id and returns it
