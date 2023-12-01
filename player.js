@@ -8,7 +8,7 @@ import { spriteSheets } from "./spritesheets.js";
 import { showGGMenu } from "./page.js";
 
 
-const godMode = true;
+const godMode = false;
 
 export const Direction = {
     UP: "Up",
@@ -329,7 +329,8 @@ class Player
 
         if (playerTile.isDeadly) {
             collides = true;
-            this.onDeath(null, true);
+            const instigator = playerTile.instigatedBy;
+            this.onDeath(null, true, instigator);
         }
 
         if (!collides) {
@@ -506,7 +507,8 @@ class Player
         document.getElementById("mob-bomb").addEventListener("touchstart", () => { this.dropBomb(); });
     }
 
-    onDeath(enemyWhoKilled, wasBomb) {
+    // NOTE: Instigator mahdollisesti validi ainoastaan pvp-modessa
+    onDeath(enemyWhoKilled, wasBomb, instigator) {
         if (godMode) return;
 
         if(isMultiplayer) {
@@ -514,6 +516,7 @@ class Player
                 this.isDead = true;
                 //this.healthPoints--;
                 //this.updateHealthPoints();
+                console.log("instigator:", instigator);
                 game.restartLevel();
             }
         } else {

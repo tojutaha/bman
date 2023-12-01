@@ -13,6 +13,7 @@
 - Valikkojen muokkaus
   - Valintapainike yksin- tai kaksinpelille
 - Healthpointtien näyttö molemmille pelaajille
+- How To Play: Kakkospelaajan näppis bindit
 - ...
 
 ###Optimointi
