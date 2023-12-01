@@ -166,24 +166,22 @@ export class MultiplayerGame extends Game
             console.log("instigator:", playerWhoKilled);
         if(enemyWhoKilled)
             console.log("enemy:", enemyWhoKilled);
-        if(playerWhoKilled) {
-            if (playerWhoDied === playerWhoKilled) {
-                console.log("Oops, nuked themselves..")
-                if (playerWhoDied === 0) {
-                    --this.player1Score;
-                    updateP1Score(this.player1Score);
-                } else {
-                    --this.player2Score;
-                    updateP2Score(this.player2Score);
-                }
+        if (playerWhoDied === playerWhoKilled) {
+            console.log("Oops, nuked themselves..")
+            if (playerWhoDied === 0) {
+                --this.player1Score;
+                updateP1Score(this.player1Score);
             } else {
-                if (playerWhoKilled === 0) {
-                    ++this.player1Score;
-                    updateP1Score(this.player1Score);
-                } else {
-                    ++this.player2Score;
-                    updateP2Score(this.player2Score);
-                }
+                --this.player2Score;
+                updateP2Score(this.player2Score);
+            }
+        } else {
+            if (playerWhoKilled === 0) {
+                ++this.player1Score;
+                updateP1Score(this.player1Score);
+            } else {
+                ++this.player2Score;
+                updateP2Score(this.player2Score);
             }
         }
     }

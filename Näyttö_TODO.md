@@ -13,6 +13,10 @@
 - Valikkojen muokkaus
   - Valintapainike yksin- tai kaksinpelille
 - Healthpointtien näyttö molemmille pelaajille
+- Joku ilmoistus(vilkku?) minne tileen vihollinen on spawnaamassa
+- Scoret sekä vihollisista, että pelaajista
+  - Pelaajista score tekstin animointi
+- Seinän pudotus/rakennus(?)
 - How To Play: Kakkospelaajan näppis bindit
 - ...
 
