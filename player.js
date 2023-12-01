@@ -514,9 +514,9 @@ class Player
         if(isMultiplayer) {
             if (!this.isDead) {
                 this.isDead = true;
-                //this.healthPoints--;
-                //this.updateHealthPoints();
-                console.log("instigator:", instigator);
+                if(wasBomb) {
+                    game.updateScore(this.id, instigator);
+                }
                 game.restartLevel();
             }
         } else {

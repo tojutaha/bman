@@ -156,8 +156,13 @@ export class MultiplayerGame extends Game
         }, 2000);
     }
     
+    updateScore(playerWhoDied, playerWhoKilled) {
+        console.log("rip player:", playerWhoDied);
+        console.log("instigator:", playerWhoKilled);
+    }
+
     increaseScore(points) {
-        // TODO
+        // Nothing to do
     }
 
     nextLevel() {
@@ -165,7 +170,7 @@ export class MultiplayerGame extends Game
     }
     
     checkGameState() {
-        // TODO
+        // Nothing to do
     }
 
     // Saving & loading
