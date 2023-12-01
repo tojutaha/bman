@@ -2,10 +2,10 @@ import { Game, setLevelHeight, setLevelPowerup, setLevelType, setLevelWidth, set
 import { playTrack, loadAudioFiles, tracks, playBirdsong, stopBirdsong, stopCurrentTrack } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
-import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
+import { clearEnemies, enemies, enemyType, spawnEnemies, spawnEnemiesByType } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
 import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial, bigBomb, fadeTransition, bigBombOverlay } from "./main.js";
-import { showGameOverMenu, updateLevelDisplay, updateP1Score, updatePVPTimerDisplay, updateScoreDisplay } from "./page.js";
+import { showGameOverMenu, updateLevelDisplay, updateP1Score, updateP2Score, updatePVPTimerDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation, powerupLocations} from "./tile.js";
 import { levels, levelWidth, levelHeight, levelType, levelPowerup, softwallPercent, powerupCount } from "./gamestate.js";
@@ -26,7 +26,10 @@ export class MultiplayerGame extends Game
     constructor() {
         super();
         this.numPlayers = 2;
+        this.player1Score = 0;
+        this.player2Score = 0;
         this.timerHandle = null;
+        this.powerupSpawnrate = 30;
         this.seconds = 0;
         this.minutes = 0;
     }
@@ -36,14 +39,16 @@ export class MultiplayerGame extends Game
             if(++this.seconds % 60 == 0) {
                 ++this.minutes;
                 this.seconds = 0;
+
+                // Spawnaa zombeja minuutin välein
+                spawnEnemiesByType(enemyType.ZOMBIE, 1);
             }
             updatePVPTimerDisplay(`${this.minutes.toString().padStart(2, '0')}:
                                   ${this.seconds.toString().padStart(2, '0')}`);
 
-            // TODO: 10 sekkaa on vähän liian useasti.. 
-            // TODO: Spawnataan mieluummin jotain muuta kun speediä
+            // TODO: Spawnataan mieluummin jotain muuta kun speediä?
             // Spawnaa random poweruppeja tietyn ajan välein
-            if(this.seconds % 10 == 0) {
+            if(this.seconds % this.powerupSpawnrate == 0) {
                 const tile = getRandomWalkablePoint();
                 tile.powerup = randomPowerup();
                 tile.hasPowerup = true;
@@ -66,6 +71,8 @@ export class MultiplayerGame extends Game
     }
 
     newGame() {
+        this.player1Score = 0;
+        this.player2Score = 0;
         this.startTimer();
         stopBirdsong(); // TODO: Halutaanko jotain audiota tänne?
         stopCurrentTrack();
@@ -78,9 +85,6 @@ export class MultiplayerGame extends Game
         this.newLevel();
         spawnPlayers(2);
         this.initLevel();
-        // TODO: Oma score display
-        //updateLevelDisplay(this.level);
-        //updateScoreDisplay(this.score);
     }
 
     initLevel() {
@@ -92,7 +96,7 @@ export class MultiplayerGame extends Game
 
     newLevel() {
         setGlobalPause(true);
-        clearEnemies(); // Varmuuden vuoksi..
+        clearEnemies();
         clearBombs();
  
         setLevelHeight(PVPlevelData.height);
@@ -110,7 +114,7 @@ export class MultiplayerGame extends Game
         if (level.length > 0) {
             this.firstBombDropped = true;
             this.firstBombExploded = true;
-            //levelHeader.playAnimation(); TODO
+            //levelHeader.playAnimation();
             resetPlayerPositions();
         } else {
             throw new Error("Failed to create level");
@@ -140,8 +144,7 @@ export class MultiplayerGame extends Game
             if (level.length > 0) {
                 this.firstBombDropped = true;
                 this.firstBombExploded = true;
-                //levelHeader.playAnimation(); TODO
-                //resetPlayerPositions();
+                //levelHeader.playAnimation();
             } else {
                 throw new Error("Failed to create level");
             }
@@ -153,11 +156,38 @@ export class MultiplayerGame extends Game
                 p.isDead = false;
             });
             resetPlayerPositions();
+            clearEnemies();
         }, 2000);
     }
     
+    updateScore(playerWhoDied, playerWhoKilled, enemyWhoKilled) {
+        console.log("rip player:", playerWhoDied);
+        if(playerWhoKilled)
+            console.log("instigator:", playerWhoKilled);
+        if(enemyWhoKilled)
+            console.log("enemy:", enemyWhoKilled);
+        if (playerWhoDied === playerWhoKilled) {
+            console.log("Oops, nuked themselves..")
+            if (playerWhoDied === 0) {
+                --this.player1Score;
+                updateP1Score(this.player1Score);
+            } else {
+                --this.player2Score;
+                updateP2Score(this.player2Score);
+            }
+        } else {
+            if (playerWhoKilled === 0) {
+                ++this.player1Score;
+                updateP1Score(this.player1Score);
+            } else {
+                ++this.player2Score;
+                updateP2Score(this.player2Score);
+            }
+        }
+    }
+
     increaseScore(points) {
-        // TODO
+        // Nothing to do
     }
 
     nextLevel() {
@@ -165,7 +195,7 @@ export class MultiplayerGame extends Game
     }
     
     checkGameState() {
-        // TODO
+        // Nothing to do
     }
 
     // Saving & loading

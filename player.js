@@ -8,7 +8,7 @@ import { spriteSheets } from "./spritesheets.js";
 import { showGGMenu } from "./page.js";
 
 
-const godMode = true;
+const godMode = false;
 
 export const Direction = {
     UP: "Up",
@@ -329,12 +329,15 @@ class Player
 
         if (playerTile.isDeadly) {
             collides = true;
-            this.onDeath(null, true);
+            const instigator = playerTile.instigatedBy;
+            this.onDeath(null, true, instigator);
         }
 
         if (!collides) {
-            this.x = nextX;
-            this.y = nextY;
+            //this.x = nextX;
+            //this.y = nextY;
+            this.x += this.dx;
+            this.y += this.dy;
         }
 
     }
@@ -425,6 +428,18 @@ class Player
         }
     }
 
+    buildWall() {
+        if(this.isDead) return;
+
+        if(isMultiplayer) {
+            // TODO: Collision ja powerupiks?
+            let tile = getTileFromWorldLocation(this);
+            const x = tile.x / tileSize;
+            const y = tile.y / tileSize;
+            level[x][y].type = "SoftWall";
+        }
+    }
+
     // Movement
     moveUp() {
         this.dy = -this.speed * deltaTime;
@@ -474,6 +489,10 @@ class Player
             case this.keybinds.drop_bomb:
                 this.dropBomb();
                 break;
+
+            case this.keybinds.build:
+                this.buildWall();
+                break;
         }
     }
 
@@ -506,14 +525,14 @@ class Player
         document.getElementById("mob-bomb").addEventListener("touchstart", () => { this.dropBomb(); });
     }
 
-    onDeath(enemyWhoKilled, wasBomb) {
+    // NOTE: Instigator mahdollisesti validi ainoastaan pvp-modessa
+    onDeath(enemyWhoKilled, wasBomb, instigator) {
         if (godMode) return;
 
         if(isMultiplayer) {
             if (!this.isDead) {
                 this.isDead = true;
-                //this.healthPoints--;
-                //this.updateHealthPoints();
+                game.updateScore(this.id, instigator, enemyWhoKilled);
                 game.restartLevel();
             }
         } else {
@@ -559,6 +578,7 @@ export const keybinds1 = {
     move_left: "KeyA",
     move_right: "KeyD",
     drop_bomb: "Space",
+    build: "KeyE",
 };
 
 export const keybinds2 = {
@@ -567,6 +587,7 @@ export const keybinds2 = {
     move_left: "ArrowLeft",
     move_right: "ArrowRight",
     drop_bomb: "Enter",
+    //TODO: build: ""
 };
 
 // Finds a player with given id and returns it

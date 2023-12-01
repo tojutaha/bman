@@ -117,7 +117,7 @@ function explode(bomb) {
     }
 
     chainExplosions(tiles);
-    setTilesOnFire(tiles);
+    setTilesOnFire(tiles, bomb.playerId);
 }
 
 function chainExplosions(tiles) {
@@ -153,7 +153,7 @@ function animateExplosion(tile) {
     }, 130);
 }
 
-function setTilesOnFire(tiles) {
+function setTilesOnFire(tiles, playerID) {
     for (let i = 0; i < tiles.length; i++) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
@@ -177,6 +177,7 @@ function setTilesOnFire(tiles) {
                 else if (currentTile.type === "Floor") {
                     if (fieryFloors.indexOf(currentTile) === -1) {
                         currentTile.isDeadly = true;
+                        currentTile.instigatedBy = playerID;
                         fieryFloors.push(currentTile);
                     }
 
