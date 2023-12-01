@@ -15,8 +15,18 @@ export function setCameraY(value) {
     cameraY = value;
 }
 
+let cameraLt = 0;
+let cameraRt = 0;
+let cameraPt = 0;
+let cameraTt = 0;
+let cameraBt = 0;
+let cameraT = 0;
+const followCameraSpeed = 0.5;
+const edgeCameraSpeed = 2;
+
 let targetOffset;
 let edgeOffset;
+
 export function setCameraOffsets() {
     if (isMobile) {
         console.info("camera: mobile offsets");
@@ -29,15 +39,6 @@ export function setCameraOffsets() {
     }
 }
 
-let cameraLt = 0;
-let cameraRt = 0;
-let cameraPt = 0;
-let cameraTt = 0;
-let cameraBt = 0;
-let cameraT = 0;
-const followCameraSpeed = 0.5;
-const edgeCameraSpeed = 0.25;
-
 export function updateCamera() {
     const playerTile = getTileFromWorldLocation(players[0]);
     const playerX = playerTile.x / tileSize;
@@ -45,39 +46,29 @@ export function updateCamera() {
 
     // Left edge
     if (playerX <= edgeOffset) {
-        resetOtherTs('Lt');
         cameraLt = getEdgeCameraT(cameraLt);
         cameraT = cameraLt;
-        // console.log('left');
 
     // Right edge
     } else if (playerX >= levelWidth - edgeOffset) {
-        resetOtherTs('Rt');
         cameraRt = getEdgeCameraT(cameraRt);
         cameraT = cameraRt;
-        // console.log('right');
 
     // Top edge
     } else if (playerY <= edgeOffset) {
-        resetOtherTs('Tt');
         cameraTt = getEdgeCameraT(cameraTt);
         cameraT = cameraTt;
-        // console.log('top');
 
     // Bottom edge
     } else if (playerY >= levelHeight - edgeOffset) {
-        resetOtherTs('Bt');
         cameraBt = getEdgeCameraT(cameraBt);
         cameraT = cameraBt;
-        // console.log('bot');
 
     // Follow camera
     } else {
-        resetOtherTs('Pt');
         cameraPt += deltaTime * followCameraSpeed;
         cameraPt = Math.min(cameraPt, 1);
         cameraT = cameraPt;
-        // console.log('follow');
     }
 
     // Lerp and transform
@@ -107,28 +98,37 @@ function getTargetX(playerX) {
     // Right edge
     if (playerX <= edgeOffset) {
         targetX = 0;
-    }
+        resetOtherTs('Rt');
+
     // Left edge
-    else if (playerX >= levelWidth - edgeOffset) {
+    } else if (playerX >= levelWidth - edgeOffset) {
         targetX = canvas.width / 2 - scale * (levelWidth - targetOffset) * tileSize;
+        resetOtherTs('Lt');
+
+    // Follow
     } else {
         targetX = canvas.width / 2 - scale * players[0].x;
+        resetOtherTs('Pt');
     }
     return targetX;
 }
 
-// TODO: enää napsahtaa sivuedge -> Y suunnassa
 function getTargetY(playerY) {
     let targetY;
     // Top edge
     if (playerY <= edgeOffset) { 
         targetY = 0;
-    } 
+        resetOtherTs('Tt');
+
     // Bottom edge
-    else if (playerY >= levelHeight - edgeOffset) { 
+    } else if (playerY >= levelHeight - edgeOffset) { 
         targetY = canvas.height / 2 - scale * (levelHeight - targetOffset) * tileSize;
+        resetOtherTs('Bt');
+        
+    // Follow
     } else {
         targetY = canvas.height / 2 - scale * players[0].y;
+        resetOtherTs('Pt');
     }
     return targetY;
 }
