@@ -117,7 +117,7 @@ function Render(timeStamp)
         levelHeader.render();
         gameOverText.render();
         deathReasonText.render();
-        if (showTutorial) {
+        if (showTutorial && !isMobile) {
             tutorial.render();
         }
     }

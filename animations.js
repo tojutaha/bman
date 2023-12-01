@@ -454,8 +454,8 @@ export class TutorialAnimations {
         this.currentFrame = 0;
         this.frames = 7;
         this.keys = new Image();
-        this.keysWidth = 224;
-        this.keysHeight = 320;
+        this.imageWidth = 224;
+        this.imageHeight = 320;
         this.fadeMs = 60;
     }
     
@@ -505,8 +505,8 @@ export class TutorialAnimations {
 
         if (this.visible) {
             ctx.drawImage(this.keys, 
-                this.keysWidth * this.currentFrame, 0, 
-                this.keysWidth, this.keysHeight, canvas.width - this.keysWidth, 0, this.keysWidth, this.keysHeight);
+                this.imageWidth * this.currentFrame, 0, 
+                this.imageWidth, this.imageHeight, canvas.width - this.imageWidth, 0, this.imageWidth, this.imageHeight);
         }
     }
 }
@@ -519,6 +519,7 @@ export class BigBombAnimation {
         this.firstHalf = 37;    // The shattering animation begins on frame 27
         this.spriteSheet = new Image();
         this.animationMs = 60;
+        this.imageHeight = 832;
     }
     
     playLightUp() {
@@ -559,8 +560,8 @@ export class BigBombAnimation {
 
         if (this.visible) {
             ctx.drawImage(this.spriteSheet, 
-                canvas.width * this.currentFrame, 0, 
-                canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+                this.imageHeight * this.currentFrame, 0, 
+                this.imageHeight, this.imageHeight, 0, 0, this.imageHeight, this.imageHeight);
         }
     }
 }

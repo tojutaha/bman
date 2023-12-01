@@ -2,7 +2,6 @@ import { ctx, tileSize, level } from "./main.js";
 import { levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 import { cameraX, cameraY } from "./camera.js";
-import { players } from "./player.js";
 
 let hardWallTexture = new Image();
 let softWallTexture = new Image();
