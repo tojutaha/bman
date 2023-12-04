@@ -15,6 +15,7 @@ import { isMobile, responsivityCheck } from "./mobile.js";
 import { fetchEverything } from "./gamestate.js";
 import { loadTextures } from "./level.js";
 import { loadSpriteSheets } from "./spritesheets.js";
+import { createFloatingText, renderFloatingText, textParticles } from "./particles.js";
 
 
 ////////////////////
@@ -120,6 +121,8 @@ function Render(timeStamp)
         if (showTutorial && !isMobile) {
             tutorial.render();
         }
+
+        renderFloatingText();
     }
 
     lastTimeStamp = timeStamp
@@ -150,6 +153,7 @@ document.addEventListener("DOMContentLoaded", function ()
             debugLoad();
             
             Render();
+            createFloatingText({x: 64, y: 64}, "Testi partikkeli");
         } else {
             throw new Error("Could not find ctx object.");
         }
