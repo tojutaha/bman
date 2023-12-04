@@ -478,6 +478,9 @@ class Enemy
                 }
             }
         });
+
+        // TODO: Pitää myös tarkistaa, jos polulle on laitettu pelaajan
+        // "rakentamia" softwalleja, muuten kävelee seinän läpi
     }
 
     playSfx(withTimeout) {
