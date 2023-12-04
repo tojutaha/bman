@@ -22,6 +22,11 @@ export class FloatingTextParticle
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        // TODO: fonttiehdotus t. Tommi
+        // ctx.font = "1.4rem Minimal";
+        // ctx.strokeStyle = `rgba(0, 0, 0, ${this.alpha})`;
+        // ctx.lineWidth = 4;
+        // ctx.strokeText(this.text, this.p.x, this.p.y);
         ctx.fillText(this.text, this.p.x, this.p.y);
     }
 }
