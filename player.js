@@ -542,16 +542,44 @@ class Player
 
     // Mobile controls
     bindMobile() {
-        document.getElementById("mob-dir-up").addEventListener("touchstart", () => { this.moveUp() });
-        document.getElementById("mob-dir-up").addEventListener("touchend", () => { this.dy = 0; });
-        document.getElementById("mob-dir-down").addEventListener("touchstart", () => { this.moveDown() });
-        document.getElementById("mob-dir-down").addEventListener("touchend", () => { this.dy = 0; });
-        document.getElementById("mob-dir-right").addEventListener("touchstart", () => { this.moveRight() });
-        document.getElementById("mob-dir-right").addEventListener("touchend", () => { this.dx = 0; });
-        document.getElementById("mob-dir-left").addEventListener("touchstart", () => { this.moveLeft() });
-        document.getElementById("mob-dir-left").addEventListener("touchend", () => { this.dx = 0; });
-        document.getElementById("mob-bomb").addEventListener("touchstart", () => { this.dropBomb(); });
+        document.getElementById("mob-dir-up").addEventListener("touchstart", (event) => {
+          event.preventDefault();
+          this.moveUp();
+        });
+        document.getElementById("mob-dir-up").addEventListener("touchend", (event) => { 
+            event.preventDefault(); 
+            this.dy = 0; 
+        });
+        document.getElementById("mob-dir-down").addEventListener("touchstart", (event) => { 
+            event.preventDefault(); 
+            this.moveDown() 
+        });
+        document.getElementById("mob-dir-down").addEventListener("touchend", (event) => { 
+            event.preventDefault(); 
+            this.dy = 0; 
+        });
+        document.getElementById("mob-dir-right").addEventListener("touchstart", (event) => { 
+            event.preventDefault(); 
+            this.moveRight() 
+        });
+        document.getElementById("mob-dir-right").addEventListener("touchend", (event) => { 
+            event.preventDefault(); 
+            this.dx = 0; 
+        });
+        document.getElementById("mob-dir-left").addEventListener("touchstart", (event) => { 
+            event.preventDefault(); 
+            this.moveLeft() 
+        });
+        document.getElementById("mob-dir-left").addEventListener("touchend", (event) => { 
+            event.preventDefault(); 
+            this.dx = 0; 
+        });
+        document.getElementById("mob-bomb").addEventListener("touchstart", (event) => {
+          event.preventDefault();
+          this.dropBomb();
+        });
     }
+      
 
     // NOTE: Instigator mahdollisesti validi ainoastaan pvp-modessa
     onDeath(enemyWhoKilled, wasBomb, instigator) {
