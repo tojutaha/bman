@@ -438,7 +438,9 @@ body {
 .floor {
     z-index: -1;
     position: absolute;
-    background-image: url('./assets/grass_01.png');
+    /* TODO: tarpeeton laittaa heti alkuun taustakuvaa? */
+    /* background-image: url('./assets/grass_01.png'); */
+    background-color: black;
     background-repeat: repeat;
     width: 832px;
     height: 832px;
@@ -502,7 +504,7 @@ body {
     color: white;
     border-color: #303030;
     border-radius: 10%;
-    box-shadow: 2px 2px 4px rgba(200, 200, 200, 0.1);
+    box-shadow: -1px -1px 10px rgba(200, 0, 200, 0.2);
 }
 
 .d-pad {
@@ -531,6 +533,11 @@ body {
 .mobile-buttons-left {
     margin-left: 50px;
     z-index: 9999;
+}
+
+#fullscreen-button {
+    /* TODO: parempi ratkaisu tälle (kuuluu mobile-buttons-leftiin atm) */
+    margin-left: -50px;
 }
 
 .mobile-buttons-right {

@@ -1,7 +1,7 @@
 import { playAudio, sfxs } from "./audio.js";
 import { enemies } from "./enemy.js";
 import { lastLevel } from "./gamestate.js";
-import { canvas, ctx, game, locBlinkers, tileSize } from "./main.js";
+import { FULL_CANVAS_SIZE, canvas, ctx, game, locBlinkers, tileSize } from "./main.js";
 import { isMobile } from "./mobile.js";
 import { spriteSheets } from "./spritesheets.js";
 import { exitLocation, powerupLocations } from "./tile.js";
@@ -319,7 +319,6 @@ export class LevelHeaderAnimation {
     render() {
         if (this.visible) {
             ctx.fillStyle = `rgba(240, 240, 240, ${this.alpha})`;
-            // ctx.strokeStyle = `rgba(30, 30, 30, ${this.alpha})`;
             ctx.strokeStyle = `rgba(0, 0, 0, ${this.alpha})`;
             
             if (isMobile) {
@@ -402,6 +401,8 @@ export class GameOverAnimation {
     }
 }
 
+////////////////////
+// Overlay animations
 export class FadeTransition {
     constructor() {
         this.visible = false;
@@ -441,12 +442,12 @@ export class FadeTransition {
     render() {
         if (this.visible) {
             ctx.fillStyle = `rgba(0, 0, 0, ${this.alpha})`;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillRect(0, 0, FULL_CANVAS_SIZE, FULL_CANVAS_SIZE);
         }
     }
 }
 
-export class TutorialAnimations {
+export class TutorialAnimation {
     constructor() {
         this.visible = false;
         this.currentFrame = 0;
