@@ -205,12 +205,20 @@ export class ExitAnimation {
 
 
 ////////////////////
-// UI Animations
-
+// Text animations
 const normalLineWidth = 20;
 const normalFont = "100px Minimal";
 const mobileLineWidth = 15;
 const mobileFont = "70px Minimal";
+
+function animateText(text) {
+    // Use identity matrix to draw the text to the center of canvas
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.strokeText(text, canvas.width / 2, canvas.width / 2);
+    ctx.fillText(text, canvas.width / 2, canvas.width / 2);
+    ctx.restore();
+}
 
 export class DeathReasonAnimation {
     constructor() {
@@ -262,8 +270,7 @@ export class DeathReasonAnimation {
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
-            ctx.strokeText(this.text, canvas.width / 2, canvas.width / 2);
-            ctx.fillText(this.text, canvas.width / 2, canvas.width / 2);
+            animateText(this.text);
         }
     }
 }
@@ -326,8 +333,7 @@ export class LevelHeaderAnimation {
             ctx.textBaseline = "middle";
 
             const substring = this.text.substring(0, this.frames);
-            ctx.strokeText(substring, canvas.width / 2, canvas.width / 2);
-            ctx.fillText(substring, canvas.width / 2, canvas.width / 2);
+            animateText(substring);
         }
     }
 }
@@ -390,16 +396,8 @@ export class GameOverAnimation {
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
-            // Use identity matrix to draw the text to the center
-            // of canvas
-            ctx.save();
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-
             const substring = this.text.substring(0, this.frames);
-            ctx.strokeText(substring, canvas.width / 2, canvas.width / 2);
-            ctx.fillText(substring, canvas.width / 2, canvas.width / 2);
-
-            ctx.restore();
+            animateText(substring);
         }
     }
 }
