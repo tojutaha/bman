@@ -29,6 +29,7 @@
 
 ###Bugeja
 - Canvas API ryhmätyöstä jääneiden bugien korjauksia
+  - Cage ei enää aina pelaa jostain syystä
   - Näkymättömiä satunnaisia pommeja
   - DeltaTime pelaajan liikuttelussa :white_check_mark:
 
