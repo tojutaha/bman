@@ -415,6 +415,8 @@ class Player
                         if (aabbCollision(bombTile.bomb.collisionBox, p.collisionBox)) {
                             arePlayersOnBomb = true;
                         }
+                        // TODO: Tämä ei välttämättä ole enää ihan oikein,
+                        // jos on useampia pelaajia...
                         if (p.isDead) {
                             bombTile.isWalkable = true;
                             bombTile.isDeadly = false;
@@ -434,11 +436,35 @@ class Player
         if(this.isDead) return;
 
         if(isMultiplayer) {
-            // TODO: Collision ja powerupiks?
+            // TODO: Powerupiks joita voi poimia, vai kiinteä määrä??
             let tile = getTileFromWorldLocation(this);
             const x = tile.x / tileSize;
             const y = tile.y / tileSize;
             level[x][y].type = "SoftWall";
+
+            // Checks whether any player is still standing on the tile after it was dropped.
+            let posCheck = setInterval(() => {
+                let arePlayersOnTile = false;
+
+                const collisionBox = { x: tile.x, y: tile.y, w: tileSize, h: tileSize };
+
+                players.forEach(p => {
+                    if (aabbCollision(collisionBox, p.collisionBox)) {
+                        arePlayersOnTile = true;
+                    }
+                    // TODO: Tämä ei välttämättä ole enää ihan oikein,
+                    // jos on useampia pelaajia...
+                    if (p.isDead) {
+                        tile.isWalkable = true;
+                        tile.isDeadly = false;
+                        clearInterval(posCheck);
+                    }
+                });
+                if (!arePlayersOnTile) {
+                    tile.isWalkable = false;
+                    clearInterval(posCheck);
+                }
+            }, 1);
         }
     }
 
