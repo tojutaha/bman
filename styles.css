@@ -8,6 +8,13 @@
     padding: 0px;
     box-sizing: border-box;
     font-family: 'Minimal', 'Courier New', Courier, monospace;
+
+    /* Prevent user text selection */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /* Muutama fontti joista testailla */
@@ -499,7 +506,6 @@ body {
     height: 50px;
     font-size: 2em;
     size: 200px;
-    user-select: none;
     background: black;
     color: white;
     border-color: #303030;
