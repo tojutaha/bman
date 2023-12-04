@@ -565,3 +565,59 @@ export class BigBombAnimation {
         }
     }
 }
+
+///////////////////
+// Shroom?
+export function shroom() {
+    shroomtrig = false;
+    const minSize = 10;
+    const maxSize = 100;
+    let size = minSize;
+    let zoomIn = true;
+    setInterval(() => {
+        if (size < maxSize && zoomIn) {
+            size++;
+        }
+        else if (size === maxSize) {
+            zoomIn = false;
+            size--;
+        }
+        else if (size <= minSize) {
+            zoomIn = true;
+        } else {
+            size--;
+        }
+        // floor.style.backgroundSize = size + '%';
+        floor.style.filter = `sepia(${size}%)`;
+    }, 10);
+
+    let rotation = 0;
+    setInterval(() => {
+        if (rotation < 180) {
+            rotation++
+        } else {
+            rotation = 180;
+        }
+        // floor.style.transform = `rotate(${rotation}deg)`;
+        // canvas.style.transform = `rotate(${rotation}deg)`;
+    }, 20);
+
+    let blur = 1;
+    const maxBlur = 10;
+    let blurring = true;
+    setInterval(() => {
+        if (blur < maxBlur && blurring) {
+            blur++;
+        }
+        else if (blur === maxBlur) {
+            blurring = false;
+            blur--;
+        }
+        else if (blur <= 1) {
+            blurring = true;
+        } else {
+            blur--;
+        }
+        canvas.style.filter = `blur(${blur}px)`;
+    }, 200);
+}

@@ -2,6 +2,7 @@ import { ctx, tileSize, level } from "./main.js";
 import { levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { drawCoordinates, coordsToggle } from "./page.js";
 import { cameraX, cameraY } from "./camera.js";
+import { shroom } from "./animations.js";
 
 let hardWallTexture = new Image();
 let softWallTexture = new Image();
@@ -105,7 +106,16 @@ export function renderWalls()
     drawCoordinates(coordsToggle);
 }
 
+let shroomtrig = true;  // TODO: tämä tapahtumaan jossain muualla jos toteutuu
 export function renderFloor()
 {
-    floor.style.backgroundPosition = cameraX + 'px ' + cameraY + 'px';
+    if (true) {
+        floor.style.backgroundPosition = cameraX + 'px ' + cameraY + 'px';
+        floor.style.backgroundSize = 'auto';
+    } else {
+        floor.style.backgroundPosition = cameraY + 'px ' + cameraX + 'px';
+        if (shroomtrig) {
+            shroom();
+        }
+    }
 }
