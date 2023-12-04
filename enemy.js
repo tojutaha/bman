@@ -248,6 +248,16 @@ class Enemy
 
             this.next = this.currentPath[index];
 
+            // Check if theres player build walls along the path
+            if(renderIndex < this.currentPath.length)
+            {
+                const nextPlusOne = this.currentPath[renderIndex];
+                let tile = getTileFromWorldLocation(nextPlusOne);
+                if (!tile.isWalkable) {
+                    this.stopMove();
+                }
+            }
+
             // Move enemy
             this.x = this.next.x;
             this.y = this.next.y;
@@ -478,9 +488,6 @@ class Enemy
                 }
             }
         });
-
-        // TODO: Pitää myös tarkistaa, jos polulle on laitettu pelaajan
-        // "rakentamia" softwalleja, muuten kävelee seinän läpi
     }
 
     playSfx(withTimeout) {
