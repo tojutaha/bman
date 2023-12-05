@@ -3,6 +3,7 @@ import { levelHeight, levelWidth } from "./gamestate.js";
 import { spriteSheets } from "./spritesheets.js";
 import { createFloatingText } from "./particles.js";
 import { clamp } from "./utils.js";
+import { playAudio, sfxs } from "./audio.js";
 
 export class Powerup
 {
@@ -16,6 +17,7 @@ export class Powerup
 
     pickup(tile, player) {
         tile.hasPowerup = false;
+        playAudio(sfxs['POWERUP3']);
 
         if (tile.powerup === "bomb") {
             this.maxBombs += 1;

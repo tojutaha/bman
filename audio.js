@@ -39,6 +39,9 @@ const SfxURLs = {
     STEPS: "assets/sfx/steps.mp3",
     RISER: "assets/sfx/riser.mp3",
     VICTORY: "assets/sfx/victory.mp3",
+    POWERUP: "assets/sfx/powerup1.wav",
+    POWERUP2: "assets/sfx/powerup2.wav",
+    POWERUP3: "assets/sfx/powerup3.wav",
 }
 
 // Loading function for fetching the audio file and decode the data
