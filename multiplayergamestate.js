@@ -165,26 +165,31 @@ export class MultiplayerGame extends Game
     updateScore(playerWhoDied, playerWhoKilled, enemyWhoKilled) {
 
         const player = findPlayerById(playerWhoKilled);
+        if(player)
+        {
+            const x = player.x;
+            const y = player.y;
 
-        if (playerWhoDied === playerWhoKilled) {
-            if (playerWhoDied === 0) {
-                this.player1Score -= this.points;
-                createFloatingText({ x: player.x, y: player.y }, `-${this.points}`);
-                updateP1Score(this.player1Score);
+            if (playerWhoDied === playerWhoKilled) {
+                if (playerWhoDied === 0) {
+                    this.player1Score -= this.points;
+                    createFloatingText({ x: x, y: y }, `-${this.points}`);
+                    updateP1Score(this.player1Score);
+                } else {
+                    this.player2Score -= this.points;
+                    createFloatingText({ x: x, y: y }, `-${this.points}`);
+                    updateP2Score(this.player2Score);
+                }
             } else {
-                this.player2Score -= this.points;
-                createFloatingText({ x: player.x, y: player.y }, `-${this.points}`);
-                updateP2Score(this.player2Score);
-            }
-        } else {
-            if (playerWhoKilled === 0) {
-                this.player1Score += this.points;
-                createFloatingText({ x: player.x, y: player.y }, `+${this.points}`);
-                updateP1Score(this.player1Score);
-            } else {
-                this.player2Score += this.points;
-                createFloatingText({ x: player.x, y: player.y }, `+${this.points}`);
-                updateP2Score(this.player2Score);
+                if (playerWhoKilled === 0) {
+                    this.player1Score += this.points;
+                    createFloatingText({ x: x, y: y }, `+${this.points}`);
+                    updateP1Score(this.player1Score);
+                } else {
+                    this.player2Score += this.points;
+                    createFloatingText({ x: x, y: y }, `+${this.points}`);
+                    updateP2Score(this.player2Score);
+                }
             }
         }
     }
