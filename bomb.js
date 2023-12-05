@@ -120,6 +120,7 @@ function explode(bomb) {
     setTilesOnFire(tiles, bomb.playerId);
 }
 
+// TODO: Ketjutuksissa pitäis vaihtaa instigator siihen, joka ketjutuksen aloitti
 function chainExplosions(tiles) {
     // Tiles[0] is the center, not necessary to iterate over it
     for (let i = 1; i < tiles.length; i++) {
