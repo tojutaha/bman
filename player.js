@@ -440,7 +440,7 @@ class Player
             {
                 this.powerup.currentWalls--;
                 this.powerup.currentWalls = clamp(this.powerup.currentWalls, 0, this.powerup.maxWalls);
-                console.log(this.powerup.currentWalls);
+                
                 let tile = getTileFromWorldLocation(this);
                 const x = tile.x / tileSize;
                 const y = tile.y / tileSize;
