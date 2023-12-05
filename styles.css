@@ -454,11 +454,29 @@ body {
 }
 
 /* Mobile */
+#static-overlay {
+    visibility: hidden;
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.03;
+}
+
 #mobile-overlay {
     visibility: hidden;
-    position: absolute;
     z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
+
 
 #portrait-prompt {
     visibility: hidden;
@@ -513,10 +531,12 @@ body {
     font-size: 2em;
     size: 200px;
     background: black;
+    background-image: url("./assets/mobile_btn_bg.png");
+    opacity: 0.95;
     color: white;
-    border-color: #303030;
+    border-color: #202020;
     border-radius: 10%;
-    box-shadow: -1px -1px 10px rgba(200, 0, 200, 0.2);
+    box-shadow: -1px -1px 30px rgba(200, 200, 200, 0.2);
 }
 
 .d-pad {
@@ -569,13 +589,18 @@ body {
     }
     
     body {
-        background-color: black;
+        background-color: #101010;
+        /* background-color: #101010; */
     }
 
     #mobile-overlay {
         visibility: visible;
     }
-    
+
+    #static-overlay {
+        visibility: visible;
+    }
+
     .mobile-controller {
         display: flex;
     }
@@ -590,9 +615,9 @@ body {
     }
 
     #canvas {
-        border-style: solid;
-        border-width: 2px;
-        border-color: #303030;
+        border-style: double;
+        border-width: 3px;
+        border-color: #202020;
     }
 
     .debug-buttons {

@@ -12,17 +12,17 @@ async function preLoadSpriteSheets() {
 
         zombie_outline: "./assets/zombie_outline.png",
 
-        zombie_death_back:  "./assets/zombi_death_back.png",
-        zombie_death_front: "./assets/zombi_death_front.png",
-        zombie_death_left:  "./assets/zombi_death_left.png",
-        zombie_death_right: "./assets/zombi_death_right.png",
+        zombie_death_back:  "./assets/deaths/zombie_death_back.png",
+        zombie_death_front: "./assets/deaths/zombie_death_front.png",
+        zombie_death_left:  "./assets/deaths/zombie_death_left.png",
+        zombie_death_right: "./assets/deaths/zombie_death_right.png",
 
-        ghost_death: "./assets/ghost_death.png",
+        ghost_death: "./assets/deaths/ghost_death.png",
 
-        skeleton_death_back:  "./assets/skeleton_death_back.png",
-        skeleton_death_front: "./assets/skeleton_death_front.png",
-        skeleton_death_left:  "./assets/skeleton_death_left.png",
-        skeleton_death_right: "./assets/skeleton_death_right.png",
+        skeleton_death_back:  "./assets/deaths/skeleton_death_back.png",
+        skeleton_death_front: "./assets/deaths/skeleton_death_front.png",
+        skeleton_death_left:  "./assets/deaths/skeleton_death_left.png",
+        skeleton_death_right: "./assets/deaths/skeleton_death_right.png",
 
         bomb: "./assets/bomb.png",
         explosion: "./assets/explosion.png",
