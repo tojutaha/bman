@@ -8,7 +8,9 @@ export class Powerup
 {
     constructor() {
         this.maxBombs = 1;
-        this.maxRange = 1; 
+        this.maxRange = 1;
+        this.currentWalls = 3;
+        this.maxWalls = 3;
         this.blinker = null;
     }
 

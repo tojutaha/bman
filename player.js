@@ -3,7 +3,7 @@ import { lastLevel, levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { getMusicalTimeout, msPerBeat, playAudio, playFootsteps, playTrack, randomSfx, sfxs, stopFootsteps, tracks } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup } from "./powerup.js";
-import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles } from "./utils.js";
+import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles, clamp } from "./utils.js";
 import { spriteSheets } from "./spritesheets.js";
 import { showGGMenu } from "./page.js";
 
@@ -436,35 +436,40 @@ class Player
         if(this.isDead) return;
 
         if(isMultiplayer) {
-            // TODO: Powerupiks joita voi poimia, vai kiinteä määrä??
-            let tile = getTileFromWorldLocation(this);
-            const x = tile.x / tileSize;
-            const y = tile.y / tileSize;
-            level[x][y].type = "SoftWall";
+            if(this.powerup.currentWalls > 0)
+            {
+                this.powerup.currentWalls--;
+                this.powerup.currentWalls = clamp(this.powerup.currentWalls, 0, this.powerup.maxWalls);
+                console.log(this.powerup.currentWalls);
+                let tile = getTileFromWorldLocation(this);
+                const x = tile.x / tileSize;
+                const y = tile.y / tileSize;
+                level[x][y].type = "SoftWall";
 
-            // Checks whether any player is still standing on the tile after it was dropped.
-            let posCheck = setInterval(() => {
-                let arePlayersOnTile = false;
+                // Checks whether any player is still standing on the tile after it was dropped.
+                let posCheck = setInterval(() => {
+                    let arePlayersOnTile = false;
 
-                const collisionBox = { x: tile.x, y: tile.y, w: tileSize, h: tileSize };
+                    const collisionBox = { x: tile.x, y: tile.y, w: tileSize, h: tileSize };
 
-                players.forEach(p => {
-                    if (aabbCollision(collisionBox, p.collisionBox)) {
-                        arePlayersOnTile = true;
-                    }
-                    // TODO: Tämä ei välttämättä ole enää ihan oikein,
-                    // jos on useampia pelaajia...
-                    if (p.isDead) {
-                        tile.isWalkable = true;
-                        tile.isDeadly = false;
+                    players.forEach(p => {
+                        if (aabbCollision(collisionBox, p.collisionBox)) {
+                            arePlayersOnTile = true;
+                        }
+                        // TODO: Tämä ei välttämättä ole enää ihan oikein,
+                        // jos on useampia pelaajia...
+                        if (p.isDead) {
+                            tile.isWalkable = true;
+                            tile.isDeadly = false;
+                            clearInterval(posCheck);
+                        }
+                    });
+                    if (!arePlayersOnTile) {
+                        tile.isWalkable = false;
                         clearInterval(posCheck);
                     }
-                });
-                if (!arePlayersOnTile) {
-                    tile.isWalkable = false;
-                    clearInterval(posCheck);
-                }
-            }, 1);
+                }, 1);
+            }
         }
     }
 
