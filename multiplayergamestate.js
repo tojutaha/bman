@@ -194,8 +194,8 @@ export class MultiplayerGame extends Game
         }
     }
 
-    increaseScore(points) {
-        // Nothing to do
+    increaseScore(playerID, points) {
+        console.log("ID: ", playerID, " points:", points)
     }
 
     nextLevel() {

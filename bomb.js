@@ -203,7 +203,7 @@ function killEnemies(tile) {
             if (enemy.justSpawned) return;
 
             if (getDistanceTo(tile, enemy) < tileSize) {
-                enemy.die();
+                enemy.die(tile.instigatedBy);
             }
         })
     }

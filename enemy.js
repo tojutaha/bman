@@ -1,4 +1,4 @@
-import { ctx, deltaTime, game, globalPause, tileSize } from "./main.js";
+import { ctx, deltaTime, game, globalPause, isMultiplayer, tileSize } from "./main.js";
 import { Direction, players } from "./player.js";
 import { dfs, lerp, getRandomWalkablePointInRadius, getTileFromWorldLocation, aabbCollision, getDistanceToEuclidean } from "./utils.js";
 import { requestPath } from "./pathfinder.js";
@@ -362,24 +362,42 @@ class Enemy
         requestPath(this, this.getLocation(), this.targetLocation);
     }
 
-    die() {
+    die(playerID) {
         this.playSfx();
         const deathAnimation = new EnemyDeathAnimation(this.x, this.y, this.enemyType, this.direction);
         deathAnimation.startTimer();
         deathRow.push(deathAnimation);
 
-        switch(this.enemyType) {
-            case enemyType.ZOMBIE: {
-                game.increaseScore(200);
-                break;
+        if(!isMultiplayer)
+        {
+            switch (this.enemyType) {
+                case enemyType.ZOMBIE: {
+                    game.increaseScore(200);
+                    break;
+                }
+                case enemyType.GHOST: {
+                    game.increaseScore(350);
+                    break;
+                }
+                case enemyType.SKELETON: {
+                    game.increaseScore(500);
+                    break;
+                }
             }
-            case enemyType.GHOST: {
-                game.increaseScore(350);
-                break;
-            }
-            case enemyType.SKELETON: {
-                game.increaseScore(500);
-                break;
+        } else {
+            switch (this.enemyType) {
+                case enemyType.ZOMBIE: {
+                    game.increaseScore(playerID, 200);
+                    break;
+                }
+                case enemyType.GHOST: {
+                    game.increaseScore(playerID, 350);
+                    break;
+                }
+                case enemyType.SKELETON: {
+                    game.increaseScore(playerID, 500);
+                    break;
+                }
             }
         }
 
