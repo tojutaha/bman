@@ -454,6 +454,12 @@ body {
 }
 
 /* Mobile */
+#mobile-overlay {
+    visibility: hidden;
+    position: absolute;
+    z-index: 9999;
+}
+
 #portrait-prompt {
     visibility: hidden;
 }
@@ -564,6 +570,10 @@ body {
     
     body {
         background-color: black;
+    }
+
+    #mobile-overlay {
+        visibility: visible;
     }
     
     .mobile-controller {
