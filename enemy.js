@@ -6,6 +6,7 @@ import { tilesWithBombs } from "./bomb.js";
 import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
 import { EnemyDeathAnimation, deathRow } from "./animations.js";
 import { spriteSheets } from "./spritesheets.js";
+import { createFloatingText } from "./particles.js";
 
 export const enemyType = {
     ZOMBIE: "zombie",
@@ -372,14 +373,17 @@ class Enemy
         {
             switch (this.enemyType) {
                 case enemyType.ZOMBIE: {
+                    createFloatingText({x: this.x, y: this.y}, "+200");
                     game.increaseScore(200);
                     break;
                 }
                 case enemyType.GHOST: {
+                    createFloatingText({x: this.x, y: this.y}, "+350");
                     game.increaseScore(350);
                     break;
                 }
                 case enemyType.SKELETON: {
+                    createFloatingText({x: this.x, y: this.y}, "+500");
                     game.increaseScore(500);
                     break;
                 }
