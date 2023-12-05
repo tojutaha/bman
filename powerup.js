@@ -1,6 +1,7 @@
 import { ctx, level, tileSize } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 import { spriteSheets } from "./spritesheets.js";
+import { createFloatingText } from "./particles.js";
 import { clamp } from "./utils.js";
 
 export class Powerup
@@ -16,14 +17,17 @@ export class Powerup
 
         if (tile.powerup === "bomb") {
             this.maxBombs += 1;
+            createFloatingText({x: tile.x, y: tile.y}, "+1 Bomb");
         }
         else if (tile.powerup === "range") {
             this.maxRange += 1;
+            createFloatingText({x: tile.x, y: tile.y}, "+1 Range");
         }
 
         else if (tile.powerup === "speed") {
             // TODO: Mikä on sopiva max speed?
             player.speed = clamp(player.speed += 40, 0, 250);
+            createFloatingText({x: tile.x, y: tile.y}, "+Speed");
         }
     }
 }

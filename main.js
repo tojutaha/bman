@@ -154,7 +154,6 @@ document.addEventListener("DOMContentLoaded", function ()
             debugLoad();
             
             Render();
-            createFloatingText({x: 64, y: 64}, "Testi partikkeli");
         } else {
             throw new Error("Could not find ctx object.");
         }

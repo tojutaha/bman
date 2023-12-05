@@ -6,11 +6,12 @@ import { clearEnemies, enemies, enemyType, spawnEnemies, spawnEnemiesByType } fr
 import { setTextures, initHardWallsCanvas } from "./level.js";
 import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial, bigBomb, fadeTransition, bigBombOverlay } from "./main.js";
 import { showGameOverMenu, updateLevelDisplay, updateP1Score, updateP2Score, updatePVPTimerDisplay, updateScoreDisplay } from "./page.js";
-import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
+import { clearPlayers, findPlayerById, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation, powerupLocations} from "./tile.js";
 import { levels, levelWidth, levelHeight, levelType, levelPowerup, softwallPercent, powerupCount } from "./gamestate.js";
 import { getRandomWalkablePoint } from "./utils.js";
 import { randomPowerup } from "./powerup.js";
+import { createFloatingText } from "./particles.js";
 
 const PVPlevelData = {
     width: 13,
@@ -28,6 +29,7 @@ export class MultiplayerGame extends Game
         this.numPlayers = 2;
         this.player1Score = 0;
         this.player2Score = 0;
+        this.points = 1000; // Points per pvp kill
         this.timerHandle = null;
         this.powerupSpawnrate = 30;
         this.seconds = 0;
@@ -161,26 +163,27 @@ export class MultiplayerGame extends Game
     }
     
     updateScore(playerWhoDied, playerWhoKilled, enemyWhoKilled) {
-        console.log("rip player:", playerWhoDied);
-        if(playerWhoKilled)
-            console.log("instigator:", playerWhoKilled);
-        if(enemyWhoKilled)
-            console.log("enemy:", enemyWhoKilled);
+
+        const player = findPlayerById(playerWhoKilled);
+
         if (playerWhoDied === playerWhoKilled) {
-            console.log("Oops, nuked themselves..")
             if (playerWhoDied === 0) {
-                --this.player1Score;
+                this.player1Score -= this.points;
+                createFloatingText({ x: player.x, y: player.y }, `-${this.points}`);
                 updateP1Score(this.player1Score);
             } else {
-                --this.player2Score;
+                this.player2Score -= this.points;
+                createFloatingText({ x: player.x, y: player.y }, `-${this.points}`);
                 updateP2Score(this.player2Score);
             }
         } else {
             if (playerWhoKilled === 0) {
-                ++this.player1Score;
+                this.player1Score += this.points;
+                createFloatingText({ x: player.x, y: player.y }, `+${this.points}`);
                 updateP1Score(this.player1Score);
             } else {
-                ++this.player2Score;
+                this.player2Score += this.points;
+                createFloatingText({ x: player.x, y: player.y }, `+${this.points}`);
                 updateP2Score(this.player2Score);
             }
         }
