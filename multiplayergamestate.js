@@ -164,7 +164,7 @@ export class MultiplayerGame extends Game
     
     updateScore(playerWhoDied, playerWhoKilled, enemyWhoKilled) {
 
-        const player = findPlayerById(playerWhoKilled);
+        const player = findPlayerById(playerWhoDied);
         if(player)
         {
             const x = player.x;
