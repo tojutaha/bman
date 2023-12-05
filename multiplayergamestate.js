@@ -195,7 +195,22 @@ export class MultiplayerGame extends Game
     }
 
     increaseScore(playerID, points) {
-        console.log("ID: ", playerID, " points:", points)
+        const player = findPlayerById(playerID);
+        if(player)
+        {
+            const x = player.x;
+            const y = player.y;
+
+            if (playerID === 0) {
+                this.player1Score += points;
+                createFloatingText({ x: x, y: y }, `+${points}`);
+                updateP1Score(this.player1Score);
+            } else {
+                this.player2Score += points;
+                createFloatingText({ x: x, y: y }, `+${points}`);
+                updateP2Score(this.player2Score);
+            }
+        }
     }
 
     nextLevel() {
