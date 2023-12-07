@@ -2,7 +2,7 @@ import { Game, setLevelHeight, setLevelPowerup, setLevelType, setLevelWidth, set
 import { stopBirdsong, stopCurrentTrack } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
-import { clearEnemies, enemyType, spawnEnemiesByType } from "./enemy.js";
+import { clearEnemies, enemyType, spawnEnemiesByType, spawnEnemyByTypeAtLocation } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
 import { ctx, tileSize, level, setGlobalPause, fadeTransition, locBlinkers, enemyBlinkers } from "./main.js";
 import { updateP1Score, updateP2Score, updatePVPTimerDisplay } from "./page.js";
@@ -57,12 +57,28 @@ export class MultiplayerGame extends Game
                 ++this.minutes;
                 this.seconds = 0;
 
-                // Spawnaa zombeja minuutin välein
-                spawnEnemiesByType(enemyType.ZOMBIE, 1);
+                const location = getRandomWalkablePoint();
+
+                enemyBlinkers.location = location;
+                enemyBlinkers.startBlinking();
+
+                let counter = 0;
+                let blinkInterval = setInterval(() => {
+                    if(counter >= 5) {
+                        enemyBlinkers.stopBlinking();
+                        counter = 0;
+                        clearInterval(blinkInterval);
+
+                        // Spawnaa zombeja minuutin välein
+                        spawnEnemyByTypeAtLocation(enemyType.ZOMBIE, location);
+                    }
+                    counter++;
+                }, 1000);
             }
             updatePVPTimerDisplay(`${this.minutes.toString().padStart(2, '0')}:
                                   ${this.seconds.toString().padStart(2, '0')}`);
 
+            // TODO: Oranssi blinkkeri myös näille?
             // Spawnaa random poweruppeja tietyn ajan välein
             if(this.seconds % this.powerupSpawnrate == 0) {
                 const tile = getRandomWalkablePoint();

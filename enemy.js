@@ -599,6 +599,16 @@ export function spawnEnemiesByType(type, amount)
     game.numOfEnemies = enemies.length;
 }
 
+// Spawn enemy with given type in given location
+export function spawnEnemyByTypeAtLocation(type, location)
+{
+    const enemy = new Enemy(location.x, location.y, tileSize, tileSize);
+    enemy.enemyType = type;
+    enemy.init();
+    enemies.push(enemy);
+
+    game.numOfEnemies = enemies.length;
+}
 // Spawn enemies at location
 export function spawnEnemiesAtLocation(location, amount = 1)
 {
