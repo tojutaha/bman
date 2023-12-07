@@ -116,17 +116,17 @@ function explode(bomb) {
         player.activeBombs--;
     }
 
-    chainExplosions(tiles);
+    chainExplosions(tiles, bomb.playerId);
     setTilesOnFire(tiles, bomb.playerId);
 }
 
-// TODO: Ketjutuksissa pitäis vaihtaa instigator siihen, joka ketjutuksen aloitti
-function chainExplosions(tiles) {
+function chainExplosions(tiles, playerId) {
     // Tiles[0] is the center, not necessary to iterate over it
     for (let i = 1; i < tiles.length; i++) {
         for (let j = 0; j < tiles[i].length; j++) {
                 let currentTile = tiles[i][j];
                 if ("bomb" in currentTile && currentTile.bomb.hasExploded === false) {
+                    currentTile.bomb.playerId = playerId;
                     explode(currentTile.bomb);
                 }
         }
