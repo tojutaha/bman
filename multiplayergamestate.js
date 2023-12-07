@@ -1,17 +1,17 @@
 import { Game, setLevelHeight, setLevelPowerup, setLevelType, setLevelWidth, setPowerupCount, setSoftwallPercent } from "./gamestate.js";
-import { playTrack, loadAudioFiles, tracks, playBirdsong, stopBirdsong, stopCurrentTrack } from "./audio.js";
+import { stopBirdsong, stopCurrentTrack } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
-import { clearEnemies, enemies, enemyType, spawnEnemies, spawnEnemiesByType } from "./enemy.js";
+import { clearEnemies, enemyType, spawnEnemiesByType } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
-import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial, bigBomb, fadeTransition, bigBombOverlay } from "./main.js";
-import { showGameOverMenu, updateLevelDisplay, updateP1Score, updateP2Score, updatePVPTimerDisplay, updateScoreDisplay } from "./page.js";
+import { ctx, tileSize, level, setGlobalPause, fadeTransition, locBlinkers, enemyBlinkers } from "./main.js";
+import { updateP1Score, updateP2Score, updatePVPTimerDisplay } from "./page.js";
 import { clearPlayers, findPlayerById, players, resetPlayerPositions, spawnPlayers } from "./player.js";
-import { createTiles, exitLocation, powerupLocations} from "./tile.js";
-import { levels, levelWidth, levelHeight, levelType, levelPowerup, softwallPercent, powerupCount } from "./gamestate.js";
+import { createTiles, powerupLocations} from "./tile.js";
 import { getRandomWalkablePoint } from "./utils.js";
 import { randomPowerup } from "./powerup.js";
 import { createFloatingText } from "./particles.js";
+import { locBlinkingAnimation } from "./animations.js";
 
 const PVPlevelData = {
     width: 13,
@@ -21,6 +21,21 @@ const PVPlevelData = {
     powerupCount: 5,
     softwallPercent: 0.2,
 };
+
+export class enemySpawnBlinker extends locBlinkingAnimation
+{
+    constructor() {
+        super();
+        this.location = {x: 64, y: 64};
+    }
+
+    render() {
+        if(this.showLocation) {
+            ctx.fillStyle = "rgba(255, 100, 100, 0.2)";
+            ctx.fillRect(this.location.x, this.location.y, tileSize, tileSize);
+        }
+    }
+}
 
 export class MultiplayerGame extends Game
 {
@@ -48,7 +63,6 @@ export class MultiplayerGame extends Game
             updatePVPTimerDisplay(`${this.minutes.toString().padStart(2, '0')}:
                                   ${this.seconds.toString().padStart(2, '0')}`);
 
-            // TODO: Spawnataan mieluummin jotain muuta kun speediä?
             // Spawnaa random poweruppeja tietyn ajan välein
             if(this.seconds % this.powerupSpawnrate == 0) {
                 const tile = getRandomWalkablePoint();
@@ -73,6 +87,8 @@ export class MultiplayerGame extends Game
     }
 
     newGame() {
+        enemyBlinkers.stopBlinking();
+        locBlinkers.stopBlinking();
         this.player1Score = 0;
         this.player2Score = 0;
         this.startTimer();

@@ -7,7 +7,7 @@ import { renderPlayer } from "./player.js";
 import { renderEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
 import { Game } from "./gamestate.js";
-import { MultiplayerGame } from "./multiplayergamestate.js";
+import { MultiplayerGame, enemySpawnBlinker } from "./multiplayergamestate.js";
 import { updateCamera } from "./camera.js";
 import { showDoor, showPauseMenu } from "./page.js";
 import { isMobile, responsivityCheck } from "./mobile.js";
@@ -69,6 +69,7 @@ export const deathReasonText = new DeathReasonAnimation();
 export const entrance = new EntranceAnimation();
 export const exit = new ExitAnimation();
 export const locBlinkers = new locBlinkingAnimation();
+export const enemyBlinkers = new enemySpawnBlinker();
 export const tutorial = new TutorialAnimation();
 export const bigBomb = new BigBombAnimation();
 export const fadeTransition = new FadeTransition();
@@ -103,6 +104,7 @@ function Render(timeStamp)
         renderPlayer(timeStamp);
         renderWalls();
         locBlinkers.render();
+        enemyBlinkers.render();
         if (showDoor && !isMultiplayer) {
             exit.render();
             renderPowerups();
