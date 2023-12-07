@@ -348,8 +348,9 @@ class Enemy
         requestPath(this, this.getLocation(), this.targetLocation);
     }
 
+    // TODO: Tää vois kans kattoo uutta polkua tietyn ajan välein,
+    // jos jää esim yhden tai parin tilen sisään jumiin.
     patrol() {
-
         if (!this.currentPath || this.currentPath.length == 0) {
             this.getRandomPath();
             requestPath(this, this.getLocation(), this.targetLocation);
