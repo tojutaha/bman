@@ -12,7 +12,7 @@
 - Powerupien spawnaus :white_check_mark:
 - Valikkojen muokkaus :white_check_mark:
   - Valintapainike yksin- tai kaksinpelille :white_check_mark:
-- Joku ilmoitus(vilkku?) minne tileen vihollinen on spawnaamassa
+- Joku ilmoitus minne tileen vihollinen tai powerup on spawnaamassa :white_check_mark:
 - Scoret sekä vihollisista, että pelaajista :white_check_mark:
   - Pelaajista score tekstin animointi :white_check_mark:
 - Seinän pudotus/rakennus :white_check_mark:
