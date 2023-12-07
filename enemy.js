@@ -32,6 +32,7 @@ class Enemy
     constructor(x, y, w, h, newMovementMode, speed, type) {
         this.id = ++Enemy.lastId;
         this.justSpawned = true;
+        this.score = 0;
 
         // Coordinates
         this.x  = x;
@@ -92,6 +93,7 @@ class Enemy
                 this.spriteSheet.src = spriteSheets.zombie;
                 this.movementMode = movementMode.PATROL;
                 this.speed = 800;
+                this.score = 200;
                 this.patrol();
                 break;
             }
@@ -99,6 +101,7 @@ class Enemy
                 this.spriteSheet.src = spriteSheets.ghost;
                 this.movementMode = movementMode.ROAM;
                 this.speed = 500;
+                this.score = 350;
                 this.roam();
                 break;
             }
@@ -106,6 +109,7 @@ class Enemy
                 this.spriteSheet.src = spriteSheets.skeleton;
                 this.movementMode = movementMode.PATROL;
                 this.speed = 400;
+                this.score = 500;
                 this.patrol();
                 break;
             }
@@ -373,33 +377,33 @@ class Enemy
         {
             switch (this.enemyType) {
                 case enemyType.ZOMBIE: {
-                    createFloatingText({x: this.x, y: this.y}, "+200");
-                    game.increaseScore(200);
+                    createFloatingText({x: this.x, y: this.y}, this.score);
+                    game.increaseScore(this.score);
                     break;
                 }
                 case enemyType.GHOST: {
-                    createFloatingText({x: this.x, y: this.y}, "+350");
-                    game.increaseScore(350);
+                    createFloatingText({x: this.x, y: this.y}, this.score);
+                    game.increaseScore(this.score);
                     break;
                 }
                 case enemyType.SKELETON: {
-                    createFloatingText({x: this.x, y: this.y}, "+500");
-                    game.increaseScore(500);
+                    createFloatingText({x: this.x, y: this.y}, this.score);
+                    game.increaseScore(this.score);
                     break;
                 }
             }
         } else {
             switch (this.enemyType) {
                 case enemyType.ZOMBIE: {
-                    game.increaseScore(playerID, 200);
+                    game.increaseScore(playerID, this.score);
                     break;
                 }
                 case enemyType.GHOST: {
-                    game.increaseScore(playerID, 350);
+                    game.increaseScore(playerID, this.score);
                     break;
                 }
                 case enemyType.SKELETON: {
-                    game.increaseScore(playerID, 500);
+                    game.increaseScore(playerID, this.score);
                     break;
                 }
             }
