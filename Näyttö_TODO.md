@@ -30,6 +30,7 @@
 ###Bugeja
 - Canvas API ryhmätyöstä jääneiden bugien korjauksia
   - Cage ei enää aina pelaa jostain syystä
+  - "Vilkku" jää joskus päälle, kun vaihtaa modea
   - Näkymättömiä satunnaisia pommeja
   - DeltaTime pelaajan liikuttelussa :white_check_mark:
 
