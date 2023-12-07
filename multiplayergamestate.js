@@ -4,7 +4,7 @@ import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
 import { clearEnemies, enemyType, spawnEnemiesByType, spawnEnemyByTypeAtLocation } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
-import { ctx, tileSize, level, setGlobalPause, fadeTransition, locBlinkers, enemyBlinkers } from "./main.js";
+import { ctx, tileSize, level, setGlobalPause, fadeTransition, locBlinkers } from "./main.js";
 import { updateP1Score, updateP2Score, updatePVPTimerDisplay } from "./page.js";
 import { clearPlayers, findPlayerById, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, powerupLocations} from "./tile.js";
@@ -22,16 +22,56 @@ const PVPlevelData = {
     softwallPercent: 0.2,
 };
 
-export class enemySpawnBlinker extends locBlinkingAnimation
+const spawnType = {
+    ENEMY: "Enemy",
+    POWERUP: "Powerup",
+}
+
+export const pvpBlinkers = [];
+
+export function renderPVPBlinkers() {
+    for(let i = 0; i < pvpBlinkers.length; ++i) {
+        const blinker = pvpBlinkers[i];
+        if(blinker.isBlinking) {
+            blinker.render();
+        } else {
+            pvpBlinkers.splice(i, 1);
+        }
+    }
+}
+
+export class SpawnBlinker extends locBlinkingAnimation
 {
     constructor() {
         super();
         this.location = {x: 64, y: 64};
+        this.fillStyle = "rgba(255, 100, 100, 0.2)";
+    }
+
+    startBlinking(type) {
+
+        switch(type) {
+            case spawnType.ENEMY:
+                this.fillStyle = "rgba(255, 100, 100, 0.2)";
+                break;
+            case spawnType.POWERUP:
+                this.fillStyle = "rgba(255, 190, 130, 0.3)";
+                break;
+        }
+
+        this.isBlinking = true;
+        this.blinker = setInterval(() => {
+            this.showLocation = !this.showLocation;
+
+            if (!this.isBlinking) {
+                clearInterval(blinker);
+            }
+        }, 700);
     }
 
     render() {
         if(this.showLocation) {
-            ctx.fillStyle = "rgba(255, 100, 100, 0.2)";
+            ctx.fillStyle = this.fillStyle;
             ctx.fillRect(this.location.x, this.location.y, tileSize, tileSize);
         }
     }
@@ -46,51 +86,75 @@ export class MultiplayerGame extends Game
         this.player2Score = 0;
         this.points = 1000; // Points per pvp kill
         this.timerHandle = null;
-        this.powerupSpawnrate = 30;
+        this.enemySpawnRate = 10;
+        this.powerupSpawnrate = 10;
         this.seconds = 0;
         this.minutes = 0;
     }
 
     startTimer() {
         this.timerHandle = setInterval(() => {
+
+            // TODO: Spawnauksiin oma muuttuja, jotta
+            // ne ei triggaa heti kartan alussa.
+            
+            // Päivittää ajan
             if(++this.seconds % 60 == 0) {
                 ++this.minutes;
                 this.seconds = 0;
+            }
 
+            updatePVPTimerDisplay(`${this.minutes.toString().padStart(2, '0')}:
+                                  ${this.seconds.toString().padStart(2, '0')}`);
+
+            // Spawnaa zombeja tietyn ajan välein
+            if(this.seconds % this.enemySpawnRate == 0) {
                 const location = getRandomWalkablePoint();
 
-                enemyBlinkers.location = location;
-                enemyBlinkers.startBlinking();
+                let blinker = new SpawnBlinker();
+                blinker.location = location;
+                blinker.startBlinking(spawnType.ENEMY);
+                pvpBlinkers.push(blinker);
 
                 let counter = 0;
                 let blinkInterval = setInterval(() => {
                     if(counter >= 5) {
-                        enemyBlinkers.stopBlinking();
+                        blinker.stopBlinking();
                         counter = 0;
                         clearInterval(blinkInterval);
-
-                        // Spawnaa zombeja minuutin välein
                         spawnEnemyByTypeAtLocation(enemyType.ZOMBIE, location);
                     }
                     counter++;
                 }, 1000);
             }
-            updatePVPTimerDisplay(`${this.minutes.toString().padStart(2, '0')}:
-                                  ${this.seconds.toString().padStart(2, '0')}`);
-
-            // TODO: Oranssi blinkkeri myös näille?
             // Spawnaa random poweruppeja tietyn ajan välein
             if(this.seconds % this.powerupSpawnrate == 0) {
-                const tile = getRandomWalkablePoint();
-                tile.powerup = randomPowerup();
-                tile.hasPowerup = true;
-                powerupLocations.push(tile);
-            }
 
+                const tile = getRandomWalkablePoint();
+                let blinker = new SpawnBlinker();
+                blinker.location = tile;
+                blinker.startBlinking(spawnType.POWERUP);
+                pvpBlinkers.push(blinker);
+
+                let counter = 0;
+                let blinkInterval = setInterval(() => {
+                    if(counter >= 3) {
+                        blinker.stopBlinking()
+                        counter = 0;
+                        clearInterval(blinkInterval);
+                        tile.powerup = randomPowerup();
+                        tile.hasPowerup = true;
+                        powerupLocations.push(tile);
+                    }
+
+                    counter++;
+                }, 1000);
+            }
         }, 1000);
     }
 
     over() {
+        pvpBlinkers.length = 0;
         if(this.timerHandle) {
             clearInterval(this.timerHandle);
             this.timerHandle = null;
@@ -103,7 +167,7 @@ export class MultiplayerGame extends Game
     }
 
     newGame() {
-        enemyBlinkers.stopBlinking();
+        pvpBlinkers.length = 0;
         locBlinkers.stopBlinking();
         this.player1Score = 0;
         this.player2Score = 0;
@@ -159,6 +223,7 @@ export class MultiplayerGame extends Game
 
     restartLevel()
     {
+        pvpBlinkers.length = 0;
         setTimeout(() => {
             setGlobalPause(true);
             clearBombs();
@@ -202,6 +267,7 @@ export class MultiplayerGame extends Game
             const x = player.x;
             const y = player.y;
 
+            // TODO: Reset powerupit jos pommittaa ittensä
             if (playerWhoDied === playerWhoKilled) {
                 if (playerWhoDied === 0) {
                     this.player1Score -= this.points;

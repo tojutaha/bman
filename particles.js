@@ -10,11 +10,12 @@ export class FloatingTextParticle
         this.alpha = 1;
         this.t = 0;
         this.oscillationAmount = 10;
+        this.offsetAmount = 10;
     }
 
     Update() {
         this.p.y -= 0.2;
-        this.p.x = this.originalX + this.oscillationAmount * (Math.sin(this.t) + (Math.random() - 0.5) / 10);
+        this.p.x = this.originalX + this.oscillationAmount * (Math.sin(this.t) + (Math.random() - 0.5) / this.offsetAmount);
         this.alpha -= 0.0025;
         this.t += 0.025;
     }
