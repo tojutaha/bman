@@ -641,7 +641,8 @@ body {
 
     .info-displays {
         display: grid;
-        top: 360px;
+        /* TODO: aina samassa kohtaa riippumatta ruudun koosta */
+        top: 310px;
         left: 0;
         padding-bottom: 100%;
         z-index: 9996;
