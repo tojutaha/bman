@@ -61,3 +61,46 @@ fsBtn.addEventListener('click', () => {
         document.documentElement.requestFullscreen();
     }
 })
+
+
+//////////////////////
+// Button presses
+const bombBtn = document.getElementById('mob-bomb');
+bombBtn.addEventListener('touchstart', () => {
+    bombBtn.src = "./assets/mobile/bomb_btn_press.png";
+})
+bombBtn.addEventListener('touchend', () => {
+    bombBtn.src = "./assets/mobile/bomb_btn.png";
+})
+
+const upBtn = document.getElementById('mob-dir-up');
+upBtn.addEventListener('touchstart', () => {
+    upBtn.src = "./assets/mobile/up_btn_press.png";
+})
+upBtn.addEventListener('touchend', () => {
+    upBtn.src = "./assets/mobile/up_btn.png";
+})
+
+const leftBtn = document.getElementById('mob-dir-left');
+leftBtn.addEventListener('touchstart', () => {
+    leftBtn.src = "./assets/mobile/left_btn_press.png";
+})
+leftBtn.addEventListener('touchend', () => {
+    leftBtn.src = "./assets/mobile/left_btn.png";
+})
+
+const rightBtn = document.getElementById('mob-dir-right');
+rightBtn.addEventListener('touchstart', () => {
+    rightBtn.src = "./assets/mobile/right_btn_press.png";
+})
+rightBtn.addEventListener('touchend', () => {
+    rightBtn.src = "./assets/mobile/right_btn.png";
+})
+
+const downBtn = document.getElementById('mob-dir-down');
+downBtn.addEventListener('touchstart', () => {
+    downBtn.src = "./assets/mobile/down_btn_press.png";
+})
+downBtn.addEventListener('touchend', () => {
+    downBtn.src = "./assets/mobile/down_btn.png";
+})
