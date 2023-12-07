@@ -539,6 +539,13 @@ body {
     box-shadow: -1px -1px 30px rgba(200, 200, 200, 0.2);
 }
 
+.mobile-controller img {
+    width: 50px;
+    height: 50px;
+    opacity: 0.95;
+    box-shadow: -1px -1px 30px rgba(200, 210, 200, 0.2);
+}
+
 .d-pad {
     margin-top: 100px;
 }
