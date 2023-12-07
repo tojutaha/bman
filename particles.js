@@ -1,4 +1,4 @@
-import { ctx } from "./main.js";
+import { ctx, tileSize } from "./main.js";
 
 export const textParticles = [];
 export class FloatingTextParticle
@@ -11,19 +11,21 @@ export class FloatingTextParticle
     }
 
     Update() {
-        this.p.y -= 0.1;
+        this.p.y -= 0.2;
         this.p.x += Math.sin(this.t) + (Math.random() - 0.5) / 10;
         this.alpha -= 0.0025;
         this.t += 0.025;
     }
-
+    
     Render() {
         ctx.font = "1.4rem Minimal";
         ctx.strokeStyle = `rgba(0, 0, 0, ${this.alpha})`;
         ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
         ctx.lineWidth = 4;
-        ctx.strokeText(this.text, this.p.x, this.p.y);
-        ctx.fillText(this.text, this.p.x, this.p.y);
+        const xCoord = this.p.x + tileSize / 2;
+        const yCoord = this.p.y + tileSize / 2;
+        ctx.strokeText(this.text, xCoord, yCoord);
+        ctx.fillText(this.text, xCoord, yCoord);
     }
 }
 
