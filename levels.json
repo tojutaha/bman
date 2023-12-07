@@ -24,7 +24,7 @@
             "width": 13,
             "height": 13,
             "type": "forest_day",
-            "powerup": "bomb",
+            "powerup": "range",
             "powerupCount": 1,
             "softwallPercent": 0.05
         }
@@ -39,7 +39,7 @@
             "width": 13,
             "height": 13,
             "type": "forest_night",
-            "powerup": "range",
+            "powerup": "bomb",
             "powerupCount": 1,
             "softwallPercent": 0.2
         }

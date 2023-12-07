@@ -8,8 +8,9 @@
     padding: 0px;
     box-sizing: border-box;
     font-family: 'Minimal', 'Courier New', Courier, monospace;
+}
 
-    /* Prevent user text selection */
+.not-selectable {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -17,7 +18,6 @@
     user-select: none;
 }
 
-/* Muutama fontti joista testailla */
 @font-face {
     font-family: 'Minimal';
     /* src: url('assets/fonts/Minimal3x5.ttf') format('truetype'); */
@@ -55,8 +55,7 @@ body {
 }
 
 .pvp-info-displays {
-    visibility: hidden;
-    display: flex;
+    display: none;
     flex-direction: row;
     margin: 0 auto;
     padding: 0.2em;
@@ -66,6 +65,7 @@ body {
     align-items: center;
     position: relative;
     gap: 10px;
+    white-space: nowrap;
 }
 
 .pvp-spacer {
@@ -456,7 +456,7 @@ body {
 /* Mobile */
 #static-overlay {
     visibility: hidden;
-    z-index: 9999;
+    z-index: 9997;
     position: fixed;
     top: 0;
     left: 0;
@@ -468,7 +468,7 @@ body {
 
 #mobile-overlay {
     visibility: hidden;
-    z-index: 9999;
+    z-index: 9998;
     position: fixed;
     top: 0;
     left: 0;
@@ -476,7 +476,6 @@ body {
     height: 100%;
     object-fit: cover;
 }
-
 
 #portrait-prompt {
     visibility: hidden;
@@ -522,6 +521,8 @@ body {
 /* Mobile controls */
 .mobile-controller {
     display: none;
+    position: absolute;
+    top: 0;
     justify-content: space-between;
 }
 
@@ -546,10 +547,6 @@ body {
     box-shadow: -1px -1px 30px rgba(200, 210, 200, 0.2);
 }
 
-.d-pad {
-    margin-top: 100px;
-}
-
 #mob-dir-left {
     margin-left: -25px;
 }
@@ -562,25 +559,37 @@ body {
     margin-left: 25px;
 }
 
+.d-pad {
+    margin-top: 120px;
+}
+
 #mob-bomb {
     border-radius: 50%;
     width: 100px;
     height: 100px;
-    margin-top: 180px;
+    margin-top: 200px;
 }
 
+#fullscreen-button {
+    display: none;
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
 .mobile-buttons-left {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-top: 50px;
     margin-left: 50px;
     z-index: 9999;
 }
 
-#fullscreen-button {
-    /* TODO: parempi ratkaisu tälle (kuuluu mobile-buttons-leftiin atm) */
-    margin-left: -50px;
-}
-
 .mobile-buttons-right {
-    margin-left: auto;
+    position: fixed;
+    top: 0;
+    right: 0;
     margin-right: 50px;
     z-index: 9999;
 }
@@ -597,7 +606,6 @@ body {
     
     body {
         background-color: #101010;
-        /* background-color: #101010; */
     }
 
     #mobile-overlay {
@@ -610,6 +618,10 @@ body {
 
     .mobile-controller {
         display: flex;
+    }
+
+    #fullscreen-button {
+        display: block;
     }
 
     .canvas-container {
@@ -625,6 +637,27 @@ body {
         border-style: double;
         border-width: 3px;
         border-color: #202020;
+    }
+
+    .info-displays {
+        display: grid;
+        top: 360px;
+        left: 0;
+        padding-bottom: 100%;
+        z-index: 9996;
+
+        text-shadow: 2px 2px 4px black;
+        background-color: #101010;
+        opacity: 0.6;
+        max-width: 430px;
+    }
+
+    .health-points {
+        visibility: hidden;
+    }
+
+    #PVPGameButton {
+        display: none;
     }
 
     .debug-buttons {
