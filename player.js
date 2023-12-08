@@ -101,9 +101,10 @@ class Player
         const healthPointsContainer = document.getElementById("healthPointsContainer");
         healthPointsContainer.innerHTML = '';
         for(let i = 0; i < this.healthPoints; i++) {
-            const circle = document.createElement("div");
-            circle.classList.add("hp-circle");
-            healthPointsContainer.appendChild(circle);
+            // const circle = document.createElement("div");
+            // circle.classList.add("hp-circle");
+            // healthPointsContainer.appendChild(circle);
+            healthPointsContainer.innerHTML += '♥';
         }
     }
 

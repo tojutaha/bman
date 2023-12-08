@@ -1,6 +1,7 @@
-import { playAudio, sfxs } from "./audio.js";
+import { playAudio, playBirdsong, sfxs } from "./audio.js";
 import { enemies } from "./enemy.js";
 import { lastLevel } from "./gamestate.js";
+import { initHardWallsCanvas, setTextures } from "./level.js";
 import { FULL_CANVAS_SIZE, canvas, ctx, game, locBlinkers, tileSize } from "./main.js";
 import { isMobile } from "./mobile.js";
 import { spriteSheets } from "./spritesheets.js";
@@ -535,6 +536,11 @@ export class BigBombAnimation {
     }
 
     playShatter() {
+        // TODO: animaatiotestailua
+        setTextures();
+        initHardWallsCanvas();
+        playBirdsong();
+
         let shatter = setInterval(() => {
             if (this.currentFrame < this.frames) {
                 this.currentFrame++;

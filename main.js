@@ -47,7 +47,7 @@ export function setNumOfPlayers(value) {
 ////////////////////
 // Settings
 export const tileSize = 64;
-export const cagePlayer = false;
+export const cagePlayer = true;
 export const cageMultiplayer = false;
 export const bigBombOverlay = false;
 const showTutorial = false;
@@ -108,7 +108,7 @@ function Render(timeStamp)
             exit.render();
             renderPowerups();
         }
-        if (bigBombOverlay) {
+        if (bigBombOverlay && !isMultiplayer) {
             bigBomb.render();
         }
         renderEnemies(timeStamp);
@@ -120,7 +120,7 @@ function Render(timeStamp)
         levelHeader.render();
         gameOverText.render();
         deathReasonText.render();
-        if (showTutorial && !isMobile) {
+        if (showTutorial && !isMobile && !isMultiplayer) {
             tutorial.render();
         }
 

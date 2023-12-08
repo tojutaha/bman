@@ -10,6 +10,11 @@ let floor = document.querySelector('.floor');
 
 async function preLoadTextures() {
     const textures = {
+        "limbo": {
+            floor:    "./assets/vhs_static.gif",
+            hardWall: "./assets/limbo_hardwall.png",
+            softWall: "./assets/limbo_softwall.png"
+        },
         "forest_day": {
             floor:    "./assets/grass_01.png",
             hardWall: "./assets/stone_brick_04.png",
@@ -57,10 +62,10 @@ export async function loadTextures() {
     }
 }
 
-export function setTextures() {
-    floor.style.backgroundImage = `url(${levelTextures[levelType].floor.src})`;
-    hardWallTexture = levelTextures[levelType].hardWall;
-    softWallTexture = levelTextures[levelType].softWall;
+export function setTextures(type = levelType) {
+    floor.style.backgroundImage = `url(${levelTextures[type].floor.src})`;
+    hardWallTexture = levelTextures[type].hardWall;
+    softWallTexture = levelTextures[type].softWall;
 }
 
 let hardWallsCanvas = document.createElement('canvas');

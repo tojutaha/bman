@@ -1,4 +1,4 @@
-import { playTrack, loadAudioFiles, tracks, playBirdsong, stopBirdsong } from "./audio.js";
+import { playTrack, loadAudioFiles, tracks, stopBirdsong } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { setCameraX, setCameraY } from "./camera.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
@@ -99,6 +99,8 @@ export class Game {
             
             // Enemies show only outlines during the big bomb overlay
             if (bigBombOverlay && this.level === 1 && !this.firstBombExploded) {
+                setTextures("limbo");
+                initHardWallsCanvas();
                 enemies.forEach(enemy => {
                     enemy.showOutline();
                 });
@@ -118,7 +120,6 @@ export class Game {
         if (this.level === 1) {
             tutorial.playAnimation();
             bigBomb.visible = true;
-            playBirdsong();
         } else {
             if (tutorial.visible) {
                 tutorial.visible = false;
