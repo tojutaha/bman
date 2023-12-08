@@ -9,7 +9,7 @@ import { updateP1Score, updateP2Score, updatePVPTimerDisplay } from "./page.js";
 import { clearPlayers, findPlayerById, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, powerupLocations} from "./tile.js";
 import { getRandomWalkablePoint } from "./utils.js";
-import { randomPowerup } from "./powerup.js";
+import { initPowerups, randomPowerup } from "./powerup.js";
 import { createFloatingText } from "./particles.js";
 import { locBlinkingAnimation } from "./animations.js";
 
@@ -128,6 +128,7 @@ export class MultiplayerGame extends Game
                 }, 1000);
             }
             // Spawnaa random poweruppeja tietyn ajan välein
+            // TODO: Ei spawnata päällekkäin näitä..
             if(this.seconds % this.powerupSpawnrate == 0) {
 
                 const tile = getRandomWalkablePoint();
@@ -145,6 +146,7 @@ export class MultiplayerGame extends Game
                         tile.powerup = randomPowerup();
                         tile.hasPowerup = true;
                         powerupLocations.push(tile);
+                        initPowerups();
                     }
 
                     counter++;
@@ -218,6 +220,7 @@ export class MultiplayerGame extends Game
             throw new Error("Failed to create level");
         }
         initHardWallsCanvas();
+        initPowerups();
         setGlobalPause(false);
     }
 

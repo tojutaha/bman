@@ -17,6 +17,7 @@ export class Powerup
 
     pickup(tile, player) {
         tile.hasPowerup = false;
+        initPowerups();
         playAudio(sfxs['POWERUP3']);
 
         if (tile.powerup === "bomb") {
@@ -54,9 +55,16 @@ export function randomPowerup() {
 
 ////////////////////
 // Renders
+let powerupsCanvas = document.createElement('canvas');
+let powerupsCtx = powerupsCanvas.getContext('2d');
+
 const powerupImage = new Image();
-export function renderPowerups()
+export function initPowerups()
 {
+    powerupsCanvas.width = levelWidth * tileSize;
+    powerupsCanvas.height = levelHeight * tileSize;
+    powerupsCtx.clearRect(0, 0, powerupsCanvas.width, powerupsCanvas.height);
+    
     if (!powerupImage.src) {
         powerupImage.src = spriteSheets.powerups;
     }
@@ -69,18 +77,23 @@ export function renderPowerups()
 
             if (currentTile.hasPowerup) {
                 if (currentTile.powerup === "bomb") {
-                    ctx.drawImage(powerupImage, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                    powerupsCtx.drawImage(powerupImage, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
                 else if (currentTile.powerup === "range") {
-                    ctx.drawImage(powerupImage, tileSize, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                    powerupsCtx.drawImage(powerupImage, tileSize, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
                 else if (currentTile.powerup === "speed") {
-                    ctx.drawImage(powerupImage, tileSize*2, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                    powerupsCtx.drawImage(powerupImage, tileSize*2, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
                 else if (currentTile.powerup === "material") {
-                    ctx.drawImage(powerupImage, tileSize*3, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                    powerupsCtx.drawImage(powerupImage, tileSize*3, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
             }
         }
     }
+}
+
+export function renderPowerups()
+{
+    ctx.drawImage(powerupsCanvas, 0, 0);
 }

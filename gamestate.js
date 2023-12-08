@@ -3,6 +3,7 @@ import { clearBombs } from "./bomb.js";
 import { setCameraX, setCameraY } from "./camera.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
+import { initPowerups } from "./powerup.js";
 import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial, bigBomb, fadeTransition, bigBombOverlay } from "./main.js";
 import { showGameOverMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
@@ -167,6 +168,7 @@ export class Game {
             throw new Error("Failed to create level");
         }
         initHardWallsCanvas();
+        initPowerups();
         setGlobalPause(false);
     }
 
