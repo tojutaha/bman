@@ -2,7 +2,7 @@ import { Game, setLevelHeight, setLevelPowerup, setLevelType, setLevelWidth, set
 import { stopBirdsong, stopCurrentTrack } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
-import { clearEnemies, enemyType, spawnEnemiesByType, spawnEnemyByTypeAtLocation } from "./enemy.js";
+import { clearEnemies, enemyType, spawnEnemyByTypeAtLocation } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
 import { ctx, tileSize, level, setGlobalPause, fadeTransition, locBlinkers } from "./main.js";
 import { updateP1Score, updateP2Score, updatePVPTimerDisplay } from "./page.js";
@@ -95,9 +95,6 @@ export class MultiplayerGame extends Game
     startTimer() {
         this.timerHandle = setInterval(() => {
 
-            // TODO: Spawnauksiin oma muuttuja, jotta
-            // ne ei triggaa heti kartan alussa.
-            
             // Päivittää ajan
             if(++this.seconds % 60 == 0) {
                 ++this.minutes;
@@ -128,29 +125,30 @@ export class MultiplayerGame extends Game
                 }, 1000);
             }
             // Spawnaa random poweruppeja tietyn ajan välein
-            // TODO: Ei spawnata päällekkäin näitä..
             if(this.seconds % this.powerupSpawnrate == 0) {
 
-                const tile = getRandomWalkablePoint();
-                let blinker = new SpawnBlinker();
-                blinker.location = tile;
-                blinker.startBlinking(spawnType.POWERUP);
-                pvpBlinkers.push(blinker);
+                const tile = getRandomWalkablePoint(false);
+                if(tile) {
+                    let blinker = new SpawnBlinker();
+                    blinker.location = tile;
+                    blinker.startBlinking(spawnType.POWERUP);
+                    pvpBlinkers.push(blinker);
 
-                let counter = 0;
-                let blinkInterval = setInterval(() => {
-                    if(counter >= 3) {
-                        blinker.stopBlinking()
-                        counter = 0;
-                        clearInterval(blinkInterval);
-                        tile.powerup = randomPowerup();
-                        tile.hasPowerup = true;
-                        powerupLocations.push(tile);
-                        initPowerups();
-                    }
+                    let counter = 0;
+                    let blinkInterval = setInterval(() => {
+                        if(counter >= 3) {
+                            blinker.stopBlinking()
+                            counter = 0;
+                            clearInterval(blinkInterval);
+                            tile.powerup = randomPowerup();
+                            tile.hasPowerup = true;
+                            powerupLocations.push(tile);
+                            initPowerups();
+                        }
 
-                    counter++;
-                }, 1000);
+                        counter++;
+                    }, 1000);
+                }
             }
         }, 1000);
     }
@@ -173,6 +171,8 @@ export class MultiplayerGame extends Game
         locBlinkers.stopBlinking();
         this.player1Score = 0;
         this.player2Score = 0;
+        this.seconds = 0;
+        this.minutes = 0;
         this.startTimer();
         stopBirdsong(); // TODO: Halutaanko jotain audiota tänne?
         stopCurrentTrack();
@@ -229,6 +229,8 @@ export class MultiplayerGame extends Game
         pvpBlinkers.length = 0;
         setTimeout(() => {
             setGlobalPause(true);
+            this.seconds = 0;
+            this.minutes = 0;
             clearBombs();
 
             setLevelHeight(PVPlevelData.height);
