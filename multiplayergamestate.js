@@ -267,7 +267,6 @@ export class MultiplayerGame extends Game
         const player = findPlayerById(playerWhoDied);
         if(player)
         {
-            // Nää yhtenäisemmäksi solo moden tapaiseksi
             const x = player.x;
             const y = player.y;
 

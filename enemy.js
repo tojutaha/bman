@@ -378,17 +378,16 @@ class Enemy
         {
             switch (this.enemyType) {
                 case enemyType.ZOMBIE: {
-                    createFloatingText({x: this.x, y: this.y}, this.score);
-                    game.increaseScore(this.score);
+                    createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
                     break;
                 }
                 case enemyType.GHOST: {
-                    createFloatingText({x: this.x, y: this.y}, this.score);
+                    createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
                     game.increaseScore(this.score);
                     break;
                 }
                 case enemyType.SKELETON: {
-                    createFloatingText({x: this.x, y: this.y}, this.score);
+                    createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
                     game.increaseScore(this.score);
                     break;
                 }
@@ -396,15 +395,18 @@ class Enemy
         } else {
             switch (this.enemyType) {
                 case enemyType.ZOMBIE: {
-                    game.increaseScore(playerID, this.score);
+                    createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
+                    game.increaseScore(-1, this.score);
                     break;
                 }
                 case enemyType.GHOST: {
-                    game.increaseScore(playerID, this.score);
+                    createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
+                    game.increaseScore(-1, this.score);
                     break;
                 }
                 case enemyType.SKELETON: {
-                    game.increaseScore(playerID, this.score);
+                    createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
+                    game.increaseScore(-1, this.score);
                     break;
                 }
             }
