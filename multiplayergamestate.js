@@ -251,6 +251,7 @@ export class MultiplayerGame extends Game
                 throw new Error("Failed to create level");
             }
             initHardWallsCanvas();
+            initPowerups();
             setGlobalPause(false);
         
             this.initLevel();
@@ -270,8 +271,12 @@ export class MultiplayerGame extends Game
             const x = player.x;
             const y = player.y;
 
-            // TODO: Reset powerupit jos pommittaa ittensä
             if (playerWhoDied === playerWhoKilled) {
+
+                // Reset powerupit jos pommittaa ittensä
+                player.powerup.reset();
+                player.speed = player.originalSpeed;
+
                 if (playerWhoDied === 0) {
                     this.player1Score -= this.points;
                     createFloatingText({ x: x, y: y }, `-${this.points}`);

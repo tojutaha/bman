@@ -45,6 +45,7 @@ class Player
         this.dy = 0;
 
         this.speed = 150.0; // pixels/s
+        this.originalSpeed = this.speed;
         this.direction = Direction.RIGHT;
         this.isWalking = false;
 

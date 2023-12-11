@@ -41,6 +41,13 @@ export class Powerup
             createFloatingText({x: tile.x, y: tile.y}, `+3 Materials`);
         }
     }
+
+    reset() {
+        this.maxBombs = 1;
+        this.maxRange = 1;
+        this.currentWalls = 3;
+        this.maxWalls = 3;
+    }
 }
 
 export const powerupChoices = ["bomb", "range", "speed", "material"];
