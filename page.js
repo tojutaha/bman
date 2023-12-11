@@ -240,23 +240,23 @@ pauseMenuExitButton.addEventListener('click', function() {
 // DEBUG & TESTING
 
 // Scale buttons
-let canvasContainer = document.getElementsByClassName("canvas-container");
-let scaleBtn50 = document.getElementById("scale50");
-let scaleBtn75 = document.getElementById("scale75");
-let scaleBtn100 = document.getElementById("scale100");
+const canvasContainer = document.querySelector(".canvas-container");
+const scaleBtn50 = document.getElementById("scale50");
+const scaleBtn75 = document.getElementById("scale75");
+const scaleBtn100 = document.getElementById("scale100");
 
 scaleBtn50.addEventListener("click", scale50);
 scaleBtn75.addEventListener("click", scale75);
 scaleBtn100.addEventListener("click", scale100);
 
 function scale50() {
-    canvasContainer[0].style.cssText = "scale: 50%;";
+    canvasContainer.style.cssText = "scale: 50%;";
 }
 function scale75() {
-    canvasContainer[0].style.cssText = "scale: 75%;";
+    canvasContainer.style.cssText = "scale: 75%;";
 }
 function scale100() {
-    canvasContainer[0].style.cssText = "scale: 100%;";
+    canvasContainer.style.cssText = "scale: 100%;";
 }
 
 // Show door and powerup location

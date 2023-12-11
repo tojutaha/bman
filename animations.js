@@ -572,57 +572,68 @@ export class BigBombAnimation {
 }
 
 ///////////////////
-// Shroom?
+// Shroom
+const canvasContainer = document.querySelector(".canvas-container");
 export function shroom() {
     shroomtrig = false;
-    const minSize = 10;
+
+    // Settings
+    const minSize = 90;
     const maxSize = 100;
-    let size = minSize;
-    let zoomIn = true;
-    setInterval(() => {
-        if (size < maxSize && zoomIn) {
-            size++;
-        }
-        else if (size === maxSize) {
-            zoomIn = false;
-            size--;
-        }
-        else if (size <= minSize) {
-            zoomIn = true;
-        } else {
-            size--;
-        }
-        // floor.style.backgroundSize = size + '%';
-        floor.style.filter = `sepia(${size}%)`;
-    }, 10);
+    let size = maxSize;
+    let rotation = 1;
 
-    let rotation = 0;
-    setInterval(() => {
-        if (rotation < 180) {
-            rotation++
-        } else {
-            rotation = 180;
-        }
-        // floor.style.transform = `rotate(${rotation}deg)`;
-        // canvas.style.transform = `rotate(${rotation}deg)`;
-    }, 20);
-
-    let blur = 1;
-    const maxBlur = 10;
+    let blur = 0.1;
+    const maxBlur = 5;
     let blurring = true;
-    setInterval(() => {
-        if (blur < maxBlur && blurring) {
-            blur++;
+    let stopBlur = false;
+    
+    // Beating blur
+    let blurInterval = setInterval(() => {
+        if (stopBlur && blur > 0) {
+            canvas.style.filter = `blur(${blur}px)`;
+            floor.style.filter = `blur(${blur}px)`;
+            blur -= 0.1
         }
-        else if (blur === maxBlur) {
+        else if (stopBlur && blur <= 0) {
+            clearInterval(blurInterval);
+        }
+        else if (blur < maxBlur && blurring) {
+            blur += 0.1;
+        }
+        else if (blur >= maxBlur) {
             blurring = false;
-            blur--;
+            blur -= 0.1;
         }
         else if (blur <= 1) {
             blurring = true;
         } else {
-            blur--;
+            blur -= 0.1;
         }
-        canvas.style.filter = `blur(${blur}px)`;
-    }, 200);
+    }, 30);
+    
+    // Rotation and zoom
+    let effectInterval = setInterval(() => {
+        if (rotation > 0 && rotation < 360) {
+            rotation++
+        // Clear all effects after one full rotation
+        } else {
+            rotation = 0;
+            stopBlur = true;
+            clearInterval(effectInterval);
+        }
+        floor.style.transform = `rotate(-${rotation}deg)`;
+        canvas.style.transform = `rotate(-${rotation}deg)`;
+        canvas.style.filter = `hue-rotate(${rotation}deg) blur(${blur}px)`;
+        floor.style.filter = `hue-rotate(${rotation}deg) blur(${blur}px)`;
+
+        // Zoom
+        if (size > minSize && rotation > 0 && rotation < 350) {
+            size--;
+        }
+        else if (size < maxSize && rotation >= 350) {
+            size++
+        }
+        canvasContainer.style.cssText = `scale: ${size}%`;
+    }, 20);
 }
