@@ -1,5 +1,6 @@
 import { setCameraOffsets } from "./camera.js";
 import { globalPause, setGlobalPause } from "./main.js";
+import { showPauseMenu } from "./page.js";
 import { spriteSheets } from "./spritesheets.js";
 
 // TODO: Firefoxilla pelaaja pysähtyy jos kävelee ja hipaisee jonnekkin muualle ruutuun
@@ -65,6 +66,22 @@ fsBtn.addEventListener('click', () => {
 
 //////////////////////
 // Button presses
+fsBtn.addEventListener('touchstart', () => {
+    fsBtn.src = "./assets/mobile/fs_btn_press.png";
+})
+fsBtn.addEventListener('touchend', () => {
+    fsBtn.src = "./assets/mobile/fs_btn.png";
+})
+
+const pauseBtn = document.getElementById('pause-button');
+pauseBtn.addEventListener('touchstart', () => {
+    pauseBtn.src = "./assets/mobile/pause_btn_press.png";
+    showPauseMenu();
+})
+pauseBtn.addEventListener('touchend', () => {
+    pauseBtn.src = "./assets/mobile/pause_btn.png";
+})
+
 const bombBtn = document.getElementById('mob-bomb');
 bombBtn.addEventListener('touchstart', () => {
     bombBtn.src = "./assets/mobile/bomb_btn_press.png";

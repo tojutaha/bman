@@ -59,6 +59,7 @@ const howToPlayMenu = document.querySelector(".how-to-play-container");
 const howToPlayButton = document.getElementById("howToPlayButton");
 const closeButton = document.getElementById("closeButton");
 const mobileController = document.querySelector(".mobile-controller");
+const mobilePauseBtn = document.getElementById('pause-button');
 
 export function showMainMenu()
 {
@@ -73,6 +74,7 @@ export function showMainMenu()
     infoDisplays.style.display = 'grid';
     pvpInfoDisplays.style.display = 'none';
     mobileController.style.visibility = 'hidden';
+    mobilePauseBtn.style.visibility = 'hidden;'
 }
 
 let confirmed = false;
@@ -84,6 +86,7 @@ newGameButton.addEventListener('click', function() {
         infoDisplays.style.visibility = 'visible';
         pvpInfoDisplays.style.display = 'none';
         mobileController.style.visibility = 'visible';
+        mobilePauseBtn.style.visibility = 'visible';
         confirmed = false;
     } else {
         confirmText.style.visibility = 'visible';
@@ -95,6 +98,7 @@ newGameButton.addEventListener('click', function() {
             infoDisplays.style.visibility = 'visible';
             pvpInfoDisplays.style.display = 'none';
             mobileController.style.visibility = 'visible';
+            mobilePauseBtn.style.visibility = 'visible';
             newGameButton.innerText = "New Game";
         }
         confirmed = true;
@@ -116,6 +120,7 @@ continueGameButton.addEventListener('click', function() {
     infoDisplays.style.visibility = 'visible';
     confirmText.style.visibility = 'hidden';
     mobileController.style.visibility = 'visible';
+    mobilePauseBtn.style.visibility = 'visible';
     newGameButton.innerText = "New Game";
     confirmed = false;
 });
@@ -216,11 +221,13 @@ export function showPauseMenu() {
 pauseMenuContinueButton.addEventListener('click', function() {
     pauseMenu.style.visibility = 'hidden';
     mobileController.style.visibility = 'visible';
+    mobilePauseBtn.style.visibility = 'visible';
     setGlobalPause(false);
 });
 
 pauseMenuExitButton.addEventListener('click', function() {
     pauseMenu.style.visibility = 'hidden';
+    mobilePauseBtn.style.visibility = 'hidden';
     showMainMenu();
 
     if(isMultiplayer) {
