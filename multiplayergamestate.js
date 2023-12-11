@@ -128,29 +128,30 @@ export class MultiplayerGame extends Game
                 }, 1000);
             }
             // Spawnaa random poweruppeja tietyn ajan välein
-            // TODO: Ei spawnata päällekkäin näitä..
             if(this.seconds % this.powerupSpawnrate == 0) {
 
-                const tile = getRandomWalkablePoint();
-                let blinker = new SpawnBlinker();
-                blinker.location = tile;
-                blinker.startBlinking(spawnType.POWERUP);
-                pvpBlinkers.push(blinker);
+                const tile = getRandomWalkablePoint(false);
+                if(tile) {
+                    let blinker = new SpawnBlinker();
+                    blinker.location = tile;
+                    blinker.startBlinking(spawnType.POWERUP);
+                    pvpBlinkers.push(blinker);
 
-                let counter = 0;
-                let blinkInterval = setInterval(() => {
-                    if(counter >= 3) {
-                        blinker.stopBlinking()
-                        counter = 0;
-                        clearInterval(blinkInterval);
-                        tile.powerup = randomPowerup();
-                        tile.hasPowerup = true;
-                        powerupLocations.push(tile);
-                        initPowerups();
-                    }
+                    let counter = 0;
+                    let blinkInterval = setInterval(() => {
+                        if(counter >= 3) {
+                            blinker.stopBlinking()
+                            counter = 0;
+                            clearInterval(blinkInterval);
+                            tile.powerup = randomPowerup();
+                            tile.hasPowerup = true;
+                            powerupLocations.push(tile);
+                            initPowerups();
+                        }
 
-                    counter++;
-                }, 1000);
+                        counter++;
+                    }, 1000);
+                }
             }
         }, 1000);
     }

@@ -133,13 +133,20 @@ export function getRandomWalkablePointInRadius(center, minRadius, maxRadius)
 }
 
 // Same kuin ylempi, mutta ilman radiusta
-export function getRandomWalkablePoint()
+// Jos includePowerups == false, ei palauta laattoja joissa on powerup
+export function getRandomWalkablePoint(includePowerups = true)
 {
     const walkableTiles = [];
     for (let y = 0; y < levelHeight; y++) {
         for (let x = 0; x < levelWidth; x++) {
-            if (isWalkable(x, y)) {
-                walkableTiles.push(level[x][y]);
+            if(includePowerups) {
+                if (isWalkable(x, y)) {
+                    walkableTiles.push(level[x][y]);
+                }
+            } else {
+                if (isWalkable(x, y) && !hasPowerup(x, y)) {
+                    walkableTiles.push(level[x][y]);
+                }
             }
         }
     }
