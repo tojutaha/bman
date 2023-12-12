@@ -16,6 +16,7 @@ import { renderFloatingText } from "./particles.js";
 import { fetchEverything } from "./gamestate.js";
 import { loadTextures } from "./level.js";
 import { loadSpriteSheets } from "./spritesheets.js";
+import { clamp } from "./utils.js";
 
 
 ////////////////////
@@ -62,6 +63,8 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
 export let scale = 1;
+const maxFPS = 60;
+const frameDelay = 1000 / maxFPS;
 
 export const levelHeader = new LevelHeaderAnimation();
 export const gameOverText = new GameOverAnimation();
@@ -76,59 +79,64 @@ export const fadeTransition = new FadeTransition();
 function Render(timeStamp)
 {
     scale = isMobile ? 0.75 : 1;
+    const elapsed = timeStamp - lastTimeStamp;
+    
+    // Render only if enough time has passed
+    if (elapsed > frameDelay) {
 
-    deltaTime = (timeStamp - lastTimeStamp) / 1000;
-    ctx.save();
-
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.restore();
-
-    if(!globalPause) {
-
-        updateCamera();
-        renderFloor();
-        if (!showDoor && !isMultiplayer) {
-            exit.render();
-            renderPowerups();
+        deltaTime = clamp(deltaTime, 0, 1/60);
+        console.log("dt:", deltaTime, " fps:", 1/deltaTime);
+        ctx.save();
+    
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+        ctx.restore();
+    
+        if(!globalPause) {
+            updateCamera();
+            renderFloor();
+            if (!showDoor && !isMultiplayer) {
+                exit.render();
+                renderPowerups();
+            }
+            if(!isMultiplayer){
+                entrance.render();
+            }
+            if(isMultiplayer) {
+                renderPowerups();
+            }
+            renderBombs();
+            renderPlayer(timeStamp);
+            renderWalls();
+            locBlinkers.render();
+            renderPVPBlinkers();
+            if (showDoor && !isMultiplayer) {
+                exit.render();
+                renderPowerups();
+            }
+            if (bigBombOverlay && !isMultiplayer) {
+                bigBomb.render();
+            }
+            renderEnemies(timeStamp);
+            if (fadeTransitions) {
+                fadeTransition.render();
+            }
+            renderExplosions();
+            renderEnemyDeaths();
+            levelHeader.render();
+            gameOverText.render();
+            deathReasonText.render();
+            if (showTutorial && !isMobile && !isMultiplayer) {
+                tutorial.render();
+            }
+    
+            renderFloatingText();
         }
-        if(!isMultiplayer){
-            entrance.render();
-        }
-        if(isMultiplayer) {
-            renderPowerups();
-        }
-        renderBombs();
-        renderPlayer(timeStamp);
-        renderWalls();
-        locBlinkers.render();
-        renderPVPBlinkers();
-        if (showDoor && !isMultiplayer) {
-            exit.render();
-            renderPowerups();
-        }
-        if (bigBombOverlay && !isMultiplayer) {
-            bigBomb.render();
-        }
-        renderEnemies(timeStamp);
-        if (fadeTransitions) {
-            fadeTransition.render();
-        }
-        renderExplosions();
-        renderEnemyDeaths();
-        levelHeader.render();
-        gameOverText.render();
-        deathReasonText.render();
-        if (showTutorial && !isMobile && !isMultiplayer) {
-            tutorial.render();
-        }
-
-        renderFloatingText();
+    
+        lastTimeStamp = timeStamp - (elapsed % frameDelay);
     }
-
-    lastTimeStamp = timeStamp
-
+    
     requestAnimationFrame(Render);
 }
 
