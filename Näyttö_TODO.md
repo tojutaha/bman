@@ -19,8 +19,7 @@
   - Keybindit molemmille :white_check_mark:
   - Materiaali powerup :white_check_mark:
 - Teksti-partikkeli powerupeille :white_check_mark:
-- How To Play: Kakkospelaajan näppis bindit
-- ...
+- How To Play: Kakkospelaajan näppis bindit :white_check_mark:
 
 ###Optimointi
 - Voidaanko vielä nopeuttaa renderöintiä?

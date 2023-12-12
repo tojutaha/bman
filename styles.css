@@ -436,6 +436,18 @@ body {
     background: #555; 
 }
 
+table td {
+    width: 250px;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    margin-bottom: 10px;
+}
+
+li {
+    padding: 2px;
+}
+
 /* Floor */
 .floor {
     z-index: -1;
