@@ -80,13 +80,11 @@ function Render(timeStamp)
 {
     scale = isMobile ? 0.75 : 1;
     const elapsed = timeStamp - lastTimeStamp;
+    deltaTime = clamp(deltaTime, 0, 1/60);
+    console.log("dt:", deltaTime, " fps:", 1/deltaTime);
     
     // Render only if enough time has passed
     if (elapsed > frameDelay) {
-
-        deltaTime = clamp(deltaTime, 0, 1/maxFPS);
-        //console.log("dt:", deltaTime, " fps:", 1/deltaTime);
-        //console.log(elapsed);
 
         ctx.save();
     
