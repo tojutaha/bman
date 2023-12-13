@@ -84,8 +84,10 @@ function Render(timeStamp)
     // Render only if enough time has passed
     if (elapsed > frameDelay) {
 
-        deltaTime = clamp(deltaTime, 0, 1/60);
-        console.log("dt:", deltaTime, " fps:", 1/deltaTime);
+        deltaTime = clamp(deltaTime, 0, 1/maxFPS);
+        //console.log("dt:", deltaTime, " fps:", 1/deltaTime);
+        //console.log(elapsed);
+
         ctx.save();
     
         ctx.setTransform(1, 0, 0, 1, 0, 0);

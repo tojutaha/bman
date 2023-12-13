@@ -65,6 +65,7 @@ class Enemy
         this.targetLocation = {x: 0, y: 0};
         this.playerTarget = null;
         this.isChasingPlayer = false;
+        this.patrollingCount = 0;
 
         // Rendering
         this.renderX = this.x;
@@ -222,6 +223,7 @@ class Enemy
         clearInterval(this.timer);
         if(this.currentPath) {
             this.currentPath.length = 0;
+            this.patrollingCount = 0;
         }
         this.isMoving = false;
     }
@@ -348,10 +350,16 @@ class Enemy
         requestPath(this, this.getLocation(), this.targetLocation);
     }
 
-    // TODO: Tää vois kans kattoo uutta polkua tietyn ajan välein,
-    // jos jää esim yhden tai parin tilen sisään jumiin.
     patrol() {
         if (!this.currentPath || this.currentPath.length == 0) {
+            this.getRandomPath();
+            requestPath(this, this.getLocation(), this.targetLocation);
+        }
+        // After patrolling 5 times same route, request new path to avoid
+        // not getting stuck inside small areas.
+        else if (this.patrollingCount >= 5) {
+            this.patrollingCount = 0;
+            this.currentPath.length = 0;
             this.getRandomPath();
             requestPath(this, this.getLocation(), this.targetLocation);
         } else {
@@ -360,6 +368,7 @@ class Enemy
             this.targetLocation = temp;
             this.currentPath.reverse();
             this.startMove();
+            this.patrollingCount++;
         }
     }
 
