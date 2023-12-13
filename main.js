@@ -63,7 +63,7 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 let lastTimeStamp = 0;
 export let deltaTime = 16.6; // ~60fps alkuun..
 export let scale = 1;
-const maxFPS = 60;
+const maxFPS = 60; // TODO: Pienempi Cap tälle jos mobiili??
 const frameDelay = 1000 / maxFPS;
 
 export const levelHeader = new LevelHeaderAnimation();

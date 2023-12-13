@@ -31,7 +31,7 @@ export class Powerup
 
         else if (tile.powerup === "speed") {
             // TODO: Mikä on sopiva max speed?
-            player.speed = clamp(player.speed += 0.5, 0, 5);
+            player.speed = clamp(player.speed += 40, 0, 250);
             createFloatingText({x: tile.x, y: tile.y}, "+Speed");
         }
 

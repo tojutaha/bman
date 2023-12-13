@@ -356,7 +356,7 @@ class Enemy
             requestPath(this, this.getLocation(), this.targetLocation);
         }
         // After patrolling 5 times same route, request new path to avoid
-        // not getting stuck inside small areas.
+        // getting stuck inside small areas.
         else if (this.patrollingCount >= 5) {
             this.patrollingCount = 0;
             this.currentPath.length = 0;

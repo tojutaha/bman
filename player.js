@@ -44,7 +44,7 @@ class Player
         this.dx = 0;
         this.dy = 0;
 
-        this.speed = 2.5; // pixels/s
+        this.speed = 150; // pixels/s
         this.originalSpeed = this.speed;
         this.direction = Direction.RIGHT;
         this.isWalking = false;
@@ -235,7 +235,7 @@ class Player
                     const upTile = level[ux][uy];
                     const downTile = level[dx][dy];
 
-                    const slideSpeed = this.speed;
+                    const slideSpeed = this.speed * deltaTime;
                     if (this.dx > 0 ) { // Left
                         if (closestCorner == topLeftCorner) {
                             // Top of player
@@ -477,25 +477,25 @@ class Player
 
     // Movement
     moveUp() {
-        this.dy = -this.speed;
+        this.dy = -this.speed * deltaTime;
         this.dx = 0;
         this.direction = Direction.UP;
     }
 
     moveLeft() {
-        this.dx = -this.speed;
+        this.dx = -this.speed * deltaTime;
         this.dy = 0;
         this.direction = Direction.LEFT;
     }
 
     moveDown() {
-        this.dy = this.speed;
+        this.dy = this.speed * deltaTime;
         this.dx = 0;
         this.direction = Direction.DOWN;
     }
 
     moveRight() {
-        this.dx = this.speed;
+        this.dx = this.speed * deltaTime;
         this.dy = 0;
         this.direction = Direction.RIGHT;
     }
