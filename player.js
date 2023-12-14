@@ -6,9 +6,11 @@ import { Powerup } from "./powerup.js";
 import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles, clamp } from "./utils.js";
 import { spriteSheets } from "./spritesheets.js";
 import { showGGMenu } from "./page.js";
+import { isMobile } from "./mobile.js";
 
 
 const godMode = false;
+const playerSpeed = 150;
 
 export const Direction = {
     UP: "Up",
@@ -44,7 +46,7 @@ class Player
         this.dx = 0;
         this.dy = 0;
 
-        this.speed = 150; // pixels/s
+        this.speed = isMobile ? playerSpeed / 2 : playerSpeed; // pixels/s
         this.originalSpeed = this.speed;
         this.direction = Direction.RIGHT;
         this.isWalking = false;

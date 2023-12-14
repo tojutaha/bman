@@ -7,6 +7,7 @@ import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
 import { EnemyDeathAnimation, deathRow } from "./animations.js";
 import { spriteSheets } from "./spritesheets.js";
 import { createFloatingText } from "./particles.js";
+import { isMobile } from "./mobile.js";
 
 export const enemyType = {
     ZOMBIE: "zombie",
@@ -664,7 +665,8 @@ export function renderEnemies(timeStamp)
 
             if(!enemy.collides) {
                 // Smooth rendering
-                enemy.t += deltaTime * (1 / (enemy.speed / 1000));
+                let mysteeriluku = isMobile ? 500 : 1000;   // TODO: nimeäminen
+                enemy.t += deltaTime * (1 / (enemy.speed / mysteeriluku));
                 enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
 
                 x = lerp(enemy.x, enemy.renderX, enemy.t);

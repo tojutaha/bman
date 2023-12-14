@@ -61,10 +61,10 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 ////////////////////
 // Render
 let lastTimeStamp = 0;
-export let deltaTime = 16.6; // ~60fps alkuun..
-export let scale = 1;
-const maxFPS = 60; // TODO: Pienempi Cap tälle jos mobiili??
+let maxFPS = 60;
 const frameDelay = 1000 / maxFPS;
+export let deltaTime = 1000 / maxFPS;
+export let scale = 1;
 
 export const levelHeader = new LevelHeaderAnimation();
 export const gameOverText = new GameOverAnimation();
@@ -79,9 +79,11 @@ export const fadeTransition = new FadeTransition();
 function Render(timeStamp)
 {
     scale = isMobile ? 0.75 : 1;
+    maxFPS = isMobile ? 30 : 60;
+
     const elapsed = timeStamp - lastTimeStamp;
-    deltaTime = clamp(deltaTime, 0, 1/60);
-    console.log("dt:", deltaTime, " fps:", 1/deltaTime);
+    deltaTime = clamp(deltaTime, 0, 1/maxFPS);
+    console.log("dt:", deltaTime, " fps:", 1/deltaTime, " maxFPS:", maxFPS);
     
     // Render only if enough time has passed
     if (elapsed > frameDelay) {

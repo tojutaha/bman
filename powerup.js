@@ -4,6 +4,7 @@ import { spriteSheets } from "./spritesheets.js";
 import { createFloatingText } from "./particles.js";
 import { clamp } from "./utils.js";
 import { playAudio, sfxs } from "./audio.js";
+import { isMobile } from "./mobile.js";
 
 export class Powerup
 {
@@ -13,6 +14,9 @@ export class Powerup
         this.currentWalls = 3;
         this.maxWalls = 3;
         this.blinker = null;
+        // TODO: Mikä on sopiva max speed?
+        this.maxSpeed = isMobile ? 100 : 200;
+        this.extraSpeed = isMobile ? 10 : 20;
     }
 
     pickup(tile, player) {
@@ -30,8 +34,7 @@ export class Powerup
         }
 
         else if (tile.powerup === "speed") {
-            // TODO: Mikä on sopiva max speed?
-            player.speed = clamp(player.speed += 40, 0, 250);
+            player.speed = clamp(player.speed += this.extraSpeed, 0, this.maxSpeed);
             createFloatingText({x: tile.x, y: tile.y}, "+Speed");
         }
 
