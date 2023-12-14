@@ -61,9 +61,9 @@ export let spriteSheet = document.getElementById("sprite-sheet");
 ////////////////////
 // Render
 let lastTimeStamp = 0;
-let maxFPS = 60;
-const frameDelay = 1000 / maxFPS;
-export let deltaTime = 1000 / maxFPS;
+let updateHz = 60; // Determines how often the movement/"physics" should update.
+const frameDelay = 1000 / updateHz;
+export let fixedDeltaTime = 1000 / updateHz;
 export let scale = 1;
 
 export const levelHeader = new LevelHeaderAnimation();
@@ -79,11 +79,11 @@ export const fadeTransition = new FadeTransition();
 function Render(timeStamp)
 {
     scale = isMobile ? 0.75 : 1;
-    maxFPS = isMobile ? 30 : 60;
+    updateHz = isMobile ? 30 : 60;
 
     const elapsed = timeStamp - lastTimeStamp;
-    deltaTime = clamp(deltaTime, 0, 1/maxFPS);
-    console.log("dt:", deltaTime, " fps:", 1/deltaTime, " maxFPS:", maxFPS);
+    fixedDeltaTime = clamp(fixedDeltaTime, 0, 1/updateHz);
+    console.log("dt:", fixedDeltaTime, " fps:", 1/fixedDeltaTime, " maxFPS:", updateHz);
     
     // Render only if enough time has passed
     if (elapsed > frameDelay) {

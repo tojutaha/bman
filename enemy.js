@@ -1,4 +1,4 @@
-import { ctx, deltaTime, game, globalPause, isMultiplayer, tileSize } from "./main.js";
+import { ctx, fixedDeltaTime, game, globalPause, isMultiplayer, tileSize } from "./main.js";
 import { Direction, players } from "./player.js";
 import { dfs, lerp, getRandomWalkablePointInRadius, getTileFromWorldLocation, aabbCollision, getDistanceToEuclidean } from "./utils.js";
 import { requestPath } from "./pathfinder.js";
@@ -666,7 +666,7 @@ export function renderEnemies(timeStamp)
             if(!enemy.collides) {
                 // Smooth rendering
                 const updateInterval = isMobile ? 500 : 1000;
-                enemy.t += deltaTime * (1 / (enemy.speed / updateInterval));
+                enemy.t += fixedDeltaTime * (1 / (enemy.speed / updateInterval));
                 enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
 
                 x = lerp(enemy.x, enemy.renderX, enemy.t);

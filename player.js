@@ -1,4 +1,4 @@
-import { ctx, level, tileSize, deltaTime, game, deathReasonText, bigBomb, setGlobalPause, isMultiplayer, spriteSheet } from "./main.js";
+import { ctx, level, tileSize, fixedDeltaTime, game, deathReasonText, bigBomb, setGlobalPause, isMultiplayer, spriteSheet } from "./main.js";
 import { lastLevel, levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { getMusicalTimeout, msPerBeat, playAudio, playFootsteps, playTrack, randomSfx, sfxs, stopFootsteps, tracks } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
@@ -237,7 +237,7 @@ class Player
                     const upTile = level[ux][uy];
                     const downTile = level[dx][dy];
 
-                    const slideSpeed = this.speed * deltaTime;
+                    const slideSpeed = this.speed * fixedDeltaTime;
                     if (this.dx > 0 ) { // Left
                         if (closestCorner == topLeftCorner) {
                             // Top of player
@@ -479,25 +479,25 @@ class Player
 
     // Movement
     moveUp() {
-        this.dy = -this.speed * deltaTime;
+        this.dy = -this.speed * fixedDeltaTime;
         this.dx = 0;
         this.direction = Direction.UP;
     }
 
     moveLeft() {
-        this.dx = -this.speed * deltaTime;
+        this.dx = -this.speed * fixedDeltaTime;
         this.dy = 0;
         this.direction = Direction.LEFT;
     }
 
     moveDown() {
-        this.dy = this.speed * deltaTime;
+        this.dy = this.speed * fixedDeltaTime;
         this.dx = 0;
         this.direction = Direction.DOWN;
     }
 
     moveRight() {
-        this.dx = this.speed * deltaTime;
+        this.dx = this.speed * fixedDeltaTime;
         this.dy = 0;
         this.direction = Direction.RIGHT;
     }

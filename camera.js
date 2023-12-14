@@ -1,4 +1,4 @@
-import { ctx, tileSize, scale, canvas, deltaTime } from "./main.js";
+import { ctx, tileSize, scale, canvas, fixedDeltaTime } from "./main.js";
 import { levelHeight, levelWidth } from "./gamestate.js";
 import { players } from "./player.js";
 import { getTileFromWorldLocation, lerp } from "./utils.js";
@@ -66,7 +66,7 @@ export function updateCamera() {
 
     // Follow camera
     } else {
-        cameraPt += deltaTime * followCameraSpeed;
+        cameraPt += fixedDeltaTime * followCameraSpeed;
         cameraPt = Math.min(cameraPt, 1);
         cameraT = cameraPt;
     }
@@ -89,7 +89,7 @@ function resetOtherTs(t) {
 }
 
 function getEdgeCameraT(t) {
-    t += deltaTime * edgeCameraSpeed;
+    t += fixedDeltaTime * edgeCameraSpeed;
     return Math.min(t, 1);
 }
 
