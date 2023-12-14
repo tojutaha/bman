@@ -665,8 +665,8 @@ export function renderEnemies(timeStamp)
 
             if(!enemy.collides) {
                 // Smooth rendering
-                let mysteeriluku = isMobile ? 500 : 1000;   // TODO: nimeäminen
-                enemy.t += deltaTime * (1 / (enemy.speed / mysteeriluku));
+                const updateInterval = isMobile ? 500 : 1000;
+                enemy.t += deltaTime * (1 / (enemy.speed / updateInterval));
                 enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
 
                 x = lerp(enemy.x, enemy.renderX, enemy.t);
