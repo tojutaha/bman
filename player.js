@@ -53,6 +53,10 @@ class Player
 
         // Key binds
         this.keybinds = keybinds;
+        this.moveUpPressed = false;
+        this.moveDownPressed = false;
+        this.moveLeftPressed = false;
+        this.moveRightPressed = false;
 
         // Event listener handles
         this.keyUpHandler = null;
@@ -338,12 +342,9 @@ class Player
         }
 
         if (!collides) {
-            //this.x = nextX;
-            //this.y = nextY;
             this.x += this.dx;
             this.y += this.dy;
         }
-
     }
 
     updateAnimation(dt, currentTime) {
@@ -479,24 +480,28 @@ class Player
 
     // Movement
     moveUp() {
+        this.moveUpPressed = true;
         this.dy = -this.speed * fixedDeltaTime;
         this.dx = 0;
         this.direction = Direction.UP;
     }
 
     moveLeft() {
+        this.moveLeftPressed = true;
         this.dx = -this.speed * fixedDeltaTime;
         this.dy = 0;
         this.direction = Direction.LEFT;
     }
 
     moveDown() {
+        this.moveDownPressed = true;
         this.dy = this.speed * fixedDeltaTime;
         this.dx = 0;
         this.direction = Direction.DOWN;
     }
 
     moveRight() {
+        this.moveRightPressed = true;
         this.dx = this.speed * fixedDeltaTime;
         this.dy = 0;
         this.direction = Direction.RIGHT;
@@ -538,14 +543,29 @@ class Player
 
         switch(event.code) {
             case this.keybinds.move_up:
+                this.moveUpPressed = false;
+                //this.dy = 0;
+                break;
             case this.keybinds.move_down:
-                this.dy = 0;
+                this.moveDownPressed = false;
+                //this.dy = 0;
                 break;
 
             case this.keybinds.move_left:
-            case this.keybinds.move_right:
-                this.dx = 0;
+                this.moveLeftPressed = false;
+                //this.dx = 0;
                 break;
+            case this.keybinds.move_right:
+                this.moveRightPressed = false;
+                //this.dx = 0;
+                break;
+        }
+
+        if(!this.moveRightPressed && !this.moveLeftPressed) {
+            this.dx = 0;
+        }
+        if(!this.moveUpPressed && !this.moveDownPressed) {
+            this.dy = 0;
         }
     }
 

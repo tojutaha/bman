@@ -83,7 +83,7 @@ function Render(timeStamp)
 
     const elapsed = timeStamp - lastTimeStamp;
     fixedDeltaTime = clamp(fixedDeltaTime, 0, 1/updateHz);
-    console.log("dt:", fixedDeltaTime, " fps:", 1/fixedDeltaTime, " maxFPS:", updateHz);
+    //console.log("dt:", fixedDeltaTime, " fps:", 1/fixedDeltaTime, " maxFPS:", updateHz);
     
     // Render only if enough time has passed
     if (elapsed > frameDelay) {
