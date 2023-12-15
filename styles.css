@@ -1,6 +1,7 @@
 :root {
     --bg: #303030;
     --lightgrey: #444;
+    --mobile-btn-size: 60px;
   }
 
 * {
@@ -549,22 +550,22 @@ li {
 }
 
 .mobile-controller img {
-    width: 50px;
-    height: 50px;
+    width: var(--mobile-btn-size);
+    height: var(--mobile-btn-size);
     opacity: 0.95;
     box-shadow: -1px -1px 30px rgba(200, 210, 200, 0.2);
 }
 
 #mob-dir-left {
-    margin-left: -25px;
+    margin-left: -30px;
 }
 
 #mob-dir-right {
-    margin-left: 50px;
+    margin-left: var(--mobile-btn-size);
 }
 
 #mob-dir-up, #mob-dir-down {
-    margin-left: 25px;
+    margin-left: 30px;
 }
 
 .d-pad {
@@ -575,8 +576,8 @@ li {
     border-radius: 50%;
     width: 100px;
     height: 100px;
-    margin-top: 150px;
-    margin-right: 50px;
+    margin-top: 180px;
+    margin-right: 10px;
 }
 
 .mobile-buttons-left {
@@ -584,7 +585,7 @@ li {
     top: 0;
     left: 0;
     margin-top: auto;
-    margin-left: 50px;
+    margin-left: 35px;
     z-index: 9999;
 }
 
