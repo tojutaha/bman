@@ -389,6 +389,7 @@ class Enemy
             switch (this.enemyType) {
                 case enemyType.ZOMBIE: {
                     createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
+                    game.increaseScore(this.score);
                     break;
                 }
                 case enemyType.GHOST: {
