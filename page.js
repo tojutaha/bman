@@ -50,6 +50,7 @@ const loadingText = document.getElementById("loading-text");
 const playContainer = document.querySelector(".play-game-container");
 const infoDisplays = document.querySelector(".info-displays");
 const pvpInfoDisplays = document.querySelector(".pvp-info-displays");
+const menuBackground = document.querySelector('.menu-background');
 const mainMenu = document.querySelector('.main-menu-container');
 const newGameButton = document.getElementById("newGameButton");
 const confirmText = document.getElementById("confirmText");
@@ -60,6 +61,7 @@ const howToPlayButton = document.getElementById("howToPlayButton");
 const closeButton = document.getElementById("closeButton");
 const mobileController = document.querySelector(".mobile-controller");
 const mobilePauseBtn = document.getElementById('pause-button');
+// let floor = document.querySelector('.floor');
 
 export function showMainMenu()
 {
@@ -69,12 +71,14 @@ export function showMainMenu()
     } else {
         continueGameButton.disabled = false;
     }
+    menuBackground.style.visibility = 'visible';
     mainMenu.style.visibility = 'visible';
     infoDisplays.style.visibility = 'hidden';
     infoDisplays.style.display = 'grid';
     pvpInfoDisplays.style.display = 'none';
     mobileController.style.visibility = 'hidden';
     mobilePauseBtn.style.visibility = 'hidden;'
+    // floor.style.backgroundImage = 'none';
 }
 
 let confirmed = false;
@@ -82,6 +86,7 @@ newGameButton.addEventListener('click', function() {
     setNumOfPlayers(1);
     if (localStorage.length === 0) {
         game.newGame();
+        menuBackground.style.visibility = 'hidden';
         mainMenu.style.visibility = 'hidden';
         infoDisplays.style.visibility = 'visible';
         pvpInfoDisplays.style.display = 'none';
@@ -94,6 +99,7 @@ newGameButton.addEventListener('click', function() {
         if(confirmed) {
             game.newGame();
             confirmText.style.visibility = 'hidden';
+            menuBackground.style.visibility = 'hidden';
             mainMenu.style.visibility = 'hidden';
             infoDisplays.style.visibility = 'visible';
             pvpInfoDisplays.style.display = 'none';
@@ -109,6 +115,7 @@ newGameButton.addEventListener('click', function() {
 pvpGameButton.addEventListener('click', function() {
     setNumOfPlayers(2);
     game.newGame();
+    menuBackground.style.visibility = 'hidden';
     mainMenu.style.visibility = 'hidden';
     infoDisplays.style.display = 'none';
     pvpInfoDisplays.style.display = 'flex';
@@ -116,6 +123,7 @@ pvpGameButton.addEventListener('click', function() {
 
 continueGameButton.addEventListener('click', function() {
     game.continueGame();
+    menuBackground.style.visibility = 'hidden';
     mainMenu.style.visibility = 'hidden';
     infoDisplays.style.visibility = 'visible';
     confirmText.style.visibility = 'hidden';
@@ -127,11 +135,13 @@ continueGameButton.addEventListener('click', function() {
 
 howToPlayButton.addEventListener('click', function() {
     howToPlayMenu.style.visibility = 'visible';
+    menuBackground.style.visibility = 'hidden';
     mainMenu.style.visibility = 'hidden';
 });
 
 closeButton.addEventListener('click', function() {
     howToPlayMenu.style.visibility = 'hidden';
+    menuBackground.style.visibility = 'visible';
     mainMenu.style.visibility = 'visible';
 });
 
@@ -177,15 +187,18 @@ const ggScore = document.getElementById("gg-score");
 export function showGameOverMenu()
 {
     gameOverScore.innerText = `Score ${game.score}`;
+    menuBackground.style.visibility = 'visible';
     gameOverMenu.style.visibility = 'visible';
 }
 
 restartButton.addEventListener('click', function() {
+    menuBackground.style.visibility = 'hidden';
     gameOverMenu.style.visibility = 'hidden';
     game.newGame();
 });
 
 exitButton.addEventListener('click', function() {
+    menuBackground.style.visibility = 'hidden';
     gameOverMenu.style.visibility = 'hidden';
     showMainMenu();
 });
@@ -193,6 +206,7 @@ exitButton.addEventListener('click', function() {
 ////////////////////
 // GG menu / buttons
 ggExitButton.addEventListener('click', function() {
+    menuBackground.style.visibility = 'hidden';
     ggMenu.style.visibility = 'hidden';
     localStorage.clear();
     showMainMenu();
@@ -202,6 +216,7 @@ export function showGGMenu()
     wonGame = true;
     updateLevelDisplay();
     ggScore.innerText = `Score ${game.score}`;
+    menuBackground.style.visibility = 'visible';
     ggMenu.style.visibility = 'visible';
 }
 
@@ -214,11 +229,13 @@ const pauseMenuExitButton = document.getElementById("pauseMenu-ExitButton");
 export function showPauseMenu() {
     setGlobalPause(!globalPause);
     const visibility = globalPause ? 'visible' : 'hidden';
+    menuBackground.style.visibility = visibility;
     pauseMenu.style.visibility = visibility;
     mobileController.style.visibility = 'hidden';
 }
 
 pauseMenuContinueButton.addEventListener('click', function() {
+    menuBackground.style.visibility = 'hidden';
     pauseMenu.style.visibility = 'hidden';
     mobileController.style.visibility = 'visible';
     mobilePauseBtn.style.visibility = 'visible';
@@ -226,6 +243,7 @@ pauseMenuContinueButton.addEventListener('click', function() {
 });
 
 pauseMenuExitButton.addEventListener('click', function() {
+    menuBackground.style.visibility = 'hidden';
     pauseMenu.style.visibility = 'hidden';
     mobilePauseBtn.style.visibility = 'hidden';
     showMainMenu();

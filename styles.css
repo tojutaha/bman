@@ -1,5 +1,7 @@
 :root {
-    --bg: #303030;
+    --site-bg: #303030;
+    --menu-bg: rgba(0, 0, 0, 0.95);
+    --container-bg: rgba(0, 0, 0, 0.6);
     --lightgrey: #444;
     --mobile-btn-size: 60px;
   }
@@ -27,7 +29,7 @@
 }
 
 body {
-    background-color: var(--bg);
+    background-color: var(--site-bg);
 }
 
 .text-display {
@@ -113,6 +115,14 @@ body {
     justify-content: space-evenly;
 }
 
+.menu-background {
+    visibility: hidden;
+    position: absolute;
+    height: 832px;
+    width: 832px;
+    background: var(--menu-bg);
+}
+
 /* Play Game */
 .play-game-container {
     visibility: hidden; /* TODO: Takas visibleks kun ei tartte debuggailla */
@@ -163,7 +173,6 @@ body {
     position: absolute;
     width: 832px;
     height: 832px;
-    background: black;
     z-index: 999;
 }
 
@@ -178,13 +187,13 @@ body {
 }
 
 .main-menu-content h1 {
-    color: white;
+    text-shadow: 0.1em 0.1em 0.1em rgba(200, 200, 200, 0.4);
+    padding-bottom: 20px;
 }
 
-.main-menu-content .main-menu-button-container {
+.main-menu-button-container {
     display: flex;
     flex-direction: column;
-    padding-top: 20px;
     height: 33%;
     justify-content: space-evenly;
 }
@@ -192,8 +201,10 @@ body {
 .main-menu-content button {
     width: 200px;
     height: 50px;
+    border-radius: 2px;
     background: black;
     color: white;
+    text-shadow: 0.1em 0.1em 0.1em rgba(200, 200, 200, 0.2);
 }
 
 .main-menu-content button:disabled {
@@ -218,9 +229,6 @@ body {
 .pause-menu-container {
     visibility: hidden;
     position: absolute;
-    width: 832px;
-    height: 832px;
-    background: black;
     z-index: 999;
 }
 
@@ -260,9 +268,6 @@ body {
 .game-over-container {
     visibility: hidden;
     position: absolute;
-    width: 832px;
-    height: 832px;
-    background: black;
     z-index: 999;
 }
 
@@ -471,7 +476,7 @@ li {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.03;
+    opacity: 0.0;
 }
 
 #mobile-overlay {
@@ -624,6 +629,29 @@ li {
     
     body {
         background-color: #101010;
+    }
+
+    .main-menu-container {
+        width: auto;
+        height: auto;
+    }
+
+    .main-menu-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        align-content: center;
+    }
+
+    .main-menu-content h1 {
+        margin-bottom: 0;
+    }
+
+    .main-menu-button-container {
+        padding-top: 0;
+        margin-top: 0;
     }
 
     #mobile-overlay {
