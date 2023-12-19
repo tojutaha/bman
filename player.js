@@ -1,6 +1,6 @@
-import { ctx, level, tileSize, fixedDeltaTime, game, deathReasonText, bigBomb, setGlobalPause, isMultiplayer, spriteSheet } from "./main.js";
+import { ctx, level, tileSize, fixedDeltaTime, game, deathReasonText, setGlobalPause, isMultiplayer } from "./main.js";
 import { lastLevel, levelHeight, levelType, levelWidth } from "./gamestate.js";
-import { getMusicalTimeout, msPerBeat, playAudio, playFootsteps, playTrack, randomSfx, sfxs, stopFootsteps, tracks } from "./audio.js";
+import { getMusicalTimeout, playAudio, playFootsteps, playTrack, randomSfx, sfxs, stopFootsteps, tracks } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
 import { Powerup } from "./powerup.js";
 import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles, clamp } from "./utils.js";
@@ -9,8 +9,8 @@ import { showGGMenu } from "./page.js";
 import { isMobile } from "./mobile.js";
 
 
-const godMode = false;
-const playerSpeed = 150;
+const godMode = true;
+export const playerSpeed = 150;
 
 export const Direction = {
     UP: "Up",
@@ -46,9 +46,8 @@ class Player
         this.dx = 0;
         this.dy = 0;
 
-        this.speed = isMobile ? playerSpeed / 2 : playerSpeed; // pixels/s
-        this.originalSpeed = this.speed;
-        this.direction = Direction.RIGHT;
+        this.speed = playerSpeed; // pixels/s
+        this.direction = Direction.DOWN;
         this.isWalking = false;
 
         // Key binds
@@ -728,3 +727,4 @@ export function clearPlayers() {
 
     players.length = 0;
 }
+

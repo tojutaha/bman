@@ -12,7 +12,7 @@ export function responsivityCheck() {
     // Bools
     const isPortrait = window.matchMedia('(orientation: portrait)').matches;
     const isLandscape = window.matchMedia('(orientation: landscape)').matches;
-
+    console.log('resp');
     if (window.innerHeight <= 428) {
         isMobile = true;
         setCameraOffsets();
@@ -28,11 +28,11 @@ export function responsivityCheck() {
 
 /////////////////
 // Resize canvas
-let canvas = document.getElementById('canvas');
-let floor = document.querySelector('.floor');
+const canvas = document.getElementById('canvas');
+const floor = document.querySelector('.floor');
 
 function fullsizeCanvas() {
-    let size = 832;
+    const size = 832;
 
     canvas.width = size;
     canvas.height = size;
@@ -63,7 +63,6 @@ fsBtn.addEventListener('click', () => {
         document.documentElement.requestFullscreen();
     }
 })
-
 
 //////////////////////
 // Button presses

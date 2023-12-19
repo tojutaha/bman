@@ -94,8 +94,8 @@ class Enemy
                 this.frameWidth = 256/4;
                 this.spriteSheet.src = spriteSheets.zombie;
                 this.movementMode = movementMode.PATROL;
-                this.speed = 800;
-                this.score = 200;
+                this.speed = 1000;
+                this.score = 100;
                 this.patrol();
                 break;
             }
@@ -103,13 +103,15 @@ class Enemy
                 this.spriteSheet.src = spriteSheets.ghost;
                 this.movementMode = movementMode.ROAM;
                 this.speed = 500;
-                this.score = 350;
+                this.score = 250;
                 this.roam();
                 break;
             }
             case enemyType.SKELETON: {
                 this.spriteSheet.src = spriteSheets.skeleton;
                 this.movementMode = movementMode.PATROL;
+                this.totalFrames = 4;
+                this.frameWidth = 256/4;
                 this.speed = 400;
                 this.score = 500;
                 this.patrol();
@@ -666,7 +668,8 @@ export function renderEnemies(timeStamp)
 
             if(!enemy.collides) {
                 // Smooth rendering
-                const updateInterval = isMobile ? 500 : 1000;
+                // const updateInterval = isMobile ? 500 : 1000;
+                const updateInterval = 1000;
                 enemy.t += fixedDeltaTime * (1 / (enemy.speed / updateInterval));
                 enemy.t = Math.min(enemy.t, 1); // NEED TO CLAMP THIS ONE TOO!
 
