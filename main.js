@@ -48,7 +48,7 @@ export function setNumOfPlayers(value) {
 ////////////////////
 // Settings
 export const tileSize = 64;
-export const cagePlayer = true;
+export const cagePlayer = false;
 export const cageMultiplayer = false;
 export const bigBombOverlay = false;
 const showTutorial = false;
@@ -156,15 +156,14 @@ async function debugLoad()
 // DOM
 document.addEventListener("DOMContentLoaded", function ()
 {
-    responsivityCheck();
     canvas = document.getElementById("canvas");
     if (canvas) {
         ctx = canvas.getContext("2d");
         if (ctx) {
             // TODO: Tämä pois kun ei tartteta enää debuggailla
             debugLoad();
-            
             Render();
+            responsivityCheck();
         } else {
             throw new Error("Could not find ctx object.");
         }
