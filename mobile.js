@@ -3,7 +3,7 @@ import { globalPause, setGlobalPause } from "./main.js";
 import { showPauseMenu } from "./page.js";
 import { spriteSheets } from "./spritesheets.js";
 
-// TODO: Portrait mode -> landscape hidastaa pelaajan kävelyt puoleen!!
+// TODO: Portrait mode -> landscape fiksaa nopeuden, miksi?
 // TODO: Firefoxilla pelaaja pysähtyy jos kävelee ja hipaisee jonnekkin muualle ruutuun
 
 export let isMobile = false;

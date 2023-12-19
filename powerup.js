@@ -4,7 +4,6 @@ import { spriteSheets } from "./spritesheets.js";
 import { createFloatingText } from "./particles.js";
 import { clamp } from "./utils.js";
 import { playAudio, sfxs } from "./audio.js";
-import { isMobile } from "./mobile.js";
 
 export class Powerup
 {
@@ -15,8 +14,8 @@ export class Powerup
         this.maxWalls = 3;
         this.blinker = null;
         // TODO: Mikä on sopiva max speed?
-        this.maxSpeed = isMobile ? 100 : 200;
-        this.extraSpeed = isMobile ? 10 : 20;
+        this.maxSpeed = 200;
+        this.extraSpeed = 20;
     }
 
     pickup(tile, player) {
