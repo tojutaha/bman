@@ -1,16 +1,16 @@
 async function preLoadSpriteSheets() {
     const spritesheets = {
-        player1_normal: "./assets/player.png",
-        player1_lantern: "./assets/player_lantern.png",
+        player1_normal: "./assets/players/player_shadows.png",
+        player1_lantern: "./assets/players/player_lantern_shadows.png",
 
-        player2_normal: "./assets/player2.png",
-        player2_lantern: "./assets/player2_lantern.png",
+        player2_normal: "./assets/players/player2.png",
+        player2_lantern: "./assets/players/player2_lantern.png",
 
-        zombie: "./assets/zombie.png",
+        zombie: "./assets/enemies/zombie_shadows.png",
         ghost: "./assets/ghost.png",
         skeleton: "./assets/skeleton2.png",
 
-        zombie_outline: "./assets/zombie_outline.png",
+        zombie_outline: "./assets/enemies/zombie_outline.png",
 
         zombie_death_back:  "./assets/deaths/zombie_death_back.png",
         zombie_death_front: "./assets/deaths/zombie_death_front.png",
@@ -28,7 +28,7 @@ async function preLoadSpriteSheets() {
         explosion: "./assets/explosion.png",
         wall_animation: "./assets/wall_animation.png",
         powerups: "./assets/powerups.png",
-        door: "./assets/door_animation.png",
+        door: "./assets/door_animation_night.png",
 
         tutorial_keys: "./assets/tutorial_keys_animation.png",
         big_bomb_overlay: "./assets/big_bomb_overlay.png",
