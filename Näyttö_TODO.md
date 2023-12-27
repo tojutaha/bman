@@ -22,19 +22,20 @@
 - How To Play: Kakkospelaajan näppis bindit :white_check_mark:
 
 ###Optimointi
-- Voidaanko vielä nopeuttaa renderöintiä?
-- (Mahdollista) Turhaa laskentaa ja brancheja pois sieltä missä sitä ei tarvita
-- Voiko jotain olemassa olevia rutiineja nopeuttaa/toteuttaa järkevämmin?
+- Voidaanko vielä nopeuttaa renderöintiä? :white_check_mark:
+  - Offscreen bufferi seinille :white_check_mark:
+  - Offscreen bufferi powerupeille :white_check_mark:
 
 ###Bugeja
 - Canvas API ryhmätyöstä jääneiden bugien korjauksia
   - Cage ei enää aina pelaa jostain syystä
   - "Vilkku" jää joskus päälle, kun vaihtaa modea :white_check_mark:
-  - Näkymättömiä satunnaisia pommeja
   - DeltaTime pelaajan liikuttelussa :white_check_mark:
 
 ###Spritet/Animaatiot
-- CC-BY Lisenssillä olevat spritet uusiksi (Kummitus, Luuranko)
+- CC-BY Lisenssillä olevat spritet uusiksi
+  - Kummitus
+  - Luuranko
 - Korvataan score-spritet teksti partikkeleilla :white_check_mark:
 - Kakkospelaajalle sprite :white_check_mark:
 
