@@ -75,7 +75,7 @@ class Player
         this.lanternSprite = lanternSprite;
         this.spriteSheet.src = this.normalSprite;
         this.frameWidth = 256/4;
-        this.frameHeight = 256/4;
+        this.frameHeight = 288/4;
         this.totalFrames = 4;
         this.currentFrame = 0;
         this.animationSpeed = 150;
