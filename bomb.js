@@ -7,6 +7,7 @@ import { exitLocation } from "./tile.js";
 import { spriteSheets } from "./spritesheets.js";
 import { lastLevel } from "./gamestate.js";
 import { initPickups } from "./pickups.js";
+import { createFloatingText } from "./particles.js";
 
 export let tilesWithBombs = [];
 let crumblingWalls = [];
@@ -189,7 +190,11 @@ function setTilesOnFire(tiles, playerID) {
                     }
 
                     if (currentTile.hasMushroom) {
+                        const mushroomScore = 10;
+
                         currentTile.hasMushroom = false;
+                        game.increaseScore(mushroomScore);
+                        createFloatingText({x: currentTile.x, y: currentTile.y}, `+${mushroomScore}`);
                         initPickups();
                     }
 
