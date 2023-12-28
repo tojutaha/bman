@@ -8,11 +8,13 @@ import { EnemyDeathAnimation, deathRow } from "./animations.js";
 import { spriteSheets } from "./spritesheets.js";
 import { createFloatingText } from "./particles.js";
 import { isMobile } from "./mobile.js";
+import { initPickups } from "./pickups.js";
 
 export const enemyType = {
     ZOMBIE: "zombie",
     GHOST: "ghost",
     SKELETON: "skeleton",
+    WITCH: "witch",
 }
 
 export const movementMode = {
@@ -117,6 +119,18 @@ class Enemy
                 this.patrol();
                 break;
             }
+            case enemyType.WITCH: {
+                this.spriteSheet.src = spriteSheets.witch;
+                this.movementMode = movementMode.FOLLOW;
+                this.totalFrames = 4;
+                this.frameWidth = 256/4;
+                this.frameHeight = 288/4;
+                this.speed = 900;
+                this.score = 350;
+                this.followPlayer();
+                this.dropMushrooms();
+                break;
+            }
         }
         
         if (this.justSpawned) {
@@ -143,7 +157,7 @@ class Enemy
         }
     }
 
-    showOutline() {
+    showOutline() { // TODO: tätä voi siivota jos muita kuin zombia ei käytetä
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
                 this.spriteSheet.src = spriteSheets.zombie_outline;
@@ -380,6 +394,18 @@ class Enemy
         requestPath(this, this.getLocation(), this.targetLocation);
     }
 
+    dropMushrooms() {
+        if (!this.mushroomInterval) {
+            this.mushroomInterval = setInterval(() => {
+                const tile = getTileFromWorldLocation(this);
+                if (!tile.hasMushroom) {
+                    tile.hasMushroom = true;
+                    initPickups();
+                }
+            }, 10000);
+        }
+    }
+
     die(playerID) {
         this.playSfx();
         const deathAnimation = new EnemyDeathAnimation(this.x, this.y, this.enemyType, this.direction);
@@ -388,42 +414,11 @@ class Enemy
 
         if(!isMultiplayer)
         {
-            switch (this.enemyType) {
-                case enemyType.ZOMBIE: {
-                    createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
-                    game.increaseScore(this.score);
-                    break;
-                }
-                case enemyType.GHOST: {
-                    createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
-                    game.increaseScore(this.score);
-                    break;
-                }
-                case enemyType.SKELETON: {
-                    createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
-                    game.increaseScore(this.score);
-                    break;
-                }
-            }
+            game.increaseScore(this.score);
         } else {
-            switch (this.enemyType) {
-                case enemyType.ZOMBIE: {
-                    createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
-                    game.increaseScore(-1, this.score);
-                    break;
-                }
-                case enemyType.GHOST: {
-                    createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
-                    game.increaseScore(-1, this.score);
-                    break;
-                }
-                case enemyType.SKELETON: {
-                    createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
-                    game.increaseScore(-1, this.score);
-                    break;
-                }
-            }
+            game.increaseScore(-1, this.score);
         }
+        createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
 
         let result = findEnemyById(this.id);
         enemies.splice(result.index, 1);

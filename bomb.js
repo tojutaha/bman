@@ -187,7 +187,13 @@ function setTilesOnFire(tiles, playerID) {
                         currentTile.hasPowerup = false;
                         initPickups();
                     }
-                    else if (currentTile.isExit && !currentTile.hasSpawnedEnemies)
+
+                    if (currentTile.hasMushroom) {
+                        currentTile.hasMushroom = false;
+                        initPickups();
+                    }
+
+                    if (currentTile.isExit && !currentTile.hasSpawnedEnemies)
                     {
                         if (exitLocation.isOpen) {
                             game.toggleDoor();

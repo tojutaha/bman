@@ -2,7 +2,7 @@
 // Imports
 import { renderWalls, renderFloor } from "./level.js";
 import { EntranceAnimation, ExitAnimation, locBlinkingAnimation, LevelHeaderAnimation, GameOverAnimation, DeathReasonAnimation, renderEnemyDeaths, TutorialAnimation, BigBombAnimation, FadeTransition } from "./animations.js";
-import { renderPowerups } from "./pickups.js";
+import { renderPickups } from "./pickups.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";
@@ -48,7 +48,7 @@ export function setNumOfPlayers(value) {
 ////////////////////
 // Settings
 export const tileSize = 64;
-export const cagePlayer = false;
+export const cagePlayer = true;
 export const cageMultiplayer = false;
 export const bigBombOverlay = false;
 const showTutorial = false;
@@ -100,13 +100,13 @@ function Render(timeStamp)
             renderFloor();
             if (!showDoor && !isMultiplayer) {
                 exit.render();
-                renderPowerups();
+                renderPickups();
             }
             if(!isMultiplayer){
                 entrance.render();
             }
             if(isMultiplayer) {
-                renderPowerups();
+                renderPickups();
             }
             renderBombs();
             renderPlayer(timeStamp);
@@ -115,7 +115,7 @@ function Render(timeStamp)
             renderPVPBlinkers();
             if (showDoor && !isMultiplayer) {
                 exit.render();
-                renderPowerups();
+                renderPickups();
             }
             if (bigBombOverlay && !isMultiplayer) {
                 bigBomb.render();

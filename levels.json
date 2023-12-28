@@ -16,14 +16,15 @@
     },
     "1": {
         "enemies": {
-            "zombie": 1,
+            "zombie": 0,
             "ghost": 0,
-            "skeleton": 0
+            "skeleton": 1,
+            "witch": 1
         },
         "tiles": {
             "width": 13,
             "height": 13,
-            "type": "forest_day",
+            "type": "forest_night",
             "powerup": "range",
             "powerupCount": 1,
             "softwallPercent": 0.2

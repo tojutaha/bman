@@ -4,6 +4,7 @@ import { spriteSheets } from "./spritesheets.js";
 import { createFloatingText } from "./particles.js";
 import { clamp } from "./utils.js";
 import { playAudio, sfxs } from "./audio.js";
+import { shroom } from "./animations.js";
 
 ////////////////////
 // Powerups
@@ -66,19 +67,13 @@ export function randomPowerup() {
 
 ////////////////////
 // Mushrooms
-export class Mushroom
-{
-    constructor() {
-        this.blinker = null;
-    }
+export function pickupMushroom(tile) {
+    tile.hasMushroom = false;
+    initPickups();
+    playAudio(sfxs['MUSHROOM']);
 
-    pickup(tile, player) {
-        tile.hasMushroom = false;
-        initPickups();
-        // playAudio(sfxs['POWERUP3']);
-
-        // Trigger shroom animation
-    }
+    // Trigger shroom animation
+    shroom();
 }
 
 ////////////////////
@@ -122,11 +117,15 @@ export function initPickups()
                     pickupsCtx.drawImage(powerupImage, tileSize*3, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
             }
+
+            if (currentTile.hasMushroom) {
+                pickupsCtx.drawImage(mushroomImage, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+            }
         }
     }
 }
 
-export function renderPowerups()
+export function renderPickups()
 {
     ctx.drawImage(pickupsCanvas, 0, 0);
 }

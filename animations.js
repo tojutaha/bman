@@ -574,9 +574,9 @@ export class BigBombAnimation {
 ///////////////////
 // Shroom
 const canvasContainer = document.querySelector(".canvas-container");
-export function shroom() {
-    shroomtrig = false;
+const floor = document.querySelector('.floor');
 
+export function shroom() {
     // Settings
     const minSize = 90;
     const maxSize = 100;
