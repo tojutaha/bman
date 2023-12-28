@@ -4,7 +4,7 @@ import { spriteSheets } from "./spritesheets.js";
 import { createFloatingText } from "./particles.js";
 import { clamp } from "./utils.js";
 import { playAudio, sfxs } from "./audio.js";
-import { shroom } from "./animations.js";
+import { shroom, shroomTrigger } from "./animations.js";
 
 ////////////////////
 // Powerups
@@ -68,6 +68,8 @@ export function randomPowerup() {
 ////////////////////
 // Mushrooms
 export function pickupMushroom(tile) {
+    if (shroomTrigger) return;
+    
     tile.hasMushroom = false;
     initPickups();
     playAudio(sfxs['MUSHROOM']);

@@ -575,8 +575,9 @@ export class BigBombAnimation {
 // Shroom
 const canvasContainer = document.querySelector(".canvas-container");
 const floor = document.querySelector('.floor');
-
+export let shroomTrigger = false;
 export function shroom() {
+    shroomTrigger = true;
     // Settings
     const minSize = 90;
     const maxSize = 100;
@@ -620,6 +621,7 @@ export function shroom() {
         } else {
             rotation = 0;
             stopBlur = true;
+            shroomTrigger = false;
             clearInterval(effectInterval);
         }
         floor.style.transform = `rotate(-${rotation}deg)`;
