@@ -1,5 +1,5 @@
 import { tileSize, cagePlayer, cageMultiplayer, isMultiplayer } from "./main.js";
-import { randomPowerup } from "./powerup.js";
+import { randomPowerup } from "./pickups.js";
 import { levelHeight, levelPowerup, levelWidth, softwallPercent, powerupCount } from "./gamestate.js";
 
 export let exitLocation = undefined;

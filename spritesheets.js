@@ -24,10 +24,11 @@ async function preLoadSpriteSheets() {
         skeleton_death_left:  "./assets/deaths/skeleton_death_left.png",
         skeleton_death_right: "./assets/deaths/skeleton_death_right.png",
 
-        bomb: "./assets/bomb.png",
+        bomb: "./assets/items/bomb.png",
+        powerups: "./assets/items/powerups.png",
+        mushroom: "./assets/items/shroom1.png",
         explosion: "./assets/explosion.png",
         wall_animation: "./assets/wall_animation.png",
-        powerups: "./assets/powerups.png",
         door: "./assets/door_animation_night.png",
 
         tutorial_keys: "./assets/tutorial_keys_animation.png",

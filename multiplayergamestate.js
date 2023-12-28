@@ -9,7 +9,7 @@ import { updateP1Score, updateP2Score, updatePVPTimerDisplay } from "./page.js";
 import { clearPlayers, findPlayerById, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, powerupLocations} from "./tile.js";
 import { getRandomWalkablePoint } from "./utils.js";
-import { initPowerups, randomPowerup } from "./powerup.js";
+import { initPickups, randomPowerup } from "./pickups.js";
 import { createFloatingText } from "./particles.js";
 import { locBlinkingAnimation } from "./animations.js";
 
@@ -145,7 +145,7 @@ export class MultiplayerGame extends Game
                             tile.powerup = randomPowerup();
                             tile.hasPowerup = true;
                             powerupLocations.push(tile);
-                            initPowerups();
+                            initPickups();
                         }
 
                         counter++;
@@ -229,7 +229,7 @@ export class MultiplayerGame extends Game
             throw new Error("Failed to create level");
         }
         initHardWallsCanvas();
-        initPowerups();
+        initPickups();
         setGlobalPause(false);
     }
 
@@ -262,7 +262,7 @@ export class MultiplayerGame extends Game
                 throw new Error("Failed to create level");
             }
             initHardWallsCanvas();
-            initPowerups();
+            initPickups();
             setGlobalPause(false);
         
             this.initLevel();

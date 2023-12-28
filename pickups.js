@@ -5,6 +5,8 @@ import { createFloatingText } from "./particles.js";
 import { clamp } from "./utils.js";
 import { playAudio, sfxs } from "./audio.js";
 
+////////////////////
+// Powerups
 export class Powerup
 {
     constructor() {
@@ -20,7 +22,7 @@ export class Powerup
 
     pickup(tile, player) {
         tile.hasPowerup = false;
-        initPowerups();
+        initPickups();
         playAudio(sfxs['POWERUP3']);
 
         if (tile.powerup === "bomb") {
@@ -63,19 +65,41 @@ export function randomPowerup() {
 }
 
 ////////////////////
+// Mushrooms
+export class Mushroom
+{
+    constructor() {
+        this.blinker = null;
+    }
+
+    pickup(tile, player) {
+        tile.hasMushroom = false;
+        initPickups();
+        // playAudio(sfxs['POWERUP3']);
+
+        // Trigger shroom animation
+    }
+}
+
+////////////////////
 // Renders
-let powerupsCanvas = document.createElement('canvas');
-let powerupsCtx = powerupsCanvas.getContext('2d');
+let pickupsCanvas = document.createElement('canvas');
+let pickupsCtx = pickupsCanvas.getContext('2d');
 
 const powerupImage = new Image();
-export function initPowerups()
+const mushroomImage = new Image();
+export function initPickups()
 {
-    powerupsCanvas.width = levelWidth * tileSize;
-    powerupsCanvas.height = levelHeight * tileSize;
-    powerupsCtx.clearRect(0, 0, powerupsCanvas.width, powerupsCanvas.height);
+    pickupsCanvas.width = levelWidth * tileSize;
+    pickupsCanvas.height = levelHeight * tileSize;
+    pickupsCtx.clearRect(0, 0, pickupsCanvas.width, pickupsCanvas.height);
     
     if (!powerupImage.src) {
         powerupImage.src = spriteSheets.powerups;
+    }
+
+    if (!mushroomImage.src) {
+        mushroomImage.src = spriteSheets.mushroom;
     }
 
     for (let x = 0; x < levelWidth; x++) {
@@ -86,16 +110,16 @@ export function initPowerups()
 
             if (currentTile.hasPowerup) {
                 if (currentTile.powerup === "bomb") {
-                    powerupsCtx.drawImage(powerupImage, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                    pickupsCtx.drawImage(powerupImage, 0, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
                 else if (currentTile.powerup === "range") {
-                    powerupsCtx.drawImage(powerupImage, tileSize, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                    pickupsCtx.drawImage(powerupImage, tileSize, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
                 else if (currentTile.powerup === "speed") {
-                    powerupsCtx.drawImage(powerupImage, tileSize*2, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                    pickupsCtx.drawImage(powerupImage, tileSize*2, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
                 else if (currentTile.powerup === "material") {
-                    powerupsCtx.drawImage(powerupImage, tileSize*3, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
+                    pickupsCtx.drawImage(powerupImage, tileSize*3, 0, tileSize, tileSize, xCoord, yCoord, tileSize, tileSize);
                 }
             }
         }
@@ -104,5 +128,5 @@ export function initPowerups()
 
 export function renderPowerups()
 {
-    ctx.drawImage(powerupsCanvas, 0, 0);
+    ctx.drawImage(pickupsCanvas, 0, 0);
 }

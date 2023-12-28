@@ -2,7 +2,7 @@
 // Imports
 import { renderWalls, renderFloor } from "./level.js";
 import { EntranceAnimation, ExitAnimation, locBlinkingAnimation, LevelHeaderAnimation, GameOverAnimation, DeathReasonAnimation, renderEnemyDeaths, TutorialAnimation, BigBombAnimation, FadeTransition } from "./animations.js";
-import { renderPowerups } from "./powerup.js";
+import { renderPowerups } from "./pickups.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies } from "./enemy.js";
 import { renderBombs, renderExplosions } from "./bomb.js";

@@ -2,7 +2,7 @@ import { ctx, level, tileSize, fixedDeltaTime, game, deathReasonText, setGlobalP
 import { lastLevel, levelHeight, levelType, levelWidth } from "./gamestate.js";
 import { getMusicalTimeout, playAudio, playFootsteps, playTrack, randomSfx, sfxs, stopFootsteps, tracks } from "./audio.js";
 import { Bomb, tilesWithBombs } from "./bomb.js";
-import { Powerup } from "./powerup.js";
+import { Powerup } from "./pickups.js";
 import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles, clamp } from "./utils.js";
 import { spriteSheets } from "./spritesheets.js";
 import { showGGMenu } from "./page.js";
