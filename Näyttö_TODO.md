@@ -5,9 +5,9 @@
 - Controlleri :white_check_mark:
 - Style/CSS/Canvas
   - Canvaksen koko responsiiviseksi :white_check_mark:
-  - Valikoiden sovittaminen mobiilille 
-  - How To Playn sovittaminen ja sektiointi mobiilille
-  - 
+  - Valikoiden sovittaminen mobiilille :white_check_mark:
+  - How To Playn sovittaminen ja sektiointi mobiilille :white_check_mark:
+  
 
 ### Paikallinen kaksinpeli-mode(Tomi)
 - GameStateen säännöt miten peli etenee jos toinen pelaajista kuolee jne. :white_check_mark:
