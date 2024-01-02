@@ -7,7 +7,7 @@ async function preLoadSpriteSheets() {
         player2_lantern: "./assets/players/player2_lantern.png",
 
         zombie: "./assets/enemies/zombie_shadows.png",
-        ghost: "./assets/ghost.png",
+        ghost: "./assets/ghost2.png",
         skeleton: "./assets/skeleton2.png",
         witch: "./assets/enemies/nega_player.png",
 

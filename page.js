@@ -357,6 +357,11 @@ healPlayersButton.addEventListener('click', function() {
     })
 });
 
+let spawnGhostButton = document.getElementById('spawn-ghost');
+spawnGhostButton.addEventListener('click', function() {
+    spawnEnemiesByType(enemyType.GHOST, 1);
+});
+
 let spawnSkeletonButton = document.getElementById('spawn-skeleton');
 spawnSkeletonButton.addEventListener('click', function() {
     spawnEnemiesByType(enemyType.SKELETON, 1);
