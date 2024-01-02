@@ -225,13 +225,19 @@ export function showGGMenu()
 const pauseMenu = document.querySelector(".pause-menu-container");
 const pauseMenuContinueButton = document.getElementById("pauseMenu-ContinueButton");
 const pauseMenuExitButton = document.getElementById("pauseMenu-ExitButton");
+const canvas = document.getElementById('canvas');
+const floor = document.querySelector(".floor");
 
 export function showPauseMenu() {
     setGlobalPause(!globalPause);
     const visibility = globalPause ? 'visible' : 'hidden';
     menuBackground.style.visibility = visibility;
     pauseMenu.style.visibility = visibility;
-    mobileController.style.visibility = 'hidden';
+    mobileController.style.visibility = visibility;
+
+    const reverseVisibility = globalPause ? 'hidden' : 'visible';
+    canvas.style.visibility = reverseVisibility;
+    floor.style.visibility = reverseVisibility;
 }
 
 pauseMenuContinueButton.addEventListener('click', function() {
@@ -239,6 +245,8 @@ pauseMenuContinueButton.addEventListener('click', function() {
     pauseMenu.style.visibility = 'hidden';
     mobileController.style.visibility = 'visible';
     mobilePauseBtn.style.visibility = 'visible';
+    canvas.style.visibility = 'visible';
+    floor.style.visibility = 'visible';
     setGlobalPause(false);
 });
 
@@ -246,6 +254,8 @@ pauseMenuExitButton.addEventListener('click', function() {
     menuBackground.style.visibility = 'hidden';
     pauseMenu.style.visibility = 'hidden';
     mobilePauseBtn.style.visibility = 'hidden';
+    canvas.style.visibility = 'visible';
+    floor.style.visibility = 'visible';
     showMainMenu();
 
     if(isMultiplayer) {

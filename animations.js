@@ -2,7 +2,7 @@ import { playAudio, playBirdsong, sfxs } from "./audio.js";
 import { enemies } from "./enemy.js";
 import { lastLevel } from "./gamestate.js";
 import { initHardWallsCanvas, setTextures } from "./level.js";
-import { FULL_CANVAS_SIZE, canvas, ctx, game, locBlinkers, tileSize } from "./main.js";
+import { FULL_CANVAS_SIZE, canvas, ctx, game, globalPause, locBlinkers, tileSize } from "./main.js";
 import { isMobile } from "./mobile.js";
 import { spriteSheets } from "./spritesheets.js";
 import { exitLocation, powerupLocations } from "./tile.js";
@@ -615,6 +615,8 @@ export function shroom() {
     
     // Rotation and zoom
     let effectInterval = setInterval(() => {
+        if (globalPause) return;
+        
         if (rotation > 0 && rotation < 360) {
             rotation++
         // Clear all effects after one full rotation
