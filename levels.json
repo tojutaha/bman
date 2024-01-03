@@ -16,8 +16,8 @@
     },
     "1": {
         "enemies": {
-            "zombie": 0,
-            "ghost": 0,
+            "zombie": 1,
+            "ghost": 1,
             "skeleton": 1,
             "witch": 1
         },

@@ -77,9 +77,9 @@ class Enemy
 
         // Animations
         this.spriteSheet = new Image();
-        this.frameWidth = 192/3;
-        this.frameHeight = 256/4;
-        this.totalFrames = 3;
+        this.frameWidth = 256/4;
+        this.frameHeight = 288/4;
+        this.totalFrames = 4;
         this.currentFrame = 0;
         this.animationSpeed = 150;
         this.lastTime = 0;
@@ -92,8 +92,6 @@ class Enemy
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
-                this.totalFrames = 4;
-                this.frameWidth = 256/4;
                 this.spriteSheet.src = spriteSheets.zombie;
                 this.movementMode = movementMode.PATROL;
                 this.speed = 1000;
@@ -104,7 +102,8 @@ class Enemy
             case enemyType.GHOST: {
                 this.spriteSheet.src = spriteSheets.ghost;
                 this.movementMode = movementMode.ROAM;
-                this.speed = 500;
+                this.animationSpeed = 400;
+                this.speed = 600;
                 this.score = 250;
                 this.roam();
                 break;
@@ -112,8 +111,6 @@ class Enemy
             case enemyType.SKELETON: {
                 this.spriteSheet.src = spriteSheets.skeleton;
                 this.movementMode = movementMode.PATROL;
-                this.totalFrames = 4;
-                this.frameWidth = 256/4;
                 this.speed = 400;
                 this.score = 500;
                 this.patrol();
@@ -122,13 +119,10 @@ class Enemy
             case enemyType.WITCH: {
                 this.spriteSheet.src = spriteSheets.witch;
                 this.movementMode = movementMode.FOLLOW;
-                this.totalFrames = 4;
-                this.frameWidth = 256/4;
-                this.frameHeight = 288/4;
                 this.speed = 900;
                 this.score = 350;
                 this.followPlayer();
-                this.dropMushrooms();
+                this.initWitch();
                 break;
             }
         }
@@ -394,14 +388,20 @@ class Enemy
         requestPath(this, this.getLocation(), this.targetLocation);
     }
 
-    dropMushrooms() {
+    dropMushroom() {
+        const tile = getTileFromWorldLocation(this);
+        if (!tile.hasMushroom) {
+            tile.hasMushroom = true;
+            initPickups();
+        }
+    }
+
+    initWitch() {
+        this.dropMushroom();
+        
         if (!this.mushroomInterval) {
             this.mushroomInterval = setInterval(() => {
-                const tile = getTileFromWorldLocation(this);
-                if (!tile.hasMushroom) {
-                    tile.hasMushroom = true;
-                    initPickups();
-                }
+                this.dropMushroom();
             }, 10000);
         }
     }
