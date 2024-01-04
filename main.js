@@ -110,6 +110,7 @@ function Render(timeStamp)
             }
             renderBombs();
             renderPlayer(timeStamp);
+            renderEnemies(timeStamp);
             renderWalls();
             locBlinkers.render();
             renderPVPBlinkers();
@@ -120,7 +121,6 @@ function Render(timeStamp)
             if (bigBombOverlay && !isMultiplayer) {
                 bigBomb.render();
             }
-            renderEnemies(timeStamp);
             if (fadeTransitions) {
                 fadeTransition.render();
             }
