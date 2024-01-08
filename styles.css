@@ -458,7 +458,6 @@ li {
 .floor {
     z-index: -1;
     position: absolute;
-    background-image: url('./assets/grass_01.png');
     background-color: black;
     background-repeat: repeat;
     width: 832px;
