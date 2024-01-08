@@ -423,8 +423,6 @@ class Player
                         if (aabbCollision(bombTile.bomb.collisionBox, p.collisionBox)) {
                             arePlayersOnBomb = true;
                         }
-                        // TODO: Tämä ei välttämättä ole enää ihan oikein,
-                        // jos on useampia pelaajia...
                         if (p.isDead) {
                             bombTile.isWalkable = true;
                             bombTile.isDeadly = false;
@@ -464,8 +462,6 @@ class Player
                         if (aabbCollision(collisionBox, p.collisionBox)) {
                             arePlayersOnTile = true;
                         }
-                        // TODO: Tämä ei välttämättä ole enää ihan oikein,
-                        // jos on useampia pelaajia...
                         if (p.isDead) {
                             tile.isWalkable = true;
                             tile.isDeadly = false;
