@@ -1,4 +1,4 @@
-import { playTrack, loadAudioFiles, tracks, stopBirdsong } from "./audio.js";
+import { playTrack, loadAudioFiles, tracks, stopBirdsong, playBirdsong } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { setCameraX, setCameraY } from "./camera.js";
 import { clearEnemies, enemies, spawnEnemies } from "./enemy.js";
