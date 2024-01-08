@@ -574,7 +574,7 @@ export class BigBombAnimation {
 const canvasContainer = document.querySelector(".canvas-container");
 const floor = document.querySelector('.floor');
 export let shroomTrigger = false;
-export function shroom() {
+export function shroom(player) {
     shroomTrigger = true;
     // Settings
     const minSize = 90;
@@ -583,9 +583,12 @@ export function shroom() {
     let rotation = 1;
 
     let blur = 0.1;
-    const maxBlur = 5;
+    const maxBlur = 4;
     let blurring = true;
     let stopBlur = false;
+
+    // Spritesheet
+    player.spriteSheet.src = player.mushroomedSprite;
     
     // Beating blur
     let blurInterval = setInterval(() => {
@@ -622,6 +625,9 @@ export function shroom() {
             rotation = 0;
             stopBlur = true;
             shroomTrigger = false;
+            setTimeout(() => {
+                player.spriteSheet.src = player.lanternSprite;
+            }, 1000);
             clearInterval(effectInterval);
         }
         floor.style.transform = `rotate(-${rotation}deg)`;

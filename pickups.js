@@ -66,7 +66,7 @@ export function randomPowerup() {
 
 ////////////////////
 // Mushrooms
-export function pickupMushroom(tile) {
+export function pickupMushroom(tile, player) {
     if (shroomTrigger) return;
     
     tile.hasMushroom = false;
@@ -74,7 +74,7 @@ export function pickupMushroom(tile) {
     playAudio(sfxs['MUSHROOM']);
 
     // Trigger shroom animation
-    shroom();
+    shroom(player);
 }
 
 ////////////////////

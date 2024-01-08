@@ -32,7 +32,7 @@ export const players = [];
 
 class Player
 {
-    constructor(id, startX, startY, keybinds, normalSprite, lanternSprite) {
+    constructor(id, startX, startY, keybinds, normalSprite, lanternSprite, mushroomedSprite) {
         // Spawn point
         this.startX = startX || tileSize;
         this.startY = startY || tileSize;
@@ -72,6 +72,7 @@ class Player
         this.spriteSheet = new Image();
         this.normalSprite = normalSprite;
         this.lanternSprite = lanternSprite;
+        this.mushroomedSprite = mushroomedSprite;
         this.spriteSheet.src = this.normalSprite;
         this.frameWidth = 256/4;
         this.frameHeight = 288/4;
@@ -106,9 +107,6 @@ class Player
         const healthPointsContainer = document.getElementById("healthPointsContainer");
         healthPointsContainer.innerHTML = '';
         for(let i = 0; i < this.healthPoints; i++) {
-            // const circle = document.createElement("div");
-            // circle.classList.add("hp-circle");
-            // healthPointsContainer.appendChild(circle);
             healthPointsContainer.innerHTML += '♥';
         }
     }
@@ -321,7 +319,7 @@ class Player
         }
 
         if (playerTile.hasMushroom) {
-            pickupMushroom(playerTile);
+            pickupMushroom(playerTile, this);
         }
 
         if (playerTile.isExit) {
@@ -695,10 +693,10 @@ export function spawnPlayers(amount = 1)
 {
     if(amount == 1) {
         // NOTE: startX, startY = null menee aina vasempaan yläkulmaan tileSizen mukaan
-        players.push(new Player(0, null, null, keybinds1, spriteSheets.player1_normal, spriteSheets.player1_lantern));
+        players.push(new Player(0, null, null, keybinds1, spriteSheets.player1_normal, spriteSheets.player1_lantern, spriteSheets.player1_mushroom_effect));
         players[0].bindMobile();
     } else {
-        players.push(new Player(0, null, null, keybinds1, spriteSheets.player1_normal, spriteSheets.player1_lantern));
+        players.push(new Player(0, null, null, keybinds1, spriteSheets.player1_normal, spriteSheets.player1_lantern, spriteSheets.player1_mushroom_effect));
         players.push(new Player(1, (levelWidth - 2) * tileSize, (levelHeight - 2) * tileSize, keybinds2, spriteSheets.player2_normal, spriteSheets.player2_lantern));
     }
 
