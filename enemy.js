@@ -1,10 +1,10 @@
-import { ctx, fixedDeltaTime, game, globalPause, isMultiplayer, tileSize } from "./main.js";
+import { bigBombOverlay, ctx, fixedDeltaTime, game, globalPause, isMultiplayer, tileSize } from "./main.js";
 import { Direction, players } from "./player.js";
 import { dfs, lerp, getRandomWalkablePointInRadius, getTileFromWorldLocation, aabbCollision, getDistanceToEuclidean } from "./utils.js";
 import { requestPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
 import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
-import { EnemyDeathAnimation, deathRow } from "./animations.js";
+import { EnemyDeathAnimation, deathRow, isBigBombOver } from "./animations.js";
 import { spriteSheets } from "./spritesheets.js";
 import { createFloatingText } from "./particles.js";
 import { isMobile } from "./mobile.js";
@@ -92,7 +92,11 @@ class Enemy
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
-                this.spriteSheet.src = spriteSheets.zombie;
+                if (bigBombOverlay && !isBigBombOver) {
+                    this.spriteSheet.src = spriteSheets.zombie_outline;
+                } else {
+                    this.spriteSheet.src = spriteSheets.zombie;
+                }
                 this.movementMode = movementMode.PATROL;
                 this.speed = 1000;
                 this.score = 100;
@@ -100,7 +104,11 @@ class Enemy
                 break;
             }
             case enemyType.GHOST: {
-                this.spriteSheet.src = spriteSheets.ghost;
+                if (bigBombOverlay && !isBigBombOver) {
+                    this.spriteSheet.src = spriteSheets.ghost_outline;
+                } else {
+                    this.spriteSheet.src = spriteSheets.ghost;
+                }
                 this.movementMode = movementMode.ROAM;
                 this.animationSpeed = 400;
                 this.speed = 600;
@@ -109,7 +117,11 @@ class Enemy
                 break;
             }
             case enemyType.SKELETON: {
-                this.spriteSheet.src = spriteSheets.skeleton;
+                if (bigBombOverlay && !isBigBombOver) {
+                    this.spriteSheet.src = spriteSheets.skeleton_outline;
+                } else {
+                    this.spriteSheet.src = spriteSheets.skeleton;
+                }
                 this.movementMode = movementMode.PATROL;
                 this.speed = 400;
                 this.score = 500;
@@ -117,7 +129,11 @@ class Enemy
                 break;
             }
             case enemyType.WITCH: {
-                this.spriteSheet.src = spriteSheets.witch;
+                if (bigBombOverlay && !isBigBombOver) {
+                    this.spriteSheet.src = spriteSheets.witch_outline;
+                } else {
+                    this.spriteSheet.src = spriteSheets.witch;
+                }
                 this.movementMode = movementMode.FOLLOW;
                 this.speed = 900;
                 this.score = 350;
@@ -141,12 +157,48 @@ class Enemy
                 break;
             }
         }
+        switch(this.enemyType) {
+            case enemyType.GHOST: {
+                this.spriteSheet.src = spriteSheets.ghost;
+                break;
+            }
+        }
+        switch(this.enemyType) {
+            case enemyType.SKELETON: {
+                this.spriteSheet.src = spriteSheets.skeleton;
+                break;
+            }
+        }
+        switch(this.enemyType) {
+            case enemyType.WITCH: {
+                this.spriteSheet.src = spriteSheets.witch;
+                break;
+            }
+        }
     }
 
     showOutline() {
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
                 this.spriteSheet.src = spriteSheets.zombie_outline;
+                break;
+            }
+        }
+        switch(this.enemyType) {
+            case enemyType.GHOST: {
+                this.spriteSheet.src = spriteSheets.ghost_outline;
+                break;
+            }
+        }
+        switch(this.enemyType) {
+            case enemyType.SKELETON: {
+                this.spriteSheet.src = spriteSheets.skeleton_outline;
+                break;
+            }
+        }
+        switch(this.enemyType) {
+            case enemyType.WITCH: {
+                this.spriteSheet.src = spriteSheets.witch_outline;
                 break;
             }
         }
@@ -172,7 +224,6 @@ class Enemy
             case enemyType.SKELETON: {
                 this.movementMode = movementMode.PATROL;
                 this.patrol();
-                //this.followPlayer();
                 break;
             }
         }
@@ -386,7 +437,7 @@ class Enemy
         if (!this.mushroomInterval) {
             this.mushroomInterval = setInterval(() => {
                 this.dropMushroom();
-            }, 10000);
+            }, 13000);
         }
     }
 

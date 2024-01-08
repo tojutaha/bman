@@ -8,6 +8,7 @@ import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutor
 import { showGameOverMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
 import { clearPlayers, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
+import { isMobile } from "./mobile.js";
 
 export let pause = false;
 
@@ -99,8 +100,10 @@ export class Game {
             
             // Enemies show only outlines during the big bomb overlay
             if (bigBombOverlay && this.level === 1 && !this.firstBombExploded) {
-                setTextures("limbo");
-                initHardWallsCanvas();
+                if (isMobile) {
+                    setTextures("limbo");
+                    initHardWallsCanvas();
+                }
                 enemies.forEach(enemy => {
                     enemy.showOutline();
                 });

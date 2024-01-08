@@ -1,7 +1,7 @@
 ////////////////////
 // Imports
 import { renderWalls, renderFloor } from "./level.js";
-import { EntranceAnimation, ExitAnimation, locBlinkingAnimation, LevelHeaderAnimation, GameOverAnimation, DeathReasonAnimation, renderEnemyDeaths, TutorialAnimation, BigBombAnimation, FadeTransition } from "./animations.js";
+import { EntranceAnimation, ExitAnimation, locBlinkingAnimation, LevelHeaderAnimation, GameOverAnimation, DeathReasonAnimation, renderEnemyDeaths, TutorialAnimation, BigBombAnimation, FadeTransition, isBigBombOver } from "./animations.js";
 import { renderPickups } from "./pickups.js";
 import { renderPlayer } from "./player.js";
 import { renderEnemies } from "./enemy.js";
@@ -109,12 +109,23 @@ function Render(timeStamp)
                 renderPickups();
             }
             renderBombs();
-            renderWalls();
             renderPlayer(timeStamp);
+            if (!bigBombOverlay) {
+                renderEnemies(timeStamp);
+            }
+            else if (bigBombOverlay && isBigBombOver) {
+                renderEnemies(timeStamp);
+            }
+            // We want to render the walls here so that the shadows go under them
+            renderWalls();
+
             if (bigBombOverlay && !isMultiplayer) {
                 bigBomb.render();
             }
-            renderEnemies(timeStamp);
+            // Enemies outlines rendered on top of the overlay
+            if (bigBombOverlay && !isBigBombOver) {
+                renderEnemies(timeStamp);
+            }
             locBlinkers.render();
             renderPVPBlinkers();
             if (showDoor && !isMultiplayer) {

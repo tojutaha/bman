@@ -511,6 +511,7 @@ export class TutorialAnimation {
     }
 }
 
+export let isBigBombOver = false;
 export class BigBombAnimation {
     constructor() {
         this.visible = true;
@@ -536,8 +537,11 @@ export class BigBombAnimation {
     }
 
     playShatter() {
-        setTextures();
-        initHardWallsCanvas();
+        // The first level has special textures on mobile
+        if (isMobile) {
+            setTextures();
+            initHardWallsCanvas();
+        }
         
         let shatter = setInterval(() => {
             if (this.currentFrame < this.frames) {
@@ -552,6 +556,7 @@ export class BigBombAnimation {
                 enemies.forEach(enemy => {
                     enemy.showSprite();
                 });
+                isBigBombOver = true;
             }
         }, this.animationMs);
     }

@@ -9,10 +9,13 @@ async function preLoadSpriteSheets() {
 
         zombie: "./assets/enemies/zombie.png",
         ghost: "./assets/enemies/ghost.png",
-        skeleton: "./assets/enemies/skeleton2.png",
+        skeleton: "./assets/enemies/skeleton.png",
         witch: "./assets/enemies/witch.png",
 
         zombie_outline: "./assets/enemies/zombie_outline.png",
+        ghost_outline: "./assets/enemies/ghost_outline.png",
+        skeleton_outline: "./assets/enemies/skeleton_outline.png",
+        witch_outline: "./assets/enemies/witch_outline.png",
 
         zombie_death_back:  "./assets/deaths/zombie_death_back.png",
         zombie_death_front: "./assets/deaths/zombie_death_front.png",

@@ -24,7 +24,7 @@
         "tiles": {
             "width": 13,
             "height": 13,
-            "type": "forest_night",
+            "type": "forest_day",
             "powerup": "range",
             "powerupCount": 1,
             "softwallPercent": 0.2
