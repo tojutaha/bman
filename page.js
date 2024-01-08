@@ -377,6 +377,11 @@ spawnSkeletonButton.addEventListener('click', function() {
     spawnEnemiesByType(enemyType.SKELETON, 1);
 });
 
+let spawnWitchButton = document.getElementById('spawn-witch');
+spawnWitchButton.addEventListener('click', function() {
+    spawnEnemiesByType(enemyType.WITCH, 1);
+});
+
 let spawnZombieButton = document.getElementById('spawn-zombie');
 spawnZombieButton.addEventListener('click', function() {
     spawnEnemiesByType(enemyType.ZOMBIE, 1);
