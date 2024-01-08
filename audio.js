@@ -144,6 +144,7 @@ export function stopCurrentTrack() {
 //     - lopeta kun molemmat pysähtyy
 // Syncs the footsteps with the track
 let footsteps = null;
+let footstepsPlaying = false;
 export function playFootsteps(isWalking) {
     if (isWalking) return;
 

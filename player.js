@@ -6,7 +6,6 @@ import { Powerup, pickupMushroom } from "./pickups.js";
 import { colorTemperatureToRGB, aabbCollision, getTileFromWorldLocation, getSurroundingTiles, clamp } from "./utils.js";
 import { spriteSheets } from "./spritesheets.js";
 import { showGGMenu } from "./page.js";
-import { isMobile } from "./mobile.js";
 
 
 const godMode = true;

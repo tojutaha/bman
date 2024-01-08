@@ -134,7 +134,7 @@ class Enemy
         }
     }
 
-    showZombieSprite() {
+    showSprite() {
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
                 this.spriteSheet.src = spriteSheets.zombie;
@@ -143,7 +143,7 @@ class Enemy
         }
     }
 
-    showZombieOutline() {
+    showOutline() {
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
                 this.spriteSheet.src = spriteSheets.zombie_outline;

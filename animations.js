@@ -536,6 +536,9 @@ export class BigBombAnimation {
     }
 
     playShatter() {
+        setTextures();
+        initHardWallsCanvas();
+        
         let shatter = setInterval(() => {
             if (this.currentFrame < this.frames) {
                 this.currentFrame++;

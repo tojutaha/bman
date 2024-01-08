@@ -109,17 +109,17 @@ function Render(timeStamp)
                 renderPickups();
             }
             renderBombs();
-            renderPlayer(timeStamp);
-            renderEnemies(timeStamp);
             renderWalls();
+            renderPlayer(timeStamp);
+            if (bigBombOverlay && !isMultiplayer) {
+                bigBomb.render();
+            }
+            renderEnemies(timeStamp);
             locBlinkers.render();
             renderPVPBlinkers();
             if (showDoor && !isMultiplayer) {
                 exit.render();
                 renderPickups();
-            }
-            if (bigBombOverlay && !isMultiplayer) {
-                bigBomb.render();
             }
             if (fadeTransitions) {
                 fadeTransition.render();
