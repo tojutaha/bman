@@ -126,14 +126,13 @@ class Player
         if (this.isDead) return;
 
         // Play footsteps
-        if (this.dx !== 0.0 || this.dy !== 0.0) {
-            if (!isMultiplayer) {
+        if(!isMultiplayer)
+        {
+            if (this.dx !== 0.0 || this.dy !== 0.0) {
                 playFootsteps(this.isWalking);
-            }
-            this.isWalking = true;
-        } else {
-            this.isWalking = false;
-            if (!isMultiplayer) {
+                this.isWalking = true;
+            } else {
+                this.isWalking = false;
                 stopFootsteps();
             }
         }
