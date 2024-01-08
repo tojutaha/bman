@@ -119,6 +119,7 @@ export class Game {
     newLevel() {
         if (this.level === 1) {
             tutorial.playAnimation();
+            playBirdsong();
             bigBomb.visible = true;
         } else {
             if (tutorial.visible) {

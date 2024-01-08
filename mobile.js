@@ -1,9 +1,5 @@
 import { setCameraOffsets } from "./camera.js";
-import { globalPause, setGlobalPause } from "./main.js";
 import { showPauseMenu } from "./page.js";
-import { spriteSheets } from "./spritesheets.js";
-
-// TODO: Firefoxilla pelaaja pysähtyy jos kävelee ja hipaisee jonnekkin muualle ruutuun
 
 export let isMobile = false;
 

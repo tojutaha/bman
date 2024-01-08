@@ -37,11 +37,10 @@ export class Powerup
 
         else if (tile.powerup === "speed") {
             player.speed = clamp(player.speed += this.extraSpeed, 0, this.maxSpeed);
-            createFloatingText({x: tile.x, y: tile.y}, "+Speed");
+            createFloatingText({x: tile.x, y: tile.y}, "+ Speed");
         }
 
         else if (tile.powerup === "material") {
-            // TODO: Montako halutaan per stack?
             this.currentWalls += 3;
             createFloatingText({x: tile.x, y: tile.y}, `+3 Materials`);
         }

@@ -7,8 +7,6 @@ let hardWallTexture = new Image();
 let softWallTexture = new Image();
 let floor = document.querySelector('.floor');
 
-// TODO: siivoa käyttämättömät
-
 async function preLoadTextures() {
     const textures = {
         "limbo": {
@@ -22,10 +20,6 @@ async function preLoadTextures() {
             softWall: "./assets/stone_brick_02.png"
         },
         "forest_night": {
-            // OG:
-            // floor:    "./assets/cobblestone_03.png",
-            // hardWall: "./assets/stone_brick_05.png",
-            // softWall: "./assets/stone_brick_03.png"
             floor:    "./assets/tiles/floor_forest_night.png",
             hardWall: "./assets/tiles/hardwall_forest_night.png",
             softWall: "./assets/tiles/softwall_forest_night.png"

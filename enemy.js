@@ -134,35 +134,19 @@ class Enemy
         }
     }
 
-    showSprite() {
+    showZombieSprite() {
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
                 this.spriteSheet.src = spriteSheets.zombie;
                 break;
             }
-            case enemyType.GHOST: {
-                this.spriteSheet.src = spriteSheets.ghost;
-                break;
-            }
-            case enemyType.SKELETON: {
-                this.spriteSheet.src = spriteSheets.skeleton;
-                break;
-            }
         }
     }
 
-    showOutline() { // TODO: tätä voi siivota jos muita kuin zombia ei käytetä
+    showZombieOutline() {
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
                 this.spriteSheet.src = spriteSheets.zombie_outline;
-                break;
-            }
-            case enemyType.GHOST: {
-                this.spriteSheet.src = spriteSheets.ghost_outline;
-                break;
-            }
-            case enemyType.SKELETON: {
-                this.spriteSheet.src = spriteSheets.skeleton_outline;
                 break;
             }
         }
