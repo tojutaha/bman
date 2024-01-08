@@ -127,11 +127,15 @@ class Player
 
         // Play footsteps
         if (this.dx !== 0.0 || this.dy !== 0.0) {
-            playFootsteps(this.isWalking);
+            if (!isMultiplayer) {
+                playFootsteps(this.isWalking);
+            }
             this.isWalking = true;
         } else {
             this.isWalking = false;
-            stopFootsteps();
+            if (!isMultiplayer) {
+                stopFootsteps();
+            }
         }
 
         // Only draw this in darker maps

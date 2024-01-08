@@ -2,7 +2,7 @@
 // https://github.com/mdn/webaudio-examples/tree/main/multi-track
 // https://developer.mozilla.org/en-US/docs/Games/Techniques/Audio_for_Web_Games
 
-// NOTE: An internal clock that starts ticking the moment you create an audio context
+// NOTE: An internal clock starts ticking when audio context is created
 let audioCtx = null;
 
 const BPM = 110;
@@ -138,13 +138,7 @@ export function stopCurrentTrack() {
     }
 }
 
-
-// TODO: kaksinpelissä äänet häviää.
-//     - laita ensimmäinen kävelijä triggaamaan loop
-//     - lopeta kun molemmat pysähtyy
-// Syncs the footsteps with the track
 let footsteps = null;
-let footstepsPlaying = false;
 export function playFootsteps(isWalking) {
     if (isWalking) return;
 
