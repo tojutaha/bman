@@ -18,7 +18,7 @@ async function preLoadSpriteSheets() {
         zombie_death_left:  "./assets/deaths/zombie_death_left.png",
         zombie_death_right: "./assets/deaths/zombie_death_right.png",
 
-        ghost_death: "./assets/deaths/ghost_death.png",
+        ghost_death: "./assets/deaths/ghost_death2.png",
 
         skeleton_death_back:  "./assets/deaths/skeleton_death_back.png",
         skeleton_death_front: "./assets/deaths/skeleton_death_front.png",
