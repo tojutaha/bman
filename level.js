@@ -110,7 +110,6 @@ export function renderWalls()
     drawCoordinates(coordsToggle);
 }
 
-
 export function renderFloor()
 {
     floor.style.backgroundPosition = cameraX + 'px ' + cameraY + 'px';

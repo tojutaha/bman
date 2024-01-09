@@ -5,8 +5,6 @@ export let isMobile = false;
 
 export function responsivityCheck() {
     // Bools
-    const isPortrait = window.matchMedia('(orientation: portrait)').matches;
-    const isLandscape = window.matchMedia('(orientation: landscape)').matches;
     if (window.innerHeight <= 428) {
         isMobile = true;
         setCameraOffsets();

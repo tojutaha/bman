@@ -2,7 +2,7 @@ import { enemies, enemyType, spawnEnemiesByType } from "./enemy.js";
 import { ctx, tileSize, game, setGlobalPause, globalPause, setNumOfPlayers, isMultiplayer } from "./main.js";
 import { fetchEverything, lastLevel, levelHeight, levelWidth } from "./gamestate.js";
 import { players } from "./player.js";
-import { playAudio, playTrack, sfxs, tracks } from "./audio.js";
+import { playAudio, sfxs } from "./audio.js";
 import { loadTextures } from "./level.js";
 import { loadSpriteSheets } from "./spritesheets.js";
 
@@ -61,7 +61,8 @@ const howToPlayButton = document.getElementById("howToPlayButton");
 const closeButton = document.getElementById("closeButton");
 const mobileController = document.querySelector(".mobile-controller");
 const mobilePauseBtn = document.getElementById('pause-button');
-// let floor = document.querySelector('.floor');
+const floor = document.querySelector('.floor');
+
 
 export function showMainMenu()
 {
@@ -78,7 +79,7 @@ export function showMainMenu()
     pvpInfoDisplays.style.display = 'none';
     mobileController.style.visibility = 'hidden';
     mobilePauseBtn.style.visibility = 'hidden;'
-    // floor.style.backgroundImage = 'none';
+    floor.style.background = 'none';
 }
 
 let confirmed = false;
@@ -226,7 +227,6 @@ const pauseMenu = document.querySelector(".pause-menu-container");
 const pauseMenuContinueButton = document.getElementById("pauseMenu-ContinueButton");
 const pauseMenuExitButton = document.getElementById("pauseMenu-ExitButton");
 const canvas = document.getElementById('canvas');
-const floor = document.querySelector(".floor");
 
 export function showPauseMenu() {
     setGlobalPause(!globalPause);

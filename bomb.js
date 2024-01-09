@@ -1,5 +1,5 @@
 import { ctx, tileSize, game, globalPause, bigBomb } from "./main.js";
-import { getMusicalTimeout, msPerBeat, playAudio, playRiser, playTrack, randomSfx, riserPlaying, sfxs, tracks } from "./audio.js";
+import { getMusicalTimeout, msPerBeat, playAudio, playRiser, playTrack, randomSfx, sfxs, tracks } from "./audio.js";
 import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo, getLinearUntilObstacle } from "./utils.js";
 import { findPlayerById, players } from "./player.js";

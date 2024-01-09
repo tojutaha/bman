@@ -316,8 +316,7 @@ function loadPlayerAttributes(loadedPlayers) {
 export async function fetchEverything() {
     const response = await fetch("levels.json");
     const data = await response.json();
-    await loadAudioFiles();  // TODO: uncomment when ready
-    // loadAudioFiles();
+    await loadAudioFiles();
     
     for (const key in data) {
         if (data.hasOwnProperty(key)) {

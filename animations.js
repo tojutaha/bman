@@ -1,4 +1,4 @@
-import { playAudio, playBirdsong, sfxs } from "./audio.js";
+import { playAudio, sfxs } from "./audio.js";
 import { enemies } from "./enemy.js";
 import { lastLevel } from "./gamestate.js";
 import { initHardWallsCanvas, setTextures } from "./level.js";

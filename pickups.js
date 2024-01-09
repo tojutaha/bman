@@ -16,9 +16,8 @@ export class Powerup
         this.currentWalls = 3;
         this.maxWalls = 3;
         this.blinker = null;
-        // TODO: Mikä on sopiva max speed?
-        this.maxSpeed = 200;
-        this.extraSpeed = 20;
+        this.maxSpeed = 350;
+        this.extraSpeed = 30;
     }
 
     pickup(tile, player) {

@@ -29,11 +29,9 @@ let edgeOffset;
 
 export function setCameraOffsets() {
     if (isMobile) {
-        // console.info("camera: mobile offsets");
         targetOffset = 4;
         edgeOffset = 4;
     } else {
-        // console.info("camera: normal offsets");
         targetOffset = 6.5;
         edgeOffset = 6;
     }

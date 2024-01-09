@@ -129,7 +129,6 @@ export function playTrack(audioBuffer) {
     return trackSource;
 }
 
-
 export function stopCurrentTrack() {
     if (currentTrack !== null) {
         currentTrack.disconnect();
