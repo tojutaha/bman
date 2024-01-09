@@ -117,11 +117,15 @@ class Player
         const nextX = this.x + this.dx;
         const nextY = this.y + this.dy;
 
-        // If player is dead, dont allow movement
-        if (this.isDead) return;
+        if(this.id == 0) {
+            console.log(this.x, this.y);
+        }
 
         const playerTile = getTileFromWorldLocation(this);
         this.collisionBox = {x: nextX + 16, y: nextY, w: this.collisionW, h: this.collisionH+10};
+
+        // If player is dead, dont allow movement
+        if (this.isDead) return;
 
         // Play footsteps
         if(!isMultiplayer)
