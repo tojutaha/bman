@@ -8,7 +8,7 @@ import { spriteSheets } from "./spritesheets.js";
 import { showGGMenu } from "./page.js";
 
 
-const godMode = true;
+const godMode = false;
 export const playerSpeed = 150;
 
 export const Direction = {
@@ -117,11 +117,11 @@ class Player
         const nextX = this.x + this.dx;
         const nextY = this.y + this.dy;
 
-        const playerTile = getTileFromWorldLocation(this);
-        this.collisionBox = {x: nextX + 16, y: nextY, w: this.collisionW, h: this.collisionH+10};
-
         // If player is dead, dont allow movement
         if (this.isDead) return;
+
+        const playerTile = getTileFromWorldLocation(this);
+        this.collisionBox = {x: nextX + 16, y: nextY, w: this.collisionW, h: this.collisionH+10};
 
         // Play footsteps
         if(!isMultiplayer)
