@@ -38,8 +38,8 @@
 
 ### Spritet/Animaatiot
 - CC-BY Lisenssillä olevat spritet uusiksi
-  - Kummitus
-  - Luuranko
+  - Kummitus :white_check_mark:
+  - Luuranko :white_check_mark:
 - Korvataan score-spritet teksti partikkeleilla :white_check_mark:
 - Kakkospelaajalle sprite :white_check_mark:
 

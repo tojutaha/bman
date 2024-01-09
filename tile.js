@@ -67,7 +67,7 @@ function createSoftWalls(result, hardWallTotal) {
         createCage(result);
         softWallTotal += 4;
     }
-    if (cageMultiplayer) {
+    if (isMultiplayer && cageMultiplayer) {
         createMultiplayerCage(result);
         softWallTotal += 8;
     }
