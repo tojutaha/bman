@@ -46,6 +46,7 @@ class Player
         this.dy = 0;
 
         this.speed = playerSpeed; // pixels/s
+        this.originalSpeed = this.speed;
         this.direction = Direction.DOWN;
         this.isWalking = false;
 
@@ -116,10 +117,6 @@ class Player
 
         const nextX = this.x + this.dx;
         const nextY = this.y + this.dy;
-
-        if(this.id == 0) {
-            console.log(this.x, this.y);
-        }
 
         const playerTile = getTileFromWorldLocation(this);
         this.collisionBox = {x: nextX + 16, y: nextY, w: this.collisionW, h: this.collisionH+10};
