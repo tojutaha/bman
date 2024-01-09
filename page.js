@@ -259,6 +259,8 @@ pauseMenuExitButton.addEventListener('click', function() {
     showMainMenu();
 
     if(isMultiplayer) {
+        updateP1Score(0);
+        updateP2Score(0);
         game.over(); // Clears timer handles etc.
     }
 });
