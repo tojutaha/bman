@@ -622,6 +622,7 @@ class Player
 
         if(isMultiplayer) {
             if (!this.isDead) {
+                playAudio(sfxs['DEATH']);
                 this.isDead = true;
                 game.updateScore(this.id, instigator, enemyWhoKilled);
                 game.restartLevel();
