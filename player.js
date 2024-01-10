@@ -678,7 +678,7 @@ export const keybinds2 = {
     move_left: "ArrowLeft",
     move_right: "ArrowRight",
     drop_bomb: "Enter",
-    build: "ControlRight"
+    build: "Backspace"
 };
 
 // Finds a player with given id and returns it
