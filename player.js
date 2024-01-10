@@ -170,6 +170,12 @@ class Player
 
         let collides = false;
         for (let i = 0; i < tilesToCheck.length; i++) {
+
+            // Exit the loop early if player stands on deadly tile.
+            if(playerTile.isDeadly) {
+                break;
+            }
+
             const tileBox = {x: tilesToCheck[i].x , y: tilesToCheck[i].y , w: tileSize, h: tileSize};
 
             if (!tilesToCheck[i].isWalkable && aabbCollision(this.collisionBox, tileBox)) {
