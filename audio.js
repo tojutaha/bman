@@ -43,6 +43,8 @@ const SfxURLs = {
     POWERUP2: "assets/sfx/powerup2.wav",
     POWERUP3: "assets/sfx/powerup3.wav",
     MUSHROOM: "assets/sfx/mushroom.wav",
+    BUILD1: "assets/sfx/build1.wav",
+    BUILD2: "assets/sfx/build2.wav",
 }
 
 // Loading function for fetching the audio file and decode the data
