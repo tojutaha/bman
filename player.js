@@ -451,6 +451,7 @@ class Player
         if(isMultiplayer) {
             if(this.powerup.currentWalls > 0)
             {
+                playAudio(sfxs['BUILD1']);
                 this.powerup.currentWalls--;
                 this.powerup.currentWalls = clamp(this.powerup.currentWalls, 0, this.powerup.maxWalls);
                 
@@ -462,6 +463,11 @@ class Player
                 // Checks whether any player is still standing on the tile after it was dropped.
                 let posCheck = setInterval(() => {
                     let arePlayersOnTile = false;
+
+                    if(tile.type == "Floor") {
+                        tile.isWalkable = true;
+                        clearInterval(posCheck);
+                    }
 
                     const collisionBox = { x: tile.x, y: tile.y, w: tileSize, h: tileSize };
 
