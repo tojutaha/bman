@@ -268,6 +268,7 @@ export class MultiplayerGame extends Game
             this.initLevel();
             players.forEach(p => {
                 p.isDead = false;
+                p.powerup.currentWalls = 3; // Reset build materials
             });
             resetPlayerPositions();
             clearEnemies();
