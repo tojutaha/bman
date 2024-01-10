@@ -425,7 +425,13 @@ class Player
                 // Checks whether any player is still standing on the bomb after it was dropped.
                 let posCheck = setInterval(() => {
                     let arePlayersOnBomb = false;
-                    
+
+                    if(bombTile.bomb.hasExploded) {
+                        bombTile.isWalkable = true;
+                        bombTile.isDeadly = false;
+                        clearInterval(posCheck);
+                    }
+
                     players.forEach(p => {
                         if (aabbCollision(bombTile.bomb.collisionBox, p.collisionBox)) {
                             arePlayersOnBomb = true;
