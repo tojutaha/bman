@@ -1,7 +1,3 @@
-// Modified from:
-// https://github.com/mdn/webaudio-examples/tree/main/multi-track
-// https://developer.mozilla.org/en-US/docs/Games/Techniques/Audio_for_Web_Games
-
 // NOTE: An internal clock starts ticking when audio context is created
 let audioCtx = null;
 
@@ -43,9 +39,12 @@ const SfxURLs = {
     POWERUP2: "assets/sfx/powerup2.wav",
     POWERUP3: "assets/sfx/powerup3.wav",
     MUSHROOM: "assets/sfx/mushroom.wav",
-    BUILD1: "assets/sfx/build1.wav",
-    BUILD2: "assets/sfx/build2.wav",
+    BUILD1: "assets/sfx/build1.mp3",
 }
+
+// Some functions below are modified from:
+// https://github.com/mdn/webaudio-examples/tree/main/multi-track
+// https://developer.mozilla.org/en-US/docs/Games/Techniques/Audio_for_Web_Games
 
 // Loading function for fetching the audio file and decode the data
 async function getFile(filepath) {
