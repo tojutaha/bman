@@ -65,6 +65,27 @@ export class EnemyDeathAnimation {
                 }
                 break;
             }
+            case "witch": {
+                switch(direction) {
+                    case "Up": {
+                        this.spriteSheet.src = spriteSheets.witch_death_back;
+                        break;
+                    }
+                    case "Down": {
+                        this.spriteSheet.src = spriteSheets.witch_death_front;
+                        break;
+                    }
+                    case "Left": {
+                        this.spriteSheet.src = spriteSheets.witch_death_left;
+                        break;
+                    }
+                    case "Right": {
+                        this.spriteSheet.src = spriteSheets.witch_death_right;
+                        break;
+                    }
+                }
+                break;
+            }
         }
         
         this.frameSize = 192;
