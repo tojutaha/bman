@@ -13,16 +13,16 @@ import { initPickups, randomPowerup } from "./pickups.js";
 import { createFloatingText } from "./particles.js";
 import { locBlinkingAnimation } from "./animations.js";
 
-let previousLevelType = "hell";
+let currentLevelType = "hell";
 function createPVPLevel() {
     const randomInt = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
     const randomFloat = Math.random() * (0.5 - 0.2) + 0.2;
 
     let randomLevelType = getRandomLevelType();
-    while (randomLevelType === previousLevelType) {
+    while (randomLevelType === currentLevelType) {
         randomLevelType = getRandomLevelType();
     }
-    previousLevelType = randomLevelType;
+    currentLevelType = randomLevelType;
 
     const level = {
         width: 13,
@@ -122,7 +122,7 @@ export class MultiplayerGame extends Game
                 this.seconds = 0;
             }
 
-            // Spawnaa zombeja tietyn ajan välein
+            // Spawnaa vihollsia tietyn ajan välein
             if(this.seconds % this.enemySpawnRate == 0) {
                 const location = getRandomWalkablePoint();
 
@@ -137,7 +137,22 @@ export class MultiplayerGame extends Game
                         blinker.stopBlinking();
                         counter = 0;
                         clearInterval(this.enemySpawnTimerHandle);
-                        spawnEnemyByTypeAtLocation(enemyType.ZOMBIE, location);
+
+                        let enemies;
+                        if (currentLevelType === "forest_day") {
+                            enemies = ["ZOMBIE", "ZOMBIE", "WITCH"];
+                        } 
+                        else if (currentLevelType === "forest_night") {
+                            enemies = ["ZOMBIE", "GHOST", "SKELETON"];
+                        }
+                        else if (currentLevelType === "hell") {
+                            enemies = ["SKELETON", "SKELETON", "GHOST"];
+                        } else {
+                            enemies = ["ZOMBIE", "SKELETON", "GHOST", "WITCH"];
+                        }
+                        const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
+        
+                        spawnEnemyByTypeAtLocation(enemyType[randomEnemy], location);
                     }
                     counter++;
                 }, 1000);
