@@ -289,15 +289,6 @@ export class MultiplayerGame extends Game
                 player.powerup.reset();
                 player.speed = player.originalSpeed;
 
-                if (playerWhoDied === 0) {
-                    this.player1Score -= this.points;
-                    createFloatingText({ x: x, y: y }, `-${this.points}`);
-                    updateP1Score(this.player1Score);
-                } else {
-                    this.player2Score -= this.points;
-                    createFloatingText({ x: x, y: y }, `-${this.points}`);
-                    updateP2Score(this.player2Score);
-                }
             } else {
                 if (playerWhoKilled === 0) {
                     this.player1Score += this.points;
