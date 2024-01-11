@@ -155,6 +155,11 @@ export class MultiplayerGame extends Game
         }, 1000);
     }
 
+    stopTimer() {
+        clearInterval(this.timerHandle);
+        this.timerHandle = null;
+    }
+
     over() {
         if(this.enemySpawnTimerHandle) {
             clearInterval(this.enemySpawnTimerHandle);
@@ -164,6 +169,7 @@ export class MultiplayerGame extends Game
         }
         clearEnemies();
         pvpBlinkers.length = 0;
+        locBlinkers.stopBlinking();
         if(this.timerHandle) {
             clearInterval(this.timerHandle);
             this.timerHandle = null;
@@ -235,6 +241,7 @@ export class MultiplayerGame extends Game
 
     restartLevel()
     {
+        this.stopTimer();
         // Clear spawn timers to prevent enemies traveling from previous round
         if(this.enemySpawnTimerHandle) {
             clearInterval(this.enemySpawnTimerHandle);
@@ -243,6 +250,7 @@ export class MultiplayerGame extends Game
             clearInterval(this.powerupSpawnTimerHandle);
         }
         pvpBlinkers.length = 0;
+        locBlinkers.stopBlinking();
 
         setTimeout(() => {
             setGlobalPause(true);
@@ -280,6 +288,7 @@ export class MultiplayerGame extends Game
             });
             resetPlayerPositions();
             clearEnemies();
+            this.startTimer();
         }, 2000);
     }
     
