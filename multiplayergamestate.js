@@ -4,7 +4,7 @@ import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
 import { clearEnemies, enemyType, spawnEnemyByTypeAtLocation } from "./enemy.js";
 import { setTextures, initHardWallsCanvas } from "./level.js";
-import { ctx, tileSize, level, setGlobalPause, fadeTransition, locBlinkers } from "./main.js";
+import { ctx, tileSize, level, setGlobalPause, fadeTransition, locBlinkers, globalPause } from "./main.js";
 import { updateP1Score, updateP2Score, updatePVPTimerDisplay } from "./page.js";
 import { clearPlayers, findPlayerById, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, powerupLocations} from "./tile.js";
@@ -97,14 +97,16 @@ export class MultiplayerGame extends Game
     startTimer() {
         this.timerHandle = setInterval(() => {
 
+            if(globalPause) return;
+
             // Päivittää ajan
+            updatePVPTimerDisplay(`${this.minutes.toString().padStart(2, '0')}:
+                                  ${this.seconds.toString().padStart(2, '0')}`);
+
             if(++this.seconds % 60 == 0) {
                 ++this.minutes;
                 this.seconds = 0;
             }
-
-            updatePVPTimerDisplay(`${this.minutes.toString().padStart(2, '0')}:
-                                  ${this.seconds.toString().padStart(2, '0')}`);
 
             // Spawnaa zombeja tietyn ajan välein
             if(this.seconds % this.enemySpawnRate == 0) {
@@ -126,6 +128,7 @@ export class MultiplayerGame extends Game
                     counter++;
                 }, 1000);
             }
+
             // Spawnaa random poweruppeja tietyn ajan välein
             if(this.seconds % this.powerupSpawnrate == 0) {
 
