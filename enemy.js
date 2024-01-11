@@ -451,7 +451,7 @@ class Enemy
         {
             game.increaseScore(this.score);
         } else {
-            game.increaseScore(-1, this.score);
+            game.increaseScore(playerID, this.score);
         }
         createFloatingText({x: this.x, y: this.y}, `+${this.score}`);
 

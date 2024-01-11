@@ -636,6 +636,7 @@ class Player
             if (!this.isDead) {
                 playAudio(sfxs['DEATH']);
                 this.isDead = true;
+                // TODO: Jos enemy tappaa pelaajan, pisteiden lasku ei ole oikein
                 game.updateScore(this.id, instigator, enemyWhoKilled);
                 game.restartLevel();
             }
