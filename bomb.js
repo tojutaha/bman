@@ -1,5 +1,5 @@
 import { ctx, tileSize, game, globalPause, bigBomb } from "./main.js";
-import { getMusicalTimeout, msPerBeat, playAudio, playRiser, playTrack, randomSfx, sfxs, tracks } from "./audio.js";
+import { getMusicalTimeout, msPerBeat, playAudio, playBirdsong, playRiser, playTrack, randomSfx, sfxs, tracks } from "./audio.js";
 import { spawnEnemiesAtLocation, enemies } from "./enemy.js";
 import { getDistanceTo, getLinearUntilObstacle } from "./utils.js";
 import { findPlayerById, players } from "./player.js";
@@ -62,6 +62,7 @@ export class Bomb {
                     if (!game.beatDropped) {
                         setTimeout(() => {
                             if (game.level === 1) {
+                                playBirdsong();
                                 playTrack(tracks['SLOWHEART']);
                             }
                             else if (lastLevel) {
@@ -203,6 +204,7 @@ function setTilesOnFire(tiles, playerID) {
                         if (exitLocation.isOpen) {
                             game.toggleDoor();
                         }
+                        playAudio(sfxs['BLASTED_DOOR']);
                         spawnEnemiesAtLocation(currentTile, game.level + 3);
                         currentTile.hasSpawnedEnemies = true;
                     }
