@@ -2,7 +2,7 @@ import { enemies, enemyType, spawnEnemiesByType } from "./enemy.js";
 import { ctx, tileSize, game, setGlobalPause, globalPause, setNumOfPlayers, isMultiplayer } from "./main.js";
 import { fetchEverything, lastLevel, levelHeight, levelWidth } from "./gamestate.js";
 import { players } from "./player.js";
-import { playAudio, sfxs } from "./audio.js";
+import { playAudio, playTrack, sfxs, tracks } from "./audio.js";
 import { loadTextures } from "./level.js";
 import { loadSpriteSheets } from "./spritesheets.js";
 
@@ -199,6 +199,7 @@ restartButton.addEventListener('click', function() {
 });
 
 exitButton.addEventListener('click', function() {
+    game.isRunning = false;
     menuBackground.style.visibility = 'hidden';
     gameOverMenu.style.visibility = 'hidden';
     showMainMenu();
@@ -251,6 +252,8 @@ pauseMenuContinueButton.addEventListener('click', function() {
 });
 
 pauseMenuExitButton.addEventListener('click', function() {
+    game.isRunning = false;
+
     menuBackground.style.visibility = 'hidden';
     pauseMenu.style.visibility = 'hidden';
     mobilePauseBtn.style.visibility = 'hidden';
@@ -263,6 +266,8 @@ pauseMenuExitButton.addEventListener('click', function() {
         updateP2Score(0);
         game.over(); // Clears timer handles etc.
     }
+
+    playTrack(tracks['SLOWHEART']);
 });
 
 

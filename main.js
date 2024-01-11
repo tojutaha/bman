@@ -184,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function ()
 });
 
 document.addEventListener('keyup', function(event) {
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' && game.isRunning) {
         showPauseMenu();
     }
 });

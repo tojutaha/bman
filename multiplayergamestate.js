@@ -4,7 +4,7 @@ import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
 import { clearEnemies, enemyType, spawnEnemyByTypeAtLocation } from "./enemy.js";
 import { setTextures, initHardWallsCanvas, getRandomLevelType } from "./level.js";
-import { ctx, tileSize, level, setGlobalPause, fadeTransition, locBlinkers, globalPause } from "./main.js";
+import { ctx, tileSize, level, setGlobalPause, fadeTransition, locBlinkers, globalPause, game } from "./main.js";
 import { updateP1Score, updateP2Score, updatePVPTimerDisplay } from "./page.js";
 import { clearPlayers, findPlayerById, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, powerupLocations} from "./tile.js";
@@ -199,6 +199,8 @@ export class MultiplayerGame extends Game
     }
 
     newGame() {
+        game.isRunning = true;
+        
         pvpBlinkers.length = 0;
         locBlinkers.stopBlinking();
         this.player1Score = 0;

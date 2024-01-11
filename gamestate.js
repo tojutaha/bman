@@ -54,6 +54,7 @@ export function setPowerupCount(count) {
 
 export class Game {
     constructor() {
+        this.isRunning = false;
         this.score = 0;
         this.level = 1;
         this.numOfEnemies = 0;
@@ -64,6 +65,8 @@ export class Game {
     }
 
     newGame() {
+        this.isRunning = true;
+
         fadeTransition.fadeIn();
         setGlobalPause(true);
         localStorage.clear();
@@ -78,6 +81,8 @@ export class Game {
     }
 
     continueGame() {
+        this.isRunning = true;
+        
         fadeTransition.fadeIn();
         setGlobalPause(true);
         clearPlayers();
