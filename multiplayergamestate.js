@@ -235,7 +235,15 @@ export class MultiplayerGame extends Game
 
     restartLevel()
     {
+        // Clear spawn timers to prevent enemies traveling from previous round
+        if(this.enemySpawnTimerHandle) {
+            clearInterval(this.enemySpawnTimerHandle);
+        }
+        if(this.powerupSpawnTimerHandle) {
+            clearInterval(this.powerupSpawnTimerHandle);
+        }
         pvpBlinkers.length = 0;
+
         setTimeout(() => {
             setGlobalPause(true);
             this.seconds = 0;
