@@ -243,7 +243,6 @@ export class MultiplayerGame extends Game
             clearInterval(this.powerupSpawnTimerHandle);
         }
         pvpBlinkers.length = 0;
-        clearEnemies();
 
         setTimeout(() => {
             setGlobalPause(true);
@@ -280,6 +279,7 @@ export class MultiplayerGame extends Game
                 p.powerup.currentWalls = 3; // Reset build materials
             });
             resetPlayerPositions();
+            clearEnemies();
         }, 2000);
     }
     
