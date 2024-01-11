@@ -277,6 +277,11 @@ export class MultiplayerGame extends Game
     
     updateScore(playerWhoDied, playerWhoKilled, enemyWhoKilled) {
 
+        if(enemyWhoKilled)
+        {
+            return; // Nothing to do
+        }
+
         const player = findPlayerById(playerWhoDied);
         if(player)
         {
@@ -285,7 +290,7 @@ export class MultiplayerGame extends Game
 
             if (playerWhoDied === playerWhoKilled) {
 
-                // Reset powerupit jos pommittaa ittensä
+                // Reset powerups if self
                 player.powerup.reset();
                 player.speed = player.originalSpeed;
 
