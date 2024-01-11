@@ -7,6 +7,13 @@ let hardWallTexture = new Image();
 let softWallTexture = new Image();
 let floor = document.querySelector('.floor');
 
+export const levelTypes = ["forest_day", "forest_night", "hell"]
+
+export function getRandomLevelType() {
+    const lvl = levelTypes[Math.floor(Math.random() * levelTypes.length)];
+    return lvl
+}
+
 async function preLoadTextures() {
     const textures = {
         "limbo": {

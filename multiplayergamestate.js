@@ -3,7 +3,7 @@ import { stopBirdsong, stopCurrentTrack } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
 import { clearEnemies, enemyType, spawnEnemyByTypeAtLocation } from "./enemy.js";
-import { setTextures, initHardWallsCanvas } from "./level.js";
+import { setTextures, initHardWallsCanvas, getRandomLevelType } from "./level.js";
 import { ctx, tileSize, level, setGlobalPause, fadeTransition, locBlinkers, globalPause } from "./main.js";
 import { updateP1Score, updateP2Score, updatePVPTimerDisplay } from "./page.js";
 import { clearPlayers, findPlayerById, players, resetPlayerPositions, spawnPlayers } from "./player.js";
@@ -13,14 +13,28 @@ import { initPickups, randomPowerup } from "./pickups.js";
 import { createFloatingText } from "./particles.js";
 import { locBlinkingAnimation } from "./animations.js";
 
-const PVPlevelData = {
-    width: 13,
-    height: 13,
-    type: "forest_night",
-    powerup: "random",
-    powerupCount: 5,
-    softwallPercent: 0.2,
-};
+let previousLevelType = "hell";
+function createPVPLevel() {
+    const randomInt = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
+    const randomFloat = Math.random() * (0.5 - 0.2) + 0.2;
+
+    let randomLevelType = getRandomLevelType();
+    while (randomLevelType === previousLevelType) {
+        randomLevelType = getRandomLevelType();
+    }
+    previousLevelType = randomLevelType;
+
+    const level = {
+        width: 13,
+        height: 13,
+        type: randomLevelType,
+        powerup: "random",
+        powerupCount: randomInt,
+        softwallPercent: randomFloat,
+    };
+    
+    return level
+}
 
 const spawnType = {
     ENEMY: "Enemy",
@@ -213,6 +227,7 @@ export class MultiplayerGame extends Game
     }
 
     newLevel() {
+        const PVPlevelData = createPVPLevel();
         setGlobalPause(true);
         clearEnemies();
         clearBombs();
@@ -244,6 +259,7 @@ export class MultiplayerGame extends Game
 
     restartLevel()
     {
+        const PVPlevelData = createPVPLevel();
         this.stopTimer();
         // Clear spawn timers to prevent enemies traveling from previous round
         if(this.enemySpawnTimerHandle) {
