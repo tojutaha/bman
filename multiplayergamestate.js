@@ -16,7 +16,7 @@ import { locBlinkingAnimation } from "./animations.js";
 let currentLevelType = "hell";
 function createPVPLevel() {
     const randomInt = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
-    const randomFloat = Math.random() * (0.5 - 0.2) + 0.2;
+    const randomFloat = Math.random() * (0.4 - 0.2) + 0.2;
 
     let randomLevelType = getRandomLevelType();
     while (randomLevelType === currentLevelType) {
