@@ -19,6 +19,10 @@ const TrackURLs = {
     INT1: "assets/music/song_intensity01.mp3",
     INT2: "assets/music/song_intensity02.mp3",
     INT3: "assets/music/song_intensity03.mp3",
+    MP_WAIT: "assets/music/mp_song_wait.mp3",
+    MP_DAY: "assets/music/mp_song_day.mp3",
+    MP_NIGHT: "assets/music/mp_song_night.mp3",
+    MP_HELL: "assets/music/mp_song_hell.mp3",
 }
 
 const SfxURLs = {

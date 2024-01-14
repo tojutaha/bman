@@ -1,5 +1,5 @@
 import { Game, setLevelHeight, setLevelPowerup, setLevelType, setLevelWidth, setPowerupCount, setSoftwallPercent } from "./gamestate.js";
-import { stopBirdsong, stopCurrentTrack } from "./audio.js";
+import { playBirdsong, playTrack, stopBirdsong, stopCurrentTrack, tracks } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
 import { clearEnemies, enemyType, spawnEnemyByTypeAtLocation } from "./enemy.js";
@@ -15,15 +15,21 @@ import { locBlinkingAnimation } from "./animations.js";
 
 let currentLevelType = "hell";
 function createPVPLevel() {
-    const randomInt = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
-    const randomFloat = Math.random() * (0.5 - 0.2) + 0.2;
-
+    
     let randomLevelType = getRandomLevelType();
     while (randomLevelType === currentLevelType) {
         randomLevelType = getRandomLevelType();
     }
     currentLevelType = randomLevelType;
-
+    
+    const randomInt = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
+    let randomFloat;
+    if (currentLevelType !== 'hell') {
+        randomFloat = Math.random() * (0.5 - 0.2) + 0.2;
+    } else {
+        randomFloat = Math.random() * (0.2 - 0.1) + 0.1;
+    }
+    
     const level = {
         width: 13,
         height: 13,
@@ -223,7 +229,7 @@ export class MultiplayerGame extends Game
         this.seconds = 0;
         this.minutes = 0;
         this.startTimer();
-        stopBirdsong(); // TODO: Halutaanko jotain audiota tänne?
+        stopBirdsong();
         stopCurrentTrack();
         fadeTransition.fadeIn();
         setGlobalPause(true);
@@ -237,13 +243,15 @@ export class MultiplayerGame extends Game
     }
 
     initLevel() {
-        // Heartbeatit pois
-        this.beatDropped = true;
         // Reset camera position
         setCameraX(0);
     }
 
     newLevel() {
+        game.beatDropped = false;
+        playTrack(tracks['MP_WAIT']);
+        stopBirdsong();
+        
         const PVPlevelData = createPVPLevel();
         setGlobalPause(true);
         clearEnemies();
@@ -276,6 +284,10 @@ export class MultiplayerGame extends Game
 
     restartLevel()
     {
+        game.beatDropped = false;
+        playTrack(tracks['MP_WAIT']);
+        stopBirdsong();
+        
         const PVPlevelData = createPVPLevel();
         this.stopTimer();
         // Clear spawn timers to prevent enemies traveling from previous round
