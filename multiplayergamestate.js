@@ -1,5 +1,5 @@
 import { Game, setLevelHeight, setLevelPowerup, setLevelType, setLevelWidth, setPowerupCount, setSoftwallPercent } from "./gamestate.js";
-import { playBirdsong, playTrack, stopBirdsong, stopCurrentTrack, tracks } from "./audio.js";
+import { playTrack, stopBirdsong, stopCurrentTrack, tracks } from "./audio.js";
 import { clearBombs } from "./bomb.js";
 import { setCameraX } from "./camera.js";
 import { clearEnemies, enemyType, spawnEnemyByTypeAtLocation } from "./enemy.js";
