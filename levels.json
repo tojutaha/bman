@@ -32,9 +32,10 @@
     },
     "2": {
         "enemies": {
-            "zombie": 3,
+            "zombie": 2,
             "ghost": 1,
-            "skeleton": 0
+            "skeleton": 0,
+            "witch": 0
         },
         "tiles": {
             "width": 13,
@@ -47,9 +48,10 @@
     },
     "3": {
         "enemies": {
-            "zombie": 4,
+            "zombie": 2,
             "ghost": 2,
-            "skeleton": 0
+            "skeleton": 0,
+            "witch": 0
         },
         "tiles": {
             "width": 19,
@@ -62,13 +64,14 @@
     },
     "4": {
         "enemies": {
-            "zombie": 4,
+            "zombie": 2,
             "ghost": 2,
-            "skeleton": 1
+            "skeleton": 0,
+            "witch": 1
         },
         "tiles": {
-            "width": 19,
-            "height": 13,
+            "width": 13,
+            "height": 19,
             "type": "forest_night",
             "powerup": "bomb",
             "powerupCount": 1,
@@ -77,28 +80,110 @@
     },
     "5": {
         "enemies": {
-            "zombie": 4,
+            "zombie": 1,
             "ghost": 3,
-            "skeleton": 2
+            "skeleton": 1,
+            "witch": 0
+        },
+        "tiles": {
+            "width": 19,
+            "height": 13,
+            "type": "forest_night",
+            "powerup": "random",
+            "powerupCount": 2,
+            "softwallPercent": 0.3
+        }
+    },
+    "6": {
+        "enemies": {
+            "zombie": 1,
+            "ghost": 2,
+            "skeleton": 1,
+            "witch": 1
         },
         "tiles": {
             "width": 23,
             "height": 13,
             "type": "forest_night",
             "powerup": "random",
-            "powerupCount": 3,
+            "powerupCount": 2,
+            "softwallPercent": 0.3
+        }
+    },
+    "7": {
+        "enemies": {
+            "zombie": 1,
+            "ghost": 2,
+            "skeleton": 2,
+            "witch": 1
+        },
+        "tiles": {
+            "width": 13,
+            "height": 23,
+            "type": "forest_night",
+            "powerup": "random",
+            "powerupCount": 2,
+            "softwallPercent": 0.3
+        }
+    },
+    "8": {
+        "enemies": {
+            "zombie": 0,
+            "ghost": 0,
+            "skeleton": 1,
+            "witch": 4
+        },
+        "tiles": {
+            "width": 13,
+            "height": 27,
+            "type": "forest_night",
+            "powerup": "random",
+            "powerupCount": 2,
+            "softwallPercent": 0.3
+        }
+    },
+    "9": {
+        "enemies": {
+            "zombie": 4,
+            "ghost": 4,
+            "skeleton": 4,
+            "witch": 0
+        },
+        "tiles": {
+            "width": 13,
+            "height": 13,
+            "type": "forest_night",
+            "powerup": "random",
+            "powerupCount": 2,
+            "softwallPercent": 0.3
+        }
+    },
+    "10": {
+        "enemies": {
+            "zombie": 20,
+            "ghost": 0,
+            "skeleton": 0,
+            "witch": 0
+        },
+        "tiles": {
+            "width": 13,
+            "height": 13,
+            "type": "forest_day",
+            "powerup": "random",
+            "powerupCount": 20,
             "softwallPercent": 0.3
         }
     },
     "Z": {
         "enemies": {
-            "zombie": 15,
+            "zombie": 0,
             "ghost": 10,
-            "skeleton": 10
+            "skeleton": 40,
+            "witch": 0
         },
         "tiles": {
-            "width": 29,
-            "height": 13,
+            "width": 23,
+            "height": 23,
             "type": "hell",
             "powerup": "random",
             "powerupCount": 10,
