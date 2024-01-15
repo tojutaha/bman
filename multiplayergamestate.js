@@ -111,6 +111,8 @@ export class MultiplayerGame extends Game
         this.powerupSpawnTimerHandle = null;
         this.seconds = 0;
         this.minutes = 0;
+
+        this.restaring = false;
     }
 
     startTimer() {
@@ -179,7 +181,7 @@ export class MultiplayerGame extends Game
                     let counter = 0;
                     this.powerupSpawnTimerHandle = setInterval(() => {
                         if (globalPause) return;
-                        
+
                         if(counter >= 3) {
                             blinker.stopBlinking()
                             counter = 0;
@@ -288,6 +290,11 @@ export class MultiplayerGame extends Game
 
     restartLevel()
     {
+        // Prevent level restarting twice, if both players die at same time.
+        if(this.restaring) return;
+
+        this.restaring = true;
+
         game.beatDropped = false;
         playTrack(tracks['MP_WAIT']);
         stopBirdsong();
@@ -341,6 +348,7 @@ export class MultiplayerGame extends Game
             resetPlayerPositions();
             clearEnemies();
             this.startTimer();
+            this.restaring = false;
         }, 2000);
     }
     
