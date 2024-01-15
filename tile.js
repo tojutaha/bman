@@ -24,7 +24,7 @@ function Tile(x, y, isWalkable, isDeadly, hasPowerup, powerup, type) {
 export function createTiles() {
     powerupLocations = [];
     const result = [];
-    let hardWallTotal = 0;
+    let floorTotal = 0;
 
     for (let x = 0; x < levelWidth; x++) {
         const column = [];
@@ -35,34 +35,32 @@ export function createTiles() {
             // Outer walls
             if (x === 0 || y === 0 || x === levelWidth - 1 || y === levelHeight - 1) {
                 column.push(new Tile(xCoord, yCoord, false, false, false, "None", TileType.HARD_WALL));
-                hardWallTotal++;
             } 
             // Hard tiles
             else if (x % 2 === 0 && y % 2 === 0) {
                 column.push(new Tile(xCoord, yCoord, false, false, false, "None", TileType.HARD_WALL));
-                hardWallTotal++;
             }
             // Floor
             else {
                 column.push(new Tile(xCoord, yCoord, true, false, false, "None", TileType.FLOOR));
+                floorTotal++;
             }
         }
         result.push(column);
     }
 
-    let softWallTotal = createSoftWalls(result, hardWallTotal);
+    let softWallTotal = createSoftWalls(result, floorTotal);
     populateSoftWalls(result, softWallTotal);
 
     return result;
 }
 
-function createSoftWalls(result, hardWallTotal) {
+function createSoftWalls(result, floorTotal) {
     let softWallTotal = 0;
     
     const emptyCorners = 6; // NOTE: 3 per player
-    const floorLeft = levelHeight * levelWidth - hardWallTotal;
-    let softWallsLeft = Math.floor(floorLeft * softwallPercent);
-    softWallsLeft -= emptyCorners;
+    floorTotal -= emptyCorners;
+    let softWallsLeft = Math.floor(floorTotal * softwallPercent);
     
     if (cagePlayers && !isMultiplayer) {
         softWallsLeft = createCage(result, softWallsLeft);
