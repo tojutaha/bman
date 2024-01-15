@@ -130,37 +130,40 @@ export class MultiplayerGame extends Game
             // Spawnaa vihollsia tietyn ajan välein
             if(this.seconds % this.enemySpawnRate == 0) {
                 const location = getRandomWalkablePoint();
+                if(location) {
+                    let blinker = new SpawnBlinker();
+                    blinker.location = location;
+                    blinker.startBlinking(spawnType.ENEMY);
+                    pvpBlinkers.push(blinker);
 
-                let blinker = new SpawnBlinker();
-                blinker.location = location;
-                blinker.startBlinking(spawnType.ENEMY);
-                pvpBlinkers.push(blinker);
+                    let counter = 0;
+                    this.enemySpawnTimerHandle = setInterval(() => {
+                        if (globalPause) return;
 
-                let counter = 0;
-                this.enemySpawnTimerHandle = setInterval(() => {
-                    if(counter >= 5) {
-                        blinker.stopBlinking();
-                        counter = 0;
-                        clearInterval(this.enemySpawnTimerHandle);
+                        if(counter >= 5) {
+                            blinker.stopBlinking();
+                            counter = 0;
+                            clearInterval(this.enemySpawnTimerHandle);
 
-                        let enemies;
-                        if (currentLevelType === "forest_day") {
-                            enemies = ["ZOMBIE", "ZOMBIE", "WITCH"];
-                        } 
-                        else if (currentLevelType === "forest_night") {
-                            enemies = ["ZOMBIE", "GHOST", "SKELETON"];
+                            let enemies;
+                            if (currentLevelType === "forest_day") {
+                                enemies = ["ZOMBIE", "ZOMBIE", "WITCH"];
+                            } 
+                            else if (currentLevelType === "forest_night") {
+                                enemies = ["ZOMBIE", "GHOST", "SKELETON"];
+                            }
+                            else if (currentLevelType === "hell") {
+                                enemies = ["SKELETON", "SKELETON", "GHOST"];
+                            } else {
+                                enemies = ["ZOMBIE", "SKELETON", "GHOST", "WITCH"];
+                            }
+                            const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
+            
+                            spawnEnemyByTypeAtLocation(enemyType[randomEnemy], location);
                         }
-                        else if (currentLevelType === "hell") {
-                            enemies = ["SKELETON", "SKELETON", "GHOST"];
-                        } else {
-                            enemies = ["ZOMBIE", "SKELETON", "GHOST", "WITCH"];
-                        }
-                        const randomEnemy = enemies[Math.floor(Math.random() * enemies.length)];
-        
-                        spawnEnemyByTypeAtLocation(enemyType[randomEnemy], location);
-                    }
-                    counter++;
-                }, 1000);
+                        counter++;
+                    }, 1000);
+                }
             }
 
             // Spawnaa random poweruppeja tietyn ajan välein
@@ -175,6 +178,8 @@ export class MultiplayerGame extends Game
 
                     let counter = 0;
                     this.powerupSpawnTimerHandle = setInterval(() => {
+                        if (globalPause) return;
+                        
                         if(counter >= 3) {
                             blinker.stopBlinking()
                             counter = 0;
