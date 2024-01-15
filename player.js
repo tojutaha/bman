@@ -8,7 +8,11 @@ import { spriteSheets } from "./spritesheets.js";
 import { showGGMenu } from "./page.js";
 
 
-const godMode = false;
+export let godMode = false;
+export function toggleGodMode() {
+    godMode = !godMode
+}
+
 export const playerSpeed = 150;
 
 export const Direction = {
