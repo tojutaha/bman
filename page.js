@@ -219,22 +219,11 @@ ggExitButton.addEventListener('click', function() {
         stopBirdsong();
     }
 });
-export function showGGMenu(playerNumber, mpScore)
+export function showGGMenu()
 {
     wonGame = true;
     updateLevelDisplay();
-    if (isMultiplayer) {
-        if (playerNumber === 0) {
-            ggHeader.innerText = `TIE`;
-            ggScore.innerText = `Score ${mpScore}`;
-        } else {
-            ggHeader.innerText = `PLAYER ${playerNumber} WINS!`;
-            ggScore.innerText = `Score ${mpScore}`;
-        }
-    } else {
-        ggHeader.innerText = 'GG! Well done!';
-        ggScore.innerText = `Score ${game.score}`;
-    }
+    ggScore.innerText = `Score ${game.score}`;
     menuBackground.style.visibility = 'visible';
     ggMenu.style.visibility = 'visible';
 }
