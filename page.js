@@ -1,7 +1,7 @@
 import { enemies, enemyType, spawnEnemiesByType } from "./enemy.js";
 import { ctx, tileSize, game, setGlobalPause, globalPause, setNumOfPlayers, isMultiplayer } from "./main.js";
 import { fetchEverything, lastLevel, levelHeight, levelWidth } from "./gamestate.js";
-import { players } from "./player.js";
+import { godMode, players, toggleGodMode } from "./player.js";
 import { playAudio, playTrack, sfxs, tracks } from "./audio.js";
 import { loadTextures } from "./level.js";
 import { loadSpriteSheets } from "./spritesheets.js";
@@ -357,6 +357,16 @@ killEnemiesButton.addEventListener("click", function() {
     enemies.forEach(enemy => {
         enemy.die();
     })
+});
+
+let godModeButton = document.getElementById("god-mode");
+godModeButton.addEventListener("click", function() {
+    toggleGodMode();
+    if(godMode) {
+        godModeButton.innerText = "GodMode On ";
+    } else {
+        godModeButton.innerText = "GodMode Off";
+    }
 });
 
 let killPlayersButton = document.getElementById("kill-players");
