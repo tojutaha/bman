@@ -27,7 +27,7 @@
             "type": "forest_day",
             "powerup": "range",
             "powerupCount": 1,
-            "softwallPercent": 0.2
+            "softwallPercent": 0.5
         }
     },
     "2": {
@@ -43,7 +43,7 @@
             "type": "forest_night",
             "powerup": "bomb",
             "powerupCount": 1,
-            "softwallPercent": 0.2
+            "softwallPercent": 0.4
         }
     },
     "3": {
@@ -59,7 +59,7 @@
             "type": "forest_night",
             "powerup": "speed",
             "powerupCount": 1,
-            "softwallPercent": 0.3
+            "softwallPercent": 0.4
         }
     },
     "4": {
@@ -91,7 +91,7 @@
             "type": "forest_night",
             "powerup": "random",
             "powerupCount": 2,
-            "softwallPercent": 0.3
+            "softwallPercent": 0.4
         }
     },
     "6": {
@@ -139,7 +139,7 @@
             "type": "forest_night",
             "powerup": "random",
             "powerupCount": 2,
-            "softwallPercent": 0.3
+            "softwallPercent": 0.2
         }
     },
     "9": {
@@ -155,7 +155,7 @@
             "type": "forest_night",
             "powerup": "random",
             "powerupCount": 2,
-            "softwallPercent": 0.3
+            "softwallPercent": 0.4
         }
     },
     "10": {
@@ -187,7 +187,7 @@
             "type": "hell",
             "powerup": "random",
             "powerupCount": 10,
-            "softwallPercent": 0.2
+            "softwallPercent": 0.5
         }
     }
 }
