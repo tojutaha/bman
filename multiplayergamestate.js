@@ -103,9 +103,10 @@ export class MultiplayerGame extends Game
         this.numPlayers = 2;
         this.player1Score = 0;
         this.player2Score = 0;
-        this.points = 1000; // Points per pvp kill
+        this.pvpPoints = 1000;
+        this.killedByEnemyPoints = 500;
         this.timerHandle = null;
-        this.enemySpawnRate = 10;
+        this.enemySpawnRate = 15;
         this.enemySpawnTimerHandle = null;
         this.powerupSpawnrate = 10;
         this.powerupSpawnTimerHandle = null;
@@ -354,31 +355,50 @@ export class MultiplayerGame extends Game
     
     updateScore(playerWhoDied, playerWhoKilled, enemyWhoKilled) {
 
-        if(enemyWhoKilled)
-        {
-            return; // Nothing to do
-        }
-
         const player = findPlayerById(playerWhoDied);
-        if(player)
-        {
+        if(player) {
+
             const x = player.x;
             const y = player.y;
 
+            if (enemyWhoKilled) {
+                if (player.id == 0) {
+                    createFloatingText({ x: x, y: y }, `+${this.killedByEnemyPoints}`);
+                    this.player2Score += this.killedByEnemyPoints;
+                    updateP2Score(this.player2Score);
+                } else if (player.id == 1) {
+                    createFloatingText({ x: x, y: y }, `+${this.killedByEnemyPoints}`);
+                    this.player1Score += this.killedByEnemyPoints;
+                    updateP1Score(this.player1Score);
+                }
+                return;
+            }
+
             if (playerWhoDied === playerWhoKilled) {
 
-                // Reset powerups if self
+                // Reset powerups if self kill
                 player.powerup.reset();
                 player.speed = player.originalSpeed;
 
+                // Add scores to the other player
+                if(player.id == 0) {
+                    createFloatingText({ x: x, y: y }, `+${this.pvpPoints}`);
+                    this.player2Score += this.pvpPoints;
+                    updateP2Score(this.player2Score);
+                } else if(player.id == 1) {
+                    createFloatingText({ x: x, y: y }, `+${this.pvpPoints}`);
+                    this.player1Score += this.pvpPoints;
+                    updateP1Score(this.player1Score);
+                }
+
             } else {
                 if (playerWhoKilled === 0) {
-                    this.player1Score += this.points;
-                    createFloatingText({ x: x, y: y }, `+${this.points}`);
+                    createFloatingText({ x: x, y: y }, `+${this.pvpPoints}`);
+                    this.player1Score += this.pvpPoints;
                     updateP1Score(this.player1Score);
                 } else {
-                    this.player2Score += this.points;
-                    createFloatingText({ x: x, y: y }, `+${this.points}`);
+                    createFloatingText({ x: x, y: y }, `+${this.pvpPoints}`);
+                    this.player2Score += this.pvpPoints;
                     updateP2Score(this.player2Score);
                 }
             }
