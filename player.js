@@ -432,7 +432,6 @@ class Player
 
                     if(bombTile.bomb.hasExploded) {
                         bombTile.isWalkable = true;
-                        bombTile.isDeadly = false;
                         clearInterval(posCheck);
                     }
 
