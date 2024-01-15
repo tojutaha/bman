@@ -34,6 +34,7 @@ class Enemy
     constructor(x, y, w, h, newMovementMode, speed, type) {
         this.id = ++Enemy.lastId;
         this.justSpawned = true;
+        this.spawnImmortalityTime = isMultiplayer ? 0 : 2000;
         this.score = 0;
 
         // Coordinates
@@ -145,9 +146,9 @@ class Enemy
         }
         
         if (this.justSpawned) {
-            this.spawnImmortality = setTimeout(() => {
+            setTimeout(() => {
                 this.justSpawned = false;
-            }, 2000);
+            }, this.spawnImmortalityTime);
         }
     }
 
