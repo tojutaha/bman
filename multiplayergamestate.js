@@ -5,7 +5,7 @@ import { setCameraX } from "./camera.js";
 import { clearEnemies, enemyType, spawnEnemyByTypeAtLocation } from "./enemy.js";
 import { setTextures, initHardWallsCanvas, getRandomLevelType } from "./level.js";
 import { ctx, tileSize, level, setGlobalPause, fadeTransition, locBlinkers, globalPause, game } from "./main.js";
-import { updateP1Score, updateP2Score, updatePVPTimerDisplay } from "./page.js";
+import { showGGMenu, updateP1Score, updateP2Score, updatePVPTimerDisplay } from "./page.js";
 import { clearPlayers, findPlayerById, players, resetPlayerPositions, spawnPlayers } from "./player.js";
 import { createTiles, powerupLocations} from "./tile.js";
 import { getRandomWalkablePoint } from "./utils.js";
@@ -101,6 +101,7 @@ export class MultiplayerGame extends Game
     constructor() {
         super();
         this.numPlayers = 2;
+        this.scoreGoal = 5000;
         this.player1Score = 0;
         this.player2Score = 0;
         this.pvpPoints = 1000;
@@ -114,6 +115,7 @@ export class MultiplayerGame extends Game
         this.minutes = 0;
 
         this.restaring = false;
+        this.isOver = false;
     }
 
     startTimer() {
@@ -291,9 +293,28 @@ export class MultiplayerGame extends Game
 
     restartLevel()
     {
+        // This needs to be here because the game keeps running while main menu is visible.
+        // Otherwise the victory screen might pop up again when the winning player dies.
+        if (this.isOver) return;
+        // Check whether a player won the game
+        if (this.player1Score >= this.scoreGoal || this.player2Score >= this.scoreGoal) { 
+            this.isOver = true;
+            setTimeout(() => {
+                if (this.player1Score === this.player2Score) {
+                    showGGMenu(0, this.player1Score)
+                }
+                else if (this.player1Score > this.player2Score) {
+                    showGGMenu(1, this.player1Score)
+                } else {
+                    showGGMenu(2, this.player2Score)
+                }
+            }, 4000);
+        }
+        if (this.isOver) return;
+    
         // Prevent level restarting twice, if both players die at same time.
         if(this.restaring) return;
-
+    
         this.restaring = true;
 
         game.beatDropped = false;

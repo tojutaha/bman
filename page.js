@@ -2,7 +2,7 @@ import { enemies, enemyType, spawnEnemiesByType } from "./enemy.js";
 import { ctx, tileSize, game, setGlobalPause, globalPause, setNumOfPlayers, isMultiplayer } from "./main.js";
 import { fetchEverything, lastLevel, levelHeight, levelWidth } from "./gamestate.js";
 import { godMode, players, toggleGodMode } from "./player.js";
-import { playAudio, playTrack, sfxs, tracks } from "./audio.js";
+import { playAudio, playTrack, sfxs, stopBirdsong, tracks } from "./audio.js";
 import { loadTextures } from "./level.js";
 import { loadSpriteSheets } from "./spritesheets.js";
 
@@ -184,6 +184,7 @@ const exitButton = document.getElementById("exitButton");
 const ggExitButton = document.getElementById("gg-exitButton");
 const gameOverScore = document.getElementById("game-over-score");
 const ggScore = document.getElementById("gg-score");
+const ggHeader = document.getElementById("gg-header");
 
 export function showGameOverMenu()
 {
@@ -212,12 +213,28 @@ ggExitButton.addEventListener('click', function() {
     ggMenu.style.visibility = 'hidden';
     localStorage.clear();
     showMainMenu();
+    
+    if (isMultiplayer) {
+        playTrack(tracks['SLOWHEART']);
+        stopBirdsong();
+    }
 });
-export function showGGMenu()
+export function showGGMenu(playerNumber, mpScore)
 {
     wonGame = true;
     updateLevelDisplay();
-    ggScore.innerText = `Score ${game.score}`;
+    if (isMultiplayer) {
+        if (playerNumber === 0) {
+            ggHeader.innerText = `TIE`;
+            ggScore.innerText = `Score ${mpScore}`;
+        } else {
+            ggHeader.innerText = `PLAYER ${playerNumber} WINS!`;
+            ggScore.innerText = `Score ${mpScore}`;
+        }
+    } else {
+        ggHeader.innerText = 'GG! Well done!';
+        ggScore.innerText = `Score ${game.score}`;
+    }
     menuBackground.style.visibility = 'visible';
     ggMenu.style.visibility = 'visible';
 }
