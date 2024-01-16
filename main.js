@@ -45,7 +45,7 @@ export function setNumOfPlayers(value) {
 // Settings
 export const tileSize = 64;
 export const cagePlayers = true;
-export const bigBombOverlay = true;
+export const bigBombOverlay = false;
 const showTutorial = true;
 const fadeTransitions = true;
 
@@ -104,21 +104,21 @@ function Render(timeStamp)
                 renderPickups();
             }
             renderBombs();
+            if (bigBombOverlay && isBigBombOver) {
+                renderEnemies(timeStamp);
+            } 
+            else if (!bigBombOverlay) {
+                renderEnemies(timeStamp);
+            }
             renderPlayer(timeStamp);
-            if (!bigBombOverlay) {
-                renderEnemies(timeStamp);
-            }
-            else if (bigBombOverlay && isBigBombOver) {
-                renderEnemies(timeStamp);
-            }
             // We want to render the walls here so that the shadows go under them
             renderWalls();
 
             if (bigBombOverlay && !isMultiplayer) {
                 bigBomb.render();
             }
-            // Enemies outlines rendered on top of the overlay
-            if (bigBombOverlay && !isBigBombOver) {
+            // Enemy outlines rendered on top of the overlay
+            if (bigBombOverlay && !isBigBombOver && game.level === 1) {
                 renderEnemies(timeStamp);
             }
             locBlinkers.render();

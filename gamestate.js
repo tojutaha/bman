@@ -6,7 +6,7 @@ import { setTextures, initHardWallsCanvas } from "./level.js";
 import { initPickups } from "./pickups.js";
 import { level, exit, levelHeader, entrance, gameOverText, setGlobalPause, tutorial, bigBomb, fadeTransition, bigBombOverlay } from "./main.js";
 import { showGameOverMenu, updateLevelDisplay, updateScoreDisplay } from "./page.js";
-import { clearPlayers, players, resetPlayerPositions, spawnPlayers, toggleGodMode } from "./player.js";
+import { clearPlayers, godMode, players, resetPlayerPositions, spawnPlayers, toggleGodMode } from "./player.js";
 import { createTiles, exitLocation} from "./tile.js";
 import { isMobile } from "./mobile.js";
 
@@ -184,6 +184,9 @@ export class Game {
     restartLevel()
     {
         resetPlayerPositions();
+        if (!godMode) {
+            toggleGodMode();
+        }
 
         setTimeout(() => {
             clearBombs();
@@ -194,6 +197,12 @@ export class Game {
                 p.isDead = false;
             });
         }, 2000);
+
+        setTimeout(() => {
+            if (godMode) {
+                toggleGodMode();
+            }
+        }, 5000);
     }
     
     increaseScore(points) {
