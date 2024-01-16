@@ -167,6 +167,11 @@ body {
     color: grey;
 }
 
+#title-logo-animation {
+    display: none;
+    scale: 70%;
+}
+
 /* Main Menu */
 .main-menu-container {
     visibility: hidden;
@@ -612,9 +617,7 @@ li {
     right: 0;
 }
 
-/* References: */
-/* iPadOS 14.7.1: 810px */
-/* iPhone 12/13 Pro Max iOS 14.6: 428px */
+/* Mobile landscape mode */
 @media only screen and (orientation: landscape) and (max-height: 428px) {
     html, body {
         height: auto;
@@ -627,7 +630,6 @@ li {
 
     #title-logo {
         display: none;
-        scale: 70%;
     }
 
     #loading-text {

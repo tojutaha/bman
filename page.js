@@ -48,7 +48,7 @@ export function updatePVPTimerDisplay(value) {
 // Main menu / buttons
 const playButton = document.getElementById("playGameButton");
 const loadingText = document.getElementById("loading-text");
-const titleLogo = document.getElementById("title-logo");
+const titleAnimation = document.getElementById("title-logo-animation");
 const playContainer = document.querySelector(".play-game-container");
 const infoDisplays = document.querySelector(".info-displays");
 const pvpInfoDisplays = document.querySelector(".pvp-info-displays");
@@ -151,9 +151,12 @@ closeButton.addEventListener('click', function() {
 playButton.addEventListener('click', async function() {
     if (isMobile) {
         loadingText.style.display = 'none';
-        loadingText.style.visibility = 'visible';
         playButton.style.display = 'none';
-        titleLogo.style.display = 'flex';
+        titleAnimation.style.display = 'flex';
+        titleAnimation.src = "./assets/logo_loading_animation.gif";
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+        }
     } else {
         loadingText.style.visibility = 'visible';
         playButton.style.visibility = 'hidden';
