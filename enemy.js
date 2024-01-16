@@ -529,9 +529,6 @@ class Enemy
                 if(!player.isDead) {
                     if(aabbCollision(this.collisionBox, player.collisionBox)) {
                         player.onDeath(this, false);
-                        this.collides = true;
-                        this.playerTarget = null;
-                        this.stopMove();
                     }
                 }
             }

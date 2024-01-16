@@ -82,7 +82,6 @@ export class Game {
 
     continueGame() {
         this.isRunning = true;
-        console.log(this.level);
         
         fadeTransition.fadeIn();
         setGlobalPause(true);
