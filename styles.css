@@ -125,7 +125,7 @@ body {
 
 /* Play Game */
 .play-game-container {
-    visibility: hidden; /* TODO: Takas visibleks kun ei tartte debuggailla */
+    visibility: visible;
     display: flex;
     position: absolute;
     width: 832px;

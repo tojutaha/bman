@@ -12,10 +12,6 @@ import { updateCamera } from "./camera.js";
 import { showDoor, showPauseMenu } from "./page.js";
 import { isMobile, responsivityCheck } from "./mobile.js";
 import { renderFloatingText } from "./particles.js";
-// TODO: Nämä importit voi ottaa myöhemmin pois
-import { fetchEverything } from "./gamestate.js";
-import { loadTextures } from "./level.js";
-import { loadSpriteSheets } from "./spritesheets.js";
 import { clamp } from "./utils.js";
 
 
@@ -152,16 +148,6 @@ function Render(timeStamp)
     requestAnimationFrame(Render);
 }
 
-// TODO: Tämä pois kun ei tartteta enää debuggailla
-async function debugLoad()
-{
-    await fetchEverything();
-    await loadTextures();
-    await loadSpriteSheets();
-    
-    game.newGame();
-}
-
 ////////////////////
 // DOM
 document.addEventListener("DOMContentLoaded", function ()
@@ -170,8 +156,6 @@ document.addEventListener("DOMContentLoaded", function ()
     if (canvas) {
         ctx = canvas.getContext("2d");
         if (ctx) {
-            // TODO: Tämä pois kun ei tartteta enää debuggailla
-            debugLoad();
             Render();
             responsivityCheck();
         } else {
