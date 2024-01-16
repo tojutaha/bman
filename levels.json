@@ -27,7 +27,7 @@
             "type": "forest_day",
             "powerup": "range",
             "powerupCount": 1,
-            "softwallPercent": 0.5
+            "softwallPercent": 0.3
         }
     },
     "2": {

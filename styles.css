@@ -562,7 +562,7 @@ li {
 }
 
 #mob-dir-left {
-    margin-left: -30px;
+    margin-left: 0px;
 }
 
 #mob-dir-right {
@@ -570,7 +570,7 @@ li {
 }
 
 #mob-dir-up, #mob-dir-down {
-    margin-left: 30px;
+    margin-left: 60px;
 }
 
 .d-pad {
@@ -582,7 +582,7 @@ li {
     width: 100px;
     height: 100px;
     margin-top: 180px;
-    margin-right: 10px;
+    margin-right: 60px;
 }
 
 .mobile-buttons-left {
@@ -682,6 +682,7 @@ li {
 
     #pause-button {
         display: block;
+        visibility: hidden;
     }
 
     .canvas-container {

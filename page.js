@@ -252,9 +252,9 @@ export function showPauseMenu() {
     const visibility = globalPause ? 'visible' : 'hidden';
     menuBackground.style.visibility = visibility;
     pauseMenu.style.visibility = visibility;
-    mobileController.style.visibility = visibility;
-
+    
     const reverseVisibility = globalPause ? 'hidden' : 'visible';
+    mobileController.style.visibility = reverseVisibility;
     canvas.style.visibility = reverseVisibility;
     floor.style.visibility = reverseVisibility;
 }
