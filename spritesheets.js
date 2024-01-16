@@ -3,6 +3,8 @@ async function preLoadSpriteSheets() {
         player1_normal: "./assets/players/player.png",
         player1_lantern: "./assets/players/player_lantern.png",
         player1_mushroom_effect: "./assets/players/player_lantern_mushroomeffect.png",
+        player1_godmode: "./assets/players/player_godmode.png",
+        player1_lantern_godmode: "./assets/players/player_lantern_godmode.png",
 
         player2_normal: "./assets/players/player2.png",
         player2_lantern: "./assets/players/player2_lantern.png",

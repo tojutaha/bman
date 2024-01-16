@@ -11,6 +11,19 @@ import { showGGMenu } from "./page.js";
 export let godMode = false;
 export function toggleGodMode() {
     godMode = !godMode
+    if (godMode) {
+        if (levelType === 'forest_night') {
+            players[0].spriteSheet.src = spriteSheets.player1_lantern_godmode;
+        } else {
+            players[0].spriteSheet.src = spriteSheets.player1_godmode;
+        }
+    } else {
+        if (levelType === 'forest_night') {
+            players[0].spriteSheet.src = spriteSheets.player1_lantern;
+        } else {
+            players[0].spriteSheet.src = spriteSheets.player1_normal;
+        }
+    }
 }
 
 export const playerSpeed = 150;

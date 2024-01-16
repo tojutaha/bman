@@ -92,7 +92,7 @@ class Enemy
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
-                if (bigBombOverlay && !isBigBombOver && !isMultiplayer) {
+                if (bigBombOverlay && game.level === 1) {
                     this.spriteSheet.src = spriteSheets.zombie_outline;
                 } else {
                     this.spriteSheet.src = spriteSheets.zombie;
@@ -104,11 +104,7 @@ class Enemy
                 break;
             }
             case enemyType.GHOST: {
-                if (bigBombOverlay && !isBigBombOver && !isMultiplayer) {
-                    this.spriteSheet.src = spriteSheets.ghost_outline;
-                } else {
-                    this.spriteSheet.src = spriteSheets.ghost;
-                }
+                this.spriteSheet.src = spriteSheets.ghost;
                 this.movementMode = movementMode.ROAM;
                 this.animationSpeed = 400;
                 this.speed = 600;
@@ -117,11 +113,7 @@ class Enemy
                 break;
             }
             case enemyType.SKELETON: {
-                if (bigBombOverlay && !isBigBombOver && !isMultiplayer) {
-                    this.spriteSheet.src = spriteSheets.skeleton_outline;
-                } else {
-                    this.spriteSheet.src = spriteSheets.skeleton;
-                }
+                this.spriteSheet.src = spriteSheets.skeleton;
                 this.movementMode = movementMode.PATROL;
                 this.speed = 400;
                 this.score = 500;
@@ -129,11 +121,7 @@ class Enemy
                 break;
             }
             case enemyType.WITCH: {
-                if (bigBombOverlay && !isBigBombOver && !isMultiplayer) {
-                    this.spriteSheet.src = spriteSheets.witch_outline;
-                } else {
-                    this.spriteSheet.src = spriteSheets.witch;
-                }
+                this.spriteSheet.src = spriteSheets.witch;
                 this.movementMode = movementMode.FOLLOW;
                 this.speed = 900;
                 this.score = 350;
