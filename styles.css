@@ -529,6 +529,7 @@ li {
 /* Mobile controls */
 .mobile-controller {
     display: none;
+    visibility: hidden;
     position: absolute;
     top: 0;
     justify-content: space-between;
@@ -622,6 +623,15 @@ li {
     
     body {
         background-color: #101010;
+    }
+
+    #title-logo {
+        display: none;
+        scale: 70%;
+    }
+
+    #loading-text {
+        display: none;
     }
 
     .main-menu-container {

@@ -5,6 +5,7 @@ import { godMode, players, toggleGodMode } from "./player.js";
 import { playAudio, playTrack, sfxs, stopBirdsong, tracks } from "./audio.js";
 import { loadTextures } from "./level.js";
 import { loadSpriteSheets } from "./spritesheets.js";
+import { isMobile } from "./mobile.js";
 
 // Settings
 export let wonGame = false;
@@ -47,6 +48,7 @@ export function updatePVPTimerDisplay(value) {
 // Main menu / buttons
 const playButton = document.getElementById("playGameButton");
 const loadingText = document.getElementById("loading-text");
+const titleLogo = document.getElementById("title-logo");
 const playContainer = document.querySelector(".play-game-container");
 const infoDisplays = document.querySelector(".info-displays");
 const pvpInfoDisplays = document.querySelector(".pvp-info-displays");
@@ -147,8 +149,15 @@ closeButton.addEventListener('click', function() {
 });
 
 playButton.addEventListener('click', async function() {
-    loadingText.style.visibility = 'visible';
-    playButton.style.visibility = 'hidden';
+    if (isMobile) {
+        loadingText.style.display = 'none';
+        loadingText.style.visibility = 'visible';
+        playButton.style.display = 'none';
+        titleLogo.style.display = 'flex';
+    } else {
+        loadingText.style.visibility = 'visible';
+        playButton.style.visibility = 'hidden';
+    }
     let loadTimer = animateLoadingText();
     await fetchEverything();
     await loadTextures();
