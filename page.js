@@ -203,11 +203,19 @@ export function showGameOverMenu()
     gameOverScore.innerText = `Score ${game.score}`;
     menuBackground.style.visibility = 'visible';
     gameOverMenu.style.visibility = 'visible';
+    if (isMobile) {
+        infoDisplays.style.visibility = 'hidden';
+    }
 }
 
 restartButton.addEventListener('click', function() {
     menuBackground.style.visibility = 'hidden';
     gameOverMenu.style.visibility = 'hidden';
+    if (isMobile) {
+        mobileController.style.visibility = 'visible';
+        infoDisplays.style.visibility = 'visible';
+        mobilePauseBtn.style.visibility = 'visible';
+    }
     game.newGame();
 });
 

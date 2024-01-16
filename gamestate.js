@@ -276,6 +276,15 @@ export class Game {
     }
 
     over() {
+        this.isRunning = false;
+
+        if (isMobile) {
+            const mobilePauseBtn = document.getElementById('pause-button');
+            mobilePauseBtn.style.visibility = 'hidden';
+            const mobileController = document.querySelector('.mobile-controller');
+            mobileController.style.visibility = 'hidden';
+        }
+
         gameOverText.playAnimation().then(() => {
             playTrack(tracks['HEART']);
             localStorage.clear();
