@@ -326,38 +326,47 @@ export function aabbCollision(rect1, rect2) {
 // Hakee käveltävän polun rangen pituudelta, tai
 // jos polkua ei löydy, niin pienimmän mahdollisen jossa voi kävellä.
 export function dfs(start, range) {
+    
+    // Initialize the stack with start node, distance, and path
     let stack = [[start.x/tileSize, start.y/tileSize, 0, []]];
+    // Initialize visited nodes array with same size as level
     let visited = new Array(level.length).fill(0).map(() => new Array(level[0].length).fill(false));
+    // Keeps track of longest path found so far
     let longestPath = [];
 
     while (stack.length > 0) {
-        let [x, y, dist, path] = stack.pop();
-
+        // Pop a node from stack and checks if its distance is greater than range,
+        // if so, skip the iteration
+        let [x, y, dist, path] = stack.pop(); // Pop from the top of the stack
         if (dist > range) {
             continue;
         }
 
+        // Mark the node visited
         visited[x][y] = true;
 
+        // Add the node to the current path and update the longest path if necessary
         let newPath = path.concat([{x: x*tileSize, y: y*tileSize}]);
         if(newPath.length > longestPath.length) {
             longestPath = newPath;
         }
 
-        //let neighbours = getNeigbouringTiles_diagonal({x: x*tileSize, y: y*tileSize});
+        // Get the neighbouring nodes and push each unvisited, walkable to the stack with 
+        // its distance from the start node and the path to it
         let neighbours = getNeigbouringTiles_linear({x: x*tileSize, y: y*tileSize});
         neighbours.forEach(n => {
             const coord = {x: n.x/tileSize, y: n.y/tileSize};
             if(coord.x >= 0 && coord.x <= levelWidth && coord.y >= 0 && coord.y <= levelHeight) {
                 if (level[coord.x][coord.y].isWalkable) {
                     if(!visited[coord.x][coord.y]) {
-                        stack.push([coord.x, coord.y, dist + 1, newPath]);
+                        stack.push([coord.x, coord.y, dist + 1, newPath]); // Push to the top of the stack
                     }
                 }
             }
         });
     }
 
+    // After all nodes in given range have been visited, return the longest path found
     return longestPath;
 }
 

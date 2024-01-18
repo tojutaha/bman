@@ -97,44 +97,44 @@ function astar(useDiagonalMovement, start, target)
     const getNeigbouringTiles = useDiagonalMovement ? getNeigbouringTiles_diagonal : getNeigbouringTiles_linear;
 
     const openList = [ [0, start] ];
-    const costSoFar = new Map();
-    const cameFrom = new Map();
+    const costSoFar = new Map(); // Keeps track of the cost so far to reach node
+    const cameFrom = new Map(); // Keeps track of the node from which a given node can be reached at the lowest cost
 
     costSoFar.set(start, 0);
 
     while (openList.length > 0) {
-        openList.sort((a, b) => a[0] - b[0]);
-        const [currentCost, current] = openList.shift();
+        openList.sort((a, b) => a[0] - b[0]); // Sort the list, so that nodes with lowest cost/priority comes first
+        const current = openList.shift()[1];
 
         // reached target
         if (current.x == target.x && current.y == target.y) {
             const path = [];
             let curr = target;
-
+            // Trace back the from target node to start node
             while (curr && (curr.x !== start.x || curr.y !== start.y)) {
                 path.push(curr);
-                curr = cameFrom.get(`${curr.x},${curr.y}`);
-                //console.log(curr);
+                curr = cameFrom.get(`${curr.x},${curr.y}`); // Get the node that can be reached at the lowest cost
             }
 
             path.push(start);
-            //path.push(target);
             path.reverse();
 
-            //console.log("Path found:", path);
             return path;
         }
 
+        // Loop through neighbouring tiles. If a neighbour is reachable and either has not been
+        // reached before or can be reached at a lower cost from the current node, update the cost
+        // and the previous node for this neighbour and add it to open list.
         for (const neighbour of getNeigbouringTiles(current)) {
             const tile = getTileFromWorldLocation(neighbour);
             if (tile.isWalkable) {
-                const newCost = costSoFar.get(current) + 1;
+                const newCost = costSoFar.get(current) + 1; // Cost for adjacent tile
 
                 const neighbourKey = `${neighbour.x},${neighbour.y}`;
                 if (!costSoFar.has(neighbourKey) || newCost < costSoFar.get(neighbourKey)) {
-                    costSoFar.set(neighbourKey, newCost);
-                    cameFrom.set(neighbourKey, current); // store the previous node!
-                    const priority = newCost + getDistanceTo(neighbour, target);
+                    costSoFar.set(neighbourKey, newCost); // Store the cost so far
+                    cameFrom.set(neighbourKey, current); // Store the previous node!
+                    const priority = newCost + getDistanceTo(neighbour, target); // Store priority which is used to sort the open list 
                     openList.push([priority, neighbour]);
                 }
             }

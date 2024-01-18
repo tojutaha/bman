@@ -103,7 +103,7 @@ body {
 }
 
 .debug {
-    visibility: hidden;
+    visibility: visible;
 }
 
 .debug-buttons {

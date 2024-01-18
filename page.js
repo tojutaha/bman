@@ -442,3 +442,21 @@ deleteButton.addEventListener("click", function() {
     localStorage.clear();
     location.reload();
 });
+
+export let showPath = false;
+let showPathButton = document.getElementById("show-path");
+showPathButton.addEventListener("click", function() {
+    showPath = !showPath;
+});
+
+export let showEnemyLocation = false;
+let showEnemyLocationButton = document.getElementById("show-enemy-location");
+showEnemyLocationButton.addEventListener("click", function() {
+    showEnemyLocation = !showEnemyLocation;
+});
+
+export let showEnemyRenderLocation = false;
+let showEnemyRenderLocationButton = document.getElementById("show-enemy-render-location");
+showEnemyRenderLocationButton.addEventListener("click", function() {
+    showEnemyRenderLocation = !showEnemyRenderLocation;
+});

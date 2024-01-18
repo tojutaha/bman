@@ -8,6 +8,7 @@ import { EnemyDeathAnimation, deathRow, isBigBombOver } from "./animations.js";
 import { spriteSheets } from "./spritesheets.js";
 import { createFloatingText } from "./particles.js";
 import { initPickups } from "./pickups.js";
+import { showEnemyLocation, showEnemyRenderLocation, showPath } from "./page.js";
 
 export const enemyType = {
     ZOMBIE: "zombie",
@@ -692,6 +693,14 @@ export function renderEnemies(timeStamp)
 
                 x = lerp(enemy.x, enemy.renderX, enemy.t);
                 y = lerp(enemy.y, enemy.renderY, enemy.t);
+
+                // NOTE: DEBUG enemy render location
+                if(showEnemyRenderLocation)
+                {
+                    ctx.fillStyle = "green";
+                    ctx.fillRect(x, y, tileSize, tileSize);
+                }
+
             } else {
                 enemy.renderX = enemy.x;
                 enemy.renderY = enemy.y;
@@ -699,6 +708,26 @@ export function renderEnemies(timeStamp)
 
             enemy.update(timeStamp, x, y);
             enemy.checkCollisions();
+
+            // NOTE: DEBUG enemy location
+            if(showEnemyLocation)
+            {
+                ctx.fillStyle = "red";
+                ctx.fillRect(enemy.x, enemy.y, tileSize, tileSize);
+            }
+
+            // NOTE: DEBUG path drawing
+            if(showPath)
+            {
+                if (enemy.currentPath) {
+                    enemy.currentPath.forEach(p => {
+                        ctx.beginPath();
+                        ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 2, 0, 2*Math.PI);
+                        ctx.strokeStyle = "yellow";
+                        ctx.stroke();
+                });
+                }
+            }
         }
     });
 }
