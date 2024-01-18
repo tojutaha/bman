@@ -460,3 +460,9 @@ let showEnemyRenderLocationButton = document.getElementById("show-enemy-render-l
 showEnemyRenderLocationButton.addEventListener("click", function() {
     showEnemyRenderLocation = !showEnemyRenderLocation;
 });
+
+export let debugRenderEnemies = true;
+let renderEnemiesButton = document.getElementById("render-enemies");
+renderEnemiesButton.addEventListener("click", function() {
+    debugRenderEnemies = !debugRenderEnemies;
+});

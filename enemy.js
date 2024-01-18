@@ -8,7 +8,7 @@ import { EnemyDeathAnimation, deathRow, isBigBombOver } from "./animations.js";
 import { spriteSheets } from "./spritesheets.js";
 import { createFloatingText } from "./particles.js";
 import { initPickups } from "./pickups.js";
-import { showEnemyLocation, showEnemyRenderLocation, showPath } from "./page.js";
+import { debugRenderEnemies, showEnemyLocation, showEnemyRenderLocation, showPath } from "./page.js";
 
 export const enemyType = {
     ZOMBIE: "zombie",
@@ -485,6 +485,13 @@ class Enemy
     }
 
     drawAnimation(x, y) {
+
+        // NOTE: DEBUG render sprites
+        if(!debugRenderEnemies)
+        {
+            return;
+        }
+
         switch(this.direction) {
             case Direction.LEFT: {
                 ctx.drawImage(this.spriteSheet,
