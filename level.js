@@ -17,14 +17,14 @@ export function getRandomLevelType() {
 async function preLoadTextures() {
     const textures = {
         "limbo": {
-            floor:    "./assets/vhs_static.gif",
-            hardWall: "./assets/limbo_hardwall.png",
-            softWall: "./assets/limbo_softwall.png"
+            floor:    "./assets/other_animations/vhs_static.gif",
+            hardWall: "./assets/tiles/limbo_hardwall.png",
+            softWall: "./assets/tiles/limbo_softwall.png"
         },
         "forest_day": {
-            floor:    "./assets/grass_01.png",
-            hardWall: "./assets/stone_brick_04.png",
-            softWall: "./assets/stone_brick_02.png"
+            floor:    "./assets/tiles/grass_01.png",
+            hardWall: "./assets/tiles/stone_brick_04.png",
+            softWall: "./assets/tiles/stone_brick_02.png"
         },
         "forest_night": {
             floor:    "./assets/tiles/floor_forest_night.png",
@@ -32,14 +32,14 @@ async function preLoadTextures() {
             softWall: "./assets/tiles/softwall_forest_night.png"
         },
         "hell": {
-            floor:    "./assets/lava_01.png",
-            hardWall: "./assets/stone_brick_01.png",
-            softWall: "./assets/stone_brick_03.png"
+            floor:    "./assets/tiles/lava_01.png",
+            hardWall: "./assets/tiles/stone_brick_01.png",
+            softWall: "./assets/tiles/stone_brick_03.png"
         },
         "default": {
-            floor:    "./assets/cobblestone_03.png",
-            hardWall: "./assets/stone_brick_05.png",
-            softWall: "./assets/stone_brick_03.png"
+            floor:    "./assets/tiles/cobblestone_03.png",
+            hardWall: "./assets/tiles/stone_brick_05.png",
+            softWall: "./assets/tiles/stone_brick_03.png"
         }
     };
 

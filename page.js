@@ -153,7 +153,7 @@ playButton.addEventListener('click', async function() {
         loadingText.style.display = 'none';
         playButton.style.display = 'none';
         titleAnimation.style.display = 'flex';
-        titleAnimation.src = "./assets/logo_loading_animation.gif";
+        titleAnimation.src = "./assets/page/logo_loading_animation.gif";
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen();
         }
