@@ -92,8 +92,14 @@ export function requestPath(requester, startLoc, targetLoc)
     */
 }
 
+
+export const astar_openlist =[];
 function astar(useDiagonalMovement, start, target)
 {
+
+    // NOTE: DEBUG
+    astar_openlist.length = 0;
+
     const getNeigbouringTiles = useDiagonalMovement ? getNeigbouringTiles_diagonal : getNeigbouringTiles_linear;
 
     const openList = [ [0, start] ];
@@ -127,6 +133,10 @@ function astar(useDiagonalMovement, start, target)
         // and the previous node for this neighbour and add it to open list.
         for (const neighbour of getNeigbouringTiles(current)) {
             const tile = getTileFromWorldLocation(neighbour);
+
+            // NOTE: DEBUG
+            astar_openlist.push(tile);
+
             if (tile.isWalkable) {
                 const newCost = costSoFar.get(current) + 1; // Cost for adjacent tile
 

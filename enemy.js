@@ -1,14 +1,14 @@
 import { bigBombOverlay, ctx, fixedDeltaTime, game, globalPause, isMultiplayer, tileSize } from "./main.js";
 import { Direction, players } from "./player.js";
 import { dfs, lerp, getRandomWalkablePointInRadius, getTileFromWorldLocation, aabbCollision, getDistanceToEuclidean } from "./utils.js";
-import { requestPath } from "./pathfinder.js";
+import { astar_openlist, requestPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
 import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
 import { EnemyDeathAnimation, deathRow, isBigBombOver } from "./animations.js";
 import { spriteSheets } from "./spritesheets.js";
 import { createFloatingText } from "./particles.js";
 import { initPickups } from "./pickups.js";
-import { debugRenderEnemies, showEnemyLocation, showEnemyRenderLocation, showPath } from "./page.js";
+import { debugRenderEnemies, showAStarResult, showEnemyLocation, showEnemyRenderLocation, showPath } from "./page.js";
 
 export const enemyType = {
     ZOMBIE: "zombie",
@@ -724,6 +724,20 @@ export function renderEnemies(timeStamp)
             }
 
             // NOTE: DEBUG path drawing
+            if(showAStarResult)
+            {
+                if(astar_openlist.length > 0)
+                {
+                    astar_openlist.forEach(p => {
+                        ctx.beginPath();
+                        ctx.arc(p.x + tileSize/2, p.y + tileSize/2, 2, 0, 2*Math.PI);
+                        ctx.strokeStyle = "red";
+                        ctx.stroke();
+                    });
+                }
+
+            }
+
             if(showPath)
             {
                 if (enemy.currentPath) {
@@ -734,6 +748,7 @@ export function renderEnemies(timeStamp)
                         ctx.stroke();
                 });
                 }
+
             }
         }
     });

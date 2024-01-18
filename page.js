@@ -449,6 +449,12 @@ showPathButton.addEventListener("click", function() {
     showPath = !showPath;
 });
 
+export let showAStarResult = false;
+let showAStarResultButton = document.getElementById("show-astar");
+showAStarResultButton.addEventListener("click", function() {
+    showAStarResult = !showAStarResult;
+});
+
 export let showEnemyLocation = false;
 let showEnemyLocationButton = document.getElementById("show-enemy-location");
 showEnemyLocationButton.addEventListener("click", function() {
