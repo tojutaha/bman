@@ -642,9 +642,34 @@ export function shroom(player) {
     
     // Rotation and zoom
     let effectInterval = setInterval(() => {
-        if (globalPause) return;
-        
-        if (rotation > 0 && rotation < 360) {
+        // Speed up the effect if dead or exited game
+        if (!game.isRunning) {
+            player.spriteSheet.src = player.lanternSprite;
+            clearInterval(effectInterval);
+            canvas.style.borderStyle = "none";
+            let gameOverInterval = setInterval(() => {
+                if (rotation < 180) {
+                    rotation--;
+                } else {
+                    rotation++;
+                }
+                if (rotation <= 0 || rotation >= 360) {
+                    rotation = 0;
+                    stopBlur = true;
+                    shroomTrigger = false;
+                    canvas.style.borderStyle = "solid";
+                    clearInterval(gameOverInterval);
+                }
+                floor.style.transform = `rotate(-${rotation}deg)`;
+                canvas.style.transform = `rotate(-${rotation}deg)`;
+                canvas.style.filter = `hue-rotate(${rotation}deg) blur(${blur}px)`;
+                floor.style.filter = `hue-rotate(${rotation}deg) blur(${blur}px)`;
+            }, 1);
+        }        
+        else if (globalPause) {
+            return;
+        }
+        else if (rotation > 0 && rotation < 360) {
             rotation++
         // Clear all effects after one full rotation
         } else {
