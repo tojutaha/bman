@@ -546,7 +546,7 @@ li {
     font-size: 2em;
     size: 200px;
     background: black;
-    background-image: url("./assets/mobile_btn_bg.png");
+    background-image: url("./assets/page/mobile_btn_bg.png");
     opacity: 0.95;
     color: white;
     border-color: #202020;

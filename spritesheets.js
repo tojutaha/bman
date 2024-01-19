@@ -39,12 +39,12 @@ async function preLoadSpriteSheets() {
         bomb: "./assets/items/bomb.png",
         powerups: "./assets/items/powerups.png",
         mushroom: "./assets/items/shroom1.png",
-        explosion: "./assets/explosion.png",
-        wall_animation: "./assets/wall_animation.png",
-        door: "./assets/door_animation_night.png",
+        explosion: "./assets/other_animations/explosion.png",
+        wall_animation: "./assets/other_animations/wall_animation.png",
+        door: "./assets/other_animations/door_animation_night.png",
 
-        tutorial_keys: "./assets/tutorial_keys_animation.png",
-        big_bomb_overlay: "./assets/big_bomb_overlay.png",
+        tutorial_keys: "./assets/other_animations/tutorial_keys_animation.png",
+        big_bomb_overlay: "./assets/other_animations/big_bomb_overlay.png",
     };
 
     let promises = [];
