@@ -126,7 +126,7 @@ export class Game {
     
     newLevel() {
         if (this.level === 1) {
-            tutorial.playAnimation();
+            //tutorial.playAnimation();
             bigBomb.visible = true;
         } else {
             if (tutorial.visible) {
