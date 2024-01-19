@@ -16,7 +16,7 @@ export class Powerup
         this.currentWalls = 3;
         this.maxWalls = 3;
         this.blinker = null;
-        this.maxSpeed = 350;
+        this.maxSpeed = 250;
         this.extraSpeed = 30;
     }
 
