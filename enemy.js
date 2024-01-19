@@ -4,7 +4,7 @@ import { dfs, lerp, getRandomWalkablePointInRadius, getTileFromWorldLocation, aa
 import { requestPath } from "./pathfinder.js";
 import { tilesWithBombs } from "./bomb.js";
 import { getMusicalTimeout, playAudio, randomSfx, sfxs } from "./audio.js";
-import { EnemyDeathAnimation, deathRow, isBigBombOver } from "./animations.js";
+import { EnemyDeathAnimation, deathRow } from "./animations.js";
 import { spriteSheets } from "./spritesheets.js";
 import { createFloatingText } from "./particles.js";
 import { initPickups } from "./pickups.js";

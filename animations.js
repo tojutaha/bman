@@ -532,7 +532,6 @@ export class TutorialAnimation {
     }
 }
 
-export let isBigBombOver = true;
 export class BigBombAnimation {
     constructor() {
         this.visible = true;
@@ -569,7 +568,6 @@ export class BigBombAnimation {
                 this.currentFrame++;
             } else {
                 this.visible = false;
-                isBigBombOver = true;
                 this.currentFrame = 0;
                 clearInterval(shatter);
             }
@@ -589,7 +587,6 @@ export class BigBombAnimation {
         }
 
         if (this.visible) {
-            isBigBombOver = false;
             ctx.drawImage(this.spriteSheet, 
                 this.imageHeight * this.currentFrame, 0, 
                 this.imageHeight, this.imageHeight, 0, 0, this.imageHeight, this.imageHeight);
