@@ -448,6 +448,9 @@ class Enemy
         this.stopMove();
 
         for (let prop in this) {
+                if (prop === 'mushroomInterval') {
+                    clearInterval(this[prop]);
+                }
             this[prop] = null;
         }
 
@@ -703,8 +706,12 @@ export function clearEnemies() {
     enemies.forEach(enemy => {
         enemy.movementMode = movementMode.IDLE;
         enemy.stopMove();
-        for (let prop in enemy)
+        for (let prop in enemy) {
+            if (prop === 'mushroomInterval') {
+                clearInterval(enemy[prop]);
+            }
             enemy[prop] = null;
+        }
     });
     enemies.length = 0;
 }
