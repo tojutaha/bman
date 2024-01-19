@@ -104,10 +104,7 @@ function Render(timeStamp)
                 renderPickups();
             }
             renderBombs();
-            if (bigBombOverlay && isBigBombOver) {
-                renderEnemies(timeStamp);
-            } 
-            else if (!bigBombOverlay) {
+            if (isBigBombOver) {
                 renderEnemies(timeStamp);
             }
             renderPlayer(timeStamp);
@@ -118,7 +115,7 @@ function Render(timeStamp)
                 bigBomb.render();
             }
             // Enemy outlines rendered on top of the overlay
-            if (bigBombOverlay && !isBigBombOver && game.level === 1) {
+            if (bigBombOverlay && game.level === 1 && !isBigBombOver) {
                 renderEnemies(timeStamp);
             }
             locBlinkers.render();
