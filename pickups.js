@@ -17,7 +17,7 @@ export class Powerup
         this.maxWalls = 3;
         this.blinker = null;
         this.maxSpeed = 250;
-        this.extraSpeed = 30;
+        this.extraSpeed = 15;
     }
 
     pickup(tile, player) {
