@@ -578,6 +578,7 @@ export class BigBombAnimation {
                     enemy.showSprite();
                 });
                 isBigBombOver = true;
+                console.log(isBigBombOver);
             }
         }, this.animationMs);
     }

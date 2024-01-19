@@ -92,11 +92,7 @@ class Enemy
 
         switch(this.enemyType) {
             case enemyType.ZOMBIE: {
-                if (bigBombOverlay && game.level === 1 && !isMultiplayer) {
-                    this.spriteSheet.src = spriteSheets.zombie_outline;
-                } else {
-                    this.spriteSheet.src = spriteSheets.zombie;
-                }
+                this.spriteSheet.src = spriteSheets.zombie;
                 this.movementMode = movementMode.PATROL;
                 this.speed = 1000;
                 this.score = 100;
