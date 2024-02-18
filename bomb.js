@@ -20,6 +20,7 @@ export class Bomb {
         this.range = range || 1;
         this.hasExploded = false;
         this.playerId = playerId || 0;
+        this.checkFirstBomb();
 
         // Collision
         this.w = tileSize;
@@ -34,8 +35,6 @@ export class Bomb {
         
         this.ticking = setInterval(() => {
             if (globalPause) return;
-
-            this.checkFirstBomb();
 
             this.currentFrame++;
             if (this.hasExploded) {
