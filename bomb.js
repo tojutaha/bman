@@ -31,7 +31,7 @@ export class Bomb {
         
         // Animation
         this.currentFrame = 0;
-        this.frames = 16;
+        this.frames = 15;
         
         this.ticking = setInterval(() => {
             if (globalPause) return;
@@ -41,8 +41,6 @@ export class Bomb {
                 clearInterval(this.ticking);
             }
             else if (this.currentFrame >= this.frames) {
-                this.currentFrame = this.frames - 1;
-
                 // Bombs explode in time with the music
                 let delay;
                 if (!game.firstBombExploded) {
